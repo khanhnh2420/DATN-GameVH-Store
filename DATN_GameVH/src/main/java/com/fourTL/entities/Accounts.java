@@ -5,10 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @SuppressWarnings("serial")
@@ -29,4 +26,12 @@ public class Accounts  implements Serializable{
 	@JsonIgnore
 	@OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
 	List<Authorities> authorities;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "account")
+	List<Blogs> blogs;
+
+	@OneToMany(mappedBy = "account")
+	 List<Comments> comments;
+
 }

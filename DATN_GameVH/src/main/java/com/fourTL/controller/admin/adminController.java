@@ -7,21 +7,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class adminController {
 	@RequestMapping("/admin/dashboard")
 	public String dashboard() {
-		return "admin/index";
+		return "admin/product-list";
 	}
 	
 	@RequestMapping("/admin/product")
 	public String product() {
-		return "admin/product";
+		return "admin/product-list";
 	}
 	
-	@RequestMapping("/admin/orders")
+	@RequestMapping("/admin/order")
 	public String orders() {
-		return "admin/orders";
+		return "admin/order-list";
 	}
 	
-	@RequestMapping("/admin/acounts")
+	@RequestMapping("/admin/account")
 	public String maneger() {
-		return "admin/maneger";
+		return "admin/account-list";
 	}
 }

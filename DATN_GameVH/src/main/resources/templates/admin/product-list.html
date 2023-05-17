@@ -856,10 +856,23 @@
 								</div>
 								<button data-toggle="modal" data-target="#addProductModal" class="btn btn-success">Add
 									Product</button>
-
 								<!-- Modal Add Product -->
 								<div class="modal fade" id="addProductModal" tabindex="-1" role="dialog"
 									aria-labelledby="addProductModalLabel" aria-hidden="true">
+									<!-- Toast -->
+									<div class="toast">
+										<div class="toast-content">
+											<i class="fas fa-solid fa-check check"></i>
+
+											<div class="message">
+												<span class="text text-1">Success</span>
+												<span class="text text-2">Your changes has been saved</span>
+											</div>
+										</div>
+										<i class="fa-solid fa-xmark close"></i>
+
+										<div class="progress"></div>
+									</div>
 									<div class="modal-dialog modal-lg" role="document">
 										<div class="modal-content">
 											<div class="modal-header">
@@ -909,25 +922,27 @@
 															<div class="form-group">
 																<label for="productSettings">Settings</label>
 																<textarea class="form-control" id="productSettings"
-																	rows="3"></textarea>
+																	rows="9"></textarea>
 															</div>
 														</div>
 														<div class="col-6 col-lg-7">
 															<div class="form-group">
 																<div class="upload-container">
 																	<div class="upload-onepic">
-																		<label for="productImage">Image</label> <input
-																			type="file"
+																		<label for="productImage">Image</label>
+																		<input type="file"
 																			class="form-control-file mb-2 btn btn-primary"
-																			id="productImage"
+																			id="productImage" name="productImage"
 																			onchange="previewImage(event)" />
-																		<div class="container-preview text-center">
-																			<img src="img/new-product/no-image.jpg"
+																		<div class="container-preview text-center"
+																			style="margin-top: 2em;">
+																			<img src="img/new-product/No-Image-poster.png"
 																				id="img-preview" alt="Image Preview" />
 																		</div>
 																	</div>
 																</div>
 															</div>
+															<hr>
 															<div class="form-group">
 																<div class="upload-multi-pic">
 																	<label for="productImage">Thumbnails</label>
@@ -935,7 +950,11 @@
 																		id="image-input" name="images[]" multiple
 																		onchange="previewImages(event)" />
 																	<div id="image-preview-list"
-																		class="thumbnail-container"></div>
+																		class="thumbnail-container">
+																		<img src="img/new-product/no-image.jpg"
+																			class="thumbnail" alt="Placeholder Image"
+																			th:each="index : ${#numbers.sequence(1, 4)}" />
+																	</div>
 																</div>
 															</div>
 															<script src="js/product-list.js"></script>
@@ -1052,25 +1071,6 @@
 									<td>$540</td>
 									<td>Out Of Stock</td>
 									<td>$18</td>
-									<td>
-										<button data-toggle="tooltip" title="Edit" class="pd-setting-ed">
-											<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-										</button>
-										<button data-toggle="tooltip" title="Trash" class="pd-setting-ed">
-											<i class="fa fa-trash-o" aria-hidden="true"></i>
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td><img src="img/new-product/7-small.jpg" alt="" /></td>
-									<td>Product Title 6</td>
-									<td>
-										<button class="ps-setting">Paused</button>
-									</td>
-									<td>400</td>
-									<td>$4000</td>
-									<td>In Stock</td>
-									<td>$10</td>
 									<td>
 										<button data-toggle="tooltip" title="Edit" class="pd-setting-ed">
 											<i class="fa fa-pencil-square-o" aria-hidden="true"></i>

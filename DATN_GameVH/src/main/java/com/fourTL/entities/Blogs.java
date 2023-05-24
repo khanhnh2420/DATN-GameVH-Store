@@ -32,9 +32,9 @@ public class Blogs implements Serializable {
     @ManyToOne
     @JoinColumn(name = "Username")
     Accounts account;
-    @ManyToOne
-    @JoinColumn(name = "IdSp")
-    Products product;
+//    @ManyToOne
+//    @JoinColumn(name = "IdSp")
+//    Products product;
 
     @JsonIgnore
     @OneToMany(mappedBy = "blogs")

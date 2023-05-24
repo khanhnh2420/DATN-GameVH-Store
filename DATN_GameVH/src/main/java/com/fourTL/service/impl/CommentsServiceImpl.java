@@ -24,6 +24,11 @@ public class CommentsServiceImpl implements CommentsService {
     public List<Comments> findAll() {
         return cmtDao.findAll();
     }
+    @Query(value = "SELECT p.blogs.id from Comments p")
+    public List<Comments> findAllByIdBlog(Integer id){
+        return cmtDao.findAllByIdBlog(id);
+    }
+
 
     @Override
     public Comments findById(Integer id) {

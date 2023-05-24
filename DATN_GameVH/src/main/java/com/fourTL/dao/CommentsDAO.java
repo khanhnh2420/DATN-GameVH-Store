@@ -11,4 +11,6 @@ import java.util.List;
 public interface CommentsDAO extends JpaRepository<Comments, Integer> {
     @Query("SELECT MAX(ThoiGianCmt) AS LatestDate FROM Comments ")
     List<Comments> findNewsestComment();
+
+    List<Comments> findAllByIdBlog(Integer id);
 }

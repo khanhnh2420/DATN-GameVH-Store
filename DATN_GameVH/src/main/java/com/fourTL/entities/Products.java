@@ -42,9 +42,9 @@ public class Products  implements Serializable{
 	@JsonIgnore
 	@OneToMany(mappedBy = "product")
 	List<OrderDetails> orderDetails;
-	@JsonIgnore
-	@OneToMany(mappedBy = "product")
-	List<Blogs> blogs;
+//	@JsonIgnore
+//	@OneToMany(mappedBy = "product")
+//	List<Blogs> blogs;
 
 
 }

@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("blog-detail")
 public class CommentRestController {
-    @Autowired
-    CommentsServiceImpl cmtSerImpl;
+
 
 
 }

@@ -1,5 +1,6 @@
 package com.fourTL.service.impl;
 
+
 import com.fourTL.dao.CommentsDAO;
 import com.fourTL.entities.Comments;
 import com.fourTL.service.CommentsService;
@@ -24,7 +25,7 @@ public class CommentsServiceImpl implements CommentsService {
     public List<Comments> findAll() {
         return cmtDao.findAll();
     }
-    @Query(value = "SELECT p.blogs.id from Comments p")
+  @Override
     public List<Comments> findAllByIdBlog(Integer id){
         return cmtDao.findAllByIdBlog(id);
     }

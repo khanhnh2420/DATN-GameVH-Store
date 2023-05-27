@@ -1621,7 +1621,7 @@ ul.two-part-sp li {
 }
 
 .product-status-wrap table th {
-    padding: 20px 5px;
+    padding: 20px 77px;
     vertical-align: top;
     border-top: 1px solid #152036;
 }
@@ -1640,7 +1640,7 @@ ul.two-part-sp li {
 }
 
 .product-status-wrap table td {
-    padding: 9px 7px;
+    padding: 9px 56px;
     border-top: 1px solid #152036;
     color: #fff;
     font-size: 14px;
@@ -1658,6 +1658,7 @@ ul.two-part-sp li {
 
 .custom-pagination ul.pagination {
     margin-bottom: 0px;
+    margin-top: 0px;
 }
 
 .product-status-wrap .pd-setting {

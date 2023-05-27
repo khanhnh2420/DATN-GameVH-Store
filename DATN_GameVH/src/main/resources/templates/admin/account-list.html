@@ -1316,7 +1316,7 @@
 				</div>
 			</div>
 		</div>
-		<main class="product-status mg-b-30 mg-t-30">
+		<main class="product-status mg-b-30 mg-t-30" ng-controller="AccountMana">
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-lg-10 col-md-9 col-sm-9 col-xs-12">
@@ -1363,7 +1363,8 @@
 													<div class="form-group">
 														<div class="user-profilesinglepage" id="avatar-header">
 															<div class="avatar-header">
-																<div class="avatar-wrapper" style="box-shadow: 1px 1px 15px -5px green;">
+																<div class="avatar-wrapper"
+																	style="box-shadow: 1px 1px 15px -5px green;">
 																	<img class="profile-pic" src="" />
 																	<div class="upload-button">
 																		<i class="fa fa-arrow-circle-up"
@@ -1396,7 +1397,7 @@
 														<label for="address">Address</label>
 														<textarea class="form-control" id="address" rows="3"></textarea>
 													</div>
-													
+
 												</form>
 												<script src="js/account-list.js"></script>
 											</div>
@@ -1416,410 +1417,25 @@
 							<table>
 								<tr>
 									<th>Username</th>
-									<th>Password</th>
 									<th>Fullname</th>
 									<th>Email</th>
 									<th>Address</th>
 									<th>Photo</th>
 									<th>Action</th>
 								</tr>
-								<tr>
-									<td>user1</td>
-									<td>password1</td>
-									<td>John Doe</td>
-									<td>john.doe@example.com</td>
-									<td>American</td>
+								<tr ng-repeat="items in accounts.content">
+									<td>{{items.username}}</td>
+									<td>{{items.fullname}}</td>
+									<td>{{items.email}}</td>
+									<td>{{items.address}}</td>
 									<td>
-										<img src="https://via.placeholder.com/50x50" alt="" />
+										<img src="/admin/img/account/avatar.png" alt="User Photo.png" />
 									</td>
 									<td>
 										<button class="pd-setting-ed" data-toggle="modal"
 											data-target="#editAccountModal" data-account-id="1">
 											<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 										</button>
-										<!-- Modal Edit Account -->
-										<!-- Modal -->
-										<div class="modal fade" id="editAccountModal" tabindex="-1" role="dialog"
-											aria-labelledby="editAccountModalLabel" aria-hidden="true">
-											<div class="modal-dialog" role="document">
-												<div class="modal-content">
-													<div class="modal-header">
-														<h5 class="modal-title" id="editAccountModalLabel">
-															Edit Account
-														</h5>
-														<button type="button" class="close" data-dismiss="modal"
-															aria-label="Close">
-															<span aria-hidden="true">&times;</span>
-														</button>
-													</div>
-													<div class="modal-body">
-														<div class="container-flex">
-															<div class="col-md-8">
-																<form>
-																	<div class="form-group">
-																		<label for="username">Username</label>
-																		<input type="text" class="form-control"
-																			id="username" />
-																	</div>
-																	<div class="form-group">
-																		<label for="password">Password</label>
-																		<input type="password" class="form-control"
-																			id="password" />
-																	</div>
-																	<div class="form-group">
-																		<label for="fullname">Full Name</label>
-																		<input type="text" class="form-control"
-																			id="fullname" />
-																	</div>
-																	<div class="form-group">
-																		<label for="email">Email Address</label>
-																		<input type="email" class="form-control"
-																			id="email" />
-																	</div>
-																	<div class="form-group">
-																		<label for="address">Address</label>
-																		<textarea class="form-control" id="address"
-																			rows="3"></textarea>
-																	</div>
-																	<div class="form-group">
-																		<label for="photo">Photo</label>
-																		<input type="file" class="form-control-file"
-																			id="photo-edit" />
-																	</div>
-																</form>
-															</div>
-															<div class="col-md-4">
-																<div class="avatar">
-																	<img src="./img/account/avatar.png" alt=""
-																		class="avatar-preview"
-																		id="avatar-preview-edit" />
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="modal-footer">
-														<button type="button" class="btn btn-secondary"
-															data-dismiss="modal">
-															Close
-														</button>
-														<button type="button" class="btn btn-primary">
-															Save changes
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-
-										<button data-toggle="tooltip" title="Trash" class="pd-setting-ed">
-											<i class="fa fa-trash-o" aria-hidden="true"></i>
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td>user1</td>
-									<td>password1</td>
-									<td>John Doe</td>
-									<td>john.doe@example.com</td>
-									<td>American</td>
-									<td>
-										<img src="https://via.placeholder.com/50x50" alt="" />
-									</td>
-									<td>
-										<button class="pd-setting-ed" data-toggle="modal"
-											data-target="#editAccountModal" data-account-id="1">
-											<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-										</button>
-										<!-- Modal Edit Account -->
-										<!-- Modal -->
-										<div class="modal fade" id="editAccountModal" tabindex="-1" role="dialog"
-											aria-labelledby="editAccountModalLabel" aria-hidden="true">
-											<div class="modal-dialog" role="document">
-												<div class="modal-content">
-													<div class="modal-header">
-														<h5 class="modal-title" id="editAccountModalLabel">
-															Edit Account
-														</h5>
-														<button type="button" class="close" data-dismiss="modal"
-															aria-label="Close">
-															<span aria-hidden="true">&times;</span>
-														</button>
-													</div>
-													<div class="modal-body">
-														<form>
-															<div class="form-group">
-																<label for="username">Username</label>
-																<input type="text" class="form-control" id="username" />
-															</div>
-															<div class="form-group">
-																<label for="password">Password</label>
-																<input type="password" class="form-control"
-																	id="password" />
-															</div>
-															<div class="form-group">
-																<label for="fullname">Full Name</label>
-																<input type="text" class="form-control" id="fullname" />
-															</div>
-															<div class="form-group">
-																<label for="email">Email Address</label>
-																<input type="email" class="form-control" id="email" />
-															</div>
-															<div class="form-group">
-																<label for="address">Address</label>
-																<textarea class="form-control" id="address"
-																	rows="3"></textarea>
-															</div>
-															<div class="form-group">
-																<label for="photo">Photo</label>
-																<input type="file" class="form-control-file photo"
-																	id="photo" />
-															</div>
-															<input type="hidden" id="account-id" />
-														</form>
-													</div>
-													<div class="modal-footer">
-														<button type="button" class="btn btn-secondary"
-															data-dismiss="modal">
-															Close
-														</button>
-														<button type="button" class="btn btn-primary">
-															Save changes
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-
-										<button data-toggle="tooltip" title="Trash" class="pd-setting-ed">
-											<i class="fa fa-trash-o" aria-hidden="true"></i>
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td>user1</td>
-									<td>password1</td>
-									<td>John Doe</td>
-									<td>john.doe@example.com</td>
-									<td>American</td>
-									<td>
-										<img src="https://via.placeholder.com/50x50" alt="" />
-									</td>
-									<td>
-										<button class="pd-setting-ed" data-toggle="modal"
-											data-target="#editAccountModal" data-account-id="1">
-											<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-										</button>
-										<!-- Modal Edit Account -->
-										<!-- Modal -->
-										<div class="modal fade" id="editAccountModal" tabindex="-1" role="dialog"
-											aria-labelledby="editAccountModalLabel" aria-hidden="true">
-											<div class="modal-dialog" role="document">
-												<div class="modal-content">
-													<div class="modal-header">
-														<h5 class="modal-title" id="editAccountModalLabel">
-															Edit Account
-														</h5>
-														<button type="button" class="close" data-dismiss="modal"
-															aria-label="Close">
-															<span aria-hidden="true">&times;</span>
-														</button>
-													</div>
-													<div class="modal-body">
-														<form>
-															<div class="form-group">
-																<label for="username">Username</label>
-																<input type="text" class="form-control" id="username" />
-															</div>
-															<div class="form-group">
-																<label for="password">Password</label>
-																<input type="password" class="form-control"
-																	id="password" />
-															</div>
-															<div class="form-group">
-																<label for="fullname">Full Name</label>
-																<input type="text" class="form-control" id="fullname" />
-															</div>
-															<div class="form-group">
-																<label for="email">Email Address</label>
-																<input type="email" class="form-control" id="email" />
-															</div>
-															<div class="form-group">
-																<label for="address">Address</label>
-																<textarea class="form-control" id="address"
-																	rows="3"></textarea>
-															</div>
-															<div class="form-group">
-																<label for="photo">Photo</label>
-																<input type="file" class="form-control-file"
-																	id="photo" />
-															</div>
-															<input type="hidden" id="account-id" />
-														</form>
-													</div>
-													<div class="modal-footer">
-														<button type="button" class="btn btn-secondary"
-															data-dismiss="modal">
-															Close
-														</button>
-														<button type="button" class="btn btn-primary">
-															Save changes
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-
-										<button data-toggle="tooltip" title="Trash" class="pd-setting-ed">
-											<i class="fa fa-trash-o" aria-hidden="true"></i>
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td>user1</td>
-									<td>password1</td>
-									<td>John Doe</td>
-									<td>john.doe@example.com</td>
-									<td>American</td>
-									<td>
-										<img src="https://via.placeholder.com/50x50" alt="" />
-									</td>
-									<td>
-										<button class="pd-setting-ed" data-toggle="modal"
-											data-target="#editAccountModal" data-account-id="1">
-											<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-										</button>
-										<!-- Modal Edit Account -->
-										<!-- Modal -->
-										<div class="modal fade" id="editAccountModal" tabindex="-1" role="dialog"
-											aria-labelledby="editAccountModalLabel" aria-hidden="true">
-											<div class="modal-dialog" role="document">
-												<div class="modal-content">
-													<div class="modal-header">
-														<h5 class="modal-title" id="editAccountModalLabel">
-															Edit Account
-														</h5>
-														<button type="button" class="close" data-dismiss="modal"
-															aria-label="Close">
-															<span aria-hidden="true">&times;</span>
-														</button>
-													</div>
-													<div class="modal-body">
-														<form>
-															<div class="form-group">
-																<label for="username">Username</label>
-																<input type="text" class="form-control" id="username" />
-															</div>
-															<div class="form-group">
-																<label for="password">Password</label>
-																<input type="password" class="form-control"
-																	id="password" />
-															</div>
-															<div class="form-group">
-																<label for="fullname">Full Name</label>
-																<input type="text" class="form-control" id="fullname" />
-															</div>
-															<div class="form-group">
-																<label for="email">Email Address</label>
-																<input type="email" class="form-control" id="email" />
-															</div>
-															<div class="form-group">
-																<label for="address">Address</label>
-																<textarea class="form-control" id="address"
-																	rows="3"></textarea>
-															</div>
-															<div class="form-group">
-																<label for="photo">Photo</label>
-																<input type="file" class="form-control-file"
-																	id="photo" />
-															</div>
-															<input type="hidden" id="account-id" />
-														</form>
-													</div>
-													<div class="modal-footer">
-														<button type="button" class="btn btn-secondary"
-															data-dismiss="modal">
-															Close
-														</button>
-														<button type="button" class="btn btn-primary">
-															Save changes
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-
-										<button data-toggle="tooltip" title="Trash" class="pd-setting-ed">
-											<i class="fa fa-trash-o" aria-hidden="true"></i>
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td>user1</td>
-									<td>password1</td>
-									<td>John Doe</td>
-									<td>john.doe@example.com</td>
-									<td>American</td>
-									<td>
-										<img src="https://via.placeholder.com/50x50" alt="" />
-									</td>
-									<td>
-										<button class="pd-setting-ed" data-toggle="modal"
-											data-target="#editAccountModal" data-account-id="1">
-											<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-										</button>
-										<!-- Modal Edit Account -->
-										<!-- Modal -->
-										<div class="modal fade" id="editAccountModal" tabindex="-1" role="dialog"
-											aria-labelledby="editAccountModalLabel" aria-hidden="true">
-											<div class="modal-dialog" role="document">
-												<div class="modal-content">
-													<div class="modal-header">
-														<h5 class="modal-title" id="editAccountModalLabel">
-															Edit Account
-														</h5>
-														<button type="button" class="close" data-dismiss="modal"
-															aria-label="Close">
-															<span aria-hidden="true">&times;</span>
-														</button>
-													</div>
-													<div class="modal-body">
-														<form>
-															<div class="form-group">
-																<label for="username">Username</label>
-																<input type="text" class="form-control" id="username" />
-															</div>
-															<div class="form-group">
-																<label for="password">Password</label>
-																<input type="password" class="form-control"
-																	id="password" />
-															</div>
-															<div class="form-group">
-																<label for="fullname">Full Name</label>
-																<input type="text" class="form-control" id="fullname" />
-															</div>
-															<div class="form-group">
-																<label for="email">Email Address</label>
-																<input type="email" class="form-control" id="email" />
-															</div>
-															<div class="form-group">
-																<label for="address">Address</label>
-																<textarea class="form-control" id="address"
-																	rows="3"></textarea>
-															</div>
-														</form>
-													</div>
-													<div class="modal-footer">
-														<button type="button" class="btn btn-secondary"
-															data-dismiss="modal">
-															Close
-														</button>
-														<button type="button" class="btn btn-primary">
-															Save changes
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-
 										<button data-toggle="tooltip" title="Trash" class="pd-setting-ed">
 											<i class="fa fa-trash-o" aria-hidden="true"></i>
 										</button>
@@ -1877,6 +1493,7 @@
 					</div>
 				</div>
 			</div>
+			<script type="text/javascript" src="/admin/js/api/accountsMana.js"></script>
 		</main>
 		<div class="footer-copyright-area">
 			<div class="container-fluid">

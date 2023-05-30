@@ -15,9 +15,10 @@ function previewImage(event) {
   }
 }
 
+/***TOAST SCRIPT***/
 const toast = document.querySelector(".toast")
-      closeIcon = document.querySelector(".close"),
-      progress = document.querySelector(".progress");
+closeIcon = document.querySelector(".close"),
+  progress = document.querySelector(".progress");
 
 let timer1, timer2;
 
@@ -32,6 +33,21 @@ closeIcon.addEventListener("click", () => {
   clearTimeout(timer2);
 });
 
+function toastActive() {
+  toast.classList.add("active");
+  progress.classList.add("active");
+
+  timer1 = setTimeout(() => {
+    toast.classList.remove("active");
+  }, 5000); //1s = 1000 milliseconds
+
+  timer2 = setTimeout(() => {
+    progress.classList.remove("active");
+  }, 5300);
+};
+
+/***TOAST SCRIPT***/
+
 function previewImages(event) {
   var input = event.target;
   var previewList = document.getElementById("image-preview-list");
@@ -39,17 +55,8 @@ function previewImages(event) {
 
   // Kiểm tra số lượng file đã chọn và thông báo nếu vượt quá giới hạn
   if (input.files.length > 4) {
-    
-    toast.classList.add("active");
-    progress.classList.add("active");
-  
-    timer1 = setTimeout(() => {
-      toast.classList.remove("active");
-    }, 5000); //1s = 1000 milliseconds
-  
-    timer2 = setTimeout(() => {
-      progress.classList.remove("active");
-    }, 5300);
+
+    toastActive();
 
     input.value = ""; // Xóa tất cả các tệp đã chọn
     previewList.innerHTML = ""; // Xóa các ảnh đã hiển thị

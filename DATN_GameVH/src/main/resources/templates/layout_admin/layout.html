@@ -68,9 +68,16 @@
 <!-- modernizr JS
 		============================================ -->
 <script src="/admin/js/vendor/modernizr-2.8.3.min.js"></script>
+
+<!-- 	AngularJS ng-app and Host -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"
+	integrity="sha512-KZmyTq3PLx9EZl0RHShHQuXtrvdJ+m35tuOiwlcZfs/rE7NZv29ygNA8SFCkMXTnYZQK2OX0Gm2qKGfvWEtRXA=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript" src="/assets/AngularJS API/app.js"></script>
 </head>
 
-<body>
+<body ng-app="app">
 	<!-- Left-sidebar -->
 	<div th:replace="~{/layout_admin/navbar.html :: navbar}"></div>
 	

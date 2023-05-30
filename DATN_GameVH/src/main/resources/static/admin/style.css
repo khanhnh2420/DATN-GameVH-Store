@@ -1621,7 +1621,7 @@ ul.two-part-sp li {
 }
 
 .product-status-wrap table th {
-    padding: 20px 5px;
+    padding: 20px 77px;
     vertical-align: top;
     border-top: 1px solid #152036;
 }
@@ -1640,7 +1640,7 @@ ul.two-part-sp li {
 }
 
 .product-status-wrap table td {
-    padding: 9px 7px;
+    padding: 9px 56px;
     border-top: 1px solid #152036;
     color: #fff;
     font-size: 14px;
@@ -1658,6 +1658,7 @@ ul.two-part-sp li {
 
 .custom-pagination ul.pagination {
     margin-bottom: 0px;
+    margin-top: 0px;
 }
 
 .product-status-wrap .pd-setting {
@@ -5195,36 +5196,36 @@ button.pd-setting-ed {
     /* Cho phép các ảnh xuống dòng khi không đủ chỗ trên cùng một hàng */
 }
 
-.thumbnailPic{
+.thumbnailPic {
     margin-left: 2%;
 }
 
 /* -------------------------Toast------------------------- */
-.toast{
+.toast {
     position: absolute;
     top: 25px;
     right: 30px;
     border-radius: 12px;
     background: #fff;
     padding: 20px 35px 20px 25px;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     border-left: 6px solid #4070f4;
     overflow: hidden;
     transform: translateX(calc(100% + 30px));
     transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.35);
 }
 
-.toast.active{
+.toast.active {
     transform: translateX(0%);
     z-index: 1;
 }
 
-.toast .toast-content{
+.toast .toast-content {
     display: flex;
     align-items: center;
 }
 
-.toast-content .check{
+.toast-content .check {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -5236,24 +5237,25 @@ button.pd-setting-ed {
     border-radius: 50%;
 }
 
-.toast-content .message{
+.toast-content .message {
     display: flex;
     flex-direction: column;
     margin: 0 20px;
 }
 
-.message .text{
+.message .text {
     font-size: 20px;
-    font-weight: 400;;
+    font-weight: 400;
+    ;
     color: #666666;
 }
 
-.message .text.text-1{
+.message .text.text-1 {
     font-weight: 600;
     color: #333;
 }
 
-.toast .close{
+.toast .close {
     position: absolute;
     top: 10px;
     right: 15px;
@@ -5262,12 +5264,12 @@ button.pd-setting-ed {
     opacity: 0.7;
 }
 
-.toast .close:hover{
+.toast .close:hover {
     opacity: 1;
 }
 
 
-.toast .progress{
+.toast .progress {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -5276,7 +5278,7 @@ button.pd-setting-ed {
     background: #ddd;
 }
 
-.toast .progress:before{
+.toast .progress:before {
     content: '';
     position: absolute;
     bottom: 0;
@@ -5286,12 +5288,106 @@ button.pd-setting-ed {
     background-color: #4070f4;
 }
 
-.progress.active:before{
+.progress.active:before {
     animation: progress 5s linear forwards;
 }
 
 @keyframes progress {
-    100%{
+    100% {
         right: 100%;
     }
+}
+
+.avatar-wrapper {
+    position: relative;
+    height: 200px;
+    width: 200px;
+    /*margin: 20px auto;*/
+    margin: -100px auto 20px auto;
+    border-radius: 50%;
+    overflow: hidden;
+    transition: all .3s ease;
+}
+
+.avatar-wrapper:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.avatar-wrapper:hover .profile-pic {
+    opacity: .5;
+}
+
+.avatar-wrapper .profile-pic {
+    height: 100%;
+    width: 100%;
+    transition: all .3s ease;
+}
+
+.avatar-wrapper .profile-pic:after {
+    font-family: FontAwesome;
+    content: "\f007";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    font-size: 190px;
+    background: #ecf0f1;
+    color: #34495e;
+    text-align: center;
+}
+
+.avatar-wrapper .upload-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.avatar-wrapper .upload-button .fa-arrow-circle-up {
+    position: absolute;
+    font-size: 243px;
+    top: -16px;
+    left: -5px;
+    text-align: center;
+    opacity: 0;
+    transition: all .3s ease;
+    color: #e4eae7;
+}
+
+.avatar-wrapper .upload-button:hover .fa-arrow-circle-up {
+    opacity: .9;
+}
+
+#avatar-header {
+    /* width: 200px; */
+    text-align: center;
+    margin-left: 0px auto;
+    margin-left: 35%;
+    margin-right: 35%;
+    border-radius: 30px;
+    margin-top: 15%;
+}
+
+.avatar-header {
+    padding-top: 10px;
+    border-radius: 4px;
+}
+
+.nametitle {
+    color: #fff !important;
+}
+
+.nametitle h3 {
+    font-weight: 700 !important;
+}
+
+.avatar-tab li {
+    width: 50%;
+}
+
+.avatar-tab li i {
+    margin-bottom: 0px !important;
 }

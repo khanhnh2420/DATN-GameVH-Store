@@ -1,5 +1,6 @@
 package com.fourTL.controller.admin.product;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,17 +36,19 @@ public class ProductRestController {
 	CategoriesDAO categoriesDAO;
 	
 	@GetMapping("")
-	public ResponseEntity<List<Products>> getAll(Model model) {
+	public ResponseEntity<List<Products>> getAll() {
+		List<Products> products = productsDAO.findAll();
+	    Collections.reverse(products);
 		return ResponseEntity.ok(productsDAO.findAll());
 	}
 	
 	@GetMapping("/search/{search}")
-	public ResponseEntity<List<Products>> search(Model model, @PathVariable("search") String search) {
+	public ResponseEntity<List<Products>> search(@PathVariable("search") String search) {
 		return ResponseEntity.ok(productsDAO.findByNameContaining(search));
 	}
 	
 	@GetMapping("/categories")
-	public ResponseEntity<List<Categories>> getAllCategories(Model model) {
+	public ResponseEntity<List<Categories>> getAllCategories() {
 		return ResponseEntity.ok(categoriesDAO.findAll());
 	}
 	

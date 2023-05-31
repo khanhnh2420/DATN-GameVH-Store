@@ -21,32 +21,22 @@ import lombok.Data;
 @SuppressWarnings("serial")
 @Data
 @Entity 
-public class Orders  implements Serializable{
-	@Id
+public class Blogs implements Serializable{
+	@Id	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
-	String address;
-	String city;
-	String district;
-	String ward;
-	String paymentType;
-	Double shippingFee;
-	String couponCode;
-	String email;
-	String phone;
-	String status;
-	String note;
-	Double totalPrice;
-	Integer qty;
-	String paymentCode;
+	Integer id;
+	String tittle;
+	String content;
 	@Temporal(TemporalType.DATE)
-	@Column(name = "Createdate")
+	@Column(name = "CreateDate")
 	Date createDate = new Date();
+	Boolean status;
+	
 	@ManyToOne
 	@JoinColumn(name = "Username")
 	Accounts account;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "order")
-	List<OrderDetails> orderDetails;
+	@OneToMany(mappedBy = "blog")
+	List<Comments> comments;
 }

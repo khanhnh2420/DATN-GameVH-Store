@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import com.fourTL.service.ProductService;
 
 import jakarta.servlet.http.HttpSession;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("restCart")
 public class CartRestController {

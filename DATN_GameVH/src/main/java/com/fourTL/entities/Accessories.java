@@ -11,8 +11,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -21,32 +19,32 @@ import lombok.Data;
 @SuppressWarnings("serial")
 @Data
 @Entity 
-public class Orders  implements Serializable{
-	@Id
+public class Accessories implements Serializable{
+	@Id	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
-	String address;
-	String city;
-	String district;
-	String ward;
-	String paymentType;
-	Double shippingFee;
-	String couponCode;
-	String email;
-	String phone;
-	String status;
-	String note;
-	Double totalPrice;
+	Integer id;
+	String name;
+	String poster;
+	String thumbnail;
+	Double originPrice;
+	Double salePrice;
+	Double offer;
+	String supplier;
 	Integer qty;
-	String paymentCode;
+	String Details;
 	@Temporal(TemporalType.DATE)
-	@Column(name = "Createdate")
+	@Column(name = "CreateDate")
 	Date createDate = new Date();
-	@ManyToOne
-	@JoinColumn(name = "Username")
-	Accounts account;
+	Boolean available;
+	@JsonIgnore
+	@OneToMany(mappedBy = "accessory")
+	List<Favorites> favorites;	
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "order")
+	@OneToMany(mappedBy = "accessory")
+	List<FeedBacks> feedBacks;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "accessory")
 	List<OrderDetails> orderDetails;
 }

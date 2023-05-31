@@ -29,4 +29,24 @@ public class Accounts  implements Serializable{
 	@JsonIgnore
 	@OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
 	List<Authorities> authorities;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "account")
+	List<Coupon_owners> couponOwners;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "account")
+	List<Favorites> favorites;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "account")
+	List<Comments> comments;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "account")
+	List<FeedBacks> feedBacks;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "account")
+	List<Blogs> blogs;
 }

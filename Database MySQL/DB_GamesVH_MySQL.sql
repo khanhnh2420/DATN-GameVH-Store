@@ -28,7 +28,9 @@ CREATE TABLE IF NOT EXISTS `DB_GamesVH`.`Accessories` (
   `Name` VARCHAR(50) NOT NULL,
   `Poster` VARCHAR(50) NULL DEFAULT NULL,
   `Thumbnail` VARCHAR(255) NULL DEFAULT NULL,
-  `Price` DOUBLE NOT NULL,
+  `OriginPrice` DOUBLE NOT NULL,
+  `SalePrice` DOUBLE NOT NULL,
+  `Offer` DOUBLE NOT NULL,
   `CreateDate` DATE NOT NULL,
   `Available` TINYINT(1) NOT NULL,
   `Supplier` VARCHAR(255) NOT NULL,
@@ -86,13 +88,70 @@ CREATE TABLE IF NOT EXISTS `DB_GamesVH`.`Authorities` (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `DB_GamesVH`.`Blogs` (
   `Id` INT NOT NULL AUTO_INCREMENT,
-  `BlogTittle` VARCHAR(255) NOT NULL,
-  `BlogBody` LONGTEXT NULL DEFAULT NULL,
+  `Tittle` VARCHAR(255) NOT NULL,
+  `Content` LONGTEXT NOT NULL,
   `Username` VARCHAR(50) NOT NULL,
-  `ThoiGianBlog` DATE NULL DEFAULT NULL,
+  `CreateDate` DATE NOT NULL,
+  `Status` TINYINT(1) NOT NULL,
   PRIMARY KEY (`Id`),
   INDEX `FK_Accounts_Blog` (`Username` ASC) VISIBLE,
   CONSTRAINT `FK_Accounts_Blog`
+    FOREIGN KEY (`Username`)
+    REFERENCES `DB_GamesVH`.`Accounts` (`Username`));
+
+
+-- -----------------------------------------------------
+-- Table `DB_GamesVH`.`Comments`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `DB_GamesVH`.`Comments` (
+  `Id` INT NOT NULL AUTO_INCREMENT,
+  `BlogId` INT NOT NULL,
+  `Username` VARCHAR(50) NOT NULL,
+  `Content` VARCHAR(255) NOT NULL,
+  `CreateDate` DATETIME NOT NULL,
+   `Status` TINYINT(1) NOT NULL,
+  PRIMARY KEY (`Id`),
+  INDEX `FK_Account_Comments` (`Username` ASC) VISIBLE,
+  INDEX `FK_Comment_Blogss` (`BlogId` ASC) VISIBLE,
+  CONSTRAINT `FK_Account_Comments`
+    FOREIGN KEY (`Username`)
+    REFERENCES `DB_GamesVH`.`Accounts` (`Username`),
+  CONSTRAINT `FK_Comment_Blogss`
+    FOREIGN KEY (`BlogId`)
+    REFERENCES `DB_GamesVH`.`Blogs` (`Id`));
+
+
+-- -----------------------------------------------------
+-- Table `DB_GamesVH`.`Coupons`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `DB_GamesVH`.`Coupons` (
+`CouponName` VARCHAR(255) NOT NULL,
+  `Code` VARCHAR(10) NOT NULL,
+  `Amount` INT NOT NULL,
+  `Value` DOUBLE NOT NULL,
+  `MinSpend` DOUBLE NOT NULL,
+  `MfgDate` DATETIME NOT NULL,
+  `ExpDate` DATETIME NOT NULL,
+  `Status` TINYINT(1) NOT NULL,
+  `Description` VARCHAR(255),
+  PRIMARY KEY (`Code`));
+
+
+-- -----------------------------------------------------
+-- Table `DB_GamesVH`.`Coupon_owners`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `DB_GamesVH`.`Coupon_owners` (
+  `Id` BIGINT NOT NULL AUTO_INCREMENT,
+  `Username` VARCHAR(50) NOT NULL,
+  `CouponCode` VARCHAR(10) NOT NULL,
+  `Status` TINYINT(1) NOT NULL,
+  PRIMARY KEY (`Id`),
+  INDEX (`CouponCode` ASC) VISIBLE,
+  INDEX (`Username` ASC) VISIBLE,
+  CONSTRAINT `FK_Coupon_owners_Coupons`
+    FOREIGN KEY (`CouponCode`)
+    REFERENCES `DB_GamesVH`.`Coupons` (`Code`),
+  CONSTRAINT `FK_Coupon_owners_Accounts`
     FOREIGN KEY (`Username`)
     REFERENCES `DB_GamesVH`.`Accounts` (`Username`));
 
@@ -104,59 +163,7 @@ CREATE TABLE IF NOT EXISTS `DB_GamesVH`.`Categories` (
   `Id` CHAR(4) NOT NULL,
   `Name` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`Id`));
-
-
--- -----------------------------------------------------
--- Table `DB_GamesVH`.`Comments`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `DB_GamesVH`.`Comments` (
-  `Id` INT NOT NULL AUTO_INCREMENT,
-  `IdBlog` INT NOT NULL,
-  `Username` VARCHAR(50) NOT NULL,
-  `NoiDungCmt` VARCHAR(255) NULL DEFAULT NULL,
-  `ThoiGianCmt` DATETIME NULL DEFAULT NULL,
-  PRIMARY KEY (`Id`),
-  INDEX `FK_Account_Comments` (`Username` ASC) VISIBLE,
-  INDEX `FK_Comment_Blogss` (`IdBlog` ASC) VISIBLE,
-  CONSTRAINT `FK_Account_Comments`
-    FOREIGN KEY (`Username`)
-    REFERENCES `DB_GamesVH`.`Accounts` (`Username`),
-  CONSTRAINT `FK_Comment_Blogss`
-    FOREIGN KEY (`IdBlog`)
-    REFERENCES `DB_GamesVH`.`Blogs` (`Id`));
-
-
--- -----------------------------------------------------
--- Table `DB_GamesVH`.`Coupons`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `DB_GamesVH`.`Coupons` (
-  `Code` VARCHAR(10) NOT NULL,
-  `Type` VARCHAR(10) NOT NULL,
-  `Amount` INT NOT NULL,
-  `Value` DOUBLE NOT NULL,
-  `Exp_date` DATETIME NULL DEFAULT NULL,
-  `isActive` TINYINT(1) NOT NULL,
-  PRIMARY KEY (`Code`));
-
-
--- -----------------------------------------------------
--- Table `DB_GamesVH`.`Coupon_owners`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `DB_GamesVH`.`Coupon_owners` (
-  `Id` BIGINT NOT NULL,
-  `Customer_id` VARCHAR(50) NULL DEFAULT NULL,
-  `Coupon_code` VARCHAR(10) NOT NULL,
-  `isUsed` TINYINT(1) NOT NULL,
-  PRIMARY KEY (`Id`),
-  INDEX (`Coupon_code` ASC) VISIBLE,
-  INDEX (`Customer_id` ASC) VISIBLE,
-  CONSTRAINT `FK_Coupon_owners_Coupons`
-    FOREIGN KEY (`Coupon_code`)
-    REFERENCES `DB_GamesVH`.`Coupons` (`Code`),
-  CONSTRAINT `FK_Coupon_owners_Accounts`
-    FOREIGN KEY (`Customer_id`)
-    REFERENCES `DB_GamesVH`.`Accounts` (`Username`));
-
+  
 
 -- -----------------------------------------------------
 -- Table `DB_GamesVH`.`Products`
@@ -166,7 +173,9 @@ CREATE TABLE IF NOT EXISTS `DB_GamesVH`.`Products` (
   `Name` VARCHAR(50) NOT NULL,
   `Poster` VARCHAR(50) NOT NULL,
   `Thumbnail` VARCHAR(255) NOT NULL,
-  `Price` DOUBLE NOT NULL,
+ `OriginPrice` DOUBLE NOT NULL,
+  `SalePrice` DOUBLE NOT NULL,
+  `Offer` DOUBLE NOT NULL,
   `CreateDate` DATE NOT NULL,
   `Available` TINYINT(1) NOT NULL,
   `Source` VARCHAR(255) NOT NULL,
@@ -174,10 +183,84 @@ CREATE TABLE IF NOT EXISTS `DB_GamesVH`.`Products` (
   `Details` VARCHAR(500) NOT NULL,
   `CategoryId` CHAR(4) NOT NULL,
   PRIMARY KEY (`Id`),
-  CONSTRAINT `FK3ess0s7i9qs6sim1pf9kxhkpq`
+  INDEX (`CategoryId` ASC) VISIBLE,
+  CONSTRAINT `FK_Products_Categories`
     FOREIGN KEY (`CategoryId`)
     REFERENCES `DB_GamesVH`.`Categories` (`Id`)
     ON DELETE CASCADE);
+
+
+-- -----------------------------------------------------
+-- Table `DB_GamesVH`.`FeedBacks`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `DB_GamesVH`.`FeedBacks` (
+  `Id` INT NOT NULL AUTO_INCREMENT,
+  `Username` VARCHAR(50) NOT NULL,
+  `Content` VARCHAR(255) NOT NULL,
+  `Status` TINYINT(1) NOT NULL,
+  `Star` INT NOT NULL,
+  `CreateDate` DATETIME NOT NULL,
+  `ProductId` INT NULL DEFAULT NULL,
+  `AccessoriesId` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  INDEX (`Username` ASC) VISIBLE,
+  INDEX (`ProductId` ASC) VISIBLE,
+  INDEX (`AccessoriesId` ASC) VISIBLE,
+  CONSTRAINT `FK_FeedBacks_Products`
+    FOREIGN KEY (`ProductId`)
+    REFERENCES `DB_GamesVH`.`Products` (`Id`),
+  CONSTRAINT `FK_FeedBacks_Accessories`
+    FOREIGN KEY (`AccessoriesId`)
+    REFERENCES `DB_GamesVH`.`Accessories` (`Id`),
+  CONSTRAINT `FK_FeedBacks_Accounts`
+    FOREIGN KEY (`Username`)
+    REFERENCES `DB_GamesVH`.`Accounts` (`Username`));
+    
+    
+-- -----------------------------------------------------
+-- Table `DB_GamesVH`.`Favorites`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `DB_GamesVH`.`Favorites` (
+  `Id` INT NOT NULL AUTO_INCREMENT,
+  `Username` VARCHAR(50) NOT NULL,
+  `Status` TINYINT(1) NOT NULL,
+  `LikeDate` DATE NOT NULL,
+  `ProductId` INT NULL DEFAULT NULL,
+  `AccessoriesId` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  INDEX (`ProductId` ASC) VISIBLE,
+  INDEX (`Username` ASC) VISIBLE,
+  CONSTRAINT `FK_Favorites_Products`
+    FOREIGN KEY (`ProductId`)
+    REFERENCES `DB_GamesVH`.`Products` (`Id`),
+  CONSTRAINT `FK_Favorites_Accessories`
+    FOREIGN KEY (`AccessoriesId`)
+    REFERENCES `DB_GamesVH`.`Accessories` (`Id`),
+  CONSTRAINT `FK_Favorites_Accounts`
+    FOREIGN KEY (`Username`)
+    REFERENCES `DB_GamesVH`.`Accounts` (`Username`));
+
+
+-- -----------------------------------------------------
+-- Table `DB_GamesVH`.`Banners`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `DB_GamesVH`.`Banners` (
+  `Id` INT NOT NULL AUTO_INCREMENT,
+  `Image1` VARCHAR(50) NOT NULL,
+  `Image2` VARCHAR(50) NOT NULL,
+  `Image3` VARCHAR(50) NOT NULL,
+  `Image4` VARCHAR(50) NOT NULL,
+  `Image5` VARCHAR(50) NOT NULL,
+  `Image6` VARCHAR(50) NOT NULL,
+  `Offer` DOUBLE NOT NULL,
+  `ProductId` INT NOT NULL,
+  PRIMARY KEY (`Id`),
+  INDEX (`ProductId` ASC) VISIBLE,
+  CONSTRAINT `FK_Products_Banners`
+    FOREIGN KEY (`ProductId`)
+    REFERENCES `DB_GamesVH`.`Products` (`Id`)
+    ON DELETE CASCADE);
+  
 
 
 -- -----------------------------------------------------
@@ -188,12 +271,22 @@ CREATE TABLE IF NOT EXISTS `DB_GamesVH`.`Orders` (
   `Username` VARCHAR(50) NOT NULL,
   `CreateDate` DATE NOT NULL,
   `Address` VARCHAR(100) NOT NULL,
+  `City` VARCHAR(100) NOT NULL,
+  `District` VARCHAR(100) NOT NULL,
+  `Ward` VARCHAR(100) NOT NULL,
+  `PaymentType` ENUM('COD', 'ONLINE') NOT NULL,
+  `ShippingFee` DOUBLE NOT NULL,
+  `CouponCode` VARCHAR(10) NULL DEFAULT NULL,
   `Email` VARCHAR(50) NOT NULL,
   `Phone` VARCHAR(10) NOT NULL,
-  `Status` VARCHAR(100) NOT NULL,
+  `Status` ENUM('Đã Hoàn Thành', 'Đã Hủy', 'Chờ Xác Nhận') NOT NULL,
+  `Note` VARCHAR(255) NULL DEFAULT NULL,
+  `TotalPrice` DOUBLE NOT NULL,
+  `Qty` INT NOT NULL,
+  `PaymentCode` VARCHAR(100) NULL DEFAULT NULL,
   PRIMARY KEY (`Id`),
-  INDEX `FK_Orders_Customers` (`Username` ASC) VISIBLE,
-  CONSTRAINT `FK_Orders_Customers`
+  INDEX `FK_Orders_Accounts` (`Username` ASC) VISIBLE,
+  CONSTRAINT `FK_Orders_Accounts`
     FOREIGN KEY (`Username`)
     REFERENCES `DB_GamesVH`.`Accounts` (`Username`)
     ON DELETE CASCADE
@@ -209,6 +302,7 @@ CREATE TABLE IF NOT EXISTS `DB_GamesVH`.`OrderDetails` (
   `ProductId` INT NULL DEFAULT NULL,
   `Price` DOUBLE NOT NULL,
   `AccessoryId` INT NULL DEFAULT NULL,
+  `AccessoryQty` INT NOT NULL,
   PRIMARY KEY (`Id`),
   CONSTRAINT `FK_OrderDetails_Orders`
     FOREIGN KEY (`OrderId`)
@@ -290,7 +384,7 @@ INSERT INTO `Authorities` (`Id`, `Username`, `RoleId`) VALUES (13, 'staf', 'STAF
 
 -- Data
 -- Data Blogs
-INSERT INTO `Blogs` (`BlogTittle`, `BlogBody`, `Username`, `ThoiGianBlog`) 
+INSERT INTO `Blogs` (`Tittle`, `Content`, `Username`, `CreateDate`, `Status`) 
 VALUES ('FIFA 22 sửa lỗi cho thủ môn và trọng tài', '<div><h2>Bản vá lỗi lớn đầu tiên của FIFA 22 vừa ra mắt với loạt thay đổi cho các nhân vật trong trò chơi.</h2>
 <p>Theo Gadget 360, FIFA 22 đang có bản vá lỗi lớn đầu tiên với tên Title Update #1, bản sửa lỗi này đi kèm với một loạt thay đổi về lối chơi, chủ yếu là ở vị trí thủ môn.</p>
 <p>Bản cập nhật Title Update #1, đã có sẵn cho những người chơi FIFA 22 trên Stadia và người dùng PC trên Origin hoặc Steam. Dự kiến được tung ra ‘vào một ngày sau đó’ cho các phiên bản PlayStation 4, PlayStation 5, Xbox One và Xbox Series S/X, EA Sports cho biết trên các diễn đàn chính thức của FIFA.</p>
@@ -302,9 +396,9 @@ VALUES ('FIFA 22 sửa lỗi cho thủ môn và trọng tài', '<div><h2>Bản v
 <p>Cuối cùng, EA đã sửa một hiệu ứng đồ họa cho việc bắt bóng không chính xác trước các cú đánh đầu. Theo nhiều phản hồi từ người chơi, các thủ môn FIFA 22 có xu hướng hoàn toàn ‘không biết phải làm gì’ trước những pha đánh đầu đơn giản nhất.</p>
 <p>Bên cạnh đó, FIFA 22 cũng mang đến một số thay đổi về lối chơi phòng thủ. Tần suất người chơi tiếp xúc với bóng đang di chuyển khi cố gắng chặn đường đi của bóng đã được cải thiện. Ngoài ra, trong các pha phản công từ phạt góc, các hậu vệ chặn đối thủ ở gần vòng cấm sẽ làm tốt hơn đó.</p>
 <p>Bản vá cũng sẽ cải thiện công tác trọng tài. Những pha bóng tốc độ cao và khi các cầu thủ cố tình va chạm với một thủ môn đang cầm bóng, giờ đây sẽ gây ra nhiều pha phạm lỗi hơn. Còn lại những sự va chạm nhẹ sẽ dẫn đến ít phạm lỗi hơn. Và cuối cùng, những cú xoạc chặn bóng có thời điểm hợp lý sẽ ít bị phạt đền hơn.</p>
-</div>', 'lethithuy', '2022-01-27');
+</div>', 'lethithuy', '2022-01-27', 1);
 
-INSERT INTO `Blogs` (`BlogTittle`, `BlogBody`, `Username`, `ThoiGianBlog`) 
+INSERT INTO `Blogs` (`Tittle`, `Content`, `Username`, `CreateDate`, `Status`) 
 VALUES ('Hướng dẫn tạo và sử dụng bản đồ - Map trong Minecraft', '<div><h2>Phần 1 - Cách&nbsp;tạo Bản đồ</h2>
 
 <p>Bản đồ trong Minecraft không có gì đặc biệt - chúng hiển thị cho bạn khu vực xung quanh và giúp bạn tìm đường. Tuy nhiên, giống như bất kỳ đối tượng Minecraft nào khác, bản đồ được tạo ra chứ không có sẵn, dù trên PC, Xbox 360, PS4 hay bất kỳ nền tảng nào khác. Bạn sẽ phải sử dụng Bàn chế tạo để tạo bản đồ của mình cũng như tất cả các thành phần cần thiết khác. Nhưng bạn cũng sẽ phải sử dụng lò để chế tạo các bộ phận của la bàn.&nbsp;</p>
@@ -421,9 +515,9 @@ Cách để Mở rộng bản đồ như sau:<br>
 - Đặt bản đồ ở giữa lưới chế tạo<br>
 - Bao quanh nó bằng 8 mảnh giấy<br>
 - Sau khi bạn hoàn tất, hãy di chuyển bản đồ kết quả vào kho của bạn. Để tăng kích thước bản đồ hơn nữa, hãy lặp lại các bước ở trên.<img alt="" src="https://static.thuthuatchoi.com/posts/images/Minecraft/Mo%20rong%20ban%20do%20Minecraft(1).PNG" style="height:552px; width:898px"></p>
-</div>', 'lethithuy', '2023-01-27');
+</div>', 'lethithuy', '2023-01-27', 1);
 
-INSERT INTO `Blogs` (`BlogTittle`, `BlogBody`, `Username`, `ThoiGianBlog`) 
+INSERT INTO `Blogs` (`Tittle`, `Content`, `Username`, `CreateDate`, `Status`)
 VALUES ('Genshin Impact là gì? Bách khoa toàn thư về Genshin Impact dành cho người mới', '<div><h3><strong>Genshin Impact là gì?</strong></h3>
 
 <p><img alt="" src="https://images.fpt.shop/unsafe/filters:quality(90)/fptshop.com.vn/uploads/images/tin-tuc/152770/Originals/genshin%20impact%20la%20gi%202.jpg" style="height:900px; width:1600px"></p>
@@ -554,9 +648,9 @@ VALUES ('Genshin Impact là gì? Bách khoa toàn thư về Genshin Impact dành
 	<li>Sổ tay Nhà Thám Hiểm là một công cụ quan trọng khác mà bạn có thể sử dụng tùy thích. Tính năng này cho phép bạn xem được tiến trình của bạn, chọn khu vực nhận Ủy Thác cho ngày kế tiếp, hiển thị các Bí Cảnh và khu vực các loại quái cần thiết cho quá trình tìm kiếm nguyên liệu nâng cấp.</li>
 	<li>Trong vô số thứ mà bạn sẽ khám phá ở Teyvat, bạn đôi lúc sẽ bắt gặp các câu đố. Hãy tìm lời giải cho các câu đố này và hoàn thành chúng để nhận được những điều bất ngờ cũng như phần thưởng. Đôi khi trong hành trình khám phá Teyvat, bạn sẽ bắt gặp những sinh vật nhỏ bé phát sáng bay lơ lửng gọi là Tinh Linh. Đi theo những Tinh Linh này và chúng sẽ dần bạn đến bức tượng, nơi mà những sinh vật này sẽ dừng chân và thưởng cho bạn kho báu, đôi khi là mở khóa những lối đi mới.</li>
 </ul>
-</div>', 'lethithuy', '2022-01-27');
+</div>', 'lethithuy', '2022-01-27', 1);
 
-INSERT INTO `Blogs` (`BlogTittle`, `BlogBody`, `Username`, `ThoiGianBlog`) 
+INSERT INTO `Blogs` (`Tittle`, `Content`, `Username`, `CreateDate`, `Status`)
 VALUES ('Dota 2 Update 7.32e Vietsub Phần 1: Các tính năng mới, Gameplay update và Item updates', '<div><p><strong>CÁC TÍNH NĂNG MỚI</strong></p>
 
 <p><strong>ADVANCED BATTLE STATS</strong></p>
@@ -702,9 +796,9 @@ Mang đến cho những người bạn Dota thân thiết nhất của bạn đ�
 &nbsp;Chúng tôi sẽ đem đến tất tần tật các update về hero ở phần 2 trong vài tiếng nữa!</p>
 
 <p>&nbsp;</p>
-</div>', 'lethithuy', '2023-01-27');
+</div>', 'lethithuy', '2023-01-27', 1);
 
-INSERT INTO `Blogs` (`BlogTittle`, `BlogBody`, `Username`, `ThoiGianBlog`) 
+INSERT INTO `Blogs` (`Tittle`, `Content`, `Username`, `CreateDate`, `Status`)
 VALUES ('Assassin’s Creed Valhalla – Đánh Giá Game', '<div><p><img alt="" src="https://d9n64ieh9hz8y.cloudfront.net/wp-content/uploads/20201121212653/assassins-creed-valhalla-danh-gia-game-5.jpg"></p>
 
 <p><strong>Assassin’s Creed Valhalla</strong><strong><em>&nbsp;–&nbsp;</em></strong>Kể từ khi ra mắt vào năm 2007 đến nay, dòng game&nbsp;<em>Assassin’s Creed</em>&nbsp;đã luôn là một cái tên đình đám được đông đảo game thủ trên khắp thế giới mong chờ mỗi năm, bởi mỗi phiên bản luôn là một dự án tốn nhiều tiền của nhất của ông lớn nước Pháp.&nbsp;</p>
@@ -932,9 +1026,9 @@ VALUES ('Assassin’s Creed Valhalla – Đánh Giá Game', '<div><p><img alt=""
 <p>Có NPC đảm trách việc chế tạo và nâng cấp vũ khí; có NPC đảm trách vị trí chiến lược gia, quân sư mỗi khi bạn ra trận; lại có NPC đảm trách công việc tuyển mộ những chiến binh mạnh mẽ cho quân đoàn phương Bắc của bạn; và rất nhiều NPC khác hỗ trợ mua bán vật phẩm, huấn luyện thú nuôi, bói quẻ đoán số, lô đề hay cờ bạc, xây dựng phòng trưng bày, nâng cấp tàu bè, tăng gia trồng trọt chăn nuôi…</p>
 
 <p>Tất cả đều được sinh ra với một mục đích chính, thúc đầy người chơi lên đường chinh phạt, mang chiến lợi phẩm về “xây tổ ấm” để nhận lại những phần thưởng xứng đáng, đưa bạn dần tiến gần hơn đến với cương vị của một nhà lãnh đạo vĩ đại, hoàn hảo trong chiến đấu và quản lý đất nước (cỡ… một ngôi làng).</p>
-</div>', 'lethithuy', '2023-01-27');
+</div>', 'lethithuy', '2023-01-27', 1);
 
-INSERT INTO `Blogs` (`BlogTittle`, `BlogBody`, `Username`, `ThoiGianBlog`) 
+INSERT INTO `Blogs` (`Tittle`, `Content`, `Username`, `CreateDate`, `Status`)
 VALUES ('Đánh giá Grand Theft Auto 5 (GTA 5): Đắm mình trong thế giới "mafia" của riêng bạn', '<div><h3><strong>GTA 5: Tựa game đẳng cấp thế giới</strong></h3>
 
 <p>Grand Theft Auto 5 là một tựa game với cốt truyện thông minh, độc ác và bình luận có liên quan chặt chẽ về nước Mỹ đương thời, hậu khủng hoảng kinh tế. Mọi thứ về nó đều mang tính châm biếm: nó xé toạc thế hệ Millennial, những người nổi tiếng, cực hữu, cực trái, tầng lớp trung lưu, giới truyền thông... Không gì an toàn trước miệng lưỡi sắc bén của Rockstar, kể cả những trò chơi điện tử hiện đại... Trò chơi được phát hành vào tháng 9 năm 2013 trên PlayStation 3 và Xbox 360, tháng 11 năm 2014 trên PlayStation 4 và Xbox One, và vào tháng 4 năm 2015 trên nền tảng&nbsp;game PC&nbsp;Microsoft Windows. Các phiên bản dành cho&nbsp;game console&nbsp;PlayStation 5 và Xbox Series X dự kiến sẽ được phát hành vào cuối năm 2021.</p>
@@ -992,9 +1086,9 @@ VALUES ('Đánh giá Grand Theft Auto 5 (GTA 5): Đắm mình trong thế giới
 <p>Năm 2015, tờ báo ca ngợi&nbsp;GTA 5 là trò chơi điện tử xuất sắc thứ hai trong lịch sử. Trò chơi cũng xếp hạng cao trên một số danh sách do công chúng bình chọn: bao gồm vị trí thứ 8 trong danh sách "100 trò chơi điện tử xuất sắc nhất mọi thời đại" của độc giả tạp chí Empire và thứ 5 trong danh sách "Top 100 trò chơi điện tử" của khán giả chương trình Good Game.&nbsp;</p>
 
 <p><img alt="" src="https://cdn.sforum.vn/sforum/wp-content/uploads/2021/07/gta-5-8.png">Anh em nghĩ gì về tựa game GTA 5? Hãy comment chia sẻ ý kiến của anh em bên dưới, hy vọng những anh em game thủ trên cả nước nhất là ở Thành phố Hồ Chí Minh, nơi đại dịch Covid 19 bùng phát nghiêm trọng sẽ có thật nhiều sức khỏe. Và cuối cùng đừng quên điều quan trọng nhất, hãy theo dõi Sforum.vn để cập nhật những bài viết mới nhất về&nbsp;game ps4&nbsp;nha anh em.</p>
-</div>', 'lethithuy', '2023-01-27');
+</div>', 'lethithuy', '2023-01-27', 1);
 
-INSERT INTO `Blogs` (`BlogTittle`, `BlogBody`, `Username`, `ThoiGianBlog`) 
+INSERT INTO `Blogs` (`Tittle`, `Content`, `Username`, `CreateDate`, `Status`)
 VALUES ('Resident Evil 8: Village - Siêu phẩm game kinh dị đồ họa đỉnh cao', '<div><h3><img alt="" src="https://cdn.tgdd.vn//GameApp/238675//16-800x450.jpg" style="height:450px; width:800px"></h3>
 
 <h3><strong>I. Thông tin Resident Evil 8: Village</strong></h3>
@@ -1147,9 +1241,9 @@ VALUES ('Resident Evil 8: Village - Siêu phẩm game kinh dị đồ họa đ�
 </ul>
 
 <p>Resident Evil Village chắc chắn sẽ mang đến cho người chơi những trải nghiệm vô cùng thú vị và tuyệt vời nhất, đặc biệt đối với những ai yêu thích dòng game hành động, phiêu lưu thế giới mở. Hãy tải và trải nghiệm ngay để có được những cảm nhận chi tiết hơn về những điều tuyệt vời mà siêu phẩm game hành động, nhập vai Resident Evil 8: Village mang lại nhé.</p>
-</div>', 'lethithuy', '2023-01-27');
+</div>', 'lethithuy', '2023-01-27', 1);
 
-INSERT INTO `Blogs` (`BlogTittle`, `BlogBody`, `Username`, `ThoiGianBlog`) 
+INSERT INTO `Blogs` (`Tittle`, `Content`, `Username`, `CreateDate`, `Status`)
 VALUES ('The Witcher 3: Wild Hunt – Đánh Giá Game', '<div><h3><img alt="" src="https://d9n64ieh9hz8y.cloudfront.net/wp-content/uploads/20181013220552/the-witcher-3-wild-hunt-danh-gia-game-e1585825794945.jpg" style="height:561px; width:1920px"></h3>
 
 <p><strong>The Witcher 3: Wild Hunt</strong>&nbsp;– Khi nhắc tới đất nước Ba Lan, bạn sẽ nghĩ đến cái gì đầu tiên? Đối với nhiều người, đó có thể là nhạc sỹ tài ba Chopin hay nhà hóa học kiêm vật lý học lừng danh: Maria Curie.</p>
@@ -1303,9 +1397,9 @@ VALUES ('The Witcher 3: Wild Hunt – Đánh Giá Game', '<div><h3><img alt="" s
 <p>Bên cạnh A.I máy không mấy “sáng dạ”, thì một số lỗi như lỗi bắt mục tiêu, lỗi giao diện điều khiển đôi khi không “nghe lệnh” hay việc Geralt, một Witcher huyền thoại, nhảy từ đỉnh đồi xuống đất cách có… 50cm lại mất tới 1/2 bình máu, cũng là một trong nhiều nguyên nhân khiến cho người chơi mất bình tĩnh và chỉ muốn… quăng đi tay cầm của mình.</p>
 
 <p>Hy vọng rằng, nhà phát triển CD Projekt RED&nbsp;sẽ sửa những lỗi này trong các bản vá lỗi tiếp theo, bên cạnh việc cải tiến đồ họa nhiều hơn nữa có thể.</p>
-</div>', 'lethithuy', '2023-01-27');
+</div>', 'lethithuy', '2023-01-27', 1);
 
-INSERT INTO `Blogs` (`BlogTittle`, `BlogBody`, `Username`, `ThoiGianBlog`) 
+INSERT INTO `Blogs` (`Tittle`, `Content`, `Username`, `CreateDate`, `Status`)
 VALUES ('Among Us Là Gì? Game Đỉnh Cao Tư Duy, Bắt Kẻ Giả Mạo', '<div><h1><strong><span style="font-size:13px">Game Among Us Là Gì?</span></strong></h1>
 
 <p><strong>Among Us</strong>&nbsp;là một trò chơi đa nền tảng với nhiều người chơi trực tuyến do hãng Inner Sloth lên ý tưởng phát triển và được phát hành ngày 15 tháng 6 năm 2018. Trò chơi sẽ lấy bối cảnh bên ngoài không gian vũ trụ, ở đó những người chơi sẽ đóng một trong hai vai trò: phần lớn là các thành viên phi hành đoàn (<em>Crewmates</em>) và một số ít người chơi vào vai những kẻ giả mạo (<em>Impostors</em>).</p>
@@ -1349,9 +1443,9 @@ VALUES ('Among Us Là Gì? Game Đỉnh Cao Tư Duy, Bắt Kẻ Giả Mạo', '<
 <p>Hiện tượng Game Among Us sẽ được đầu tư chạy đường dài biểu hiện rõ nhất với chế độ hỗ trợ người chơi mù màu. Trước đây, việc người chơi bị mù màu gặp khó khăn khi phải thực hiện các nhiệm vụ như nối dây khiến họ rất khó để tiếp cận trò chơi. Giờ đây, ngoài các màu sắc thường thấy của dây điện, các mối nối còn có thêm các biểu tượng tương ứng, giúp các game thủ mù màu hoàn thành tốt nhiệm vụ.</p>
 
 <p><em>Và đó là tổng quan về&nbsp;<strong>tựa game vô cùng hấp dẫn Among Us</strong>&nbsp;và cũng như lý do tại sao trò chơi lại hot đến mức như vậy. Nếu bạn đang cần tìm một trò chơi hấp dẫn, phù hợp với nhu cầu chơi nhóm thì đây chắc chắn là lựa chọn hoàn hảo.</em></p>
-</div>', 'lethithuy', '2023-01-27');
+</div>', 'lethithuy', '2023-01-27', 1);
 
-INSERT INTO `Blogs` (`BlogTittle`, `BlogBody`, `Username`, `ThoiGianBlog`) 
+INSERT INTO `Blogs` (`Tittle`, `Content`, `Username`, `CreateDate`, `Status`)
 VALUES ('Liên Minh Huyền Thoại - Game MOBA phổ biến nhất thế giới', '<div><h3><strong>I. Thông tin Liên Minh Huyền Thoại</strong></h3>
 
 <ul>
@@ -1526,9 +1620,9 @@ VALUES ('Liên Minh Huyền Thoại - Game MOBA phổ biến nhất thế giới
 </ul>
 
 <p>Những yếu tố trên đã khiến Liên Minh Huyền Thoại có một sức hút khó có thể cưỡng lại cho các game thủ. Bạn nghĩ Liên Minh Huyền Thoại thế nào? Hãy cùng chia sẽ những kỷ niệm khó quên của bản thân về tựa game này ở phần bình luận nhé.&nbsp;</p>
-</div>', 'lethithuy', '2023-01-27');
+</div>', 'lethithuy', '2023-01-27', 1);
 
-INSERT INTO `Blogs` (`BlogTittle`, `BlogBody`, `Username`, `ThoiGianBlog`) 
+INSERT INTO `Blogs` (`Tittle`, `Content`, `Username`, `CreateDate`, `Status`) 
 VALUES ('Diablo III: Reaper of Souls – Đánh Giá Game', '<div><h3><img alt="" src="https://d9n64ieh9hz8y.cloudfront.net/wp-content/uploads/20210218102606/diablo-iii-reaper-of-souls-danh-gia-game.jpg" style="height:870px; width:1920px"></h3>
 
 <p><strong>Reaper of Souls</strong>&nbsp;–&nbsp;Thế giới Sanctuary hẳn đã chẳng còn gì lạ lẫm với game thủ trên toàn thế giới.</p>
@@ -1660,9 +1754,9 @@ VALUES ('Diablo III: Reaper of Souls – Đánh Giá Game', '<div><h3><img alt="
 <p>Tuy vậy, sẽ hợp lý hơn nếu Blizzard cho phép người chơi thêm một lựa chọn ngoài việc bắt buộc phải online thường xuyên.</p>
 
 <p>Không ai lại đi bắt buộc khách hàng của mình “ăn” một món nhất định nào cả.</p>
-</div>', 'lethithuy', '2023-01-27');
+</div>', 'lethithuy', '2023-01-27', 1);
 
-INSERT INTO `Blogs` (`BlogTittle`, `BlogBody`, `Username`, `ThoiGianBlog`) 
+INSERT INTO `Blogs` (`Tittle`, `Content`, `Username`, `CreateDate`, `Status`)
 VALUES ('CS:GO - Game bắn súng nhiều người chơi nhất trên thế giới', '<div><h3><strong>I. Thông tin CS:GO</strong></h3>
 
 <ul>
@@ -1742,7 +1836,7 @@ VALUES ('CS:GO - Game bắn súng nhiều người chơi nhất trên thế gi�
 </ul>
 
 <p>Mặc dù các đối thủ của CS:GO có dấu hiệu đi xuống thì CS:GO vẫn giữ được độ hot của mình, thậm chí là nhiều lần vượt qua chính kỷ lục của mình với lượng người ổn định ở mức ~900.000 cùng lúc trong tháng 3/2020. Vậy bạn còn chờ gì mà ko thử ngay đi chứ! Đừng quên chia sẻ highlight của bạn với bọn mình nhé.</p>
-</div>', 'lethithuy', '2023-01-27');
+</div>', 'lethithuy', '2023-01-27', 1);
 
 -- Data
 -- Data Categories
@@ -1760,99 +1854,224 @@ INSERT INTO `Categories` (`Id`, `Name`) VALUES ('TT', 'Thể Thao');
 
 -- Data
 -- Data Comments
-INSERT INTO `Comments` (`Id`, `IdBlog`, `Username`, `NoiDungCmt`, `ThoiGianCmt`) VALUES (1, 4, 'phamthuc', 'Game tốt', '2023-02-02 00:00:00');
-INSERT INTO `Comments` (`Id`, `IdBlog`, `Username`, `NoiDungCmt`, `ThoiGianCmt`) VALUES (2, 4, 'nguyenvanbao', 'Giật lagggg game tệ', '2023-02-02 00:00:00');
-INSERT INTO `Comments` (`Id`, `IdBlog`, `Username`, `NoiDungCmt`, `ThoiGianCmt`) VALUES (3, 4, 'dangkimchi', 'bản cập nhật tốt', '2023-02-02 00:00:00');
-INSERT INTO `Comments` (`Id`, `IdBlog`, `Username`, `NoiDungCmt`, `ThoiGianCmt`) VALUES (4, 4, 'hoangtunglam', 'Sân cỏ xấu quá, lỗi chuyển động không mượt', '2023-02-02 00:00:00');
-INSERT INTO `Comments` (`Id`, `IdBlog`, `Username`, `NoiDungCmt`, `ThoiGianCmt`) VALUES (7, 4, 'hoangtunglam', 'Năm nay không biết nó fix cái dynamic potential nửa vời của career mode và phòng thủ siêu ngu chưa', '2023-02-02 00:00:00');
-INSERT INTO `Comments` (`Id`, `IdBlog`, `Username`, `NoiDungCmt`, `ThoiGianCmt`) VALUES (9, 4, 'nguyenhongnhan', 'Mình thì chẳng cần gì mới nhiều cả, chỉ cần trong cái manager career nó fix lại cái dynamic potential, để tránh việc mấy cầu thủ trẻ đôn lên đội 1 cuối mùa này thì mùa sau chưa gì đã rớt 5-7 điểm POT vô lí.', '2023-02-02 00:00:00');
+INSERT INTO `Comments` (`Id`, `BlogId`, `Username`, `Content`, `CreateDate`, `Status`) VALUES (1, 4, 'phamthuc', 'Game tốt', '2023-02-02 00:00:00', 1);
+INSERT INTO `Comments` (`Id`, `BlogId`, `Username`, `Content`, `CreateDate`, `Status`) VALUES (2, 4, 'nguyenvanbao', 'Giật lagggg game tệ', '2023-02-02 00:00:00', 1);
+INSERT INTO `Comments` (`Id`, `BlogId`, `Username`, `Content`, `CreateDate`, `Status`) VALUES (3, 4, 'dangkimchi', 'bản cập nhật tốt', '2023-02-02 00:00:00', 1);
+INSERT INTO `Comments` (`Id`, `BlogId`, `Username`, `Content`, `CreateDate`, `Status`) VALUES (4, 4, 'hoangtunglam', 'Sân cỏ xấu quá, lỗi chuyển động không mượt', '2023-02-02 00:00:00', 0);
+INSERT INTO `Comments` (`Id`, `BlogId`, `Username`, `Content`, `CreateDate`, `Status`) VALUES (7, 4, 'hoangtunglam', 'Năm nay không biết nó fix cái dynamic potential nửa vời của career mode và phòng thủ siêu ngu chưa', '2023-02-02 00:00:00', 0);
+INSERT INTO `Comments` (`Id`, `BlogId`, `Username`, `Content`, `CreateDate`, `Status`) VALUES (9, 4, 'nguyenhongnhan', 'Mình thì chẳng cần gì mới nhiều cả, chỉ cần trong cái manager career nó fix lại cái dynamic potential, để tránh việc mấy cầu thủ trẻ đôn lên đội 1 cuối mùa này thì mùa sau chưa gì đã rớt 5-7 điểm POT vô lí.', '2023-02-02 00:00:00', 1);
+
+
 -- Data
 -- Data Products
-INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `Price`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
-VALUES (1, 'Assassin Creed Valhalla', 'Valhalla.jpg', 'Valhalla-thumb.jpg-*-Valhalla-thumb2.jpg-*-Valhalla-thumb3.jpg', 200000, '2021-01-10', 1, 'Ubisoft', 'https://uploadhaven.com/download/21e3c5f14bc4f127992c6cc914ba6756', 'Assassin Creed Valhalla là phiên bản mới nhất của dòng game hành động nhập vai lịch sử nổi tiếng Assassin Creed. Trong game, người chơi sẽ hóa thân thành Eivor, một vị vua hoặc nữ hoàng của người Viking, và tham gia vào cuộc chiến giữa người Viking và quân đội của người Anh vào thế kỷ thứ 9.', 'HD');
+INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `SalePrice`, `OriginPrice`, `Offer`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
+VALUES (1, 'Assassin Creed Valhalla', 'Valhalla.jpg', 'Valhalla-thumb.jpg-*-Valhalla-thumb2.jpg-*-Valhalla-thumb3.jpg', 200000, 220000, 0.1, '2021-01-10', 1, 'Ubisoft', 'https://uploadhaven.com/download/21e3c5f14bc4f127992c6cc914ba6756', 'Assassin Creed Valhalla là phiên bản mới nhất của dòng game hành động nhập vai lịch sử nổi tiếng Assassin Creed. Trong game, người chơi sẽ hóa thân thành Eivor, một vị vua hoặc nữ hoàng của người Viking, và tham gia vào cuộc chiến giữa người Viking và quân đội của người Anh vào thế kỷ thứ 9.', 'HD');
 
-INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `Price`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
-VALUES (2, 'Grand Theft Auto V', 'GTA.jpg', 'GTA-thumb.jpg-*-GTA-thumb2.jpg-*-GTA-thumb3.jpg', 114000, '2021-02-15', 1, 'Rockstar Games', 'http://phanmemnet.com/download-gta-5-viet-hoa-full-link-google-drive-grand-theft-auto-v1-50/', 'Grand Theft Auto V là phiên bản thứ 5 trong loạt game Grand Theft Auto. Trong game, người chơi sẽ được đưa đến thành phố hư cấu Los Santos và có thể tham gia vào các nhiệm vụ để kiếm tiền và trở thành tay mafia lừng danh.', 'HD');
+INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `SalePrice`, `OriginPrice`, `Offer`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
+VALUES (2, 'Grand Theft Auto V', 'GTA.jpg', 'GTA-thumb.jpg-*-GTA-thumb2.jpg-*-GTA-thumb3.jpg', 114000, 134000, 0.15, '2021-02-15', 1, 'Rockstar Games', 'http://phanmemnet.com/download-gta-5-viet-hoa-full-link-google-drive-grand-theft-auto-v1-50/', 'Grand Theft Auto V là phiên bản thứ 5 trong loạt game Grand Theft Auto. Trong game, người chơi sẽ được đưa đến thành phố hư cấu Los Santos và có thể tham gia vào các nhiệm vụ để kiếm tiền và trở thành tay mafia lừng danh.', 'HD');
 
-INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `Price`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
-VALUES (3, 'Resident Evil Village', 'REV.jpg', 'REV-thumb.jpg-*-REV-thumb2.jpg-*-REV-thumb3.png', 150000, '2021-04-23', 1, 'Capcom', 'https://khiphach.info/tai-resident-evil-village-full/', 'Resident Evil Village là phiên bản mới nhất trong loạt game kinh dị Resident Evil. Trong game, người chơi sẽ hóa thân thành Ethan Winters, nhân vật chính của phần 7, và tham gia vào cuộc chiến với những sinh vật kinh dị để cứu người vợ của mình.', 'KD');
+INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `SalePrice`, `OriginPrice`, `Offer`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
+VALUES (3, 'Resident Evil Village', 'REV.jpg', 'REV-thumb.jpg-*-REV-thumb2.jpg-*-REV-thumb3.png', 150000, 170000, 0.2, '2021-04-23', 1, 'Capcom', 'https://khiphach.info/tai-resident-evil-village-full/', 'Resident Evil Village là phiên bản mới nhất trong loạt game kinh dị Resident Evil. Trong game, người chơi sẽ hóa thân thành Ethan Winters, nhân vật chính của phần 7, và tham gia vào cuộc chiến với những sinh vật kinh dị để cứu người vợ của mình.', 'KD');
 
-INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `Price`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
-VALUES (4, 'FIFA 22', 'FF22.png', 'FF22-thumb.png-*-FF22-thumb2.png-*-FF22-thumb3.png', 432000, '2021-09-27', 1, 'Electronic Arts', 'https://dtvc.edu.vn/cach-choi-fifa-22-mien-phi-phien-ban-moi-nhat-tren-steam-how-to-play-fifa-22-for-free-on-pc/', 'FIFA 22 là phiên bản mới nhất của loạt game bóng đá FIFA. Trong game, người chơi sẽ được trải nghiệm các giải đấu bóng đá hàng đầu thế giới và cạnh tranh với các đội bóng khác để giành chiến thắng.', 'TT');
+INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `SalePrice`, `OriginPrice`, `Offer`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
+VALUES (4, 'FIFA 22', 'FF22.png', 'FF22-thumb.png-*-FF22-thumb2.png-*-FF22-thumb3.png', 432000, 452000, 0.2, '2021-09-27', 1, 'Electronic Arts', 'https://dtvc.edu.vn/cach-choi-fifa-22-mien-phi-phien-ban-moi-nhat-tren-steam-how-to-play-fifa-22-for-free-on-pc/', 'FIFA 22 là phiên bản mới nhất của loạt game bóng đá FIFA. Trong game, người chơi sẽ được trải nghiệm các giải đấu bóng đá hàng đầu thế giới và cạnh tranh với các đội bóng khác để giành chiến thắng.', 'TT');
 
-INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `Price`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
-VALUES (5, 'The Witcher 3: Wild Hunt', 'WC3.jpg', 'WC3-thumb.jpeg-*-WC3-thumb2.jpg-*-WC3-thumb3.jpg', 70000, '2021-03-01', 1, 'Steam', 'https://uploadhaven.com/download/f26c63c29101c0571e8b945dd01babdc', 'The Witcher 3: Wild Hunt là một trò chơi nhập vai thế giới mở dựa trên câu chuyện, được thiết lập trong một vũ trụ huyền bí đầy hấp dẫn về lựa chọn có ý nghĩa và hậu quả tác động. Trong The Witcher, bạn vào vai Geralt of Rivia, một thợ săn quái vật chuyên nghiệp được giao nhiệm vụ tìm kiếm một đứa trẻ của tiên tri trong một thế giới mở rộng lớn với những thành phố thương gia, các hòn đảo cướp biển, những đường đèo núi nguy hiểm và những hang động bị lãng quên để khám phá.', 'NV');
+INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `SalePrice`, `OriginPrice`, `Offer`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
+VALUES (5, 'The Witcher 3: Wild Hunt', 'WC3.jpg', 'WC3-thumb.jpeg-*-WC3-thumb2.jpg-*-WC3-thumb3.jpg', 70000, 75000, 0.1, '2021-03-01', 1, 'Steam', 'https://uploadhaven.com/download/f26c63c29101c0571e8b945dd01babdc', 'The Witcher 3: Wild Hunt là một trò chơi nhập vai thế giới mở dựa trên câu chuyện, được thiết lập trong một vũ trụ huyền bí đầy hấp dẫn về lựa chọn có ý nghĩa và hậu quả tác động. Trong The Witcher, bạn vào vai Geralt of Rivia, một thợ săn quái vật chuyên nghiệp được giao nhiệm vụ tìm kiếm một đứa trẻ của tiên tri trong một thế giới mở rộng lớn với những thành phố thương gia, các hòn đảo cướp biển, những đường đèo núi nguy hiểm và những hang động bị lãng quên để khám phá.', 'NV');
 
-INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `Price`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
-VALUES (6, 'Minecraft', 'MC.jpg', 'MC-thumb.jpg-*-MC-thumb2.jpg-*-MC-thumb3.jpg', 299000, '2022-02-15', 1, 'Mojang', 'https://minefc.com/tai-game/', 'Game sinh tồn thế giới mở.', 'MP');
+INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `SalePrice`, `OriginPrice`, `Offer`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
+VALUES (6, 'Minecraft', 'MC.jpg', 'MC-thumb.jpg-*-MC-thumb2.jpg-*-MC-thumb3.jpg', 299000, 350000, 0, '2022-02-15', 1, 'Mojang', 'https://minefc.com/tai-game/', 'Game sinh tồn thế giới mở.', 'MP');
 
-INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `Price`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
-VALUES (7, 'Genshin Impact', 'GI.jpg', 'GI-thumb.jpg-*-GI-thumb2.jpg-*-GI-thumb3.jpg', 200000, '2022-02-12', 1, 'Mihoyo', 'https://genshin.hoyoverse.com/pc-launcher/?utm_source=SEA_google_NZMY_SEM_brand_1022&mhy_trace_channel=ga_channel&new=1&gclid=CjwKCAjw5pShBhB_EiwAvmnNV6GJFce63Vpo1M5LlCEgCJqASjGBBLeVsTKAdQG3NUDasg-bd3KKhhoC3FYQAvD_BwE#/', 'Game nhập vai phiêu lưu thế giới mở đầy hấp dẫn.', 'PL');
+INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `SalePrice`, `OriginPrice`, `Offer`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`)  
+VALUES (7, 'Genshin Impact', 'GI.jpg', 'GI-thumb.jpg-*-GI-thumb2.jpg-*-GI-thumb3.jpg', 200000, 250000, 0, '2022-02-12', 1, 'Mihoyo', 'https://genshin.hoyoverse.com/pc-launcher/?utm_source=SEA_google_NZMY_SEM_brand_1022&mhy_trace_channel=ga_channel&new=1&gclid=CjwKCAjw5pShBhB_EiwAvmnNV6GJFce63Vpo1M5LlCEgCJqASjGBBLeVsTKAdQG3NUDasg-bd3KKhhoC3FYQAvD_BwE#/', 'Game nhập vai phiêu lưu thế giới mở đầy hấp dẫn.', 'PL');
 
-INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `Price`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
-VALUES (8, 'Among Us', 'AU.jpg', 'AU-thumb.jpg-*-AU-thumb2.jpg-*-AU-thumb3.jpg', 59900, '2022-02-08', 1, 'InnerSloth', 'https://www.memuplay.com/vi/how-to-play-Among-Us-on-pc.html', 'Game trinh thám nhiệm vụ thực hiện trong tàu vũ trụ.', 'CT');
+INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `SalePrice`, `OriginPrice`, `Offer`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
+VALUES (8, 'Among Us', 'AU.jpg', 'AU-thumb.jpg-*-AU-thumb2.jpg-*-AU-thumb3.jpg', 59900, 79900, 0, '2022-02-08', 1, 'InnerSloth', 'https://www.memuplay.com/vi/how-to-play-Among-Us-on-pc.html', 'Game trinh thám nhiệm vụ thực hiện trong tàu vũ trụ.', 'CT');
 
-INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `Price`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
-VALUES (9, 'League of Legends', 'LOL.jpg', 'LOL-thumb.jpg-*-LOL-thumb2.png-*-LOL-thumb3.webp', 50000, '2022-02-06', 1, 'Riot Games', 'https://lienminh.vnggames.com/dang-ky/redownload/', 'Game chiến đấu 5v5 eSports phong cách MOBA.', 'MOBA');
+INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `SalePrice`, `OriginPrice`, `Offer`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
+VALUES (9, 'League of Legends', 'LOL.jpg', 'LOL-thumb.jpg-*-LOL-thumb2.png-*-LOL-thumb3.webp', 50000, 70000, 0, '2022-02-06', 1, 'Riot Games', 'https://lienminh.vnggames.com/dang-ky/redownload/', 'Game chiến đấu 5v5 eSports phong cách MOBA.', 'MOBA');
 
-INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `Price`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
-VALUES (10, 'Diablo III', 'DIABLO.jpg', 'DB-thumb.jpg-*-DB-thumb2.jpg-*-Db-thumb3.jpg', 199000, '2022-02-03', 1, 'Blizzard Entertainment', 'https://technetvietnam.net/download-diablo-3/', 'Game nhập vai hành động phiêu lưu.', 'NV');
+INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `SalePrice`, `OriginPrice`, `Offer`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
+VALUES (10, 'Diablo III', 'DIABLO.jpg', 'DB-thumb.jpg-*-DB-thumb2.jpg-*-Db-thumb3.jpg', 199000, 239000, 0.2, '2022-02-03', 1, 'Blizzard Entertainment', 'https://technetvietnam.net/download-diablo-3/', 'Game nhập vai hành động phiêu lưu.', 'NV');
 
-INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `Price`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
-VALUES (11, 'Counter Strike: Global Offensive', 'CSGO.jpg', 'CSGO-thumb.png-*-CSGO-thumb2.webp-*-CSGO-thumb3.webp', 300000, '2022-01-29', 1, 'Valve Corporation', 'https://hadoantv.com/counter-strike-global-offensive-online/', 'Game bắn súng trực tuyến FPS.', 'FPS');
+INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `SalePrice`, `OriginPrice`, `Offer`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
+VALUES (11, 'Counter Strike: Global Offensive', 'CSGO.jpg', 'CSGO-thumb.png-*-CSGO-thumb2.webp-*-CSGO-thumb3.webp', 300000, 339000, 0.1, '2022-01-29', 1, 'Valve Corporation', 'https://hadoantv.com/counter-strike-global-offensive-online/', 'Game bắn súng trực tuyến FPS.', 'FPS');
 
-INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `Price`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
-VALUES (12, 'Dota 2', 'DOTA.jpg', 'DOTA-thumb.jpg-*-DOTA-thumb2.jpg-*-DOTA-thumb3.jpg', 150000, '2022-01-27', 1, 'Valve Corporation', 'https://dota-2.en.softonic.com/download', 'Game chiến đấu eSports phong cách MOBA.', 'MOBA');
+INSERT INTO `Products` (`Id`, `Name`, `Poster`, `Thumbnail`, `SalePrice`, `OriginPrice`, `Offer`, `CreateDate`, `Available`, `Source`, `Link`, `Details`, `CategoryId`) 
+VALUES (12, 'Dota 2', 'DOTA.jpg', 'DOTA-thumb.jpg-*-DOTA-thumb2.jpg-*-DOTA-thumb3.jpg', 150000, 170000, 0, '2022-01-27', 1, 'Valve Corporation', 'https://dota-2.en.softonic.com/download', 'Game chiến đấu eSports phong cách MOBA.', 'MOBA');
+
+
+-- Data
+-- Data Accessories
+INSERT INTO DB_GamesVH.Accessories (Name, Poster, Thumbnail, OriginPrice, SalePrice, Offer, CreateDate, Available, Supplier, Qty, Details)
+VALUES
+('Bàn phím cơ gaming', 'ban_phim_co_gaming_1.png', 'anh1.png-*-anh2.png-*-anh3.png', 900000, 800000, 0.1, '2023-05-30', 1, 'Acer', 50, 'Bàn phím cơ gaming với công nghệ đèn nền RGB, cảm giác gõ chắc chắn và đáp ứng nhanh nhạy.'),
+('Chuột gaming', 'chuot_gaming_1.png', 'anh3.png-*-anh2.png-*-anh1.png', 500000, 450000, 0.1, '2023-05-29', 1, 'Logitech', 30, 'Chuột gaming với độ nhạy cao, nút bấm đa chức năng và thiết kế ergonomic.'),
+('Tai nghe gaming', 'tai_nghe_gaming_1.png', 'anh2.png-*-anh1.png-*-anh3.png', 1200000, 1000000, 0.2, '2023-05-28', 1, 'Logitech', 100, 'Tai nghe gaming chất lượng cao, âm thanh sống động và khả năng chống ồn tốt.'),
+('Bàn di chuột gaming', 'ban_di_chuot_gaming_1.png', 'anh3.png-*-anh1.png-*-anh2.png', 150000, 120000, 0.2, '2023-05-27', 1, 'Razer', 80, 'Bàn di chuột gaming kích thước lớn, bề mặt mịn và chống trượt tốt.'),
+('Ghế gaming', 'ghe_gaming_1.png', 'anh1.png-*-anh2.png-*-anh3.png', 3000000, 2500000, 0.2, '2023-05-26', 1, 'DXRacer', 20, 'Ghế gaming bọc da cao cấp, có khung sắt chắc chắn và hỗ trợ đa chiều.'),
+('Màn hình gaming', 'man_hinh_gaming_1.png', 'anh2.png-*-anh3.png-*-anh1.png', 8000000, 7000000, 0.12, '2023-05-25', 1, 'Asus', 10, 'Màn hình gaming kích thước lớn, độ phân giải cao và tần số làm mới nhanh.'),
+('Lót chuột gaming', 'lot_chuot_gaming_1.png', 'anh3.png-*-anh1.png-*-anh2.png', 100000, 80000, 0.2, '2023-05-24', 1, 'MSI', 50, 'Lót chuột gaming bề mặt nhẵn, chống trượt và giúp tối ưu hoá chính xác di chuyển của chuột.'),
+('Balo gaming', 'balo_gaming_1.png', 'anh1.png-*-anh2.png-*-anh3.png', 500000, 400000, 0.2, '2023-05-23', 1, 'FPT', 30, 'Balo gaming thiết kế thoáng khí, nhiều ngăn và chất liệu bền bỉ.'),
+('Ghế đua gaming', 'ghe_dua_gaming_1.png', 'anh2.png-*-anh3.png-*-anh1.png', 2500000, 2000000, 0.2, '2023-05-22', 1, 'AKRacing', 20, 'Ghế đua gaming với thiết kế hiện đại, tựa lưng điều chỉnh và tư thế ngồi thoải mái.'),
+('Tay cầm chơi game', 'tay_cam_choi_game_1.png', 'anh3.png-*-anh1.png-*-anh2.png', 500000, 450000, 0.1, '2023-05-21', 1, 'XBox', 40, 'Tay cầm chơi game cho máy console, kết nối dễ dàng và trải nghiệm chơi game tốt.'),
+('Ổ cứng di động', 'o_cung_di_dong_1.png', 'anh1.png-*-anh2.png-*-anh3.png', 1000000, 900000, 0.1, '2023-05-20', 1, 'KingSton', 60, 'Ổ cứng di động dung lượng lớn, tốc độ truyền dữ liệu nhanh và độ bền cao.'),
+('Bộ bàn ghế gaming', 'bo_ban_ghe_gaming_1.png', 'anh2.png-*-anh3.png-*-anh1.png', 6000000, 5500000, 0.08, '2023-05-19', 1, 'MSI', 10, 'Bộ bàn ghế gaming gồm bàn và ghế được thiết kế tương thích và thoải mái cho người chơi.'),
+('Ghế massage gaming', 'ghe_massage_gaming_1.png', 'anh1.png-*-anh2.png-*-anh3.png', 4500000, 4000000, 0.11, '2023-05-17', 1, 'KingSport', 15, 'Ghế massage gaming với chế độ rung, massage và thiết kế đẹp mắt.'),
+('Bàn máy tính gaming', 'ban_may_tinh_gaming_1.png', 'anh2.png-*-anh3.png-*-anh1.png', 3000000, 2800000, 0.07, '2023-05-16', 1, 'MSI', 10, 'Bàn máy tính gaming chắc chắn, có nhiều ngăn để đặt thiết bị và dây cáp gọn gàng.'),
+('Thiết bị phát wifi gaming', 'thiet_bi_phat_wifi_gaming_1.png', 'anh3.png-*-anh1.png-*-anh2.png', 800000, 700000, 0.12, '2023-05-15', 1, 'TPLink', 20, 'Thiết bị phát wifi gaming mạnh mẽ, ổn định và tốc độ cao.'),
+('Đèn led gaming', 'den_led_gaming_1.png', 'anh1.png-*-anh2.png-*-anh3.png', 200000, 160000, 0.2, '2023-05-14', 1, 'Tapo', 50, 'Đèn led gaming để trang trí không gian chơi game, tạo hiệu ứng ánh sáng đẹp mắt.'),
+('Ổ cắm điện gaming', 'o_cam_dien_gaming_1.png', 'anh2.png-*-anh3.png-*-anh1.png', 500000, 450000, 0.1, '2023-05-13', 1, 'Xiaomi', 30, 'Ổ cắm điện gaming với nhiều ổ cắm, bảo vệ chống sét và cấp nguồn ổn định.'),
+('Bộ bàn phím và chuột gaming', 'bo_ban_phim_chuot_gaming_1.png', 'anh3.png-*-anh1.png-*-anh2.png', 1000000, 900000, 0.1, '2023-05-12', 1, 'Logitech', 40, 'Bộ bàn phím và chuột gaming tương thích, thiết kế đẹp và độ bền cao.'),
+('Tai nghe Bluetooth gaming', 'tai_nghe_bluetooth_gaming_1.png', 'anh1.png-*-anh2.png-*-anh3.png', 1500000, 1300000, 0.13, '2023-05-11', 1, 'Razer', 25, 'Tai nghe Bluetooth gaming không dây, kết nối nhanh và âm thanh chất lượng cao.'),
+('Gối chơi game', 'goi_choi_game_1.png', 'anh2.png-*-anh3.png-*-anh1.png', 200000, 160000, 0.2, '2023-05-10', 1, 'MSI', 50, 'Gối chơi game thoải mái, hỗ trợ cổ và lưng khi ngồi chơi trong thời gian dài.');
+
+
+-- Data
+-- Data FeedBacks
+INSERT INTO `FeedBacks` (`Id`, `ProductId`, `AccessoriesId`, `Username`, `Content`, `CreateDate`, `Status`, `Star`) VALUES (1, 1, NULL, 'phamthuc', 'Game tốt', '2023-02-02 00:00:00', 1, 5);
+INSERT INTO `FeedBacks` (`Id`, `ProductId`, `AccessoriesId`, `Username`, `Content`, `CreateDate`, `Status`, `Star`) VALUES (2, 2, NULL, 'nguyenvanbao', 'Giật lagggg game tệ', '2023-02-02 00:00:00', 1, 5);
+INSERT INTO `FeedBacks` (`Id`, `ProductId`, `AccessoriesId`, `Username`, `Content`, `CreateDate`, `Status`, `Star`) VALUES (3, 3, NULL, 'dangkimchi', 'bản cập nhật tốt', '2023-02-02 00:00:00', 1, 5);
+INSERT INTO `FeedBacks` (`Id`, `ProductId`, `AccessoriesId`, `Username`, `Content`, `CreateDate`, `Status`, `Star`) VALUES (4, 4, NULL, 'hoangtunglam', 'Sân cỏ xấu quá, lỗi chuyển động không mượt', '2023-02-02 00:00:00', 1, 4);
+INSERT INTO `FeedBacks` (`Id`, `ProductId`, `AccessoriesId`, `Username`, `Content`, `CreateDate`, `Status`, `Star`) VALUES (5, 4, NULL, 'hoangtunglam', 'Năm nay không biết nó fix cái dynamic potential nửa vời của career mode và phòng thủ siêu ngu chưa', '2023-02-02 00:00:00', 1, 3);
+INSERT INTO `FeedBacks` (`Id`, `ProductId`, `AccessoriesId`, `Username`, `Content`, `CreateDate`, `Status`, `Star`) VALUES (6, 4, NULL, 'nguyenhongnhan', 'Mình thì chẳng cần gì mới nhiều cả, chỉ cần trong cái manager career nó fix lại cái dynamic potential, để tránh việc mấy cầu thủ trẻ đôn lên đội 1 cuối mùa này thì mùa sau chưa gì đã rớt 5-7 điểm POT vô lí.', '2023-02-02 00:00:00', 1, 5);
+
+
+-- Data
+-- Data Favorites
+INSERT INTO `Favorites` (`Id`, `ProductId`, `AccessoriesId`, `Username`, `LikeDate`, `Status`) VALUES (1, 1, NULL, 'phamthuc', '2023-02-02', 1);
+INSERT INTO `Favorites` (`Id`, `ProductId`, `AccessoriesId`, `Username`, `LikeDate`, `Status`) VALUES (2, 2, NULL, 'nguyenvanbao', '2023-02-02', 1);
+INSERT INTO `Favorites` (`Id`, `ProductId`, `AccessoriesId`, `Username`, `LikeDate`, `Status`) VALUES (3, 3, NULL, 'dangkimchi', '2023-02-02', 1);
+INSERT INTO `Favorites` (`Id`, `ProductId`, `AccessoriesId`, `Username`, `LikeDate`, `Status`) VALUES (4, 4, NULL, 'hoangtunglam', '2023-02-02', 1);
+INSERT INTO `Favorites` (`Id`, `ProductId`, `AccessoriesId`, `Username`, `LikeDate`, `Status`) VALUES (5, 4, NULL, 'hoangtunglam', '2023-02-02', 1);
+INSERT INTO `Favorites` (`Id`, `ProductId`, `AccessoriesId`, `Username`, `LikeDate`, `Status`) VALUES (6, 4, NULL, 'nguyenhongnhan', '2023-02-02', 1);
+
+
+-- Data
+-- Data Banners
+INSERT INTO `Banners` (`Id`, `Image1`, `Image2`, `Image3`, `Image4`, `Image5`, `Image6`, `Offer`, `ProductId`) VALUES (1, 'anh.png', 'anh.png', 'anh.png', 'anh.png', 'anh.png', 'anh.png', 0.2, 1);
+INSERT INTO `Banners` (`Id`, `Image1`, `Image2`, `Image3`, `Image4`, `Image5`, `Image6`, `Offer`, `ProductId`) VALUES (2, 'anh.png', 'anh.png', 'anh.png', 'anh.png', 'anh.png', 'anh.png', 0.1, 2);
+INSERT INTO `Banners` (`Id`, `Image1`, `Image2`, `Image3`, `Image4`, `Image5`, `Image6`, `Offer`, `ProductId`) VALUES (3, 'anh.png', 'anh.png', 'anh.png', 'anh.png', 'anh.png', 'anh.png', 0.15, 3);
+INSERT INTO `Banners` (`Id`, `Image1`, `Image2`, `Image3`, `Image4`, `Image5`, `Image6`, `Offer`, `ProductId`) VALUES (4, 'anh.png', 'anh.png', 'anh.png', 'anh.png', 'anh.png', 'anh.png', 0.30, 4);
+INSERT INTO `Banners` (`Id`, `Image1`, `Image2`, `Image3`, `Image4`, `Image5`, `Image6`, `Offer`, `ProductId`) VALUES (5, 'anh.png', 'anh.png', 'anh.png', 'anh.png', 'anh.png', 'anh.png', 0.25, 5);
+INSERT INTO `Banners` (`Id`, `Image1`, `Image2`, `Image3`, `Image4`, `Image5`, `Image6`, `Offer`, `ProductId`) VALUES (6, 'anh.png', 'anh.png', 'anh.png', 'anh.png', 'anh.png', 'anh.png', 0.2, 6);
+
+-- Data
+-- Data Coupons
+INSERT INTO `Coupons` (`CouponName`, `Code`, `Amount`, `Value`, `MinSpend`, `MfgDate`, `ExpDate`, `Status`, `Description`) VALUES ('Mã giảm giá Mùa Hè', 'ABDJHGMKET', 20, 50000, 500000, '2023-06-01 00:00:00', '2023-06-30 23:59:59', 1, 'Giảm 50.000 đồng cho đơn hàng trên 500,000 đồng.');
+INSERT INTO `Coupons` (`CouponName`, `Code`, `Amount`, `Value`, `MinSpend`, `MfgDate`, `ExpDate`, `Status`, `Description`) VALUES ('Mã giảm giá Thanh Toán Trực Tuyến', 'QPOXWIVRUT', 10000, 50000, 0, '2023-06-01 00:00:00', '2023-06-15 23:59:59', 1, 'Giảm 50.000 đồng cho thanh toán trực tuyến.');
+INSERT INTO `Coupons` (`CouponName`, `Code`, `Amount`, `Value`, `MinSpend`, `MfgDate`, `ExpDate`, `Status`, `Description`) VALUES ('Mã giảm giá Mua 2 Tặng 1', 'ZYXVUTSRQP', 100, 10000, 0, '2023-06-01 00:00:00', '2023-06-30 23:59:59', 1, 'Giảm 10.000 đồng khi mua từ 2 sản phẩm.');
+INSERT INTO `Coupons` (`CouponName`, `Code`, `Amount`, `Value`, `MinSpend`, `MfgDate`, `ExpDate`, `Status`, `Description`) VALUES ('Mã giảm giá Giờ Vàng', 'HNMLKJGFED', 30, 30000, 100000, '2023-06-15 10:00:00', '2023-06-15 11:00:00', 1, 'Giảm 30.000 đồng trong khung giờ vàng.');
+INSERT INTO `Coupons` (`CouponName`, `Code`, `Amount`, `Value`, `MinSpend`, `MfgDate`, `ExpDate`, `Status`, `Description`) VALUES ('Mã giảm giá Thẻ Thành Viên', 'WVUTSRQPOI', 500, 100000, 1000000, '2023-06-01 00:00:00', '2023-12-31 23:59:59', 1, 'Giảm 100.000 đồng khi sử dụng thẻ thành viên.');
+INSERT INTO `Coupons` (`CouponName`, `Code`, `Amount`, `Value`, `MinSpend`, `MfgDate`, `ExpDate`, `Status`, `Description`) VALUES ('Mã giảm giá Sinh Nhật', 'XCVBNMKLPI', 10, 50000, 100000, '2023-05-31 00:00:00', '2023-06-30 23:59:59', 1, 'Giảm 50.000 đồng cho sinh nhật khách hàng.');
+INSERT INTO `Coupons` (`CouponName`, `Code`, `Amount`, `Value`, `MinSpend`, `MfgDate`, `ExpDate`, `Status`, `Description`) VALUES ('Mã giảm giá Năm Mới', 'LKJHGFDSAZ', 15, 100000, 1000000, '2024-01-01 00:00:00', '2024-01-31 23:59:59', 1, 'Giảm 100.000 đồng cho đơn hàng tháng 1.');
+INSERT INTO `Coupons` (`CouponName`, `Code`, `Amount`, `Value`, `MinSpend`, `MfgDate`, `ExpDate`, `Status`, `Description`) VALUES ('Mã giảm giá Sản Phẩm Hot', 'ASDFGHJKLM', 20, 30000, 500000, '2023-06-01 00:00:00', '2023-12-31 23:59:59', 1, 'Áp dụng cho sản phẩm hot, giảm giá 30.000 đồng.');
+INSERT INTO `Coupons` (`CouponName`, `Code`, `Amount`, `Value`, `MinSpend`, `MfgDate`, `ExpDate`, `Status`, `Description`) VALUES ('Mã giảm giá Ngày Quốc Khánh', 'QWERTYUIOP', 50, 50000, 200000, '2023-09-02 00:00:00', '2023-09-03 23:59:59', 1, 'Giảm 50.000 đồng trong ngày Quốc khánh.');
+INSERT INTO `Coupons` (`CouponName`, `Code`, `Amount`, `Value`, `MinSpend`, `MfgDate`, `ExpDate`, `Status`, `Description`) VALUES ('Mã giảm giá Mua 3 Tặng 1', 'ASDFGHJKL1', 30, 20000, 100000, '2023-06-01 00:00:00', '2023-12-31 23:59:59', 1, 'Giảm 20.000 đồng khi mua từ 3 sản phẩm.');
+INSERT INTO `Coupons` (`CouponName`, `Code`, `Amount`, `Value`, `MinSpend`, `MfgDate`, `ExpDate`, `Status`, `Description`) VALUES ('Mã giảm giá Tết Trung Thu', 'ZXCVBNM123', 3000, 50000, 300000, '2023-09-15 00:00:00', '2023-09-16 23:59:59', 1, 'Giảm 50.000 đồng trong ngày Tết Trung Thu.');
+
+-- Data
+-- Data Coupon_owners
+INSERT INTO `Coupon_owners` (`Username`, `CouponCode`, `Status`) 
+VALUES ('dangkimchi', 'ABDJHGMKET', 1),
+('hoangtunglam', 'QPOXWIVRUT', 1),
+('lethithuy', 'ZYXVUTSRQP', 1),
+('lethuhien', 'HNMLKJGFED', 1),
+('nguyenvana', 'WVUTSRQPOI', 1),
+('nguyenvanbao', 'XCVBNMKLPI', 1),
+('nguyenhongnhan', 'ZXCVBNM123', 1),
+('phamthuc', 'LKJHGFDSAZ', 1),
+('tranthanhthao', 'ASDFGHJKLM', 1),
+('tranvanb', 'ASDFGHJKL1', 1);
 
 -- Data
 -- Data Orders
-INSERT INTO `Orders` (`Id`, `Username`, `CreateDate`, `Address`, `Email`, `Phone`, `Status`) VALUES (1, 'nguyenvana', '2022-02-01', '12 Nguyễn Du, Quận 1, TP. HCM', 'nguyenvana@gmail.com', '0123456789', 'Đã hoàn thành');
-INSERT INTO `Orders` (`Id`, `Username`, `CreateDate`, `Address`, `Email`, `Phone`, `Status`) VALUES (2, 'tranvanb', '2022-02-03', '99 Lê Lợi, Quận 5, TP. HCM', 'tranvanb@gmail.com', '0123456789', 'Đã hoàn thành');
-INSERT INTO `Orders` (`Id`, `Username`, `CreateDate`, `Address`, `Email`, `Phone`, `Status`) VALUES (3, 'phamthuc', '2022-02-04', '78 Cách Mạng Tháng 8, Quận 3, TP. HCM', 'phamthuc@gmail.com', '0123456789', 'Đã hoàn thành');
-INSERT INTO `Orders` (`Id`, `Username`, `CreateDate`, `Address`, `Email`, `Phone`, `Status`) VALUES (4, 'lethuhien', '2022-02-05', '22 Bà Huyện Thanh Quan, Quận 1, TP. HCM', 'lethuhien@gmail.com', '0123456789', 'Chờ xử lý');
-INSERT INTO `Orders` (`Id`, `Username`, `CreateDate`, `Address`, `Email`, `Phone`, `Status`) VALUES (5, 'dangkimchi', '2022-02-06', '45 Nguyễn Thị Minh Khai, Quận 1, TP. HCM', 'dangkimchi@gmail.com', '0123456789', 'Đã hoàn thành');
-INSERT INTO `Orders` (`Id`, `Username`, `CreateDate`, `Address`, `Email`, `Phone`, `Status`) VALUES (6, 'nguyenvanbao', '2022-02-08', '31 Lê Duẩn, Quận 1, TP. HCM', 'nguyenvanbao@gmail.com', '0123456789', 'Đã hoàn thành');
-INSERT INTO `Orders` (`Id`, `Username`, `CreateDate`, `Address`, `Email`, `Phone`, `Status`) VALUES (7, 'nguyenvana', '2022-02-10', '72 Trần Hưng Đạo, Quận 1, TP. HCM', 'nguyenvana@gmail.com', '0123456789', 'Chờ xử lý');
-INSERT INTO `Orders` (`Id`, `Username`, `CreateDate`, `Address`, `Email`, `Phone`, `Status`) VALUES (8, 'nguyenvana', '2022-02-12', '14 Tôn Thất Đạm, Quận 1, TP. HCM', 'nguyenvana@gmail.com', '0123456789', 'Đã hoàn thành');
-INSERT INTO `Orders` (`Id`, `Username`, `CreateDate`, `Address`, `Email`, `Phone`, `Status`) VALUES (9, 'nguyenvanbao', '2022-02-13', '102 Lý Tự Trọng, Quận 1, TP. HCM', 'nguyenvanbao@gmail.com', '0123456789', 'Đã hoàn thành');
-INSERT INTO `Orders` (`Id`, `Username`, `CreateDate`, `Address`, `Email`, `Phone`, `Status`) VALUES (10, 'lethuhien', '2022-02-15', '63 Phan Đình Phùng, Quận Phú Nhuận, TP. HCM', 'lethuhien@gmail.com', '0123456789', 'Đã hoàn thành');
-INSERT INTO `Orders` (`Id`, `Username`, `CreateDate`, `Address`, `Email`, `Phone`, `Status`) VALUES (11, 'phamthuc', '2022-02-17', '8 Nguyễn Trãi, Quận 5, TP. HCM', 'phamthuc@gmail.com', '0123456789', 'Chờ xử lý');
-INSERT INTO `Orders` (`Id`, `Username`, `CreateDate`, `Address`, `Email`, `Phone`, `Status`) VALUES (12, 'lethuhien', '2022-02-18', '59 Cao Thắng, Quận 10, TP. HCM', 'lethuhien@gmail.com', '0123456789', 'Đã hoàn thành');
-INSERT INTO `Orders` (`Id`, `Username`, `CreateDate`, `Address`, `Email`, `Phone`, `Status`) VALUES (13, 'tranvanb', '2022-02-19', '22 Nguyễn Công Trứ, Quận 1, TP. HCM', 'tranvanb@gmail.com', '0123456789', 'Đã hoàn thành');
-INSERT INTO `Orders` (`Id`, `Username`, `CreateDate`, `Address`, `Email`, `Phone`, `Status`) VALUES (14, 'phamthuc', '2022-02-21', '17 Trần Nhật Duật, Quận 1, TP. HCM', 'phamthuc@gmail.com', '0123456789', 'Đã hoàn thành');
-INSERT INTO `Orders` (`Id`, `Username`, `CreateDate`, `Address`, `Email`, `Phone`, `Status`) VALUES (15, 'phamthuc', '2022-02-23', '3 Điện Biên Phủ, Quận 1, TP. HCM', 'phamthuc@gmail.com', '0123456789', 'Chờ xử lý');
-INSERT INTO `Orders` (`Id`, `Username`, `CreateDate`, `Address`, `Email`, `Phone`, `Status`) VALUES (16, 'dangkimchi', '2022-02-25', '61 Nguyễn Cư Trinh, Quận 1, TP. HCM', 'dangkimchi@gmail.com', '0123456789', 'Đã hoàn thành');
-INSERT INTO `Orders` (`Id`, `Username`, `CreateDate`, `Address`, `Email`, `Phone`, `Status`) VALUES (17, 'nguyenvana', '2022-02-27', '22 Tôn Thất Tùng, Quận 1, TP. HCM', 'nguyenvana@gmail.com', '0123456789', 'Đã hoàn thành');
-INSERT INTO `Orders` (`Id`, `Username`, `CreateDate`, `Address`, `Email`, `Phone`, `Status`) VALUES (18, 'dangkimchi', '2022-02-28', '99 Trần Quang Khải, Quận 1, TP. HCM', 'dangkimchi@gmail.com', '0123456789', 'Chờ xử lý');
-INSERT INTO `Orders` (`Id`, `Username`, `CreateDate`, `Address`, `Email`, `Phone`, `Status`) VALUES (19, 'lethuhien', '2022-03-01', '48 Nguyễn Thị Minh Khai, Quận 1, TP. HCM', 'lethuhien@gmail.com', '0123456789', 'Đã hoàn thành');
-INSERT INTO `Orders` (`Id`, `Username`, `CreateDate`, `Address`, `Email`, `Phone`, `Status`) VALUES (20, 'lethuhien', '2022-03-02', '92 Đinh Tiên Hoàng, Quận 1, TP. HCM', 'lethuhien@gmail.com', '0123456789', 'Đã hoàn thành');
+INSERT INTO `Orders` (`Username`, `CreateDate`, `Address`, `City`, `District`, `Ward`, `Email`, `Phone`, `Status`, `PaymentType`, `PaymentCode`, `ShippingFee`, `CouponCode`, `Qty`, `TotalPrice`, `Note`) 
+VALUES ('nguyenvana', '2022-02-01', '12 Nguyễn Du, Quận 1, TP.HCM', 'TP.HCM', 'Quận 1', 'Phường 11', 'nguyenvana@gmail.com', '0123456789', 'Đã Hoàn Thành' , 'ONLINE', '45430234', '23000', NULL, '1', '100000', NULL);
+
+INSERT INTO `Orders` (`Username`, `CreateDate`, `Address`, `City`, `District`, `Ward`, `Email`, `Phone`, `Status`, `PaymentType`, `PaymentCode`, `ShippingFee`, `CouponCode`, `Qty`, `TotalPrice`, `Note`)  
+VALUES ('tranvanb', '2022-02-03', '99 Lê Lợi, Quận 5, TP.HCM', 'TP.HCM', 'Quận 5', 'Phường 7', 'tranvanb@gmail.com', '0123456789', 'Đã Hoàn Thành' , 'ONLINE', '45430234', '10000', NULL, '1', '150000', NULL);
+
+INSERT INTO `Orders` (`Username`, `CreateDate`, `Address`, `City`, `District`, `Ward`, `Email`, `Phone`, `Status`, `PaymentType`, `PaymentCode`, `ShippingFee`, `CouponCode`, `Qty`, `TotalPrice`, `Note`) 
+VALUES ('phamthuc', '2022-02-04', '78 Cách Mạng Tháng 8, Quận 3, TP.HCM', 'TP.HCM', 'Quận 3', 'Phường 11', 'phamthuc@gmail.com', '0123456789', 'Đã Hoàn Thành' , 'ONLINE', '45430234', '15000', NULL, '1', '130000', NULL);
+
+INSERT INTO `Orders` (`Username`, `CreateDate`, `Address`, `City`, `District`, `Ward`, `Email`, `Phone`, `Status`, `PaymentType`, `PaymentCode`, `ShippingFee`, `CouponCode`, `Qty`, `TotalPrice`, `Note`) 
+VALUES ('lethuhien', '2022-02-05', '22 Bà Huyện Thanh Quan, Quận 1, TP.HCM', 'TP.HCM', 'Quận 1', 'Phường 9', 'lethuhien@gmail.com', '0123456789', 'Chờ Xác Nhận' , 'ONLINE', '45430234', '23000', NULL, '1', '200000', NULL);
+
+INSERT INTO `Orders` (`Username`, `CreateDate`, `Address`, `City`, `District`, `Ward`, `Email`, `Phone`, `Status`, `PaymentType`, `PaymentCode`, `ShippingFee`, `CouponCode`, `Qty`, `TotalPrice`, `Note`) 
+VALUES ('dangkimchi', '2022-02-06', '45 Nguyễn Thị Minh Khai, Quận 1, TP.HCM', 'TP.HCM', 'Quận 1', 'Phường 4', 'dangkimchi@gmail.com', '0123456789', 'Đã Hoàn Thành' , 'ONLINE', '45430234', '30000', NULL, '1', '250000', NULL);
+
+INSERT INTO `Orders` (`Username`, `CreateDate`, `Address`, `City`, `District`, `Ward`, `Email`, `Phone`, `Status`, `PaymentType`, `PaymentCode`, `ShippingFee`, `CouponCode`, `Qty`, `TotalPrice`, `Note`) 
+VALUES ('nguyenvanbao', '2022-02-08', '31 Lê Duẩn, Quận 1, TP.HCM', 'TP.HCM', 'Quận 1', 'Phường 6', 'nguyenvanbao@gmail.com', '0123456789', 'Đã Hoàn Thành' , 'ONLINE', '45430234', '10000', NULL, '1', '170000', NULL);
+
+INSERT INTO `Orders` (`Username`, `CreateDate`, `Address`, `City`, `District`, `Ward`, `Email`, `Phone`, `Status`, `PaymentType`, `PaymentCode`, `ShippingFee`, `CouponCode`, `Qty`, `TotalPrice`, `Note`) 
+VALUES ('nguyenvana', '2022-02-10', '72 Trần Hưng Đạo, Quận 1, TP.HCM', 'TP.HCM', 'Quận 1', 'Phường 11', 'nguyenvana@gmail.com', '0123456789', 'Chờ Xác Nhận' , 'ONLINE', '45430234', '23000', NULL, '1', '160000', NULL);
+
+INSERT INTO `Orders` (`Username`, `CreateDate`, `Address`, `City`, `District`, `Ward`, `Email`, `Phone`, `Status`, `PaymentType`, `PaymentCode`, `ShippingFee`, `CouponCode`, `Qty`, `TotalPrice`, `Note`) 
+VALUES ('nguyenvana', '2022-02-12', '14 Tôn Thất Đạm, Quận 1, TP.HCM', 'TP.HCM', 'Quận 1', 'Phường 7', 'nguyenvana@gmail.com', '0123456789', 'Đã Hoàn Thành' , 'ONLINE', '45430234', '10000', NULL, '1', '350000', NULL);
+
+INSERT INTO `Orders` (`Username`, `CreateDate`, `Address`, `City`, `District`, `Ward`, `Email`, `Phone`, `Status`, `PaymentType`, `PaymentCode`, `ShippingFee`, `CouponCode`, `Qty`, `TotalPrice`, `Note`) 
+VALUES ('nguyenvanbao', '2022-02-13', '102 Lý Tự Trọng, Quận 1, TP.HCM', 'TP.HCM', 'Quận 1', 'Phường 1', 'nguyenvanbao@gmail.com', '0123456789', 'Chờ Xác Nhận' , 'ONLINE', '45430234', '23000', NULL, '1', '400000', NULL);
+
+INSERT INTO `Orders` (`Username`, `CreateDate`, `Address`, `City`, `District`, `Ward`, `Email`, `Phone`, `Status`, `PaymentType`, `PaymentCode`, `ShippingFee`, `CouponCode`, `Qty`, `TotalPrice`, `Note`) 
+VALUES ('lethuhien', '2022-02-15', '63 Phan Đình Phùng, Quận Phú Nhuận, TP.HCM', 'TP.HCM', 'Quận Phú Nhuận', 'Phường 11', 'lethuhien@gmail.com', '0123456789', 'Đã Hoàn Thành' , 'ONLINE', '45430234', '23000', NULL, '1', '350000', NULL);
+
+INSERT INTO `Orders` (`Username`, `CreateDate`, `Address`, `City`, `District`, `Ward`, `Email`, `Phone`, `Status`, `PaymentType`, `PaymentCode`, `ShippingFee`, `CouponCode`, `Qty`, `TotalPrice`, `Note`) 
+VALUES ('phamthuc', '2022-02-17', '8 Nguyễn Trãi, Quận 5, TP.HCM', 'TP.HCM', 'Quận 5', 'Phường 11', 'phamthuc@gmail.com', '0123456789', 'Đã Hủy' , 'ONLINE', '45430234', '23000', NULL, '1', '100000', NULL);
+
+INSERT INTO `Orders` (`Username`, `CreateDate`, `Address`, `City`, `District`, `Ward`, `Email`, `Phone`, `Status`, `PaymentType`, `PaymentCode`, `ShippingFee`, `CouponCode`, `Qty`, `TotalPrice`, `Note`)  
+VALUES ('lethuhien', '2022-02-18', '59 Cao Thắng, Quận 10, TP.HCM', 'TP.HCM', 'Quận 10', 'Phường 5', 'lethuhien@gmail.com', '0123456789', 'Đã Hoàn Thành' , 'ONLINE', '45430234', '23000', NULL, '1', '130000', NULL);
+
+INSERT INTO `Orders` (`Username`, `CreateDate`, `Address`, `City`, `District`, `Ward`, `Email`, `Phone`, `Status`, `PaymentType`, `PaymentCode`, `ShippingFee`, `CouponCode`, `Qty`, `TotalPrice`, `Note`)  
+VALUES ('tranvanb', '2022-02-19', '22 Nguyễn Công Trứ, Quận 1, TP.HCM', 'TP.HCM', 'Quận 1', 'Phường 3', 'tranvanb@gmail.com', '0123456789', 'Đã Hủy' , 'ONLINE', '45430234', '13000', NULL, '1', '127000', NULL);
+
+INSERT INTO `Orders` (`Username`, `CreateDate`, `Address`, `City`, `District`, `Ward`, `Email`, `Phone`, `Status`, `PaymentType`, `PaymentCode`, `ShippingFee`, `CouponCode`, `Qty`, `TotalPrice`, `Note`) 
+VALUES ('phamthuc', '2022-02-21', '17 Trần Nhật Duật, Quận 1, TP.HCM', 'TP.HCM', 'Quận 1', 'Phường 6', 'phamthuc@gmail.com', '0123456789', 'Đã Hoàn Thành' , 'ONLINE', '45430234', '23000', NULL, '1', '340000', NULL);
+
+INSERT INTO `Orders` (`Username`, `CreateDate`, `Address`, `City`, `District`, `Ward`, `Email`, `Phone`, `Status`, `PaymentType`, `PaymentCode`, `ShippingFee`, `CouponCode`, `Qty`, `TotalPrice`, `Note`) 
+VALUES ('phamthuc', '2022-02-23', '3 Điện Biên Phủ, Quận 1, TP.HCM', 'TP.HCM', 'Quận 1', 'Phường 7', 'phamthuc@gmail.com', '0123456789', 'Đã Hủy' , 'ONLINE', '45430234', '13000', NULL, '1', '170000', NULL);
+
+INSERT INTO `Orders` (`Username`, `CreateDate`, `Address`, `City`, `District`, `Ward`, `Email`, `Phone`, `Status`, `PaymentType`, `PaymentCode`, `ShippingFee`, `CouponCode`, `Qty`, `TotalPrice`, `Note`) 
+VALUES ('dangkimchi', '2022-02-25', '61 Nguyễn Cư Trinh, Quận 1, TP.HCM', 'TP.HCM', 'Quận 1', 'Phường 11', 'dangkimchi@gmail.com', '0123456789', 'Đã Hoàn Thành' , 'ONLINE', '45430234', '33000', NULL, '1', '120000', NULL);
+
+INSERT INTO `Orders` (`Username`, `CreateDate`, `Address`, `City`, `District`, `Ward`, `Email`, `Phone`, `Status`, `PaymentType`, `PaymentCode`, `ShippingFee`, `CouponCode`, `Qty`, `TotalPrice`, `Note`) 
+VALUES ('nguyenvana', '2022-02-27', '22 Tôn Thất Tùng, Quận 1, TP.HCM', 'TP.HCM', 'Quận 1', 'Phường 9', 'nguyenvana@gmail.com', '0123456789', 'Đã Hoàn Thành' , 'ONLINE', '45430234', '17000', NULL, '1', '136000', NULL);
+
+INSERT INTO `Orders` (`Username`, `CreateDate`, `Address`, `City`, `District`, `Ward`, `Email`, `Phone`, `Status`, `PaymentType`, `PaymentCode`, `ShippingFee`, `CouponCode`, `Qty`, `TotalPrice`, `Note`) 
+VALUES ('dangkimchi', '2022-02-28', '99 Trần Quang Khải, Quận 1, TP.HCM', 'TP.HCM', 'Quận 1', 'Phường 10', 'dangkimchi@gmail.com', '0123456789', 'Đã Hoàn Thành' , 'ONLINE', '45430234', '23000', NULL, '1', '400000', NULL);
+
+INSERT INTO `Orders` (`Username`, `CreateDate`, `Address`, `City`, `District`, `Ward`, `Email`, `Phone`, `Status`, `PaymentType`, `PaymentCode`, `ShippingFee`, `CouponCode`, `Qty`, `TotalPrice`, `Note`)  
+VALUES ('lethuhien', '2022-03-01', '48 Nguyễn Thị Minh Khai, Quận 1, TP.HCM', 'TP.HCM', 'Quận 1', 'Phường 3', 'lethuhien@gmail.com', '0123456789', 'Chờ Xác Nhận' , 'ONLINE', '45430234', '33000', NULL, '1', '300000', NULL);
+
+INSERT INTO `Orders` (`Username`, `CreateDate`, `Address`, `City`, `District`, `Ward`, `Email`, `Phone`, `Status`, `PaymentType`, `PaymentCode`, `ShippingFee`, `CouponCode`, `Qty`, `TotalPrice`, `Note`) 
+VALUES ('lethuhien', '2022-03-02', '92 Đinh Tiên Hoàng, Quận 1, TP.HCM', 'TP.HCM', 'Quận 1', 'Phường 1', 'lethuhien@gmail.com', '0123456789', 'Đã Hoàn Thành' , 'ONLINE', '45430234', '17000', NULL, '1', '100000', NULL);
 
 -- Data
 -- Data OrderDetails
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (1, 11, 1, 200000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (2, 11, 2, 250000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (3, 11, 3, 180000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (4, 12, 4, 300000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (5, 12, 5, 350000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (6, 13, 6, 120000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (7, 13, 7, 150000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (8, 14, 8, 450000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (9, 15, 9, 280000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (10, 16, 10, 220000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (11, 1, 1, 200000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (12, 2, 2, 250000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (13, 3, 3, 180000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (14, 4, 4, 300000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (15, 5, 5, 350000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (16, 6, 6, 120000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (17, 7, 7, 150000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (18, 8, 8, 450000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (19, 9, 9, 280000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (20, 10, 10, 220000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (21, 17, 8, 450000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (22, 18, 9, 280000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (23, 19, 10, 220000, NULL);
-INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`) VALUES (24, 20, 10, 220000, NULL);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (1, 11, 1, 200000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (2, 11, 2, 250000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (3, 11, 3, 180000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (4, 12, 4, 300000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (5, 12, 5, 350000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (6, 13, 6, 120000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (7, 13, 7, 150000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (8, 14, 8, 450000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (9, 15, 9, 280000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (10, 16, 10, 220000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (11, 1, 1, 200000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (12, 2, 2, 250000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (13, 3, 3, 180000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (14, 4, 4, 300000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (15, 5, 5, 350000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (16, 6, 6, 120000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (17, 7, 7, 150000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (18, 8, 8, 450000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (19, 9, 9, 280000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (20, 10, 10, 220000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (21, 17, 8, 450000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (22, 18, 9, 280000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (23, 19, 10, 220000, NULL, 0);
+INSERT INTO `OrderDetails` (`Id`, `OrderId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (24, 20, 10, 220000, NULL, 0);
 
 -- COMMENT
 ALTER TABLE Accounts MODIFY COLUMN Password VARCHAR(255) COMMENT 'Mật khẩu đăng nhập';
@@ -1874,7 +2093,9 @@ ALTER TABLE Orders MODIFY COLUMN Address VARCHAR(255) COMMENT 'Địa chỉ nh�
 ALTER TABLE Products MODIFY COLUMN Name VARCHAR(255) COMMENT 'Tên hàng hóa';
 ALTER TABLE Products MODIFY COLUMN Poster VARCHAR(255) COMMENT 'Hình ảnh Poster';
 ALTER TABLE Products MODIFY COLUMN Thumbnail VARCHAR(255) COMMENT 'Hình ảnh Thumbnail';
-ALTER TABLE Products MODIFY COLUMN Price DOUBLE COMMENT 'Đơn giá';
+ALTER TABLE Products MODIFY COLUMN OriginPrice DOUBLE COMMENT 'Giá gốc';
+ALTER TABLE Products MODIFY COLUMN SalePrice DOUBLE COMMENT 'Giá bán';
+ALTER TABLE Products MODIFY COLUMN Offer DOUBLE COMMENT 'Khuyến mãi';
 ALTER TABLE Products MODIFY COLUMN CreateDate DATE COMMENT 'Ngày sản xuất';
 ALTER TABLE Products MODIFY COLUMN Available TINYINT COMMENT 'Đang kinh doanh ?';
 ALTER TABLE Products MODIFY COLUMN CategoryId CHAR(4) COMMENT 'Mã loại, FK';
@@ -1884,6 +2105,8 @@ ALTER TABLE OrderDetails MODIFY COLUMN Price DOUBLE DEFAULT 0;
 ALTER TABLE Orders MODIFY COLUMN CreateDate DATE DEFAULT (CURRENT_DATE);
 ALTER TABLE Products MODIFY COLUMN Poster VARCHAR(255) DEFAULT 'Poster.jpg';
 ALTER TABLE Products MODIFY COLUMN Thumbnail VARCHAR(255) DEFAULT 'Thumbnail.jpg';
-ALTER TABLE Products MODIFY COLUMN Price DOUBLE DEFAULT 0;
+ALTER TABLE Products MODIFY COLUMN OriginPrice DOUBLE DEFAULT 0;
+ALTER TABLE Products MODIFY COLUMN SalePrice DOUBLE DEFAULT 0;
+ALTER TABLE Products MODIFY COLUMN Offer DOUBLE DEFAULT 0;
 ALTER TABLE Products MODIFY COLUMN CreateDate DATE DEFAULT (CURRENT_DATE);
 ALTER TABLE Products MODIFY COLUMN Available TINYINT DEFAULT 1;

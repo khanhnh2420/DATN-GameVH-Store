@@ -22,7 +22,7 @@ public class Blogs implements Serializable {
 
     String BlogTittle;
     String BlogBody;
-    String HinhAnh;
+
 
 
     @Temporal(TemporalType.DATE)

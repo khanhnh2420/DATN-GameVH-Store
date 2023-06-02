@@ -16,20 +16,24 @@ public class CommentsServiceImpl implements CommentsService {
     @Autowired
     CommentsDAO cmtDao;
 
-    @Query("SELECT MAX(ThoiGianCmt) AS LatestDate FROM Comments ")
-    public List<Comments> findNewsestComment() {
-        return cmtDao.findNewsestComment();
-    }
+//    @Query("SELECT MAX(ThoiGianCmt) AS LatestDate FROM Comments ")
+//    public List<Comments> findNewsestComment() {
+//        return cmtDao.findNewsestComment();
+//    }
 
     @Override
     public List<Comments> findAll() {
         return cmtDao.findAll();
     }
+
   @Override
     public List<Comments> findAllByIdBlog(Integer id){
         return cmtDao.findAllByIdBlog(id);
     }
 
+    public List<Comments> findAllById(Iterable<Integer> integers) {
+        return cmtDao.findAllById(integers);
+    }
 
     @Override
     public Comments findById(Integer id) {

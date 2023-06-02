@@ -10,7 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface BlogsDAO extends JpaRepository<Blogs, Integer> {
- @Query("SELECT MAX(b.ThoiGianBlog) AS LatestDate FROM  Blogs b")
+    // find all theo ngay moi tạo để ở trên
+ //@Query("SELECT MAX(b.ThoiGianBlog) AS LatestDate FROM  Blogs b")
+    @Query("Select b from Blogs b order by b.ThoiGianBlog desc ")
     List<Blogs> findNewsestBlog();
 
  @Query("SELECT p FROM Blogs p WHERE p.BlogTittle LIKE ?1")

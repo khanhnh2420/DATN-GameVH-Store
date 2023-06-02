@@ -28,23 +28,34 @@ public class Products  implements Serializable{
 	String name;
 	String poster;
 	String thumbnail;
+	Double originPrice;
+	Double salePrice;
+	Double offer;
 	String source;
 	String link;
 	String details;
-	Long price;
 	@Temporal(TemporalType.DATE)
 	@Column(name = "Createdate")
 	Date createDate = new Date();
 	Boolean available;
+	
 	@ManyToOne
 	@JoinColumn(name = "Categoryid")
 	Categories category;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "product")
-	List<OrderDetails> orderDetails;
-//	@JsonIgnore
-//	@OneToMany(mappedBy = "product")
-//	List<Blogs> blogs;
-
-
+	List<OrderDetails> orderDetails;	
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "product")
+	List<Favorites> favorites;	
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "product")
+	List<FeedBacks> feedBacks;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "product")
+	List<Banners> banners;	
 }

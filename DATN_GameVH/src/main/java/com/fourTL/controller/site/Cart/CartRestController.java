@@ -103,7 +103,7 @@ public class CartRestController {
 	private double totalPrice(HashMap<Integer, Cart> cartItems) {
 		int count = 0;
 		for (Map.Entry<Integer, Cart> list : cartItems.entrySet()) {
-			count += list.getValue().getProduct().getPrice() * list.getValue().getQuantity();
+			count += list.getValue().getProduct().getSalePrice() * list.getValue().getQuantity();
 		}
 		return count;
 	}

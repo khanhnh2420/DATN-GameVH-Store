@@ -26,9 +26,19 @@ public class Orders  implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
 	String address;
+	String city;
+	String district;
+	String ward;
+	String paymentType;
+	Double shippingFee;
+	String couponCode;
 	String email;
 	String phone;
 	String status;
+	String note;
+	Double totalPrice;
+	Integer qty;
+	String paymentCode;
 	@Temporal(TemporalType.DATE)
 	@Column(name = "Createdate")
 	Date createDate = new Date();

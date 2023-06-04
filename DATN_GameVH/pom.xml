@@ -34,12 +34,7 @@
 			<optional>true</optional>
 		</dependency>
 		<!-- DEVTOOLS -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency>
+		
 		<!-- THYMELEAF -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

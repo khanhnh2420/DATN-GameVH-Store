@@ -14,7 +14,7 @@ import lombok.Data;
 @SuppressWarnings("serial")
 @Data
 @Entity 
-public class Accounts  implements Serializable{
+public class Account  implements Serializable{
 	@Id
 	String username;
 	String password;
@@ -24,29 +24,29 @@ public class Accounts  implements Serializable{
 	String photo;
 	@JsonIgnore
 	@OneToMany(mappedBy = "account")
-	List<Orders> orders;
+	List<Order_data> orders;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
-	List<Authorities> authorities;
+	List<Authority> authorities;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "account")
-	List<Coupon_owners> couponOwners;
+	List<Coupon_owner> couponOwners;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "account")
-	List<Favorites> favorites;
+	List<Favorite> favorites;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "account")
-	List<Comments> comments;
+	List<Comment> comments;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "account")
-	List<FeedBacks> feedBacks;
+	List<FeedBack> feedBacks;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "account")
-	List<Blogs> blogs;
+	List<Blog> blogs;
 }

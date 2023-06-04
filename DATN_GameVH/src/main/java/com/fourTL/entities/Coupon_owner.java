@@ -1,37 +1,29 @@
 package com.fourTL.entities;
 
 import java.io.Serializable;
-import java.util.Date;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.Data;
 
 @SuppressWarnings("serial")
 @Data
 @Entity
-public class Comments implements Serializable {
+public class Coupon_owner implements Serializable{
 	@Id	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Integer id;
-	String content;
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "CreateDate")
-	Date createDate = new Date();
+	Long id;
 	Boolean status;
 	
 	@ManyToOne
 	@JoinColumn(name = "Username")
-	Accounts account;
+	Account account;
 	
 	@ManyToOne
-	@JoinColumn(name = "BlogId")
-	Blogs blog;
+	@JoinColumn(name = "CouponCode")
+	Coupon coupon;
 }

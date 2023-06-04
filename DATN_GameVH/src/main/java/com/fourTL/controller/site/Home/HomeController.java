@@ -9,9 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.fourTL.dao.OrderDetailsDAO;
-import com.fourTL.entities.OrderDetails;
-import com.fourTL.entities.Products;
+import com.fourTL.dao.OrderDetailDAO;
+import com.fourTL.entities.OrderDetail;
+import com.fourTL.entities.Product;
 import com.fourTL.service.ProductService;
 
 @Controller
@@ -21,16 +21,16 @@ public class HomeController {
 	ProductService productService;
 	
 	@Autowired
-	OrderDetailsDAO orderDetailsDAO;
+	OrderDetailDAO orderDetailsDAO;
 	
 	
 	@RequestMapping("/")
 	private String index(Model model) {
 		// List all product
-		List<Products> listProduct = productService.findAll();
+		List<Product> listProduct = productService.findAll();
 		model.addAttribute("products", getRandom(listProduct,6));
 		// List Top Selling Products
-		List<OrderDetails> listProductTrending = orderDetailsDAO.findTopSellingProducts();
+		List<OrderDetail> listProductTrending = orderDetailsDAO.findTopSellingProducts();
 		model.addAttribute("productsTrending", listProductTrending);
 		
 		return "site/home";

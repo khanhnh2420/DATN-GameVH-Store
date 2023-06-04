@@ -21,7 +21,7 @@ import lombok.Data;
 @SuppressWarnings("serial")
 @Data
 @Entity
-public class Products  implements Serializable{
+public class Product  implements Serializable{
 	@Id	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer id;
@@ -41,21 +41,21 @@ public class Products  implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name = "Categoryid")
-	Categories category;
+	Category category;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "product")
-	List<OrderDetails> orderDetails;	
+	List<OrderDetail> orderDetails;	
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "product")
-	List<Favorites> favorites;	
+	List<Favorite> favorites;	
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "product")
-	List<FeedBacks> feedBacks;
+	List<FeedBack> feedBacks;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "product")
-	List<Banners> banners;	
+	List<Banner> banners;	
 }

@@ -9,12 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.fourTL.dao.AccountsDAO;
-import com.fourTL.dao.AuthoritiesDAO;
-import com.fourTL.dao.RolesDAO;
-import com.fourTL.entities.Accounts;
-import com.fourTL.entities.Authorities;
-import com.fourTL.entities.Roles;
+import com.fourTL.dao.AccountDAO;
+import com.fourTL.dao.AuthorityDAO;
+import com.fourTL.dao.RoleDAO;
+import com.fourTL.entities.Account;
+import com.fourTL.entities.Authority;
+import com.fourTL.entities.Role;
 import com.fourTL.service.UserService;
 
 @Controller
@@ -47,11 +47,11 @@ public class LoginController {
 	@Autowired
 	UserService userService;
 	@Autowired
-	RolesDAO rolesDAO;
+	RoleDAO rolesDAO;
 	@Autowired
-	AccountsDAO accountsDAO;
+	AccountDAO accountsDAO;
 	@Autowired
-	AuthoritiesDAO authoritiesDAO;
+	AuthorityDAO authoritiesDAO;
 	@Autowired
 	BCryptPasswordEncoder pe;
 
@@ -59,16 +59,16 @@ public class LoginController {
 	public String oauth2Success(OAuth2AuthenticationToken oauth2, Model model) {
 		try {
 			if (!accountsDAO.existsById(oauth2.getPrincipal().getAttribute("email"))) {
-				Accounts account = new Accounts();
+				Account account = new Account();
 				account.setUsername(oauth2.getPrincipal().getAttribute("email"));
 				account.setPassword(pe.encode("123"));
 				account.setFullname(oauth2.getPrincipal().getAttribute("name"));
 				account.setEmail(oauth2.getPrincipal().getAttribute("email"));
 				account.setAddress("");
 				account.setPhoto("user.png");
-				Roles role = rolesDAO.findById("CUST").get();
+				Role role = rolesDAO.findById("CUST").get();
 
-				Authorities authorities = new Authorities();
+				Authority authorities = new Authority();
 				authorities.setAccount(account);
 				authorities.setRole(role);
 

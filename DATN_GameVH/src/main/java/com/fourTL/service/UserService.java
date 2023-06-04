@@ -14,20 +14,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 
-import com.fourTL.dao.AccountsDAO;
-import com.fourTL.entities.Accounts;
+import com.fourTL.dao.AccountDAO;
+import com.fourTL.entities.Account;
 
 @Service
 public class UserService implements UserDetailsService {
 	@Autowired
-	AccountsDAO accountDAO;
+	AccountDAO accountDAO;
 	@Autowired
 	BCryptPasswordEncoder pe;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		try {
-			Accounts account = accountDAO.findById(username)
+			Account account = accountDAO.findById(username)
 					.orElseThrow(() -> new UsernameNotFoundException(username + "not found!"));
 
 			// Tạo UserDetails từ Account

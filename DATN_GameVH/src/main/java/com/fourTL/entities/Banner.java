@@ -12,18 +12,19 @@ import lombok.Data;
 
 @SuppressWarnings("serial")
 @Data
-@Entity
-public class Coupon_owners implements Serializable{
+@Entity 
+public class Banner implements Serializable{
 	@Id	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
-	Boolean status;
-	
+	Integer id;
+	String image1;
+	String image2;
+	String image3;
+	String image4;
+	String image5;
+	String image6;
+	Double offer;
 	@ManyToOne
-	@JoinColumn(name = "Username")
-	Accounts account;
-	
-	@ManyToOne
-	@JoinColumn(name = "CouponCode")
-	Coupons coupon;
+	@JoinColumn(name = "ProductId")
+	Product product;
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fourTL.entities.Cart;
-import com.fourTL.entities.Products;
+import com.fourTL.entities.Product;
 import com.fourTL.service.ProductService;
 
 import jakarta.servlet.http.HttpSession;
@@ -31,7 +31,7 @@ public class CartRestController {
 		if (cartItems == null) {
 			cartItems = new HashMap<>();
 		}
-		Products products = pService.findById(productID);
+		Product products = pService.findById(productID);
 		if (products != null) {
 			if (cartItems.containsKey(productID)) {
 				Cart item = cartItems.get(productID);

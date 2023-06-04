@@ -17,24 +17,21 @@ import lombok.Data;
 @SuppressWarnings("serial")
 @Data
 @Entity
-public class Favorites implements Serializable{
+public class Comment implements Serializable {
 	@Id	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer id;
-	@Temporal(TemporalType.DATE)
-	@Column(name = "LikeDate")
-	Date likeDate = new Date();
+	String content;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "CreateDate")
+	Date createDate = new Date();
 	Boolean status;
 	
 	@ManyToOne
 	@JoinColumn(name = "Username")
-	Accounts account;
+	Account account;
 	
 	@ManyToOne
-	@JoinColumn(name = "ProductId")
-	Products product;
-	
-	@ManyToOne
-	@JoinColumn(name = "AccessoriesId")
-	Accessories accessory;
+	@JoinColumn(name = "BlogId")
+	Blog blog;
 }

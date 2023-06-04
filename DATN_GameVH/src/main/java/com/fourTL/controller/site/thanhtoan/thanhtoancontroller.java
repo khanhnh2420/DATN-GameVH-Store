@@ -14,39 +14,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fourTL.dao.OrderDetailsDAO;
-import com.fourTL.dao.OrdersDAO;
-import com.fourTL.entities.OrderDetails;
-import com.fourTL.entities.Orders;
+import com.fourTL.dao.OrderDetailDAO;
+import com.fourTL.dao.Order_dataDAO;
+import com.fourTL.entities.OrderDetail;
+import com.fourTL.entities.Order_data;
 
 @RestController
 @RequestMapping("/api")
 public class thanhtoancontroller {
 
 	@Autowired
-	OrdersDAO ordersdao;
+	Order_dataDAO ordersdao;
 
 	@Autowired
-	OrderDetailsDAO orderDetailsDAO;
+	OrderDetailDAO orderDetailsDAO;
 
 	@GetMapping("/vieworders")
-	public ResponseEntity<List<Orders>> getAll(Model model) {
+	public ResponseEntity<List<Order_data>> getAll(Model model) {
 		return ResponseEntity.ok(ordersdao.findAll());
 	}
 	
 	@GetMapping("/vieworderdetail")
-	public ResponseEntity<List<OrderDetails>> getAll1(Model model) {
+	public ResponseEntity<List<OrderDetail>> getAll1(Model model) {
 		return ResponseEntity.ok(orderDetailsDAO.findAll());
 	}
 
 	@PostMapping("/createorders")
-	public ResponseEntity<Orders> createOrder(@RequestBody Orders orders) {
+	public ResponseEntity<Order_data> createOrder(@RequestBody Order_data orders) {
 		ordersdao.save(orders);
 		return ResponseEntity.ok(orders);
 	}
 	
 	@PostMapping("/createorderdetail")
-	public ResponseEntity<OrderDetails> createOrder(@RequestBody OrderDetails orderDetails) {
+	public ResponseEntity<OrderDetail> createOrder(@RequestBody OrderDetail orderDetails) {
 		orderDetailsDAO.save(orderDetails);
 		return ResponseEntity.ok(orderDetails);
 	}

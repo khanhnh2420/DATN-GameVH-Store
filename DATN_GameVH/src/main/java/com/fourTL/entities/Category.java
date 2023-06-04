@@ -16,11 +16,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity 
-public class Categories implements Serializable{
+public class Category implements Serializable{
 	@Id
 	String id;
 	String name;
 	@JsonIgnore
 	@OneToMany(mappedBy = "category")
-	List<Products> getProducts;
+	List<Product> getProducts;
 }

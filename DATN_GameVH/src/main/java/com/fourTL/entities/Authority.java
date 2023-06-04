@@ -12,19 +12,13 @@ import lombok.Data;
 
 @SuppressWarnings("serial")
 @Data
-@Entity 
-public class Banners implements Serializable{
-	@Id	
+@Entity
+public class Authority  implements Serializable{
+	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Integer id;
-	String image1;
-	String image2;
-	String image3;
-	String image4;
-	String image5;
-	String image6;
-	Double offer;
-	@ManyToOne
-	@JoinColumn(name = "ProductId")
-	Products product;
+	private Integer id;
+	@ManyToOne @JoinColumn(name = "Username")
+	private Account account;
+	@ManyToOne  @JoinColumn(name = "Roleid")
+	private Role role;
 }

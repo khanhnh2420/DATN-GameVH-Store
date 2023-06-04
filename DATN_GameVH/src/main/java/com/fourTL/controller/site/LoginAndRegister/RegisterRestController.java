@@ -8,30 +8,30 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fourTL.dao.AccountsDAO;
-import com.fourTL.dao.AuthoritiesDAO;
-import com.fourTL.dao.RolesDAO;
-import com.fourTL.entities.Accounts;
-import com.fourTL.entities.Authorities;
-import com.fourTL.entities.Roles;
+import com.fourTL.dao.AccountDAO;
+import com.fourTL.dao.AuthorityDAO;
+import com.fourTL.dao.RoleDAO;
+import com.fourTL.entities.Account;
+import com.fourTL.entities.Authority;
+import com.fourTL.entities.Role;
 
 @CrossOrigin("*")
 @RestController
 public class RegisterRestController {
 	@Autowired
-	AccountsDAO accountsDAO;
+	AccountDAO accountsDAO;
 
 	@Autowired
-	AuthoritiesDAO authoritiesDAO;
+	AuthorityDAO authoritiesDAO;
 
 	@Autowired
-	RolesDAO rolesDAO;
+	RoleDAO rolesDAO;
 
 	@Autowired
 	BCryptPasswordEncoder pe;
 
 	@PostMapping("/register")
-	public ResponseEntity<Accounts> post(@RequestBody Accounts account) {
+	public ResponseEntity<Account> post(@RequestBody Account account) {
 		if (accountsDAO.existsById(account.getUsername())) {
 			return ResponseEntity.badRequest().build();
 		} else {
@@ -39,9 +39,9 @@ public class RegisterRestController {
 					&& account.getEmail() != null && account.getAddress() != null) {
 				account.setPhoto("user.png");
 				account.setPassword(pe.encode(account.getPassword()));
-				Roles role = rolesDAO.findById("CUST").get();
+				Role role = rolesDAO.findById("CUST").get();
 
-				Authorities authorities = new Authorities();
+				Authority authorities = new Authority();
 				authorities.setAccount(account);
 				authorities.setRole(role);
 

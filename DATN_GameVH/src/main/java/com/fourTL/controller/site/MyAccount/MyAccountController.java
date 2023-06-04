@@ -6,21 +6,21 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.fourTL.dao.AccountsDAO;
-import com.fourTL.dao.OrdersDAO;
-import com.fourTL.entities.Accounts;
+import com.fourTL.dao.AccountDAO;
+import com.fourTL.dao.Order_dataDAO;
+import com.fourTL.entities.Account;
 
 @Controller
 public class MyAccountController {
 	@Autowired
-	AccountsDAO accountsDAO;
+	AccountDAO accountsDAO;
 	
 	@Autowired
-	OrdersDAO ordersDAO;
+	Order_dataDAO ordersDAO;
 	
 	@RequestMapping("/account")
 	public String account(@RequestParam("username") String username, Model model) {
-		Accounts user = accountsDAO.findById(username).get();
+		Account user = accountsDAO.findById(username).get();
 		user.getOrders().sort((o1, o2) -> o2.getCreateDate().compareTo(o1.getCreateDate()));
 		model.addAttribute("user", user);
 		return "site/dashboard";

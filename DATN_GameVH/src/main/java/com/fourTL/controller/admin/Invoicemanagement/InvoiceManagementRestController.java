@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fourTL.controller.mail.contact.mail_CONSTANT;
-import com.fourTL.dao.CategoriesDAO;
-import com.fourTL.dao.OrderDetailsDAO;
-import com.fourTL.dao.OrdersDAO;
-import com.fourTL.entities.Categories;
+import com.fourTL.dao.CategoryDAO;
+import com.fourTL.dao.OrderDetailDAO;
+import com.fourTL.dao.Order_dataDAO;
+import com.fourTL.entities.Category;
 import com.fourTL.entities.MailInfo;
-import com.fourTL.entities.OrderDetails;
-import com.fourTL.entities.Orders;
+import com.fourTL.entities.OrderDetail;
+import com.fourTL.entities.Order_data;
 import com.fourTL.service.MailService;
 
 import jakarta.mail.MessagingException;
@@ -35,34 +35,34 @@ import jakarta.mail.MessagingException;
 public class InvoiceManagementRestController {
 	mail_CONSTANT mailBody = new mail_CONSTANT();
 	@Autowired
-	OrdersDAO ordersdao;
+	Order_dataDAO ordersdao;
 
 	@Autowired
-	CategoriesDAO categoriesDAO;
+	CategoryDAO categoriesDAO;
 	
 	@Autowired
-	OrderDetailsDAO orderDetailsDAO;
+	OrderDetailDAO orderDetailsDAO;
 	
 	@Autowired
 	MailService mailService;
 
 	@GetMapping("")
-	public ResponseEntity<List<Orders>> getAll(Model model) {
+	public ResponseEntity<List<Order_data>> getAll(Model model) {
 		return ResponseEntity.ok(ordersdao.findAll());
 	}
 
 	@GetMapping("/categories")
-	public ResponseEntity<List<Categories>> getAllCategories(Model model) {
+	public ResponseEntity<List<Category>> getAllCategories(Model model) {
 		return ResponseEntity.ok(categoriesDAO.findAll());
 	}
 	
 	@GetMapping("/search/{search}")
-	public ResponseEntity<List<Orders>> search(Model model, @PathVariable("search") String search) {
+	public ResponseEntity<List<Order_data>> search(Model model, @PathVariable("search") String search) {
 		return ResponseEntity.ok(ordersdao.findByUsernameContaining(search));
 	}
 	
 	@GetMapping("{id}")
-	public ResponseEntity<Orders> getOne(@PathVariable("id") Long id) {
+	public ResponseEntity<Order_data> getOne(@PathVariable("id") Long id) {
 		if(!ordersdao.existsById(id)) {
 			return ResponseEntity.notFound().build();
 		}
@@ -89,7 +89,7 @@ public class InvoiceManagementRestController {
 	}
 	
 	@GetMapping("/orderdetail/{id}")
-	public ResponseEntity<List<OrderDetails>> srcgame(Model model, @PathVariable("id") Long id) {
+	public ResponseEntity<List<OrderDetail>> srcgame(Model model, @PathVariable("id") Long id) {
 		return ResponseEntity.ok(ordersdao.findById(id).get().getOrderDetails());
 	}
 }

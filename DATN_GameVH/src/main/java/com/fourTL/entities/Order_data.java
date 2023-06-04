@@ -14,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Data;
@@ -21,7 +22,7 @@ import lombok.Data;
 @SuppressWarnings("serial")
 @Data
 @Entity 
-public class Orders  implements Serializable{
+public class Order_data  implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
@@ -44,9 +45,9 @@ public class Orders  implements Serializable{
 	Date createDate = new Date();
 	@ManyToOne
 	@JoinColumn(name = "Username")
-	Accounts account;
+	Account account;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "order")
-	List<OrderDetails> orderDetails;
+	List<OrderDetail> orderDetails;
 }

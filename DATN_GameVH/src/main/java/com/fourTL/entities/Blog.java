@@ -21,7 +21,7 @@ import lombok.Data;
 @SuppressWarnings("serial")
 @Data
 @Entity 
-public class Blogs implements Serializable{
+public class Blog implements Serializable{
 	@Id	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer id;
@@ -34,9 +34,9 @@ public class Blogs implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name = "Username")
-	Accounts account;
+	Account account;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "blog")
-	List<Comments> comments;
+	List<Comment> comments;
 }

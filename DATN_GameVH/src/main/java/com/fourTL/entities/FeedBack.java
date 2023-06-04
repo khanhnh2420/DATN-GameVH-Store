@@ -17,7 +17,7 @@ import lombok.Data;
 @SuppressWarnings("serial")
 @Data
 @Entity
-public class FeedBacks implements Serializable{
+public class FeedBack implements Serializable{
 	@Id	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer id;
@@ -31,13 +31,13 @@ public class FeedBacks implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name = "Username")
-	Accounts account;
+	Account account;
 	
 	@ManyToOne
 	@JoinColumn(name = "ProductId")
-	Products product;
+	Product product;
 	
 	@ManyToOne
 	@JoinColumn(name = "AccessoriesId")
-	Accessories accessory;
+	Accessory accessory;
 }

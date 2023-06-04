@@ -12,13 +12,22 @@ import lombok.Data;
 
 @SuppressWarnings("serial")
 @Data
-@Entity
-public class Authorities  implements Serializable{
-	@Id 
+@Entity 
+public class OrderDetail  implements Serializable{
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	@ManyToOne @JoinColumn(name = "Username")
-	private Accounts account;
-	@ManyToOne  @JoinColumn(name = "Roleid")
-	private Roles role;
+	Long id;
+	Double price;
+	Integer accessoryQty;
+	@ManyToOne
+	@JoinColumn(name = "Productid")
+	Product product;
+	
+	@ManyToOne
+	@JoinColumn(name = "Orderid")
+	Order_data order;
+	
+	@ManyToOne
+	@JoinColumn(name = "AccessoriesId")
+	Accessory accessory;
 }

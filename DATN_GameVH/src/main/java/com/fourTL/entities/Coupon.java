@@ -17,13 +17,14 @@ import lombok.Data;
 @SuppressWarnings("serial")
 @Data
 @Entity
-public class Coupons implements Serializable{
+public class Coupon implements Serializable{
 	@Id	
 	String code;
 	String couponName;
 	Integer amount;
 	Double value;
 	Double minSpend;
+	String Image;
 	String description;
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "MfgDate")
@@ -36,5 +37,5 @@ public class Coupons implements Serializable{
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "coupon")
-	List<Coupon_owners> couponOwners;
+	List<Coupon_owner> couponOwners;
 }

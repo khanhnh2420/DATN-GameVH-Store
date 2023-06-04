@@ -19,7 +19,7 @@ import lombok.Data;
 @SuppressWarnings("serial")
 @Data
 @Entity 
-public class Accessories implements Serializable{
+public class Accessory implements Serializable{
 	@Id	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer id;
@@ -38,13 +38,13 @@ public class Accessories implements Serializable{
 	Boolean available;
 	@JsonIgnore
 	@OneToMany(mappedBy = "accessory")
-	List<Favorites> favorites;	
+	List<Favorite> favorites;	
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "accessory")
-	List<FeedBacks> feedBacks;
+	List<FeedBack> feedBacks;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "accessory")
-	List<OrderDetails> orderDetails;
+	List<OrderDetail> orderDetails;
 }

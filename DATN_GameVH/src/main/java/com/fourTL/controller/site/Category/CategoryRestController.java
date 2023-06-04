@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fourTL.dao.CategoriesDAO;
-import com.fourTL.dao.ProductsDAO;
-import com.fourTL.entities.Categories;
+import com.fourTL.dao.CategoryDAO;
+import com.fourTL.dao.ProductDAO;
+import com.fourTL.entities.Category;
 import com.fourTL.entities.CategoryDTO;
-import com.fourTL.entities.Products;
+import com.fourTL.entities.Product;
 
 @CrossOrigin("*")
 @RestController
@@ -28,15 +28,15 @@ import com.fourTL.entities.Products;
 public class CategoryRestController {
 
 	@Autowired
-	CategoriesDAO cDAO;
+	CategoryDAO cDAO;
 
 	@Autowired
-	ProductsDAO pDAO;
+	ProductDAO pDAO;
 
 	@GetMapping("/countProduct")
 	private ResponseEntity<HashMap<String, CategoryDTO>> getByCateGory() {
 		HashMap<String, CategoryDTO> listCateAndCountProduct = new HashMap<>();
-		for (Categories categories : cDAO.findAll()) {
+		for (Category categories : cDAO.findAll()) {
 			CategoryDTO cDTO = new CategoryDTO();
 			cDTO.setIdCategory(categories.getId().trim());
 			cDTO.setNameCategory(categories.getName());
@@ -48,21 +48,21 @@ public class CategoryRestController {
 	}
 	
 	@RequestMapping("/getAll")
-	public ResponseEntity<Page<Products>> getAllProducts(
+	public ResponseEntity<Page<Product>> getAllProducts(
 			@RequestParam("page") Optional<Integer> page, 
 			@RequestParam("size") Optional<Integer> size) {
 		Pageable pageable = PageRequest.of(page.orElse(0), size.orElse(9));
-		Page<Products> products = pDAO.findAll(pageable);
+		Page<Product> products = pDAO.findAll(pageable);
 	    return ResponseEntity.ok(products);
 	}
 
 	@RequestMapping("/findByCategoryId/{categoryId}")
-	public ResponseEntity<Page<Products>> viewProductsByCategoryId(
+	public ResponseEntity<Page<Product>> viewProductsByCategoryId(
 			@PathVariable("categoryId") String categoryId,
 			@RequestParam("page") Optional<Integer> page, 
 			@RequestParam("size") Optional<Integer> size) {
 		Pageable pageable = PageRequest.of(page.orElse(0), size.orElse(9));
-		Page<Products> products;
+		Page<Product> products;
 		if (categoryId == null || categoryId.isBlank()) {
 			products = pDAO.findAll(pageable);
 		} else {
@@ -72,12 +72,12 @@ public class CategoryRestController {
 	}
 	
 	@RequestMapping("/findBySource/{source}")
-	public ResponseEntity<Page<Products>> viewProductsBySource(
+	public ResponseEntity<Page<Product>> viewProductsBySource(
 			@PathVariable("source") String source,
 			@RequestParam("page") Optional<Integer> page, 
 			@RequestParam("size") Optional<Integer> size) {
 		Pageable pageable = PageRequest.of(page.orElse(0), size.orElse(9));
-		Page<Products> products;
+		Page<Product> products;
 		if (source == null || source.isBlank()) {
 			products = pDAO.findAll(pageable);
 		} else {

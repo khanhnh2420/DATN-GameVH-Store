@@ -13,11 +13,11 @@ import lombok.Data;
 @SuppressWarnings("serial")
 @Data
 @Entity
-public class Roles  implements Serializable{
+public class Role  implements Serializable{
 	@Id
 	private String id;
 	private String name;
 	@JsonIgnore
 	@OneToMany(mappedBy = "role")
-	List<Authorities> authorities;
+	List<Authority> authorities;
 }

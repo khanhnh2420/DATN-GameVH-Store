@@ -12,7 +12,7 @@
 <meta name="author" content="p-themes">
 </head>
 <body>
-	<div class="wrap-container" >
+	<div class="wrap-container">
 		<div class="image-bg-body"></div>
 		<main class="main">
 			<div class="mb-2"></div>
@@ -23,7 +23,8 @@
 						<nav class="side-nav box">
 							<div class="sidenav-title">Browse Categories</div>
 							<!-- End .sidenav-title -->
-							<ul class="menu-vertical sf-arrows" style="max-height: 26em;" ng-controller="Category">
+							<ul class="menu-vertical sf-arrows" style="max-height: 26em;"
+								ng-controller="Category">
 								<li class="megamenu-container"><a th:href="@{|/category|}"
 									class="sf-with-ul">XBOX</a>
 									<div class="megamenu">
@@ -117,9 +118,8 @@
 										</div>
 										<!-- End .row -->
 									</div> <!-- End .megamenu megamenu-sm --></li>
-								<li ng-repeat="(key, value) in categories">
-									<a th:href="@{|/category|}">{{value.nameCategory}}</a>
-								</li>
+								<li ng-repeat="(key, value) in categories"><a
+									th:href="@{|/category|}">{{value.nameCategory}}</a></li>
 							</ul>
 							<!-- End .menu -->
 						</nav>
@@ -371,7 +371,9 @@
 										<!-- End .product-action-vertical -->
 
 										<div class="product-action">
-											<a class="btn-product btn-cart" th:data-product-id="${p.product.id}" ng-click="addCart($event)"><span>add to cart</span></a>
+											<a class="btn-product btn-cart"
+												th:data-product-id="${p.product.id}"
+												ng-click="addCart($event)"><span>add to cart</span></a>
 										</div>
 										<!-- End .product-action -->
 									</figure>
@@ -383,8 +385,9 @@
 										</div>
 										<!-- End .product-cat -->
 										<h3 class="product-title">
-											<a th:href="@{|/product/detail/${p.product.id}|}" th:utext="${p.product.name}">Call
-												of Duty <br>WWII - Gold Edition
+											<a th:href="@{|/product/detail/${p.product.id}|}"
+												th:utext="${p.product.name}">Call of Duty <br>WWII
+												- Gold Edition
 											</a>
 										</h3>
 										<!-- End .product-title -->
@@ -1018,8 +1021,8 @@
 												<!-- End .product-action-vertical -->
 
 												<div class="product-action">
-													<a th:data-product-id="${p.id}" ng-click="addCart($event)" class="btn-product btn-cart"><span>add
-															to cart</span></a>
+													<a th:data-product-id="${p.id}" ng-click="addCart($event)"
+														class="btn-product btn-cart"><span>add to cart</span></a>
 												</div>
 												<!-- End .product-action -->
 											</figure>
@@ -1031,8 +1034,8 @@
 												</div>
 												<!-- End .product-cat -->
 												<h3 class="product-title">
-													<a th:href="@{|/product/detail/${p.id}|}" th:text=${p.name}>Tom Clancy’s <br>Ghost
-														Recon Wildlands
+													<a th:href="@{|/product/detail/${p.id}|}" th:text=${p.name}>Tom
+														Clancy’s <br>Ghost Recon Wildlands
 													</a>
 												</h3>
 												<!-- End .product-title -->
@@ -1146,11 +1149,10 @@
 				<!-- End .cta -->
 			</div>
 			<!-- End .container -->
-
 			<div class="container">
 				<div class="heading heading-flex mb-2">
 					<div class="heading-left">
-						<h2 class="title mb-5">Consoles & Accessories</h2>
+						<h2 class="title mb-5">Accessories</h2>
 						<!-- End .title -->
 					</div>
 					<!-- End .heading-left -->
@@ -1191,11 +1193,12 @@
                                 }
                             }
                         }'>
-					<div class="product">
+
+					<div class="product" th:each="item:${accessories}">
 						<figure class="product-media">
 							<span class="product-label label-new">New</span>
-							<a href="product.html"> <img
-								src="assets/images/demos/demo-19/products/product-12.jpg"
+							<a th:href="@{|/product/detail/${item.id}|}"> <img
+								th:src="@{|assets/images/demos/demo-19/products/${item.poster}|}"
 								alt="Product image" class="product-image">
 							</a>
 
@@ -1206,8 +1209,9 @@
 							<!-- End .product-action-vertical -->
 
 							<div class="product-action">
-								<a href="#" class="btn-product btn-cart"><span>add to
-										cart</span></a>
+								<a class="btn-product btn-cart"
+									th:data-product-id="${item.id}" ng-click="addCart($event)"><span>add
+										to cart</span></a>
 							</div>
 							<!-- End .product-action -->
 						</figure>
@@ -1215,148 +1219,14 @@
 
 						<div class="product-body">
 							<h3 class="product-title">
-								<a href="product.html">Microsoft - Xbox Elite Wireless
-									Controller</a>
+								<a th:href="@{|/product/detail/${item.id}|}"
+									th:utext="${item.name}">Microsoft - Xbox Elite Wireless
+									Controller </a>
 							</h3>
 							<!-- End .product-title -->
-							<div class="product-price">$149.99</div>
+							<div class="product-price"
+								th:text="${#numbers.formatDecimal(item.salePrice, 1, 'COMMA', 0, 'POINT')} + ' VND'"></div>
 							<!-- End .product-price -->
-						</div>
-						<!-- End .product-body -->
-					</div>
-					<!-- End .product -->
-
-					<div class="product">
-						<figure class="product-media">
-							<span class="product-label label-top">Top</span>
-							<a href="product.html"> <img
-								src="assets/images/demos/demo-19/products/product-13.jpg"
-								alt="Product image" class="product-image">
-							</a>
-
-							<div class="product-action-vertical">
-								<a href="#" class="btn-product-icon btn-wishlist"
-									title="Add to Wishlist"><span>add to wishlist</span></a>
-							</div>
-							<!-- End .product-action-vertical -->
-
-							<div class="product-action">
-								<a href="#" class="btn-product btn-cart"><span>add to
-										cart</span></a>
-							</div>
-							<!-- End .product-action -->
-						</figure>
-						<!-- End .product-media -->
-
-						<div class="product-body">
-							<h3 class="product-title">
-								<a href="product.html">Sony - PlayStation 4 1TB Console -
-									Black</a>
-							</h3>
-							<!-- End .product-title -->
-							<div class="product-price">$299.99</div>
-							<!-- End .product-price -->
-						</div>
-						<!-- End .product-body -->
-					</div>
-					<!-- End .product -->
-
-					<div class="product">
-						<figure class="product-media">
-							<a href="product.html"> <img
-								src="assets/images/demos/demo-19/products/product-14.jpg"
-								alt="Product image" class="product-image">
-							</a>
-
-							<div class="product-action-vertical">
-								<a href="#" class="btn-product-icon btn-wishlist"
-									title="Add to Wishlist"><span>add to wishlist</span></a>
-							</div>
-							<!-- End .product-action-vertical -->
-
-							<div class="product-action">
-								<a href="#" class="btn-product btn-cart"><span>add to
-										cart</span></a>
-							</div>
-							<!-- End .product-action -->
-						</figure>
-						<!-- End .product-media -->
-
-						<div class="product-body">
-							<h3 class="product-title">
-								<a href="product.html">Nintendo - Switch 32GB Console</a>
-							</h3>
-							<!-- End .product-title -->
-							<div class="product-price">$149.99</div>
-							<!-- End .product-price -->
-						</div>
-						<!-- End .product-body -->
-					</div>
-					<!-- End .product -->
-
-					<div class="product">
-						<figure class="product-media">
-							<span class="product-label label-top">Top</span>
-							<a href="product.html"> <img
-								src="assets/images/demos/demo-19/products/product-15.jpg"
-								alt="Product image" class="product-image">
-							</a>
-
-							<div class="product-action-vertical">
-								<a href="#" class="btn-product-icon btn-wishlist"
-									title="Add to Wishlist"><span>add to wishlist</span></a>
-							</div>
-							<!-- End .product-action-vertical -->
-
-							<div class="product-action">
-								<a href="#" class="btn-product btn-cart"><span>add to
-										cart</span></a>
-							</div>
-							<!-- End .product-action -->
-						</figure>
-						<!-- End .product-media -->
-
-						<div class="product-body">
-							<h3 class="product-title">
-								<a href="product.html">HyperX - Cloud Alpha Wired Stereo
-									Gaming Headset</a>
-							</h3>
-							<!-- End .product-title -->
-							<div class="product-price">$99.99</div>
-							<!-- End .product-price -->
-						</div>
-						<!-- End .product-body -->
-					</div>
-					<!-- End .product -->
-
-					<div class="product">
-						<figure class="product-media">
-							<a href="product.html"> <img
-								src="assets/images/demos/demo-19/products/product-16.jpg"
-								alt="Product image" class="product-image">
-							</a>
-
-							<div class="product-action-vertical">
-								<a href="#" class="btn-product-icon btn-wishlist"
-									title="Add to Wishlist"><span>add to wishlist</span></a>
-							</div>
-							<!-- End .product-action-vertical -->
-
-							<div class="product-action">
-								<a href="#" class="btn-product btn-cart"><span>add to
-										cart</span></a>
-							</div>
-							<!-- End .product-action -->
-						</figure>
-						<!-- End .product-media -->
-
-						<div class="product-body">
-							<h3 class="product-title">
-								<a href="product.html">Logitech - G502 HERO Wired Optical
-									Gaming Mouse Pack</a>
-							</h3>
-							<!-- End .product-title -->
-							<div class="product-price">$59.99</div>
 							<!-- End .product-price -->
 						</div>
 						<!-- End .product-body -->
@@ -1364,7 +1234,6 @@
 					<!-- End .product -->
 				</div>
 				<!-- End .owl-carousel -->
-
 				<div class="mb-5"></div>
 				<!-- End .mb-4 -->
 			</div>

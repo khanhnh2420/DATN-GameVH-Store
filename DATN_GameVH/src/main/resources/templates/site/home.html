@@ -1199,7 +1199,7 @@
 							
 							<span class="product-label label-new" th:if="${item.offer > 0}" th:text="'SALE ' + ${#numbers.formatDecimal(item.offer * 100, 1, 'COMMA', 0, 'POINT')} + '%'">-10%</span>
 							<a th:href="@{|/product/detail/${item.id}|}"> <img
-								th:src="@{|/assets/images/products/accessory/${item.poster}|}"
+								th:src="@{|/assets/images/products/accessories/${item.poster}|}"
 								alt="Product image" class="product-image">
 							</a>
 

@@ -1198,7 +1198,7 @@
 						<figure class="product-media">
 							
 							<span class="product-label label-new" th:if="${item.offer > 0}" th:text="'SALE ' + ${#numbers.formatDecimal(item.offer * 100, 1, 'COMMA', 0, 'POINT')} + '%'">-10%</span>
-							<a th:href="@{|/product/detail/${item.id}|}"> <img
+							<a th:href="@{|/accessory/detail/${item.id}|}"> <img
 								th:src="@{|/assets/images/products/accessories/${item.poster}|}"
 								alt="Product image" class="product-image">
 							</a>
@@ -1220,7 +1220,7 @@
 
 						<div class="product-body">
 							<h3 class="product-title">
-								<a th:href="@{|/product/detail/${item.id}|}"
+								<a th:href="@{|/accessory/detail/${item.id}|}"
 									th:utext="${item.name}">Microsoft - Xbox Elite Wireless
 									Controller </a>
 							</h3>

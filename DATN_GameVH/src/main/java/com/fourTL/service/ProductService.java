@@ -2,11 +2,11 @@ package com.fourTL.service;
 
 import java.util.List;
 
-import com.fourTL.entities.Products;
+import com.fourTL.entities.Product;
 
 public interface ProductService {
 
-	List<Products> findAll();
+	List<Product> findAll();
 
-	Products findById(Integer id);
+	Product findById(Integer id);
 }

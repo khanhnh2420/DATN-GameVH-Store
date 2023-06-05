@@ -2,13 +2,13 @@ package com.fourTL.service;
 
 import java.util.List;
 
-import com.fourTL.entities.Accounts;
+import com.fourTL.entities.Account;
 
 
 
 public interface AcountService {
 
-	List<Accounts> findAll();
+	List<Account> findAll();
 
-	Accounts findById(String username);
+	Account findById(String username);
 }

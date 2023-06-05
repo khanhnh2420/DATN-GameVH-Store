@@ -16,44 +16,44 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fourTL.dao.CategoriesDAO;
-import com.fourTL.dao.ProductsDAO;
-import com.fourTL.dao.RolesDAO;
-import com.fourTL.entities.Categories;
-import com.fourTL.entities.Products;
+import com.fourTL.dao.CategoryDAO;
+import com.fourTL.dao.ProductDAO;
+import com.fourTL.dao.RoleDAO;
+import com.fourTL.entities.Category;
+import com.fourTL.entities.Product;
 
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/admin/api/product")
 public class ProductRestController {
 	@Autowired
-	ProductsDAO productsDAO;
+	ProductDAO productsDAO;
 	
 	@Autowired
-	RolesDAO rolesDAO;
+	RoleDAO rolesDAO;
 	
 	@Autowired
-	CategoriesDAO categoriesDAO;
+	CategoryDAO categoriesDAO;
 	
 	@GetMapping("")
-	public ResponseEntity<List<Products>> getAll() {
-		List<Products> products = productsDAO.findAll();
+	public ResponseEntity<List<Product>> getAll() {
+		List<Product> products = productsDAO.findAll();
 	    Collections.reverse(products);
 		return ResponseEntity.ok(productsDAO.findAll());
 	}
 	
 	@GetMapping("/search/{search}")
-	public ResponseEntity<List<Products>> search(@PathVariable("search") String search) {
+	public ResponseEntity<List<Product>> search(@PathVariable("search") String search) {
 		return ResponseEntity.ok(productsDAO.findByNameContaining(search));
 	}
 	
 	@GetMapping("/categories")
-	public ResponseEntity<List<Categories>> getAllCategories() {
+	public ResponseEntity<List<Category>> getAllCategories() {
 		return ResponseEntity.ok(categoriesDAO.findAll());
 	}
 	
 	@GetMapping("{id}")
-	public ResponseEntity<Products> getOne(@PathVariable("id") Integer id) {
+	public ResponseEntity<Product> getOne(@PathVariable("id") Integer id) {
 		if(!productsDAO.existsById(id)) {
 			return ResponseEntity.notFound().build();
 		}
@@ -61,13 +61,13 @@ public class ProductRestController {
 	}
 	
 	@PostMapping("")
-	public ResponseEntity<Products> post(@RequestBody Products product) {
+	public ResponseEntity<Product> post(@RequestBody Product product) {
 		productsDAO.save(product);
 		return ResponseEntity.ok(product);
 	}
 	
 	@PutMapping("{id}")
-	public ResponseEntity<Products> put(@PathVariable("id") Integer id, @RequestBody Products product) {
+	public ResponseEntity<Product> put(@PathVariable("id") Integer id, @RequestBody Product product) {
 		if(!productsDAO.existsById(id)) {
 			return ResponseEntity.notFound().build();
 		}

@@ -87,7 +87,7 @@
 									<!-- End .rating-container -->
 
 									<div class="product-price"
-										th:text="${#numbers.formatDecimal(item.price, 1, 'COMMA', 0, 'POINT')} + ' VND'">
+										th:text="${#numbers.formatDecimal(item.salePrice, 1, 'COMMA', 0, 'POINT')} + ' VND'">
 									</div>
 									<!-- End .product-price -->
 
@@ -430,7 +430,7 @@
 								</h3>
 								<!-- End .product-title -->
 								<div class="product-price"
-									th:text="${#numbers.formatDecimal(p.price, 1, 'COMMA', 2, 'POINT')} + ' VND'">
+									th:text="${#numbers.formatDecimal(p.salePrice, 1, 'COMMA', 2, 'POINT')} + ' VND'">
 								</div>
 								<!-- End .product-price -->
 							</div>

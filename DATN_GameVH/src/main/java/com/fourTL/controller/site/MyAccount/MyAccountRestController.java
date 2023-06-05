@@ -10,36 +10,36 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fourTL.dao.AccountsDAO;
-import com.fourTL.dao.OrderDetailsDAO;
-import com.fourTL.dao.OrdersDAO;
-import com.fourTL.entities.Accounts;
+import com.fourTL.dao.AccountDAO;
+import com.fourTL.dao.OrderDetailDAO;
+import com.fourTL.dao.Order_dataDAO;
+import com.fourTL.entities.Account;
 
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/account")
 public class MyAccountRestController {
 	@Autowired
-	AccountsDAO accountsDAO;
+	AccountDAO accountsDAO;
 
 	@Autowired
-	OrdersDAO ordersDAO;
+	Order_dataDAO ordersDAO;
 
 	@Autowired
-	OrderDetailsDAO orderDetailsDAO;
+	OrderDetailDAO orderDetailsDAO;
 
 	@GetMapping("{username}")
-	public ResponseEntity<Accounts> getOne(@PathVariable("username") String username) {
+	public ResponseEntity<Account> getOne(@PathVariable("username") String username) {
 		if (!accountsDAO.existsById(username)) {
 			return ResponseEntity.notFound().build();
 		}
-		Accounts user = accountsDAO.findById(username).get();
+		Account user = accountsDAO.findById(username).get();
 		user.getOrders().sort((o1, o2) -> o2.getCreateDate().compareTo(o1.getCreateDate()));
 		return ResponseEntity.ok(user);
 	}
 	
 	@PutMapping("{username}")
-	public ResponseEntity<Accounts> put(@PathVariable("username") String username, @RequestBody Accounts account) {
+	public ResponseEntity<Account> put(@PathVariable("username") String username, @RequestBody Account account) {
 		if(!accountsDAO.existsById(username)) {
 			return ResponseEntity.notFound().build();
 		}

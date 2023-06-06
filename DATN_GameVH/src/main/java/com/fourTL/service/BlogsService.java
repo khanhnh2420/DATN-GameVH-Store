@@ -9,7 +9,7 @@ import java.util.List;
 public interface BlogsService {
 List<Blogs> findAll();
 Blogs findById(Integer id);
-List<Blogs> findNewsestBlog();
+List<Blogs> findAllByOrderByCreateDateDesc();
 
 List<Blogs> getListLastestBlogs();
     List<Blogs> getListHighestComments();

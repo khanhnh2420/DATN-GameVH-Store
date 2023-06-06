@@ -32,17 +32,17 @@ public class CommentRestController {
 //
 //        return commentsService.findAllByIdBlog(id);
 //    }
-    @GetMapping("/blog-detail/{id}")
-    public ResponseEntity<Blogs,Comments> getBlogWithComments(@PathVariable("id") Integer id) {
-        Blogs blog = blogsDAO.findById(id).orElse(null);
-        if(!blogsDAO.existsById(id)) {
-            return ResponseEntity.notFound().build();
-       }
-
-        List<Comments> comments = commentsDAO.findAllById(Collections.singleton(id));
-
-        BlogWithCommentsDTO blogWithCommentsDTO = new BlogWithCommentsDTO(blog, comments);
-        return ResponseEntity.ok(blog,comments);
-    }
+//    @GetMapping("/blog-detail/{id}")
+//    public ResponseEntity<Blogs,Comments> getBlogWithComments(@PathVariable("id") Integer id) {
+//        Blogs blog = blogsDAO.findById(id).orElse(null);
+//        if(!blogsDAO.existsById(id)) {
+//            return ResponseEntity.notFound().build();
+//       }
+//
+//        List<Comments> comments = commentsDAO.findAllById(Collections.singleton(id));
+//
+//        BlogWithCommentsDTO blogWithCommentsDTO = new BlogWithCommentsDTO(blog, comments);
+//        return ResponseEntity.ok(blog,comments);
+//    }
 
 }

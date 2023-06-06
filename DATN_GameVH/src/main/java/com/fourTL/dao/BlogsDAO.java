@@ -1,5 +1,6 @@
 package com.fourTL.dao;
 
+
 import com.fourTL.entities.Blogs;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,11 +12,11 @@ import java.util.List;
 @Repository
 public interface BlogsDAO extends JpaRepository<Blogs, Integer> {
     // find all theo ngay moi tạo để ở trên
- //@Query("SELECT MAX(b.ThoiGianBlog) AS LatestDate FROM  Blogs b")
-    @Query("Select b from Blogs b order by b.ThoiGianBlog desc ")
-    List<Blogs> findNewsestBlog();
 
- @Query("SELECT p FROM Blogs p WHERE p.BlogTittle LIKE ?1")
+   // @Query("Select b from Blogs b order by b.createDate desc ")
+    //List<Blogs> findNewsestBlog();
+    List<Blogs> findAllByOrderByCreateDateDesc();
+ @Query("SELECT p FROM Blogs p WHERE p.tittle LIKE ?1")
     Blogs getBlogbyTittleSearch(String tittleSearch);
 
    // @Query("SELECT COUNT(c.Id) AS totalComment FROM Blogs b JOIN b.Comments c WHERE b.Id = :IdBlog")

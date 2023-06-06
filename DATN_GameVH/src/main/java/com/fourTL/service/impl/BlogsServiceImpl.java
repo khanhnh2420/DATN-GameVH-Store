@@ -16,10 +16,11 @@ public class BlogsServiceImpl implements BlogsService {
    @Autowired
    BlogsDAO  blgsDao;
 
+
     //@Query("SELECT MAX(ThoiGianBlog) AS LatestDate FROM Blogs")
     @Override
-    public List<Blogs> findNewsestBlog() {
-        return blgsDao.findNewsestBlog();
+    public List<Blogs> findAllByOrderByCreateDateDesc() {
+        return blgsDao.findAllByOrderByCreateDateDesc();
     }
 
     public List<Blogs> findAll() {

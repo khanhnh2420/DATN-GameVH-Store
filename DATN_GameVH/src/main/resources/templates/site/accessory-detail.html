@@ -113,7 +113,7 @@
 									<!-- End .details-filter-row -->
 
 									<div class="product-details-action">
-										<a th:data-product-id="${item.id}" ng-click="addCart($event)"
+										<a th:data-accessory-id="${item.id}" ng-click="addCartAccessory($event)"
 											class="btn-product btn-cart"><span>add to cart</span></a>
 
 										<div class="details-action-wrapper">
@@ -312,7 +312,7 @@
 								<!-- End .product-action-vertical -->
 
 								<div class="product-action">
-									<a th:data-product-id="${p.id}" ng-click="addCart($event)"
+									<a th:data-accessory-id="${p.id}" ng-click="addCartAccessory($event)"
 										class="btn-product btn-cart"><span>add to cart</span></a>
 								</div>
 								<!-- End .product-action -->

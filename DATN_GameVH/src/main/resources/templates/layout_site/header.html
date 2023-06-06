@@ -141,15 +141,23 @@
 									<div class="dropdown-cart-products box">
 										<ul style="max-height: 26em;">
 											<li ng-repeat="item in cart">
-												<div class="product">
+												<div class="product" ng-show="{{item.product != null}}">
 													<div class="product-cart-details">
 														<h4 class="product-title">
 															<a href="product.html">{{item.product.name}}</a>
 														</h4>
 
-														<span class="cart-product-info"> <span
+														<span class="cart-product-info"
+															ng-show="{{item.product.offer == 0}}"> <span
 															class="cart-product-qty">{{ item.quantity }}</span> x {{
-															item.product.price | number:0 }} VND
+															item.product.salePrice | number:0 }} VND
+														</span> <span class="cart-product-info"
+															ng-show="{{item.product.offer != 0}}"> <span
+															class="cart-product-qty">{{ item.quantity }} </span> x {{
+															(item.product.salePrice - (item.product.salePrice *
+															item.product.offer)) | number:0 }} VND <br><span
+															class="old-price">{{ item.product.salePrice |
+																number:0 }}</span> VND
 														</span>
 
 													</div>
@@ -158,6 +166,7 @@
 													<figure class="product-image-container">
 														<a href="/product/detail/{{item.product.id}}"
 															class="product-image"> <img
+															ng-show="{{item.product != null}}"
 															src="/assets/images/products/{{item.product.poster}}"
 															alt="product">
 														</a>
@@ -165,6 +174,42 @@
 													<a class="btn-remove" data-cart-id="{{item.product.id}}"
 														ng-click="removeCart($event)" title="Remove Product"><i
 														class="icon-close"></i></a>
+												</div> <!-- End .product -->
+
+												<div class="product" ng-show="{{item.accessory != null}}">
+													<div class="product-cart-details">
+														<h4 class="product-title">
+															<a href="product.html">{{item.accessory.name}}</a>
+														</h4>
+
+														<span class="cart-product-info"
+															ng-show="{{item.accessory.offer == 0}}"> <span
+															class="cart-product-qty">{{ item.quantity }}</span> x {{
+															item.accessory.salePrice | number:0 }} VND
+														</span> <span class="cart-product-info"
+															ng-show="{{item.accessory.offer != 0}}"> <span
+															class="cart-product-qty">{{ item.quantity }} </span> x {{
+															(item.accessory.salePrice - (item.accessory.salePrice *
+															item.accessory.offer)) | number:0 }} VND <br><span
+															class="old-price">{{ item.accessory.salePrice |
+																number:0 }}</span> VND
+														</span>
+
+													</div>
+													<!-- End .product-cart-details -->
+
+													<figure class="product-image-container">
+														<a href="/product/detail/{{item.product.id}}"
+															class="product-image"> <img
+															ng-show="{{item.product == null}}"
+															src="/assets/images/products/accessories/{{item.accessory.poster}}"
+															alt="product">
+														</a>
+													</figure>
+													<a class="btn-remove"
+														data-cart-accessory-id="{{item.accessory.id}}"
+														ng-click="removeCartAccessory($event)"
+														title="Remove Product"><i class="icon-close"></i></a>
 												</div> <!-- End .product -->
 											</li>
 										</ul>

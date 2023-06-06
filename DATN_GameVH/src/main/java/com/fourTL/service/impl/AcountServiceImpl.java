@@ -6,10 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fourTL.dao.AccountsDAO;
-import com.fourTL.dao.OrdersDAO;
-import com.fourTL.entities.Accounts;
-import com.fourTL.entities.Orders;
+import com.fourTL.dao.AccountDAO;
+import com.fourTL.dao.Order_dataDAO;
+import com.fourTL.entities.Account;
+import com.fourTL.entities.Order_data;
 import com.fourTL.service.AcountService;
 import com.fourTL.service.OrdersService;
 
@@ -18,15 +18,15 @@ import com.fourTL.service.OrdersService;
 public abstract class AcountServiceImpl implements AcountService {
 
 	@Autowired
-	AccountsDAO accountsDAO;
+	AccountDAO accountsDAO;
 
 	@Override
-	public List<Accounts> findAll() {
+	public List<Account> findAll() {
 		return accountsDAO.findAll();
 	}
 
 	@Override
-	public Accounts findById(String username) {
+	public Account findById(String username) {
 		return accountsDAO.findById(username).get();
 	}
 	

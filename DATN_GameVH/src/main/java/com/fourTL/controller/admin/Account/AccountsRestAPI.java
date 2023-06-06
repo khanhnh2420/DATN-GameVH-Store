@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fourTL.dao.AccountsDAO;
-import com.fourTL.dao.CategoriesDAO;
+import com.fourTL.dao.AccountDAO;
+import com.fourTL.dao.CategoryDAO;
 
-import com.fourTL.entities.Accounts;
-import com.fourTL.entities.Categories;
+import com.fourTL.entities.Account;
+import com.fourTL.entities.Category;
 
 
 
@@ -30,27 +30,27 @@ import com.fourTL.entities.Categories;
 @RequestMapping("/admin/api/accounts")
 public class AccountsRestAPI {
 	@Autowired
-	AccountsDAO accountsDAO;
+	AccountDAO accountsDAO;
 
 	@Autowired
-	CategoriesDAO categoriesDAO;
+	CategoryDAO categoriesDAO;
 	
 	@GetMapping("")
-	public ResponseEntity<Page<Accounts>> getAllAccounts(
+	public ResponseEntity<Page<Account>> getAllAccounts(
 			@RequestParam("page") Optional<Integer> page, 
 			@RequestParam("size") Optional<Integer> size) {
 		Pageable pageable = PageRequest.of(page.orElse(0), size.orElse(6));
-		Page<Accounts> accounts = accountsDAO.findAll(pageable);
+		Page<Account> accounts = accountsDAO.findAll(pageable);
 		return ResponseEntity.ok(accounts);
 	}
 	
 	@GetMapping("/search/{search}")
-	public ResponseEntity<List<Accounts>> search(Model model, @PathVariable("search") String search) {
+	public ResponseEntity<List<Account>> search(Model model, @PathVariable("search") String search) {
 		return ResponseEntity.ok(accountsDAO.findByUsernameContaining(search));
 	}
 	
 	@GetMapping("{id}")
-	public ResponseEntity<Accounts> getOne(@PathVariable("id") String username) {
+	public ResponseEntity<Account> getOne(@PathVariable("id") String username) {
 		if(!accountsDAO.existsById(username)) {
 			return ResponseEntity.notFound().build();
 		}

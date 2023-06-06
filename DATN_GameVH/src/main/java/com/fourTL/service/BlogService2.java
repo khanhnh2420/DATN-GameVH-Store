@@ -1,7 +1,7 @@
 package com.fourTL.service;
 
-import com.fourTL.dao.BlogsDAO;
-import com.fourTL.entities.Blogs;
+import com.fourTL.dao.BlogDAO;
+import com.fourTL.entities.Blog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +10,9 @@ import java.util.List;
 @Service
 public class BlogService2 {
     @Autowired
-    BlogsDAO bldao;
+    BlogDAO bldao;
 
-    public List<Blogs> findAll(){
+    public List<Blog> findAll(){
         return bldao.findAll();
     }
 }

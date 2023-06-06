@@ -1,7 +1,7 @@
 package com.fourTL.dao;
 
-import com.fourTL.entities.Blogs;
-import com.fourTL.entities.Comments;
+import com.fourTL.entities.Blog;
+import com.fourTL.entities.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,9 +12,9 @@ import java.util.List;
 @NoArgsConstructor
 
 public class BlogWithCommentsDTO {
-    private Blogs blog;
-    private List<Comments> comments;
-    public BlogWithCommentsDTO(Blogs blog, List<Comments> comments) {
+    private Blog blog;
+    private List<Comment> comments;
+    public BlogWithCommentsDTO(Blog blog, List<Comment> comments) {
         this.blog = blog;
         this.comments = comments;
     }

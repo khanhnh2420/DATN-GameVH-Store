@@ -1,19 +1,21 @@
 package com.fourTL.controller.site.Blog;
 
-import com.fourTL.dao.BlogsDAO;
-import com.fourTL.dao.CategoriesDAO;
-import com.fourTL.entities.Blogs;
+import com.fourTL.dao.BlogDAO;
+
+
+import com.fourTL.dao.CategoryDAO;
+
+import com.fourTL.entities.Blog;
 import com.fourTL.entities.BlogsDTO;
-import com.fourTL.entities.Categories;
-import com.fourTL.service.BlogService2;
 import com.fourTL.service.BlogsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @CrossOrigin("*")
 @RestController
@@ -21,13 +23,13 @@ import java.util.*;
 public class BlogRestController {
 
     @Autowired
-    BlogsDAO blDao;
+    BlogDAO blDao;
     @Autowired
     // BlogService2 bls2;
     BlogsService blogsService;
 
     @Autowired
-    CategoriesDAO categoriesDAO;
+    CategoryDAO categoriesDAO;
 
     @RequestMapping("blog")
 
@@ -50,7 +52,7 @@ public class BlogRestController {
     public ResponseEntity<List<BlogsDTO>> getAllBlog() {
         List<BlogsDTO> blogList = new ArrayList<>();
 
-        for (Blogs bls : blogsService.findAllByOrderByCreateDateDesc()) {
+        for (Blog bls : blogsService.findAllByOrderByCreateDateDesc()) {
             BlogsDTO blogsDTO = new BlogsDTO();
             blogsDTO.setId(bls.getId());
             blogsDTO.setTittle(bls.getTittle());

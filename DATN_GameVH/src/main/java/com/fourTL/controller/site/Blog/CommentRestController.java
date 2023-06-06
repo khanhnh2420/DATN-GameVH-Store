@@ -1,18 +1,10 @@
 package com.fourTL.controller.site.Blog;
 
-import com.fourTL.dao.BlogWithCommentsDTO;
-import com.fourTL.dao.BlogsDAO;
-import com.fourTL.dao.CommentsDAO;
-import com.fourTL.entities.Blogs;
-import com.fourTL.entities.Comments;
+import com.fourTL.dao.BlogDAO;
+import com.fourTL.dao.CommentDAO;
 import com.fourTL.service.CommentsService;
-import com.fourTL.service.impl.CommentsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collections;
-import java.util.List;
 
 
 @CrossOrigin("*")
@@ -23,9 +15,9 @@ public class CommentRestController {
     CommentsService commentsService;
 
     @Autowired
-    CommentsDAO commentsDAO;
+    CommentDAO commentsDAO;
     @Autowired
-    BlogsDAO blogsDAO;
+    BlogDAO blogsDAO;
 
 //    @GetMapping("/blog-detail/{id}")
 //    public List<Comments> getOneCmt(@PathVariable("id") Integer id) {

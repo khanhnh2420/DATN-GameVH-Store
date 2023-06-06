@@ -1,6 +1,6 @@
 package com.fourTL.controller.site.Blog;
 
-import com.fourTL.entities.Blogs;
+import com.fourTL.entities.Blog;
 import com.fourTL.service.BlogsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

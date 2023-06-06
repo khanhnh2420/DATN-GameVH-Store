@@ -1,20 +1,18 @@
 package com.fourTL.service.impl;
 
 
-import com.fourTL.dao.CommentsDAO;
-import com.fourTL.entities.Comments;
+import com.fourTL.dao.CommentDAO;
+import com.fourTL.entities.Comment;
 import com.fourTL.service.CommentsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CommentsServiceImpl implements CommentsService {
     @Autowired
-    CommentsDAO cmtDao;
+    CommentDAO cmtDao;
 
 //    @Query("SELECT MAX(ThoiGianCmt) AS LatestDate FROM Comments ")
 //    public List<Comments> findNewsestComment() {
@@ -22,21 +20,21 @@ public class CommentsServiceImpl implements CommentsService {
 //    }
 
     @Override
-    public List<Comments> findAll() {
+    public List<Comment> findAll() {
         return cmtDao.findAll();
     }
 
   @Override
-    public List<Comments> findAllByIdBlog(Integer id){
+    public List<Comment> findAllByIdBlog(Integer id){
         return cmtDao.findAllByIdBlog(id);
     }
 
-    public List<Comments> findAllById(Iterable<Integer> integers) {
+    public List<Comment> findAllById(Iterable<Integer> integers) {
         return cmtDao.findAllById(integers);
     }
 
     @Override
-    public Comments findById(Integer id) {
+    public Comment findById(Integer id) {
         return cmtDao.findById(id).get();
     }
 }

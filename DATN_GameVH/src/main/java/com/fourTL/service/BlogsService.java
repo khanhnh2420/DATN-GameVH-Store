@@ -1,20 +1,20 @@
 package com.fourTL.service;
 
-import com.fourTL.entities.Blogs;
+import com.fourTL.entities.Blog;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface BlogsService {
-List<Blogs> findAll();
-Blogs findById(Integer id);
-List<Blogs> findAllByOrderByCreateDateDesc();
+List<Blog> findAll();
+Blog findById(Integer id);
+List<Blog> findAllByOrderByCreateDateDesc();
 
-List<Blogs> getListLastestBlogs();
-    List<Blogs> getListHighestComments();
+List<Blog> getListLastestBlogs();
+    List<Blog> getListHighestComments();
 
-    Page<Blogs> getlistBlogsbyComments(String id , int maxcoment, Pageable pageable);
+    Page<Blog> getlistBlogsbyComments(String id , int maxcoment, Pageable pageable);
 
-    Blogs getBlogbyTittleSearch(String tittleSearch);
+    Blog getBlogbyTittleSearch(String tittleSearch);
 }

@@ -11,4 +11,5 @@ public class CategoryDTO {
 	private String idCategory;
     private String nameCategory;
     private int qtyProduct;
+
 }

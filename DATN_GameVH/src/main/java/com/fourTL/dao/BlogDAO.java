@@ -20,10 +20,10 @@ public interface BlogDAO extends JpaRepository<Blog, Integer> {
     Blog getBlogbyTittleSearch(String tittleSearch);
 
    // @Query("SELECT COUNT(c.Id) AS totalComment FROM Blogs b JOIN b.Comments c WHERE b.Id = :IdBlog")
-@Query(value = "SELECT count (c.blog) as maxcoment FROM Blogs b INNER JOIN  b.comments c where b.id= ?1 ", nativeQuery = true)
+@Query(value = "SELECT count (c.blog) as maxcoment FROM Blogs b INNER JOIN  b.comment c where b.id= ?1 ", nativeQuery = true)
     Page<Blog> getlistBlogsbyComments(String id, int maxcoment, Pageable pageable);
 
-    @Query(value = "SELECT TOP(10) b FROM Blogs b INNER JOIN FETCH b.comments c GROUP BY b ORDER BY COUNT(c) DESC", nativeQuery = true)
+    @Query(value = "SELECT TOP(10) b FROM Blog b INNER JOIN FETCH b.comment c GROUP BY b ORDER BY COUNT(c) DESC", nativeQuery = true)
     List<Blog> getListHighestComments();
 }
 

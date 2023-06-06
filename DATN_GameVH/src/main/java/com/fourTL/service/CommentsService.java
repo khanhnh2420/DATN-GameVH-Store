@@ -8,8 +8,9 @@ import java.util.List;
 public interface CommentsService {
     List<Comment> findAll();
 
-    List<Comment> findAllByIdBlog(Integer id);
+   // List<Comment> findAllByIdBlog(Integer id);
 
     Comment findById(Integer id);
+    List<Comment> findAllCommentAndBlogByIdBlog(Integer blogId);
 
 }

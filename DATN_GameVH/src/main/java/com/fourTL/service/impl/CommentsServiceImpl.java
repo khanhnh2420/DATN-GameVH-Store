@@ -1,6 +1,7 @@
 package com.fourTL.service.impl;
 
 
+import com.fourTL.dao.BlogWithCommentsDTO;
 import com.fourTL.dao.CommentDAO;
 import com.fourTL.entities.Comment;
 import com.fourTL.service.CommentsService;
@@ -14,6 +15,9 @@ public class CommentsServiceImpl implements CommentsService {
     @Autowired
     CommentDAO cmtDao;
 
+
+
+
 //    @Query("SELECT MAX(ThoiGianCmt) AS LatestDate FROM Comments ")
 //    public List<Comments> findNewsestComment() {
 //        return cmtDao.findNewsestComment();
@@ -24,10 +28,10 @@ public class CommentsServiceImpl implements CommentsService {
         return cmtDao.findAll();
     }
 
-  @Override
-    public List<Comment> findAllByIdBlog(Integer id){
-        return cmtDao.findAllByIdBlog(id);
-    }
+//  @Override
+//    public List<Comment> findAllByIdBlog(Integer id){
+//        return cmtDao.findAllByIdBlog(id);
+//    }
 
     public List<Comment> findAllById(Iterable<Integer> integers) {
         return cmtDao.findAllById(integers);
@@ -36,5 +40,10 @@ public class CommentsServiceImpl implements CommentsService {
     @Override
     public Comment findById(Integer id) {
         return cmtDao.findById(id).get();
+    }
+
+    @Override
+    public  List<Comment> findAllCommentAndBlogByIdBlog(Integer blogId){
+        return cmtDao.findAllCommentAndBlogByIdBlog(blogId);
     }
 }

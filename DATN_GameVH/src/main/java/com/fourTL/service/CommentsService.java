@@ -10,7 +10,7 @@ public interface CommentsService {
 
    // List<Comment> findAllByIdBlog(Integer id);
 
-    Comment findById(Integer id);
+    //Comment findById(Integer id);
     List<Comment> findAllCommentAndBlogByIdBlog(Integer blogId);
 
 }

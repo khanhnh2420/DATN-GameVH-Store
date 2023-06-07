@@ -25,5 +25,7 @@ public interface BlogDAO extends JpaRepository<Blog, Integer> {
 
     @Query(value = "SELECT TOP(10) b FROM Blog b INNER JOIN FETCH b.comment c GROUP BY b ORDER BY COUNT(c) DESC", nativeQuery = true)
     List<Blog> getListHighestComments();
+
+
 }
 

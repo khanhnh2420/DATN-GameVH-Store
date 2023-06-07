@@ -1,41 +1,36 @@
 package com.fourTL.dao;
 
 import com.fourTL.entities.Blog;
+import com.fourTL.entities.BlogsDTO;
 import com.fourTL.entities.Comment;
+import com.fourTL.entities.CommentDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class BlogWithCommentsDTO {
+    private BlogsDTO blogsDTO;
+    private List<CommentDTO> commentDTOS;
 
-//    public BlogWithCommentsDTO(Blog blog, List<Comment> comments) {
-//        this.blog = blog;
-//        this.comments = comments;
-//    }
-  private Integer id;
-   private String content;
-   private  String Username;
-   private Date createDate = new Date();
+    public BlogWithCommentsDTO(Blog blog, List<Comment> comments) {
+        this.blogsDTO = new BlogsDTO(blog.getId(),blog.getTittle(),blog.getContent(),
+                blog.getCreateDate(),blog.getAccount().getFullname());
+        List<CommentDTO> commentDTOs = new ArrayList<>();
+        for (Comment comment : comments) {
+            CommentDTO commentDTO = new CommentDTO(comment.getId(),comment.getContent(),comment.getCreateDate(),comment.getAccount().getFullname());
+            commentDTOs.add(commentDTO);
 
-   private Integer BlogId;
-    private String content_blog;
-    private  String Username_blog;
-    private Date createDate_blog = new Date();
-    private String tittle_blog;
+        }
+        // đảo thứ tự
+//        Collections.sort(comments, Comparator.comparingLong(Comment::getId));
+//        Collections.reverse(comments);
+        this.commentDTOS = commentDTOs;
 
+    }
 
-
-
-
-//    @Query(value = "SELECT * FROM comment c INNER JOIN blog b ON c.BlogId = b.id WHERE b.Id = ?1", nativeQuery = true)
-//    List<Comment> findCommentsByBlogId(int blogId);
 }

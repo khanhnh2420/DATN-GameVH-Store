@@ -1,5 +1,6 @@
 package com.fourTL.service;
 
+import com.fourTL.dao.BlogWithCommentsDTO;
 import com.fourTL.entities.Blog;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,4 +18,5 @@ List<Blog> getListLastestBlogs();
     Page<Blog> getlistBlogsbyComments(String id , int maxcoment, Pageable pageable);
 
     Blog getBlogbyTittleSearch(String tittleSearch);
+    public BlogWithCommentsDTO getBlogWithComments(Integer id);
 }

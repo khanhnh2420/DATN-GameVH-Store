@@ -58,20 +58,12 @@ public class BlogRestController {
             blogsDTO.setTittle(bls.getTittle());
             blogsDTO.setContent(bls.getContent());
             blogsDTO.setCreateDate(bls.getCreateDate());
-            blogsDTO.setUsername(bls.getAccount().getUsername());
+            blogsDTO.setUsername(bls.getAccount().getFullname());
 
             blogList.add(blogsDTO);
         }
 
         return ResponseEntity.ok(blogList);
     }
-
-//    @GetMapping("/blog-detail/{id}")
-//    public ResponseEntity<Blogs> getOne(@PathVariable("id") Integer id) {
-//        if(!blDao.existsById(id)) {
-//            return ResponseEntity.notFound().build();
-//        }
-//        return ResponseEntity.ok(blDao.findById(id).get());
-//    }
 
 }

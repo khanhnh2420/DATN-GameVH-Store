@@ -38,11 +38,6 @@ public class CommentsServiceImpl implements CommentsService {
     }
 
     @Override
-    public Comment findById(Integer id) {
-        return cmtDao.findById(id).get();
-    }
-
-    @Override
     public  List<Comment> findAllCommentAndBlogByIdBlog(Integer blogId){
         return cmtDao.findAllCommentAndBlogByIdBlog(blogId);
     }

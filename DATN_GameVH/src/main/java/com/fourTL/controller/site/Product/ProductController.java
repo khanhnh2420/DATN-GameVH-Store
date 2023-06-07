@@ -17,10 +17,10 @@ public class ProductController {
 
 	@Autowired
 	ProductService pService;
-	
+
 	@Autowired
 	ProductDAO pDAO;
-	
+
 	@RequestMapping("/product/detail/{id}")
 	private String index(Model model, @PathVariable("id") Integer id) {
 		// Lấy sản phẩm theo ID
@@ -32,6 +32,37 @@ public class ProductController {
 		// Lấy danh sách sản phẩm cùng loại
 		List<Product> sameProduct = pDAO.findByCategoryId(item.getCategory().getId());
 		model.addAttribute("sameProduct", sameProduct);
+
+		// Next and previous product
+		List<Product> listProducts = pService.findAll();
+		int currentIndex = -1;
+		int nextIndex;
+		int previousIndex;
+
+		for (int i = 0; i < listProducts.size(); i++) {
+			if (listProducts.get(i).getId() == id) {
+				currentIndex = i;
+				nextIndex = i;
+				previousIndex = i;
+
+				if ((currentIndex + 1) < listProducts.size()) {
+					nextIndex++;
+				} else {
+					nextIndex = 0;
+				}
+
+				if (currentIndex > 0) {
+					previousIndex--;
+				} else {
+					previousIndex = listProducts.size() - 1;
+				}
+
+				model.addAttribute("previousProduct", listProducts.get(previousIndex).getId());
+				model.addAttribute("nextProduct", listProducts.get(nextIndex).getId());
+
+				break;
+			}
+		}
 		return "site/product-detail";
 	}
 }

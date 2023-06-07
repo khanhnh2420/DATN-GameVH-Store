@@ -153,7 +153,14 @@
 													<a href="/product/detail/{{item.id}}">{{item.name}}</a>
 												</h3>
 												<!-- End .product-title -->
-												<div class="product-price">{{item.price | number:0}} VND</div>
+												<div class="product-price">
+													<span class="new-price" ng-show="{{item.offer <= 0}}">{{item.salePrice
+														| number:0}} VND</span> <span class="new-price"
+														ng-show="{{item.offer > 0}}">{{item.salePrice
+														- (item.salePrice * item.offer) | number:0}} VND</span> <span
+														class="old-price" ng-show="{{item.offer > 0}}">{{item.salePrice
+														| number:0}} VND</span>
+												</div>
 												<!-- End .product-price -->
 												<div class="ratings-container">
 													<div class="ratings">

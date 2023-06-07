@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>CATEGORY</title>
+	<title>ACCESSORIES</title>
 	<meta name="keywords" content="HTML5 Template">
 	<meta name="description" content="4TL">
 	<meta name="author" content="p-themes">
@@ -30,8 +30,8 @@
 				<div class="container">
 					<ol class="breadcrumb">
 						<li class="breadcrumb-item"><a th:href="@{|/|}">Home</a></li>
-						<li class="breadcrumb-item"><a link="/category" ng-click="goToCategoryPage($event,9)">Shop</a></li>
-						<li class="breadcrumb-item active" aria-current="page">Products</li>
+						<li class="breadcrumb-item"><a link="/category" ng-click="goToCategoryPage($event,12)">Shop</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Accessory</li>
 					</ol>
 				</div>
 				<!-- End .container -->
@@ -45,8 +45,8 @@
 							<div class="toolbox">
 								<div class="toolbox-left">
 									<div class="toolbox-info">
-										Showing <span>{{products.numberOfElements}} of {{products.totalElements}}</span>
-										Products
+										Showing <span>{{accessories.numberOfElements}} of {{accessories.totalElements}}</span>
+										accessories
 									</div>
 									<!-- End .toolbox-info -->
 								</div>
@@ -66,22 +66,22 @@
 									</div>
 									<!-- End .toolbox-sort -->
 									<div class="toolbox-layout">
-										<a link="/category-list" ng-click="goToCategoryPage($event,4)"
+										<a link="/accessory-list" ng-click="goToAccessoryPage($event,4)"
 											class="btn-layout"> <svg width="16" height="10">
 												<rect x="0" y="0" width="4" height="4" />
 												<rect x="6" y="0" width="10" height="4" />
 												<rect x="0" y="6" width="4" height="4" />
 												<rect x="6" y="6" width="10" height="4" />
 											</svg>
-										</a> <a link="/category-2cols" ng-click="goToCategoryPage($event,6)"
+										</a> <a link="/accessory-2cols" ng-click="goToAccessoryPage($event,6)"
 											class="btn-layout"> <svg width="10" height="10">
 												<rect x="0" y="0" width="4" height="4" />
 												<rect x="6" y="0" width="4" height="4" />
 												<rect x="0" y="6" width="4" height="4" />
 												<rect x="6" y="6" width="4" height="4" />
 											</svg>
-										</a> <a link="/category" ng-click="goToCategoryPage($event,9)"
-											class="btn-layout active"> <svg width="16" height="10">
+										</a> <a link="/accessory" ng-click="goToAccessoryPage($event,9)"
+											class="btn-layout"> <svg width="16" height="10">
 												<rect x="0" y="0" width="4" height="4" />
 												<rect x="6" y="0" width="4" height="4" />
 												<rect x="12" y="0" width="4" height="4" />
@@ -89,8 +89,8 @@
 												<rect x="6" y="6" width="4" height="4" />
 												<rect x="12" y="6" width="4" height="4" />
 											</svg>
-										</a> <a link="/category-4cols" ng-click="goToCategoryPage($event,12)"
-											class="btn-layout"> <svg width="22" height="10">
+										</a> <a link="/accessory-4cols" ng-click="goToAccessoryPage($event,12)"
+											class="btn-layout active"> <svg width="22" height="10">
 												<rect x="0" y="0" width="4" height="4" />
 												<rect x="6" y="0" width="4" height="4" />
 												<rect x="12" y="0" width="4" height="4" />
@@ -108,18 +108,18 @@
 							</div>
 							<!-- End .toolbox -->
 
-							<div class="products mb-3">
+							<div class="accessories mb-3">
 								<div class="row justify-content-center">
-									<div ng-if="products.content.length === 0">
+									<div ng-if="accessories.content.length === 0">
 										<p>Không có dữ liệu sản phẩm</p>
 									</div>
 
-									<div class="col-6 col-md-4 col-lg-4" ng-if="products.content.length > 0"
-										ng-repeat="item in products.content">
+									<div class="col-6 col-md-4 col-lg-4 col-xl-3" ng-if="accessories.content.length > 0"
+										ng-repeat="item in accessories.content">
 										<div class="product product-7 text-center">
 											<figure class="product-media">
-												<a href="/product/detail/{{item.id}}"> <img
-														src="assets/images/products/{{item.poster}}" alt="Product image"
+												<a href="/accessory/detail/{{item.id}}"> <img
+														src="assets/images/products/accessories/{{item.poster}}" alt="Product image"
 														class="product-image">
 												</a>
 
@@ -136,21 +136,17 @@
 												<!-- End .product-action-vertical -->
 
 												<div class="product-action">
-													<a data-product-id="{{item.id}}" ng-click="addCart($event)"
-														class="btn-product btn-cart"><span>add
-															to cart</span></a>
+													<a data-accessory-id="{{item.id}}" ng-click="addCartAccessory($event)"
+														class="btn-product btn-cart"><span>add to cart</span></a>
 												</div>
 												<!-- End .product-action -->
 											</figure>
 											<!-- End .product-media -->
 
 											<div class="product-body">
-												<div class="product-cat">
-													<a href="#">{{item.category.name}}</a>
-												</div>
 												<!-- End .product-cat -->
 												<h3 class="product-title">
-													<a href="/product/detail/{{item.id}}">{{item.name}}</a>
+													<a href="/accessory/detail/{{item.id}}">{{item.name}}</a>
 												</h3>
 												<!-- End .product-title -->
 												<div class="product-price">
@@ -176,15 +172,15 @@
 										</div>
 										<!-- End .product -->
 									</div>
-									<!-- End .col-sm-6 col-lg-4 -->
+									<!-- End .col-sm-6 col-lg-4 col-xl-3 -->
 								</div>
 								<!-- End .row -->
 							</div>
-							<!-- End .products -->
+							<!-- End .accessories -->
 
 							<nav aria-label="Page navigation">
 								<ul class="pagination">
-									<li class="page-item" ng-class="{ disabled: products.first }">
+									<li class="page-item" ng-class="{ disabled: accessories.first }">
 										<button class="page-link page-link-prev" aria-label="Previous"
 											ng-click="getPrevPage()" tabindex="-1"
 											aria-disabled="{{currentPage === 1}}">
@@ -192,12 +188,12 @@
 										</button>
 									</li>
 									<li class="page-item"
-										ng-repeat="pNum in [].constructor(products.totalPages) track by $index"
+										ng-repeat="pNum in [].constructor(accessories.totalPages) track by $index"
 										ng-class="{ active: $index === currentPage }">
 										<button class="page-link" ng-click="get_ByPage($index)">{{$index + 1}}</button>
 									</li>
-									<li class="page-item-total">of {{products.totalPages}}</li>
-									<li class="page-item" ng-class="{ disabled: products.last }">
+									<li class="page-item-total">of {{accessories.totalPages}}</li>
+									<li class="page-item" ng-class="{ disabled: accessories.last }">
 										<button class="page-link page-link-next" aria-label="Next"
 											ng-click="getNextPage()">
 											Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
@@ -210,42 +206,9 @@
 						<aside class="col-lg-3 order-lg-first">
 							<div class="sidebar sidebar-shop">
 								<div class="widget widget-clean">
-									<label>Filters:</label> <a href="" ng-click="get_all()"
-										class="sidebar-filter-clear">Clean All</a>
+									<label>Filters:</label>
 								</div>
 								<!-- End .widget widget-clean -->
-
-								<div class="widget widget-collapsible">
-									<h3 class="widget-title">
-										<a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true"
-											aria-controls="widget-1"> Category </a>
-									</h3>
-									<!-- End .widget-title -->
-
-									<div class="collapse show" id="widget-1">
-										<div class="widget-body">
-											<div class="filter-items filter-items-count" ng-controller="Category">
-												<div class="filter-item" ng-repeat="(key, value) in categories">
-													<div class="custom-control custom-checkbox">
-														<input type="checkbox" class="custom-control-input"
-															ng-click="get_ByCategory($event,key)"
-															id="{{'cat-' + $index}}"> <label
-															class="custom-control-label"
-															for="{{'cat-' + $index}}">{{value.nameCategory}}</label>
-													</div>
-													<!-- End .custom-checkbox -->
-													<span class="item-count">{{value.qtyProduct}}</span>
-												</div>
-												<!-- End .filter-item -->
-											</div>
-											<!-- End .filter-items -->
-										</div>
-										<!-- End .widget-body -->
-									</div>
-									<!-- End .collapse -->
-								</div>
-								<!-- End .widget -->
-
 								<div class="widget widget-collapsible">
 									<h3 class="widget-title">
 										<a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true"
@@ -297,7 +260,8 @@
 	<script src="assets/js/nouislider.min.js"></script>
 	<!-- Main JS File -->
 	<script src="assets/js/main.js"></script>
-	<script src="assets/AngularJS API/Shop.js"></script>
+	<script src="assets/AngularJS API/ShopAccessory.js"></script>
 </body>
+
 
 </html>

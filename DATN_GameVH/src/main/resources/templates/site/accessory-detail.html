@@ -328,11 +328,11 @@
 								</h3>
 								<!-- End .product-title -->
 								<div class="product-price">
-									<span class="new-price" th:if="${item.offer <= 0}"
+									<span class="new-price d-block w-100" th:if="${item.offer <= 0}"
 										th:text="${#numbers.formatDecimal(item.salePrice, 1, 'COMMA', 0, 'POINT')} + ' VND'">1232</span>
-									<span class="new-price" th:if="${item.offer > 0}"
+									<span class="new-price d-block w-100" th:if="${item.offer > 0}"
 										th:text="${#numbers.formatDecimal(item.salePrice - (item.salePrice * item.offer), 1, 'COMMA', 0, 'POINT')} + ' VND'">1232</span>
-									<span class="old-price" th:if="${item.offer > 0}"
+									<span class="old-price d-block w-100" th:if="${item.offer > 0}"
 										th:text="${#numbers.formatDecimal(item.salePrice, 1, 'COMMA', 0, 'POINT')} + ' VND'">1232</span>
 								</div>
 								<!-- End .product-price -->

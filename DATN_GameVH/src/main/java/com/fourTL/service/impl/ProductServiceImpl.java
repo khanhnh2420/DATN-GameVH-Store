@@ -24,5 +24,11 @@ public class ProductServiceImpl implements ProductService {
 	public Product findById(Integer id) {
 		return pDAO.findById(id).get();
 	}
+
+	@Override
+	public List<Product> findTopRatedProducts() {
+		// TODO Auto-generated method stub
+		return pDAO.findTopRatedProducts();
+	}
 	
 }

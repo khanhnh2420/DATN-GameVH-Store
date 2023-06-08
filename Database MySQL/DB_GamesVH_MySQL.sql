@@ -1936,7 +1936,38 @@ INSERT INTO `FeedBack` (`Id`, `ProductId`, `AccessoryId`, `Username`, `Content`,
 INSERT INTO `FeedBack` (`Id`, `ProductId`, `AccessoryId`, `Username`, `Content`, `CreateDate`, `Status`, `Star`) VALUES (4, 4, NULL, 'hoangtunglam', 'Sân cỏ xấu quá, lỗi chuyển động không mượt', '2023-02-02 00:00:00', 1, 4);
 INSERT INTO `FeedBack` (`Id`, `ProductId`, `AccessoryId`, `Username`, `Content`, `CreateDate`, `Status`, `Star`) VALUES (5, 4, NULL, 'hoangtunglam', 'Năm nay không biết nó fix cái dynamic potential nửa vời của career mode và phòng thủ siêu ngu chưa', '2023-02-02 00:00:00', 1, 3);
 INSERT INTO `FeedBack` (`Id`, `ProductId`, `AccessoryId`, `Username`, `Content`, `CreateDate`, `Status`, `Star`) VALUES (6, 4, NULL, 'nguyenhongnhan', 'Mình thì chẳng cần gì mới nhiều cả, chỉ cần trong cái manager career nó fix lại cái dynamic potential, để tránh việc mấy cầu thủ trẻ đôn lên đội 1 cuối mùa này thì mùa sau chưa gì đã rớt 5-7 điểm POT vô lí.', '2023-02-02 00:00:00', 1, 5);
-
+INSERT INTO `FeedBack` (`Username`, `Content`, `Status`, `Star`, `CreateDate`, `ProductId`, `AccessoryId`)
+VALUES
+    ('cust', 'Sản phẩm rất tốt, tôi rất hài lòng với chất lượng và hiệu suất của nó.', 1, 5, NOW(), 1, NULL),
+    ('dangkimchi', 'Đáng giá mỗi đồng.', 1, 4, NOW(), 2, NULL),
+    ('dire', 'Phụ kiện gaming chất lượng cao, tôi rất hài lòng.', 1, 5, NOW(), 3, NULL),
+    ('hoangtunglam', 'Sản phẩm không đạt yêu cầu, cần cải thiện.', 0, 2, NOW(), 4, NULL),
+    ('lethithuy', 'Sản phẩm hơi đắt nhưng chất lượng rất tốt.', 1, 4, NOW(), 5, NULL),
+    ('lethuhien', 'Phụ kiện gaming hữu ích và giá cả hợp lý.', 1, 4, NOW(), 6, NULL),
+    ('nguyenhongnhan', 'Sản phẩm giao hàng nhanh chóng, rất tốt.', 1, 5, NOW(), 7, NULL),
+    ('nguyenvana', 'Chất lượng sản phẩm tuyệt vời, giá cả phải chăng.', 1, 5, NOW(), 8, NULL),
+    ('nguyenvanbao', 'Phụ kiện gaming chất lượng đáng tin cậy.', 1, 4, NOW(), 9, NULL),
+    ('phamthuc', 'Sản phẩm đáng mua, tôi sẽ giới thiệu cho bạn bè.', 1, 5, NOW(), 10, NULL),
+    ('staf', 'Sản phẩm tuyệt vời, đáng để sở hữu.', 1, 5, NOW(), 11, NULL),
+    ('tranthanhthao', 'Phụ kiện gaming giúp tôi có trải nghiệm tuyệt vời.', 1, 4, NOW(), 12, NULL),
+	('nguyenhongnhan', 'Sản phẩm giao hàng nhanh chóng, rất tốt.', 1, 5, NOW(), 7, NULL),
+    ('nguyenvana', 'Chất lượng sản phẩm tuyệt vời, giá cả phải chăng.', 1, 5, NOW(), 8, NULL),
+    ('nguyenvanbao', 'Phụ kiện gaming chất lượng đáng tin cậy.', 1, 4, NOW(), 9, NULL),
+    ('phamthuc', 'Sản phẩm đáng mua, tôi sẽ giới thiệu cho bạn bè.', 1, 5, NOW(), 10, NULL),
+    ('staf', 'Sản phẩm tuyệt vời, đáng để sở hữu.', 1, 5, NOW(), 11, NULL),
+    ('tranthanhthao', 'Phụ kiện gaming giúp tôi có trải nghiệm tuyệt vời.', 1, 4, NOW(), 12, NULL),
+    ('cust', 'Sản phẩm rất tốt, tôi rất hài lòng với chất lượng và hiệu suất của nó.', 1, 5, NOW(), NULL, 1),
+    ('dangkimchi', 'Đáng giá mỗi đồng.', 1, 4, NOW(), NULL, 2),
+    ('dire', 'Phụ kiện gaming chất lượng cao, tôi rất hài lòng.', 1, 5, NOW(), NULL, 3),
+    ('hoangtunglam', 'Sản phẩm không đạt yêu cầu, cần cải thiện.', 0, 2, NOW(), NULL, 4),
+    ('lethithuy', 'Sản phẩm hơi đắt nhưng chất lượng rất tốt.', 1, 4, NOW(), NULL, 5),
+    ('lethuhien', 'Phụ kiện gaming hữu ích và giá cả hợp lý.', 1, 4, NOW(), NULL, 6),
+    ('nguyenhongnhan', 'Sản phẩm giao hàng nhanh chóng, rất tốt.', 1, 5, NOW(), NULL, 7),
+    ('nguyenvana', 'Chất lượng sản phẩm tuyệt vời, giá cả phải chăng.', 1, 5, NOW(), NULL, 8),
+    ('nguyenvanbao', 'Phụ kiện gaming chất lượng đáng tin cậy.', 1, 4, NOW(), NULL, 9),
+    ('phamthuc', 'Sản phẩm đáng mua, tôi sẽ giới thiệu cho bạn bè.', 1, 5, NOW(), NULL, 10),
+    ('staf', 'Sản phẩm tuyệt vời, đáng để sở hữu.', 1, 5, NOW(), NULL, 11),
+    ('tranthanhthao', 'Phụ kiện gaming giúp tôi có trải nghiệm tuyệt vời.', 1, 4, NOW(), NULL, 12);
 
 -- Data
 -- Data Favorite

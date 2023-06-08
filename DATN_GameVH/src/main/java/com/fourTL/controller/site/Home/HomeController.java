@@ -21,7 +21,7 @@ public class HomeController {
 
 	@Autowired
 	ProductService productService;
-	
+
 	@Autowired
 	AccessoryService accessoryService;
 
@@ -37,10 +37,14 @@ public class HomeController {
 		List<OrderDetail> listProductTrending = orderDetailsDAO.findTopSellingProducts();
 		model.addAttribute("productsTrending", listProductTrending);
 
+		// List Top Rated
+		List<Product> listProductTopRated = productService.findTopRatedProducts();
+		model.addAttribute("productTopRated", listProductTopRated);
+
 		// List accessories random 6 product
 		List<Accessory> listAccessories = accessoryService.findAll();
 		model.addAttribute("accessories", getRandom(listAccessories, 5));
-		
+
 		return "site/home";
 	}
 

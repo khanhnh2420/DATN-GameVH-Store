@@ -1,11 +1,13 @@
 package com.fourTL.controller.site.Category;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fourTL.DTO.ProductDTO;
 import com.fourTL.dao.CategoryDAO;
 import com.fourTL.dao.ProductDAO;
 import com.fourTL.entities.Category;
@@ -48,25 +51,31 @@ public class CategoryRestController {
 	}
 	
 	@RequestMapping("/getAll")
-	public ResponseEntity<Page<Product>> getAllProducts(
+	public ResponseEntity<Page<ProductDTO>> getAllProducts(
 			@RequestParam("page") Optional<Integer> page, 
 			@RequestParam("size") Optional<Integer> size) {
 		Pageable pageable = PageRequest.of(page.orElse(0), size.orElse(9));
-		Page<Product> products = pDAO.findAll(pageable);
+		Page<ProductDTO> products = pDAO.findAllProductDTO(pageable);
 	    return ResponseEntity.ok(products);
 	}
 
 	@RequestMapping("/findByCategoryId/{categoryId}")
-	public ResponseEntity<Page<Product>> viewProductsByCategoryId(
+	public ResponseEntity<Page<ProductDTO>> viewProductsByCategoryId(
 			@PathVariable("categoryId") String categoryId,
 			@RequestParam("page") Optional<Integer> page, 
 			@RequestParam("size") Optional<Integer> size) {
 		Pageable pageable = PageRequest.of(page.orElse(0), size.orElse(9));
-		Page<Product> products;
+		Page<ProductDTO> products;
+		List<ProductDTO> listProductCategoryDTO = new ArrayList<>();
 		if (categoryId == null || categoryId.isBlank()) {
-			products = pDAO.findAll(pageable);
+			products = pDAO.findAllProductDTO(pageable);
 		} else {
-			products = pDAO.findByCategoryId(categoryId, pageable);
+			for (ProductDTO productDTO : pDAO.findTopRatedProducts()) {
+				if(productDTO.getCategoryId().equals(categoryId)) {
+					listProductCategoryDTO.add(productDTO);
+				}
+			}
+			products = new PageImpl<>(listProductCategoryDTO, pageable, listProductCategoryDTO.size());
 		}
 		return ResponseEntity.ok(products);
 	}

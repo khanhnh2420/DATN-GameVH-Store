@@ -1,6 +1,8 @@
 package com.fourTL.controller.site.Home;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -9,11 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.fourTL.DTO.AccessoryDTO;
 import com.fourTL.DTO.ProductDTO;
 import com.fourTL.dao.OrderDetailDAO;
-import com.fourTL.entities.Accessory;
 import com.fourTL.entities.OrderDetail;
-import com.fourTL.entities.Product;
 import com.fourTL.service.AccessoryService;
 import com.fourTL.service.ProductService;
 
@@ -32,18 +33,44 @@ public class HomeController {
 	@RequestMapping("/")
 	private String index(Model model) {
 		// List all product
-		List<Product> listProduct = productService.findAll();
-		model.addAttribute("products", getRandom(listProduct, 6));
+		List<ProductDTO> listAllProductDTO = productService.findTopRatedProducts();
+		// List 6 Product Random
+		model.addAttribute("products", getRandom(listAllProductDTO, 6));
+
 		// List Top Selling Products
-		List<OrderDetail> listProductTrending = orderDetailsDAO.findTopSellingProducts();
-		model.addAttribute("productsTrending", listProductTrending);
+		List<OrderDetail> listProductTrendingOD = orderDetailsDAO.findTopSellingProducts();
+		// List Top Selling Products
+		List<ProductDTO> listProductDTO = productService.findTopRatedProducts();
+		List<ProductDTO> listProductTopTrending = new ArrayList<>();
+		for (ProductDTO productDTO : listProductDTO) {
+			for (OrderDetail orderDetail : listProductTrendingOD) {
+				if(productDTO.getId() == orderDetail.getProduct().getId()) {
+					listProductTopTrending.add(productDTO);
+				}
+			}
+		}
+		model.addAttribute("productsTrending", listProductTopTrending);
 
 		// List Top Rated
 		List<ProductDTO> listProductTopRated = productService.findTopRatedProducts();
+		// Order By Z-A getRate()
+		Comparator<ProductDTO> rateComparator = Comparator.comparing(ProductDTO::getRate);
+		Collections.sort(listProductTopRated, rateComparator.reversed());
+		// Get Limit 6 Product
+		listProductTopRated = listProductTopRated.subList(0, Math.min(6, listProductTopRated.size()));
 		model.addAttribute("productTopRated", listProductTopRated);
 
+		// List Product New Releases
+		List<ProductDTO> listProductNewReleases = productService.findTopRatedProducts();
+		// Order By Z-A CreateDate
+		Comparator<ProductDTO> newReleasesComparator = Comparator.comparing(ProductDTO::getCreateDate);
+		Collections.sort(listProductNewReleases, newReleasesComparator.reversed());
+		// Get Limit 6 Product
+		listProductNewReleases = listProductNewReleases.subList(0, Math.min(6, listProductNewReleases.size()));
+		model.addAttribute("productNewReleases", listProductNewReleases);
+
 		// List accessories random 6 product
-		List<Accessory> listAccessories = accessoryService.findAll();
+		List<AccessoryDTO> listAccessories = accessoryService.findAccessoryFeedBack();
 		model.addAttribute("accessories", getRandom(listAccessories, 5));
 
 		return "site/home";

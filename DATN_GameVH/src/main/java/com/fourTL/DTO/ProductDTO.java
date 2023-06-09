@@ -1,5 +1,7 @@
 package com.fourTL.DTO;
 
+import java.util.Date;
+
 public interface ProductDTO{
 	Integer getId();
 	String getName();
@@ -12,4 +14,5 @@ public interface ProductDTO{
 	Integer getCountFeedBack();
 	String getCategoryName();
 	String getCategoryId();
+	Date getCreateDate();
 }

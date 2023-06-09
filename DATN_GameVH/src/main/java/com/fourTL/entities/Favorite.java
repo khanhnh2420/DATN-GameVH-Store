@@ -35,6 +35,6 @@ public class Favorite implements Serializable{
 	Product product;
 	
 	@ManyToOne
-	@JoinColumn(name = "AccessoriesId")
+	@JoinColumn(name = "AccessoryId")
 	Accessory accessory;
 }

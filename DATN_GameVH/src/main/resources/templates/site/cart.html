@@ -3,20 +3,22 @@
 	th:replace="~{/layout_site/layout.html :: dynamic(~{::title},~{::body})}">
 
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>CART</title>
-	<meta name="keywords" content="HTML5 Template">
-	<meta name="description" content="4TL">
-	<meta name="author" content="p-themes">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>CART</title>
+<meta name="keywords" content="HTML5 Template">
+<meta name="description" content="4TL">
+<meta name="author" content="p-themes">
 </head>
 
 <body>
 	<div class="wrap-container">
 		<div class="image-bg-body"></div>
 		<main class="main">
-			<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+			<div class="page-header text-center"
+				style="background-image: url('assets/images/page-header-bg.jpg')">
 				<div class="container">
 					<h1 class="page-title">
 						Shopping Cart<span>Shop</span>
@@ -55,12 +57,12 @@
 
 									<tbody>
 										<tr ng-repeat="item in cart">
-											<td class="product-col">
+											<td class="product-col" ng-show="{{item.product != null}}">
 												<div class="product">
 													<figure class="product-media">
 														<a href="/product/detail/{{item.product.id}}"> <img
-																src="assets/images/products/{{item.product.poster}}" class="border border-1"
-																alt="Product image">
+															src="assets/images/products/{{item.product.poster}}"
+															class="border border-1" alt="Product image">
 														</a>
 													</figure>
 
@@ -70,14 +72,63 @@
 													<!-- End .product-title -->
 												</div> <!-- End .product -->
 											</td>
-											<td class="price-col">{{ item.product.price | number:0 }} VND</td>
-											<td class="quantity-col">
-												<div class="cart-product-quantity text-center">x {{ item.quantity }}</div>
-												<!-- End .cart-product-quantity -->
+											<td class="price-col"
+												ng-show="{{item.product != null && item.product.offer == 0}}">{{
+												item.product.salePrice | number:0 }} VND</td>
+											<td class="price-col"
+												ng-show="{{item.product != null && item.product.offer != 0}}">{{
+												(item.product.salePrice - (item.product.salePrice *
+												item.product.offer)) | number:0 }} VND <span class="old-price">{{
+													item.product.salePrice | number:0 }}</span> VND
+											</td>
+											<td class="quantity-col" ng-show="{{item.product != null}}">
+												<div class="cart-product-quantity text-center">x {{
+													item.quantity }}</div> <!-- End .cart-product-quantity -->
 											</td>
 											<!-- <td class="total-col">$84.00</td> -->
-											<td class="remove-col">
-												<button class="btn-remove" data-cart-id="{{item.product.id}}" ng-click="removeCart($event)">
+											<td class="remove-col" ng-show="{{item.product != null}}">
+												<button class="btn-remove"
+													data-cart-id="{{item.product.id}}"
+													ng-click="removeCart($event)">
+													<i class="icon-close"></i>
+												</button>
+											</td>
+										</tr>
+
+										<tr ng-repeat="item in cart">
+											<td class="product-col" ng-show="{{item.accessory != null}}">
+												<div class="product">
+													<figure class="product-media">
+														<a href="/accessory/detail/{{item.accessory.id}}"> <img
+															src="assets/images/products/accessories/{{item.accessory.poster}}"
+															class="border border-1" alt="Product image">
+														</a>
+													</figure>
+
+													<h3 class="product-title">
+														<a href="/accessory/detail/{{item.accessory.id}}">{{item.accessory.name}}</a>
+													</h3>
+													<!-- End .product-title -->
+												</div> <!-- End .product -->
+											</td>
+											<td class="price-col"
+												ng-show="{{item.accessory != null && item.accessory.offer == 0}}">{{
+												item.accessory.salePrice | number:0 }} VND</td>
+											<td class="price-col"
+												ng-show="{{item.accessory != null && item.accessory.offer != 0}}">{{
+												(item.accessory.salePrice - (item.accessory.salePrice *
+												item.accessory.offer)) | number:0 }} VND <span class="old-price">{{
+													item.accessory.salePrice | number:0 }}</span> VND
+											</td>
+											<td class="quantity-col" ng-show="{{item.accessory != null}}">
+												<div class="cart-product-quantity text-center">x {{
+													item.quantity }}</div> <!-- End .cart-product-quantity -->
+											</td>
+											<!-- <td class="total-col">$84.00</td> -->
+											<td class="remove-col" ng-show="{{item.accessory != null}}">
+												<button class="btn-remove"
+													data-cart-accessory-id="{{item.accessory.id}}"
+													ng-click="removeCartAccessory($event)">
 													<i class="icon-close"></i>
 												</button>
 											</td>
@@ -145,8 +196,7 @@
 													<div class="custom-control custom-radio">
 														<input type="radio" id="standart-shipping" name="shipping"
 															class="custom-control-input"> <label
-															class="custom-control-label"
-															for="standart-shipping">Standart:</label>
+															class="custom-control-label" for="standart-shipping">Standart:</label>
 													</div> <!-- End .custom-control -->
 												</td>
 												<td>$10.00</td>
@@ -158,8 +208,7 @@
 													<div class="custom-control custom-radio">
 														<input type="radio" id="express-shipping" name="shipping"
 															class="custom-control-input"> <label
-															class="custom-control-label"
-															for="express-shipping">Express:</label>
+															class="custom-control-label" for="express-shipping">Express:</label>
 													</div> <!-- End .custom-control -->
 												</td>
 												<td>$20.00</td>
@@ -167,7 +216,8 @@
 											<!-- End .summary-shipping-row -->
 
 											<tr class="summary-shipping-estimate">
-												<td>Estimate for Your Country<br> <a th:href="@{|/account?username=${#authentication.name}|}">Change
+												<td>Estimate for Your Country<br> <a
+													th:href="@{|/account?username=${#authentication.name}|}">Change
 														address</a></td>
 												<td>&nbsp;</td>
 											</tr>
@@ -188,7 +238,8 @@
 								</div>
 								<!-- End .summary -->
 
-								<a th:href="@{|/category|}" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE
+								<a th:href="@{|/category|}"
+									class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE
 										SHOPPING</span><i class="icon-refresh"></i></a>
 							</aside>
 							<!-- End .col-lg-3 -->

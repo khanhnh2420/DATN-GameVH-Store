@@ -43,9 +43,31 @@ app.controller("Cart-ctrl", function($scope, $http){
 		})
 	}
 	
+	$scope.addCartAccessory = function(event){
+        var accessoryId = event.currentTarget.getAttribute('data-accessory-id');
+		var url = `${host}/restCart/addCart/accessory/${accessoryId}`;
+		$http.post(url).then(resp => {
+			$scope.load_all();
+		}).catch(error => {
+			console.log("Error", error)
+		})
+	}
+	
 	$scope.removeCart = function(event){
+        // remove product
         var productId = event.currentTarget.getAttribute('data-cart-id');
 		var url = `${host}/restCart/removeCart/${productId}`;
+		$http.post(url).then(resp => {
+			$scope.load_all();
+		}).catch(error => {
+			console.log("Error", error)
+		})
+	}
+	
+	$scope.removeCartAccessory = function(event){
+       // remove accessory
+		var accessoryId = event.currentTarget.getAttribute('data-cart-accessory-id');
+		var url = `${host}/restCart/removeCart/accessory/${accessoryId}`;
 		$http.post(url).then(resp => {
 			$scope.load_all();
 		}).catch(error => {

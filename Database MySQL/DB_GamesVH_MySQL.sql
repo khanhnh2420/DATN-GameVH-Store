@@ -1906,26 +1906,26 @@ VALUES (12, 'Dota 2', 'DOTA.jpg', 'DOTA-thumb.jpg-*-DOTA-thumb2.jpg-*-DOTA-thumb
 -- Data Accessory
 INSERT INTO DB_GamesVH.Accessory (Name, Poster, Thumbnail, OriginPrice, SalePrice, Offer, CreateDate, Available, Supplier, Qty, Details)
 VALUES
-('Bàn phím cơ gaming', 'ban_phim_co_gaming_1.png', 'anh1.png-*-anh2.png-*-anh3.png', 900000, 800000, 0.1, '2023-05-30', 1, 'Acer', 50, 'Bàn phím cơ gaming với công nghệ đèn nền RGB, cảm giác gõ chắc chắn và đáp ứng nhanh nhạy.'),
-('Chuột gaming', 'chuot_gaming_1.png', 'anh3.png-*-anh2.png-*-anh1.png', 500000, 450000, 0.1, '2023-05-29', 1, 'Logitech', 30, 'Chuột gaming với độ nhạy cao, nút bấm đa chức năng và thiết kế ergonomic.'),
-('Tai nghe gaming', 'tai_nghe_gaming_1.png', 'anh2.png-*-anh1.png-*-anh3.png', 1200000, 1000000, 0.2, '2023-05-28', 1, 'Logitech', 100, 'Tai nghe gaming chất lượng cao, âm thanh sống động và khả năng chống ồn tốt.'),
-('Bàn di chuột gaming', 'ban_di_chuot_gaming_1.png', 'anh3.png-*-anh1.png-*-anh2.png', 150000, 120000, 0.2, '2023-05-27', 1, 'Razer', 80, 'Bàn di chuột gaming kích thước lớn, bề mặt mịn và chống trượt tốt.'),
-('Ghế gaming', 'ghe_gaming_1.png', 'anh1.png-*-anh2.png-*-anh3.png', 3000000, 2500000, 0.2, '2023-05-26', 1, 'DXRacer', 20, 'Ghế gaming bọc da cao cấp, có khung sắt chắc chắn và hỗ trợ đa chiều.'),
-('Màn hình gaming', 'man_hinh_gaming_1.png', 'anh2.png-*-anh3.png-*-anh1.png', 8000000, 7000000, 0.12, '2023-05-25', 1, 'Asus', 10, 'Màn hình gaming kích thước lớn, độ phân giải cao và tần số làm mới nhanh.'),
-('Lót chuột gaming', 'lot_chuot_gaming_1.png', 'anh3.png-*-anh1.png-*-anh2.png', 100000, 80000, 0.2, '2023-05-24', 1, 'MSI', 50, 'Lót chuột gaming bề mặt nhẵn, chống trượt và giúp tối ưu hoá chính xác di chuyển của chuột.'),
-('Balo gaming', 'balo_gaming_1.png', 'anh1.png-*-anh2.png-*-anh3.png', 500000, 400000, 0.2, '2023-05-23', 1, 'FPT', 30, 'Balo gaming thiết kế thoáng khí, nhiều ngăn và chất liệu bền bỉ.'),
-('Ghế đua gaming', 'ghe_dua_gaming_1.png', 'anh2.png-*-anh3.png-*-anh1.png', 2500000, 2000000, 0.2, '2023-05-22', 1, 'AKRacing', 20, 'Ghế đua gaming với thiết kế hiện đại, tựa lưng điều chỉnh và tư thế ngồi thoải mái.'),
-('Tay cầm chơi game', 'tay_cam_choi_game_1.png', 'anh3.png-*-anh1.png-*-anh2.png', 500000, 450000, 0.1, '2023-05-21', 1, 'XBox', 40, 'Tay cầm chơi game cho máy console, kết nối dễ dàng và trải nghiệm chơi game tốt.'),
-('Ổ cứng di động', 'o_cung_di_dong_1.png', 'anh1.png-*-anh2.png-*-anh3.png', 1000000, 900000, 0.1, '2023-05-20', 1, 'KingSton', 60, 'Ổ cứng di động dung lượng lớn, tốc độ truyền dữ liệu nhanh và độ bền cao.'),
-('Bộ bàn ghế gaming', 'bo_ban_ghe_gaming_1.png', 'anh2.png-*-anh3.png-*-anh1.png', 6000000, 5500000, 0.08, '2023-05-19', 1, 'MSI', 10, 'Bộ bàn ghế gaming gồm bàn và ghế được thiết kế tương thích và thoải mái cho người chơi.'),
-('Ghế massage gaming', 'ghe_massage_gaming_1.png', 'anh1.png-*-anh2.png-*-anh3.png', 4500000, 4000000, 0.11, '2023-05-17', 1, 'KingSport', 15, 'Ghế massage gaming với chế độ rung, massage và thiết kế đẹp mắt.'),
-('Bàn máy tính gaming', 'ban_may_tinh_gaming_1.png', 'anh2.png-*-anh3.png-*-anh1.png', 3000000, 2800000, 0.07, '2023-05-16', 1, 'MSI', 10, 'Bàn máy tính gaming chắc chắn, có nhiều ngăn để đặt thiết bị và dây cáp gọn gàng.'),
-('Thiết bị phát wifi gaming', 'thiet_bi_phat_wifi_gaming_1.png', 'anh3.png-*-anh1.png-*-anh2.png', 800000, 700000, 0.12, '2023-05-15', 1, 'TPLink', 20, 'Thiết bị phát wifi gaming mạnh mẽ, ổn định và tốc độ cao.'),
-('Đèn led gaming', 'den_led_gaming_1.png', 'anh1.png-*-anh2.png-*-anh3.png', 200000, 160000, 0.2, '2023-05-14', 1, 'Tapo', 50, 'Đèn led gaming để trang trí không gian chơi game, tạo hiệu ứng ánh sáng đẹp mắt.'),
-('Ổ cắm điện gaming', 'o_cam_dien_gaming_1.png', 'anh2.png-*-anh3.png-*-anh1.png', 500000, 450000, 0.1, '2023-05-13', 1, 'Xiaomi', 30, 'Ổ cắm điện gaming với nhiều ổ cắm, bảo vệ chống sét và cấp nguồn ổn định.'),
-('Bộ bàn phím và chuột gaming', 'bo_ban_phim_chuot_gaming_1.png', 'anh3.png-*-anh1.png-*-anh2.png', 1000000, 900000, 0.1, '2023-05-12', 1, 'Logitech', 40, 'Bộ bàn phím và chuột gaming tương thích, thiết kế đẹp và độ bền cao.'),
-('Tai nghe Bluetooth gaming', 'tai_nghe_bluetooth_gaming_1.png', 'anh1.png-*-anh2.png-*-anh3.png', 1500000, 1300000, 0.13, '2023-05-11', 1, 'Razer', 25, 'Tai nghe Bluetooth gaming không dây, kết nối nhanh và âm thanh chất lượng cao.'),
-('Gối chơi game', 'goi_choi_game_1.png', 'anh2.png-*-anh3.png-*-anh1.png', 200000, 160000, 0.2, '2023-05-10', 1, 'MSI', 50, 'Gối chơi game thoải mái, hỗ trợ cổ và lưng khi ngồi chơi trong thời gian dài.');
+('Bàn phím cơ gaming', 'Keyboard.jpg', 'Keyboard-thumb.jpg-*-keyboard-thumb2.jpg-*-keyboard-thumb3.jpg', 900000, 800000, 0.1, '2023-05-30', 1, 'Acer', 50, 'Bàn phím cơ gaming với công nghệ đèn nền RGB, cảm giác gõ chắc chắn và đáp ứng nhanh nhạy.'),
+('Chuột gaming', 'mouse.jpg', 'mouse-thumb.jpeg-*-mouse-thumb2.jpg-*-mouse-thumb3.jpeg', 500000, 450000, 0.1, '2023-05-29', 1, 'Logitech', 30, 'Chuột gaming với độ nhạy cao, nút bấm đa chức năng và thiết kế ergonomic.'),
+('Tai nghe gaming', 'headphone.jpg', 'headphone-thumb.jpg-*-headphone-thumb2.jpg-*-headphone-thumb3.jpg', 1200000, 1000000, 0.2, '2023-05-28', 1, 'Logitech', 100, 'Tai nghe gaming chất lượng cao, âm thanh sống động và khả năng chống ồn tốt.'),
+('Bàn di chuột gaming', 'pad.jpg', 'pad-thumb.png-*-pad-thumb2.png-*-pad-thumb3.jpg', 150000, 120000, 0.2, '2023-05-27', 1, 'Razer', 80, 'Bàn di chuột gaming kích thước lớn, bề mặt mịn và chống trượt tốt.'),
+('Ghế gaming', 'chair.jpg', 'chair-thumb.jpg-*-chair-thumb2.jpg-*-chair-thumb3.webp', 3000000, 2500000, 0.2, '2023-05-26', 1, 'DXRacer', 20, 'Ghế gaming bọc da cao cấp, có khung sắt chắc chắn và hỗ trợ đa chiều.'),
+('Màn hình gaming', 'monitor.jpg', 'monitor-thumb.jpg-*-monitor-thumb2.jpg-*-monitor-thumb3.jpg', 8000000, 7000000, 0.12, '2023-05-25', 1, 'Asus', 10, 'Màn hình gaming kích thước lớn, độ phân giải cao và tần số làm mới nhanh.'),
+('Lót chuột gaming', 'mousepad.jpg', 'mousepad-thumb.jpg-*-mousepad-thumb2.jpg-*-mousepad-thumb3.jpg', 100000, 80000, 0.2, '2023-05-24', 1, 'MSI', 50, 'Lót chuột gaming bề mặt nhẵn, chống trượt và giúp tối ưu hoá chính xác di chuyển của chuột.'),
+('Balo gaming', 'backpack.jpg', 'backpack-thumb1.jpg-*-backpack-thumb2.jpg-*-backpack-thumb3.jpg', 500000, 400000, 0.2, '2023-05-23', 1, 'FPT', 30, 'Balo gaming thiết kế thoáng khí, nhiều ngăn và chất liệu bền bỉ.'),
+('Ghế đua gaming', 'racechair.jpg', 'racechair-thumb.jpg-*-racechair-thumb2.jpg-*-racechair-thumb3.jpg', 2500000, 2000000, 0.2, '2023-05-22', 1, 'AKRacing', 20, 'Ghế đua gaming với thiết kế hiện đại, tựa lưng điều chỉnh và tư thế ngồi thoải mái.'),
+('Tay cầm chơi game', 'controller.jpg', 'controller-thumb.jpg-*-controller-thumb2.jpg-*-controller-thumb3.jpg', 500000, 450000, 0.1, '2023-05-21', 1, 'XBox', 40, 'Tay cầm chơi game cho máy console, kết nối dễ dàng và trải nghiệm chơi game tốt.'),
+('Ổ cứng di động', 'ssd.jpg', 'ssd-thumb.jpg-*-ssd-thumb2.jpg-*-ssd-thumb3.jpg', 1000000, 900000, 0.1, '2023-05-20', 1, 'KingSton', 60, 'Ổ cứng di động dung lượng lớn, tốc độ truyền dữ liệu nhanh và độ bền cao.'),
+('Bộ bàn ghế gaming', 'desk.jpg', 'desk-thumb.jpg-*-desk-thumb2.jpg-*-desk-thumb3.jpg', 6000000, 5500000, 0.08, '2023-05-19', 1, 'MSI', 10, 'Bộ bàn ghế gaming gồm bàn và ghế được thiết kế tương thích và thoải mái cho người chơi.'),
+('Ghế massage gaming', 'massage.jpg', 'massage-thumb.jpg-*-massage-thumb2.jpg-*-massage-thumb3.jpg', 4500000, 4000000, 0.11, '2023-05-17', 1, 'KingSport', 15, 'Ghế massage gaming với chế độ rung, massage và thiết kế đẹp mắt.'),
+('Gaming Gear', 'geargame.jpg', 'geargame-thumb.jpg-*-geargame-thumb2.jpg-*-geargame-thumb3.jpg', 3000000, 2800000, 0.07, '2023-05-16', 1, 'MSI', 10, 'Thương hiệu Thrustmaster là cái tên nổi tiếng được rất nhiều khách hàng trên thế giới chọn lựa. .'),
+('Thiết bị phát wifi gaming', 'router.jpg', 'router-thumb.jpg-*-router-thumb2.jpg-*-router-thumb3.jpg', 800000, 700000, 0.12, '2023-05-15', 1, 'TPLink', 20, 'Thiết bị phát wifi gaming mạnh mẽ, ổn định và tốc độ cao.'),
+('Đèn led gaming', 'led.jpg', 'led-thumb.jpg-*-led-thumb2.jpg-*-led-thumb3.jpg', 200000, 160000, 0.2, '2023-05-14', 1, 'Tapo', 50, 'Đèn led gaming để trang trí không gian chơi game, tạo hiệu ứng ánh sáng đẹp mắt.'),
+('Play Station 5', 'ps5.jpg', 'ps5-thumb.jpg-*-ps5-thumb2.jpg-*-ps5-thumb3.jpg', 500000, 450000, 0.1, '2023-05-13', 1, 'Sony', 30, 'Máy Chơi Game PS5, chính hãng, bảo hành 12 tháng, hỗ trợ trả góp 0% tại HALO Shop. Máy Chơi Game PS5 luôn sẵn hàng.'),
+('Bộ bàn phím và chuột gaming', 'gear.jpeg', 'gear-thumb.jpg-*-gear-thumb2.jpg-*-gear-thumb3.jpg', 1000000, 900000, 0.1, '2023-05-12', 1, 'Logitech', 40, 'Bộ bàn phím và chuột gaming tương thích, thiết kế đẹp và độ bền cao.'),
+('Tai nghe Bluetooth gaming', 'headset.jpg', 'headset-thumb.jpg-*-headset-thumb2.jpg-*-headset-thumb3.jpg', 1500000, 1300000, 0.13, '2023-05-11', 1, 'Razer', 25, 'Tai nghe Bluetooth gaming không dây, kết nối nhanh và âm thanh chất lượng cao.'),
+('SoundCard', 'soundcard.jpg', 'soundcard-thumb.jpg-*-soundcard-thumb2.jpg-*-soundcard-thumb3.jpg', 200000, 160000, 0.2, '2023-05-10', 1, 'MSI', 50, 'Máy Chơi Game PS5, chính hãng, bảo hành 12 tháng, hỗ trợ trả góp 0% tại HALO Shop. Máy Chơi Game PS5 luôn sẵn hàng.');
 
 
 -- Data
@@ -1936,7 +1936,38 @@ INSERT INTO `FeedBack` (`Id`, `ProductId`, `AccessoryId`, `Username`, `Content`,
 INSERT INTO `FeedBack` (`Id`, `ProductId`, `AccessoryId`, `Username`, `Content`, `CreateDate`, `Status`, `Star`) VALUES (4, 4, NULL, 'hoangtunglam', 'Sân cỏ xấu quá, lỗi chuyển động không mượt', '2023-02-02 00:00:00', 1, 4);
 INSERT INTO `FeedBack` (`Id`, `ProductId`, `AccessoryId`, `Username`, `Content`, `CreateDate`, `Status`, `Star`) VALUES (5, 4, NULL, 'hoangtunglam', 'Năm nay không biết nó fix cái dynamic potential nửa vời của career mode và phòng thủ siêu ngu chưa', '2023-02-02 00:00:00', 1, 3);
 INSERT INTO `FeedBack` (`Id`, `ProductId`, `AccessoryId`, `Username`, `Content`, `CreateDate`, `Status`, `Star`) VALUES (6, 4, NULL, 'nguyenhongnhan', 'Mình thì chẳng cần gì mới nhiều cả, chỉ cần trong cái manager career nó fix lại cái dynamic potential, để tránh việc mấy cầu thủ trẻ đôn lên đội 1 cuối mùa này thì mùa sau chưa gì đã rớt 5-7 điểm POT vô lí.', '2023-02-02 00:00:00', 1, 5);
-
+INSERT INTO `FeedBack` (`Username`, `Content`, `Status`, `Star`, `CreateDate`, `ProductId`, `AccessoryId`)
+VALUES
+    ('cust', 'Sản phẩm rất tốt, tôi rất hài lòng với chất lượng và hiệu suất của nó.', 1, 5, NOW(), 1, NULL),
+    ('dangkimchi', 'Đáng giá mỗi đồng.', 1, 4, NOW(), 2, NULL),
+    ('dire', 'Phụ kiện gaming chất lượng cao, tôi rất hài lòng.', 1, 5, NOW(), 3, NULL),
+    ('hoangtunglam', 'Sản phẩm không đạt yêu cầu, cần cải thiện.', 0, 2, NOW(), 4, NULL),
+    ('lethithuy', 'Sản phẩm hơi đắt nhưng chất lượng rất tốt.', 1, 4, NOW(), 5, NULL),
+    ('lethuhien', 'Phụ kiện gaming hữu ích và giá cả hợp lý.', 1, 4, NOW(), 6, NULL),
+    ('nguyenhongnhan', 'Sản phẩm giao hàng nhanh chóng, rất tốt.', 1, 5, NOW(), 7, NULL),
+    ('nguyenvana', 'Chất lượng sản phẩm tuyệt vời, giá cả phải chăng.', 1, 5, NOW(), 8, NULL),
+    ('nguyenvanbao', 'Phụ kiện gaming chất lượng đáng tin cậy.', 1, 4, NOW(), 9, NULL),
+    ('phamthuc', 'Sản phẩm đáng mua, tôi sẽ giới thiệu cho bạn bè.', 1, 5, NOW(), 10, NULL),
+    ('staf', 'Sản phẩm tuyệt vời, đáng để sở hữu.', 1, 5, NOW(), 11, NULL),
+    ('tranthanhthao', 'Phụ kiện gaming giúp tôi có trải nghiệm tuyệt vời.', 1, 4, NOW(), 12, NULL),
+	('nguyenhongnhan', 'Sản phẩm giao hàng nhanh chóng, rất tốt.', 1, 5, NOW(), 7, NULL),
+    ('nguyenvana', 'Chất lượng sản phẩm tuyệt vời, giá cả phải chăng.', 1, 5, NOW(), 8, NULL),
+    ('nguyenvanbao', 'Phụ kiện gaming chất lượng đáng tin cậy.', 1, 4, NOW(), 9, NULL),
+    ('phamthuc', 'Sản phẩm đáng mua, tôi sẽ giới thiệu cho bạn bè.', 1, 5, NOW(), 10, NULL),
+    ('staf', 'Sản phẩm tuyệt vời, đáng để sở hữu.', 1, 5, NOW(), 11, NULL),
+    ('tranthanhthao', 'Phụ kiện gaming giúp tôi có trải nghiệm tuyệt vời.', 1, 4, NOW(), 12, NULL),
+    ('cust', 'Sản phẩm rất tốt, tôi rất hài lòng với chất lượng và hiệu suất của nó.', 1, 5, NOW(), NULL, 1),
+    ('dangkimchi', 'Đáng giá mỗi đồng.', 1, 4, NOW(), NULL, 2),
+    ('dire', 'Phụ kiện gaming chất lượng cao, tôi rất hài lòng.', 1, 5, NOW(), NULL, 3),
+    ('hoangtunglam', 'Sản phẩm không đạt yêu cầu, cần cải thiện.', 0, 2, NOW(), NULL, 4),
+    ('lethithuy', 'Sản phẩm hơi đắt nhưng chất lượng rất tốt.', 1, 4, NOW(), NULL, 5),
+    ('lethuhien', 'Phụ kiện gaming hữu ích và giá cả hợp lý.', 1, 4, NOW(), NULL, 6),
+    ('nguyenhongnhan', 'Sản phẩm giao hàng nhanh chóng, rất tốt.', 1, 5, NOW(), NULL, 7),
+    ('nguyenvana', 'Chất lượng sản phẩm tuyệt vời, giá cả phải chăng.', 1, 5, NOW(), NULL, 8),
+    ('nguyenvanbao', 'Phụ kiện gaming chất lượng đáng tin cậy.', 1, 4, NOW(), NULL, 9),
+    ('phamthuc', 'Sản phẩm đáng mua, tôi sẽ giới thiệu cho bạn bè.', 1, 5, NOW(), NULL, 10),
+    ('staf', 'Sản phẩm tuyệt vời, đáng để sở hữu.', 1, 5, NOW(), NULL, 11),
+    ('tranthanhthao', 'Phụ kiện gaming giúp tôi có trải nghiệm tuyệt vời.', 1, 4, NOW(), NULL, 12);
 
 -- Data
 -- Data Favorite

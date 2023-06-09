@@ -38,5 +38,5 @@ public class Blog implements Serializable{
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "blog")
-	List<Comment> comments;
+	List<Comment> comment;
 }

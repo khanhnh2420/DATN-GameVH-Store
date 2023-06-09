@@ -24,10 +24,10 @@ public class OrderDetail  implements Serializable{
 	Product product;
 	
 	@ManyToOne
-	@JoinColumn(name = "Orderid")
+	@JoinColumn(name = "order_dataId")
 	Order_data order;
 	
 	@ManyToOne
-	@JoinColumn(name = "AccessoriesId")
+	@JoinColumn(name = "AccessoryId")
 	Accessory accessory;
 }

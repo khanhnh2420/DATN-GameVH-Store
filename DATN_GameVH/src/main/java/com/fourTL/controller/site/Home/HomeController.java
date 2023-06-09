@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.fourTL.DTO.ProductDTO;
 import com.fourTL.dao.OrderDetailDAO;
 import com.fourTL.entities.Accessory;
 import com.fourTL.entities.OrderDetail;
@@ -38,7 +39,7 @@ public class HomeController {
 		model.addAttribute("productsTrending", listProductTrending);
 
 		// List Top Rated
-		List<Product> listProductTopRated = productService.findTopRatedProducts();
+		List<ProductDTO> listProductTopRated = productService.findTopRatedProducts();
 		model.addAttribute("productTopRated", listProductTopRated);
 
 		// List accessories random 6 product

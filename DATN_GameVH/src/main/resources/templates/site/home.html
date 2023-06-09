@@ -443,7 +443,7 @@
                                             }
                                         }
                                     }'>
-								<div class="product" th:each="p:${productTopRated}">
+								<div class="product" th:each="p:${productTopRated}" ng-controller="Category">
 									<figure class="product-media">
 										<!-- <span class="product-label label-sale">Sale</span> -->
 										<span class="product-label label-top" th:if="${p.offer > 0}"
@@ -469,7 +469,7 @@
 
 									<div class="product-body">
 										<div class="product-cat">
-											<a href="#" th:text="${p.category.name}">Shooter</a>
+											<a href="#" th:text="${p.categoryName}" ng-click="get_ByCategory($event,'${p.categoryId}')">Shooter</a>
 										</div>
 										<!-- End .product-cat -->
 										<h3 class="product-title">
@@ -489,6 +489,15 @@
 										</div>
 
 										<!-- End .product-price -->
+										<div class="ratings-container">
+											<div class="ratings">
+												<div class="ratings-val" th:style="'width: ' + ${p.rate * 20} + '%;'"></div>
+												<!-- End .ratings-val -->
+											</div>
+											<!-- End .ratings -->
+											<span class="ratings-text" th:utext="'( ' + ${p.countFeedBack} + ' Reviews )'">( 2 Reviews )</span>
+										</div>
+										<!-- End .rating-container -->
 									</div>
 									<!-- End .product-body -->
 								</div>
@@ -526,7 +535,7 @@
                                             }
                                         }
                                     }'>
-								<div class="product" th:each="p:${productTopRated}">
+								<div class="product" th:each="p:${productTopRated}" ng-controller="Category">
 									<figure class="product-media">
 										<!-- <span class="product-label label-sale">Sale</span> -->
 										<span class="product-label label-top" th:if="${p.offer > 0}"
@@ -552,7 +561,7 @@
 
 									<div class="product-body">
 										<div class="product-cat">
-											<a href="#" th:text="${p.category.name}">Shooter</a>
+											<a href="#" th:text="${p.categoryName}" ng-click="get_ByCategory($event,'${p.categoryId}')">Shooter</a>
 										</div>
 										<!-- End .product-cat -->
 										<h3 class="product-title">
@@ -574,11 +583,11 @@
 										<!-- End .product-price -->
 										<div class="ratings-container">
 											<div class="ratings">
-												<div class="ratings-val" th:style="'width: ' + ${50} + '%;'"></div>
+												<div class="ratings-val" th:style="'width: ' + ${p.rate * 20} + '%;'"></div>
 												<!-- End .ratings-val -->
 											</div>
 											<!-- End .ratings -->
-											<span class="ratings-text">( 2 Reviews )</span>
+											<span class="ratings-text" th:utext="'( ' + ${p.countFeedBack} + ' Reviews )'">( 2 Reviews )</span>
 										</div>
 										<!-- End .rating-container -->
 									</div>

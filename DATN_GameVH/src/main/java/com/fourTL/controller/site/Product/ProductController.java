@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.fourTL.DTO.ProductDTO;
 import com.fourTL.DTO.impl.ProductDTOImpl;
 import com.fourTL.dao.ProductDAO;
+import com.fourTL.entities.FeedBack;
 import com.fourTL.entities.Product;
+import com.fourTL.service.FeedBackService;
 import com.fourTL.service.ProductService;
 
 @Controller
@@ -24,6 +26,9 @@ public class ProductController {
 
 	@Autowired
 	ProductDAO pDAO;
+
+	@Autowired
+	FeedBackService feedBackService;
 
 	@RequestMapping("/product/detail/{id}")
 	private String index(Model model, @PathVariable("id") Integer id) {
@@ -38,11 +43,11 @@ public class ProductController {
 		List<Product> listProductFindAll = pDAO.findAll();
 		addMissingAccessories(listProductFindAll, sameProduct);
 		for (int i = sameProduct.size() - 1; i >= 0; i--) {
-		    ProductDTO productDTO = sameProduct.get(i);
-		    if (!productDTO.getCategoryId().equals(item.getCategory().getId())) {
-		        // Check nếu không thuộc categoryId được gửi lên thì xóa khỏi list
-		    	sameProduct.remove(i);
-		    }
+			ProductDTO productDTO = sameProduct.get(i);
+			if (!productDTO.getCategoryId().equals(item.getCategory().getId())) {
+				// Check nếu không thuộc categoryId được gửi lên thì xóa khỏi list
+				sameProduct.remove(i);
+			}
 		}
 		model.addAttribute("sameProduct", getRandom(sameProduct, 5));
 
@@ -72,19 +77,34 @@ public class ProductController {
 
 				model.addAttribute("previousProduct", listProducts.get(previousIndex).getId());
 				model.addAttribute("nextProduct", listProducts.get(nextIndex).getId());
-
+				
 				break;
 			}
+		} 
+		
+		List<FeedBack> listFeedBacks = feedBackService.findByProductId(id);
+		Double productRatePoint = 0.0;
+		Double sumStar = 0.0;
+		int totalFeedBack = 0;
+		for (FeedBack feedBack : listFeedBacks) {
+			sumStar += (double)feedBack.getStar();
+			if(feedBack.getStatus()) {
+				totalFeedBack += 1;
+			}
 		}
+		productRatePoint = (double) (sumStar / listFeedBacks.size());
+		model.addAttribute("productRatePoint", productRatePoint * 20);
+		model.addAttribute("totalFeedBack", totalFeedBack);
+		
 		return "site/product-detail";
 	}
-	
+
 	public void addMissingAccessories(List<Product> productsFindAll, List<ProductDTO> productsDisplay) {
 		for (Product product : productsFindAll) {
 			if (!isAccessoryInList(productsDisplay, product.getId())) {
-				ProductDTO productDTO = new ProductDTOImpl(product.getId(), product.getName(),
-						product.getPoster(), product.getThumbnail(), product.getSalePrice(), product.getOffer(),
-						product.getDetails(), 0.0, null, product.getCategory().getName(), product.getCategory().getId(), product.getCreateDate());
+				ProductDTO productDTO = new ProductDTOImpl(product.getId(), product.getName(), product.getPoster(),
+						product.getThumbnail(), product.getSalePrice(), product.getOffer(), product.getDetails(), 0.0,
+						null, product.getCategory().getName(), product.getCategory().getId(), product.getCreateDate());
 				productsDisplay.add(productDTO);
 			}
 		}
@@ -98,7 +118,7 @@ public class ProductController {
 		}
 		return false;
 	}
-	
+
 	public static <T> List<T> getRandom(List<T> list, int n) {
 		// Hàm trả list sản phẩm random theo số lượng
 		List<T> randomList = new ArrayList<>();

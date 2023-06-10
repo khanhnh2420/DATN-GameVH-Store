@@ -1,6 +1,5 @@
 package com.fourTL.controller.site.Category;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -18,13 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fourTL.DTO.AccessoryDTO;
 import com.fourTL.DTO.ProductDTO;
-import com.fourTL.DTO.impl.AccessoryDTOImpl;
 import com.fourTL.DTO.impl.ProductDTOImpl;
 import com.fourTL.dao.CategoryDAO;
 import com.fourTL.dao.ProductDAO;
-import com.fourTL.entities.Accessory;
 import com.fourTL.entities.Category;
 import com.fourTL.entities.CategoryDTO;
 import com.fourTL.entities.Product;

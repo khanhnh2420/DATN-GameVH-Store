@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.fourTL.DTO.AccessoryDTO;
 import com.fourTL.DTO.ProductDTO;
+import com.fourTL.DTO.impl.ProductDTOImpl;
 import com.fourTL.dao.OrderDetailDAO;
 import com.fourTL.entities.OrderDetail;
+import com.fourTL.entities.Product;
 import com.fourTL.service.AccessoryService;
 import com.fourTL.service.ProductService;
 
@@ -33,14 +35,14 @@ public class HomeController {
 	@RequestMapping("/")
 	private String index(Model model) {
 		// List all product
-		List<ProductDTO> listAllProductDTO = productService.findTopRatedProducts();
+		List<ProductDTO> listAllProductDTO = productService.findProductFeedBack();
 		// List 6 Product Random
 		model.addAttribute("products", getRandom(listAllProductDTO, 6));
 
 		// List Top Selling Products
 		List<OrderDetail> listProductTrendingOD = orderDetailsDAO.findTopSellingProducts();
 		// List Top Selling Products
-		List<ProductDTO> listProductDTO = productService.findTopRatedProducts();
+		List<ProductDTO> listProductDTO = productService.findProductFeedBack();
 		List<ProductDTO> listProductTopTrending = new ArrayList<>();
 		for (ProductDTO productDTO : listProductDTO) {
 			for (OrderDetail orderDetail : listProductTrendingOD) {
@@ -52,7 +54,7 @@ public class HomeController {
 		model.addAttribute("productsTrending", listProductTopTrending);
 
 		// List Top Rated
-		List<ProductDTO> listProductTopRated = productService.findTopRatedProducts();
+		List<ProductDTO> listProductTopRated = productService.findProductFeedBack();
 		// Order By Z-A getRate()
 		Comparator<ProductDTO> rateComparator = Comparator.comparing(ProductDTO::getRate);
 		Collections.sort(listProductTopRated, rateComparator.reversed());
@@ -61,7 +63,9 @@ public class HomeController {
 		model.addAttribute("productTopRated", listProductTopRated);
 
 		// List Product New Releases
-		List<ProductDTO> listProductNewReleases = productService.findTopRatedProducts();
+		List<ProductDTO> listProductNewReleases = productService.findProductFeedBack();
+		List<Product> listProductFindAll = productService.findAll();
+		addMissingAccessories(listProductFindAll, listProductNewReleases);
 		// Order By Z-A CreateDate
 		Comparator<ProductDTO> newReleasesComparator = Comparator.comparing(ProductDTO::getCreateDate);
 		Collections.sort(listProductNewReleases, newReleasesComparator.reversed());
@@ -89,5 +93,25 @@ public class HomeController {
 			list.remove(index);
 		}
 		return randomList;
+	}
+	
+	public void addMissingAccessories(List<Product> productsFindAll, List<ProductDTO> productsDisplay) {
+		for (Product product : productsFindAll) {
+			if (!isAccessoryInList(productsDisplay, product.getId())) {
+				ProductDTO productDTO = new ProductDTOImpl(product.getId(), product.getName(),
+						product.getPoster(), product.getThumbnail(), product.getSalePrice(), product.getOffer(),
+						product.getDetails(), 0.0, null, product.getCategory().getName(), product.getCategory().getId(), product.getCreateDate());
+				productsDisplay.add(productDTO);
+			}
+		}
+	}
+
+	public boolean isAccessoryInList(List<ProductDTO> productsDisplay, int productId) {
+		for (ProductDTO productDTO : productsDisplay) {
+			if (productDTO.getId() == productId) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

@@ -2,6 +2,8 @@ package com.fourTL.dao;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -15,5 +17,4 @@ public interface AccessoryDAO extends JpaRepository<Accessory, Integer> {
 			+ "    FROM FeedBack f " + "    WHERE f.accessoryId IS NOT NULL " + " GROUP BY f.accessoryId "
 			+ "    HAVING AVG(f.star) IS NOT NULL " + ") subquery ON a.id = subquery.accessoryId", nativeQuery = true)
 	List<AccessoryDTO> findAccessoryFeedBack();
-
 }

@@ -113,7 +113,8 @@
 									<!-- End .details-filter-row -->
 
 									<div class="product-details-action">
-										<a th:data-accessory-id="${item.id}" ng-click="addCartAccessory($event)"
+										<a th:data-accessory-id="${item.id}"
+											ng-click="addCartAccessory($event)"
 											class="btn-product btn-cart"><span>add to cart</span></a>
 
 										<div class="details-action-wrapper">
@@ -147,13 +148,12 @@
 
 									<div class="accordion accordion-plus product-details-accordion"
 										id="product-accordion">
-										
+
 
 										<div class="card card-box card-sm">
 											<div class="card-header" id="product-review-heading">
 												<h2 class="card-title pb-2">
-													<a class="collapsed"> Reviews (2)
-													</a>
+													<a class="collapsed"> Reviews (2) </a>
 												</h2>
 											</div>
 											<!-- End .card-header -->
@@ -299,7 +299,8 @@
 						<div class="product" th:each="p : ${sameProduct}">
 							<figure class="product-media">
 								<!-- <span class="product-label label-sale">Sale</span> -->
-								<span class="product-label label-new" th:if="${item.offer > 0}" th:text="'SALE ' + ${#numbers.formatDecimal(item.offer * 100, 1, 'COMMA', 0, 'POINT')} + '%'">-10%</span>
+								<span class="product-label label-new" th:if="${p.offer > 0}"
+									th:text="'SALE ' + ${#numbers.formatDecimal(p.offer * 100, 1, 'COMMA', 0, 'POINT')} + '%'">-10%</span>
 								<a th:href="@{|/accessory/detail/${p.id}|}"> <img
 									th:src="@{|/assets/images/products/accessories/${p.poster}|}"
 									alt="Product image" class="product-image">
@@ -312,7 +313,8 @@
 								<!-- End .product-action-vertical -->
 
 								<div class="product-action">
-									<a th:data-accessory-id="${p.id}" ng-click="addCartAccessory($event)"
+									<a th:data-accessory-id="${p.id}"
+										ng-click="addCartAccessory($event)"
 										class="btn-product btn-cart"><span>add to cart</span></a>
 								</div>
 								<!-- End .product-action -->
@@ -328,14 +330,28 @@
 								</h3>
 								<!-- End .product-title -->
 								<div class="product-price">
-									<span class="new-price d-block w-100" th:if="${item.offer <= 0}"
-										th:text="${#numbers.formatDecimal(item.salePrice, 1, 'COMMA', 0, 'POINT')} + ' VND'">1232</span>
-									<span class="new-price d-block w-100" th:if="${item.offer > 0}"
-										th:text="${#numbers.formatDecimal(item.salePrice - (item.salePrice * item.offer), 1, 'COMMA', 0, 'POINT')} + ' VND'">1232</span>
-									<span class="old-price d-block w-100" th:if="${item.offer > 0}"
-										th:text="${#numbers.formatDecimal(item.salePrice, 1, 'COMMA', 0, 'POINT')} + ' VND'">1232</span>
+									<span class="new-price d-block w-100"
+										th:if="${p.offer <= 0}"
+										th:text="${#numbers.formatDecimal(p.salePrice, 1, 'COMMA', 0, 'POINT')} + ' VND'">1232</span>
+									<span class="new-price d-block w-100" th:if="${p.offer > 0}"
+										th:text="${#numbers.formatDecimal(p.salePrice - (p.salePrice * p.offer), 1, 'COMMA', 0, 'POINT')} + ' VND'">1232</span>
+									<span class="old-price d-block w-100" th:if="${p.offer > 0}"
+										th:text="${#numbers.formatDecimal(p.salePrice, 1, 'COMMA', 0, 'POINT')} + ' VND'">1232</span>
 								</div>
 								<!-- End .product-price -->
+								<div class="ratings-container"
+									th:style="'display: ' + ${p.rate == 0 ? 'none' : ''} + ';'">
+									<div class="ratings">
+										<div class="ratings-val"
+											th:style="'width: ' + ${p.rate * 20} + '%;'"></div>
+										<!-- End .ratings-val -->
+									</div>
+									<!-- End .ratings -->
+									<span class="ratings-text"
+										th:utext="'( ' + ${p.countFeedBack} + ' Reviews )'">( 2
+										Reviews )</span>
+								</div>
+								<!-- End .rating-container -->
 							</div>
 							<!-- End .product-body -->
 						</div>

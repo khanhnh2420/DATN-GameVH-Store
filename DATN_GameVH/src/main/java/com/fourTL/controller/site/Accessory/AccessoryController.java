@@ -1,7 +1,6 @@
 package com.fourTL.controller.site.Accessory;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -11,12 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.fourTL.DTO.AccessoryDTO;
+import com.fourTL.DTO.impl.AccessoryDTOImpl;
 import com.fourTL.dao.AccessoryDAO;
-import com.fourTL.dao.ProductDAO;
 import com.fourTL.entities.Accessory;
-import com.fourTL.entities.Product;
 import com.fourTL.service.AccessoryService;
-import com.fourTL.service.ProductService;
 
 @Controller
 public class AccessoryController {
@@ -37,11 +35,13 @@ public class AccessoryController {
 		model.addAttribute("itemIMG", itemIMG);
 
 		// List accessories random 6 product
-		List<Accessory> listAccessories = accessoryService.findAll();
-		model.addAttribute("sameProduct", getRandom(listAccessories, 5));
+		List<AccessoryDTO> sameProduct = accessoryService.findAccessoryFeedBack();
+		List<Accessory> listAccessoriesFindAll = accessoryService.findAll();
+		addMissingAccessories(listAccessoriesFindAll, sameProduct);
+		model.addAttribute("sameProduct", getRandom(sameProduct, 5));
 
 		// Next and previous accessory
-		listAccessories = accessoryService.findAll();
+		List<Accessory> listAccessories = accessoryService.findAll();
 		int currentIndex = -1;
 		int nextIndex;
 		int previousIndex;
@@ -86,5 +86,25 @@ public class AccessoryController {
 			list.remove(index);
 		}
 		return randomList;
+	}
+	
+	public void addMissingAccessories(List<Accessory> accessoriesFindAll, List<AccessoryDTO> accessoriesDisplay) {
+		for (Accessory accessory : accessoriesFindAll) {
+			if (!isAccessoryInList(accessoriesDisplay, accessory.getId())) {
+				AccessoryDTO accessoryDTO = new AccessoryDTOImpl(accessory.getId(), accessory.getName(),
+						accessory.getPoster(), accessory.getThumbnail(), accessory.getSalePrice(), accessory.getOffer(),
+						accessory.getDetails(), 0.0, null, accessory.getCreateDate());
+				accessoriesDisplay.add(accessoryDTO);
+			}
+		}
+	}
+
+	public boolean isAccessoryInList(List<AccessoryDTO> accessoriesDisplay, int accessoryId) {
+		for (AccessoryDTO accessoryDTO : accessoriesDisplay) {
+			if (accessoryDTO.getId() == accessoryId) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

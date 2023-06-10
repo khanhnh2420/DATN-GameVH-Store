@@ -18,9 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fourTL.DTO.AccessoryDTO;
 import com.fourTL.DTO.ProductDTO;
+import com.fourTL.DTO.impl.AccessoryDTOImpl;
+import com.fourTL.DTO.impl.ProductDTOImpl;
 import com.fourTL.dao.CategoryDAO;
 import com.fourTL.dao.ProductDAO;
+import com.fourTL.entities.Accessory;
 import com.fourTL.entities.Category;
 import com.fourTL.entities.CategoryDTO;
 import com.fourTL.entities.Product;
@@ -55,8 +59,36 @@ public class CategoryRestController {
 			@RequestParam("page") Optional<Integer> page, 
 			@RequestParam("size") Optional<Integer> size) {
 		Pageable pageable = PageRequest.of(page.orElse(0), size.orElse(9));
-		Page<ProductDTO> products = pDAO.findAllProductDTO(pageable);
-	    return ResponseEntity.ok(products);
+		List<ProductDTO> productsDisplay = pDAO.findProductFeedBack(); // Danh sách productDTO dạng List
+		List<Product> productsFindAll = pDAO.findAll();
+		// Check để thêm những sản phẩm chưa có feedback vào list
+		addMissingAccessories(productsFindAll, productsDisplay);
+		// Gán lại List đã check vào Danh sách productDTO dạng pageable 
+		int startIndex = (int) pageable.getOffset();
+		int endIndex = Math.min((startIndex + pageable.getPageSize()), productsDisplay.size());
+		List<ProductDTO> pageContent = productsDisplay.subList(startIndex, endIndex);
+		Page<ProductDTO> productsDisplayPageable = new PageImpl<>(pageContent, pageable, productsDisplay.size());
+	    return ResponseEntity.ok(productsDisplayPageable);
+	}
+	
+	public void addMissingAccessories(List<Product> productsFindAll, List<ProductDTO> productsDisplay) {
+		for (Product product : productsFindAll) {
+			if (!isAccessoryInList(productsDisplay, product.getId())) {
+				ProductDTO productDTO = new ProductDTOImpl(product.getId(), product.getName(),
+						product.getPoster(), product.getThumbnail(), product.getSalePrice(), product.getOffer(),
+						product.getDetails(), null, null, product.getCategory().getName(), product.getCategory().getId(), product.getCreateDate());
+				productsDisplay.add(productDTO);
+			}
+		}
+	}
+
+	public boolean isAccessoryInList(List<ProductDTO> productsDisplay, int productId) {
+		for (ProductDTO productDTO : productsDisplay) {
+			if (productDTO.getId() == productId) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@RequestMapping("/findByCategoryId/{categoryId}")
@@ -66,17 +98,31 @@ public class CategoryRestController {
 			@RequestParam("size") Optional<Integer> size) {
 		Pageable pageable = PageRequest.of(page.orElse(0), size.orElse(9));
 		Page<ProductDTO> products;
-		List<ProductDTO> listProductCategoryDTO = new ArrayList<>();
+		List<ProductDTO> listProductCategoryDTO = pDAO.findProductFeedBack();
+		List<Product> productsFindAll = pDAO.findAll();
+		// Check để thêm những sản phẩm chưa có feedback vào list
+		addMissingAccessories(productsFindAll, listProductCategoryDTO);
 		if (categoryId == null || categoryId.isBlank()) {
-			products = pDAO.findAllProductDTO(pageable);
+			// Tạo Page<ProductDTO> products để gửi lại phía client
+			int startIndex = (int) pageable.getOffset();
+			int endIndex = Math.min((startIndex + pageable.getPageSize()), listProductCategoryDTO.size());
+			List<ProductDTO> pageContent = listProductCategoryDTO.subList(startIndex, endIndex);
+			products = new PageImpl<>(pageContent, pageable, listProductCategoryDTO.size());
 		} else {
-			for (ProductDTO productDTO : pDAO.findTopRatedProducts()) {
-				if(productDTO.getCategoryId().equals(categoryId)) {
-					listProductCategoryDTO.add(productDTO);
-				}
+			for (int i = listProductCategoryDTO.size() - 1; i >= 0; i--) {
+			    ProductDTO productDTO = listProductCategoryDTO.get(i);
+			    if (!productDTO.getCategoryId().equals(categoryId)) {
+			        // Check nếu không thuộc categoryId được gửi lên thì xóa khỏi list
+			        listProductCategoryDTO.remove(i);
+			    }
 			}
-			products = new PageImpl<>(listProductCategoryDTO, pageable, listProductCategoryDTO.size());
+			// Tạo Page<ProductDTO> products để gửi lại phía client
+			int startIndex = (int) pageable.getOffset();
+			int endIndex = Math.min((startIndex + pageable.getPageSize()), listProductCategoryDTO.size());
+			List<ProductDTO> pageContent = listProductCategoryDTO.subList(startIndex, endIndex);
+			products = new PageImpl<>(pageContent, pageable, listProductCategoryDTO.size());
 		}
+		
 		return ResponseEntity.ok(products);
 	}
 	

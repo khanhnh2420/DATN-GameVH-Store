@@ -496,7 +496,7 @@
 										</div>
 
 										<!-- End .product-price -->
-										<div class="ratings-container">
+										<div class="ratings-container" th:style="'display: ' + ${p.rate == 0 ? 'none' : ''} + ';'">
 											<div class="ratings">
 												<div class="ratings-val"
 													th:style="'width: ' + ${p.rate * 20} + '%;'"></div>

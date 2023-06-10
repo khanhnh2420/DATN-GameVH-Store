@@ -38,15 +38,5 @@ public interface ProductDAO extends JpaRepository<Product, Integer> {
 			+ ") subquery ON p.id = subquery.productId " + "INNER JOIN ( "
 			+ "    SELECT id AS categoryId, name AS categoryName " + "    FROM Category "
 			+ ") categoryTemp ON p.categoryId = categoryTemp.categoryId", nativeQuery = true)
-	List<ProductDTO> findTopRatedProducts();
-	
-	@Query(value = "SELECT p.id, p.name, p.poster, p.thumbnail, p.salePrice, p.offer, p.details, p.createDate, subquery.rate, subquery.countFeedBack, categoryTemp.categoryId, categoryTemp.categoryName "
-			+ "FROM Product p " + "INNER JOIN ( "
-			+ "    SELECT f.productId AS productId, AVG(f.star) AS rate, COUNT(f.productId) AS countFeedBack "
-			+ "    FROM FeedBack f " + "    WHERE f.productId IS NOT NULL " + "    GROUP BY f.productId "
-			+ "    HAVING AVG(f.star) IS NOT NULL "
-			+ ") subquery ON p.id = subquery.productId " + "INNER JOIN ( "
-			+ "    SELECT id AS categoryId, name AS categoryName " + "    FROM Category "
-			+ ") categoryTemp ON p.categoryId = categoryTemp.categoryId", countQuery = "SELECT COUNT(*) FROM Product", nativeQuery = true)
-	Page<ProductDTO> findAllProductDTO(Pageable pageable);
+	List<ProductDTO> findProductFeedBack();
 }

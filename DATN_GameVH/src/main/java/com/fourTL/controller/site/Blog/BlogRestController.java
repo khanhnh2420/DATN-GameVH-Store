@@ -6,9 +6,12 @@ import com.fourTL.dao.BlogDAO;
 import com.fourTL.dao.CategoryDAO;
 
 import com.fourTL.entities.Blog;
-import com.fourTL.entities.BlogsDTO;
+import com.fourTL.DTO.BlogsDTO;
 import com.fourTL.service.BlogsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,10 +52,27 @@ public class BlogRestController {
 //        return ResponseEntity.ok((HashMap<Integer, BlogsDTO>) listblog);
 //    }
     // backup xài List <> khi không gọi đc key của Hash
-    public ResponseEntity<List<BlogsDTO>> getAllBlog() {
+//    public ResponseEntity<List<BlogsDTO>> getAllBlog() {
+//        List<BlogsDTO> blogList = new ArrayList<>();
+//
+//        for (Blog bls : blogsService.findAllByOrderByCreateDateDesc()) {
+//            BlogsDTO blogsDTO = new BlogsDTO();
+//            blogsDTO.setId(bls.getId());
+//            blogsDTO.setTittle(bls.getTittle());
+//            blogsDTO.setContent(bls.getContent());
+//            blogsDTO.setCreateDate(bls.getCreateDate());
+//            blogsDTO.setUsername(bls.getAccount().getFullname());
+//
+//            blogList.add(blogsDTO);
+//        }
+//
+//        return ResponseEntity.ok(blogList);
+//    }
+    // pageable
+    public ResponseEntity<Page<BlogsDTO>> getAllBlog(Pageable pageable) {
         List<BlogsDTO> blogList = new ArrayList<>();
 
-        for (Blog bls : blogsService.findAllByOrderByCreateDateDesc()) {
+        for (Blog bls : blogsService.findAllByOrderByCreateDateDesc(pageable)) {
             BlogsDTO blogsDTO = new BlogsDTO();
             blogsDTO.setId(bls.getId());
             blogsDTO.setTittle(bls.getTittle());
@@ -63,7 +83,11 @@ public class BlogRestController {
             blogList.add(blogsDTO);
         }
 
-        return ResponseEntity.ok(blogList);
+        long totalElements = blogsService.getTotalNumberOfBlogs(); // Tổng số phần tử trong danh sách
+
+        Page<BlogsDTO> blogPage = new PageImpl<>(blogList, pageable, totalElements);
+
+        return ResponseEntity.ok(blogPage);
     }
 
 }

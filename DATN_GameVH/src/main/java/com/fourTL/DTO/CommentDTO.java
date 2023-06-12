@@ -1,4 +1,4 @@
-package com.fourTL.entities;
+package com.fourTL.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,4 +14,7 @@ public class CommentDTO {
     private String content_comment;
     Date createDate_comment = new Date();
     private String Username_comment;
+    //private Integer id_blog;
+    //private String fullname_account;
+
 }

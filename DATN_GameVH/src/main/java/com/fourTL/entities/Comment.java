@@ -18,8 +18,8 @@ import lombok.Data;
 @Data
 @Entity
 public class Comment implements Serializable {
-	@Id	
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	Integer id;
 	String content;
 	@Temporal(TemporalType.TIMESTAMP)

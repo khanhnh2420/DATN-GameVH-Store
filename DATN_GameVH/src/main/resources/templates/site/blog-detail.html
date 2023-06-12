@@ -366,7 +366,7 @@ th:replace="~{/layout_site/layout.html :: dynamic(~{::title},~{::body})}">
                                     </li>
                                 </ul>
                             </div><!-- End .comments -->
-                            <div class="reply">
+                            <div class="reply" ng-controller="BlogDetail"> 
                                 <div class="heading">
                                     <h3 class="title">Leave A Reply</h3><!-- End .title -->
                                     <p class="title-desc">Your email address will not be published. Required fields are marked *</p>
@@ -388,12 +388,13 @@ th:replace="~{/layout_site/layout.html :: dynamic(~{::title},~{::body})}">
                                         </div><!-- End .col-md-6 -->
                                     </div><!-- End .row -->
 
-                                    <button type="submit" class="btn btn-outline-primary-2">
+                                    <button type="submit" ng-click="createCMT()" class="btn btn-outline-primary-2">
                                         <span>POST COMMENT</span>
                                         <i class="icon-long-arrow-right"></i>
                                     </button>
                                 </form>
                             </div><!-- End .reply -->
+                            <script src="assets/AngularJS API/Blog_details.js"></script>
                 		</div><!-- End .col-lg-9 -->
 
                 		<aside class="col-lg-3">
@@ -524,6 +525,7 @@ th:replace="~{/layout_site/layout.html :: dynamic(~{::title},~{::body})}">
     <script src="assets/js/owl.carousel.min.js"></script>
     <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
+    
 </body>
 
 </html>

@@ -1,9 +1,7 @@
-package com.fourTL.dao;
+package com.fourTL.DTO;
 
 import com.fourTL.entities.Blog;
-import com.fourTL.entities.BlogsDTO;
 import com.fourTL.entities.Comment;
-import com.fourTL.entities.CommentDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +20,8 @@ public class BlogWithCommentsDTO {
                 blog.getCreateDate(),blog.getAccount().getFullname());
         List<CommentDTO> commentDTOs = new ArrayList<>();
         for (Comment comment : comments) {
-            CommentDTO commentDTO = new CommentDTO(comment.getId(),comment.getContent(),comment.getCreateDate(),comment.getAccount().getFullname());
+            CommentDTO commentDTO = new CommentDTO(comment.getId(),comment.getContent(),
+                    comment.getCreateDate(),comment.getAccount().getFullname());
             commentDTOs.add(commentDTO);
 
         }

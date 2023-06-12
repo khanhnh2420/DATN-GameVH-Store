@@ -1,7 +1,7 @@
 package com.fourTL.service.impl;
 
 import com.fourTL.dao.BlogDAO;
-import com.fourTL.dao.BlogWithCommentsDTO;
+import com.fourTL.DTO.BlogWithCommentsDTO;
 import com.fourTL.dao.CommentDAO;
 import com.fourTL.entities.Blog;
 import com.fourTL.entities.Comment;
@@ -9,11 +9,9 @@ import com.fourTL.service.BlogsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -27,7 +25,7 @@ public class BlogsServiceImpl implements BlogsService {
 
     //@Query("SELECT MAX(ThoiGianBlog) AS LatestDate FROM Blogs")
     @Override
-    public List<Blog> findAllByOrderByCreateDateDesc() {
+    public List<Blog> findAllByOrderByCreateDateDesc(Pageable pageable) {
         return blgsDao.findAllByOrderByCreateDateDesc();
     }
 
@@ -70,5 +68,9 @@ public class BlogsServiceImpl implements BlogsService {
         }
 
         return null;
+    }
+    @Override
+    public long getTotalNumberOfBlogs() {
+        return blgsDao.count();
     }
 }

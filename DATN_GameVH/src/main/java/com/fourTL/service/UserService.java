@@ -32,7 +32,7 @@ public class UserService implements UserDetailsService {
 
 			// Tạo UserDetails từ Account
 			String password = account.getPassword();
-			String[] roles = account.getAuthorities().stream().map(au -> au.getRole().getId())
+			String[] roles = account.getAuthority().stream().map(au -> au.getRole().getId())
 					.collect(Collectors.toList()).toArray(new String[0]);
 			return User.withUsername(username).password(password).roles(roles).build();
 		} catch (Exception e) {

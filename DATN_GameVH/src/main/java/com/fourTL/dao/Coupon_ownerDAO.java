@@ -2,8 +2,8 @@ package com.fourTL.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.fourTL.entities.Coupon_owner;
+import com.fourTL.entities.CouponOwner;
 
-public interface Coupon_ownerDAO extends JpaRepository<Coupon_owner, Long>{
+public interface Coupon_ownerDAO extends JpaRepository<CouponOwner, Long>{
 
 }

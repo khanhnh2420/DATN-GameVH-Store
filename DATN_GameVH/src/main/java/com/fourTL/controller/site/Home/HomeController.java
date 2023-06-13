@@ -15,7 +15,7 @@ import com.fourTL.DTO.AccessoryDTO;
 import com.fourTL.DTO.ProductDTO;
 import com.fourTL.DTO.impl.ProductDTOImpl;
 import com.fourTL.dao.OrderDetailDAO;
-import com.fourTL.entities.OrderDetail;
+import com.fourTL.entities.Orderdetail;
 import com.fourTL.entities.Product;
 import com.fourTL.service.AccessoryService;
 import com.fourTL.service.ProductService;
@@ -40,12 +40,12 @@ public class HomeController {
 		model.addAttribute("products", getRandom(listAllProductDTO, 6));
 
 		// List Top Selling Products
-		List<OrderDetail> listProductTrendingOD = orderDetailsDAO.findTopSellingProducts();
+		List<Orderdetail> listProductTrendingOD = orderDetailsDAO.findTopSellingProducts();
 		// List Top Selling Products
 		List<ProductDTO> listProductDTO = productService.findProductFeedBack();
 		List<ProductDTO> listProductTopTrending = new ArrayList<>();
 		for (ProductDTO productDTO : listProductDTO) {
-			for (OrderDetail orderDetail : listProductTrendingOD) {
+			for (Orderdetail orderDetail : listProductTrendingOD) {
 				if(productDTO.getId() == orderDetail.getProduct().getId()) {
 					listProductTopTrending.add(productDTO);
 				}

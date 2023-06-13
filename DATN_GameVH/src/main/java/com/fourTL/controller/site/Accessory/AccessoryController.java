@@ -14,7 +14,7 @@ import com.fourTL.DTO.AccessoryDTO;
 import com.fourTL.DTO.impl.AccessoryDTOImpl;
 import com.fourTL.dao.AccessoryDAO;
 import com.fourTL.entities.Accessory;
-import com.fourTL.entities.FeedBack;
+import com.fourTL.entities.Feedback;
 import com.fourTL.service.AccessoryService;
 import com.fourTL.service.FeedBackService;
 
@@ -76,11 +76,11 @@ public class AccessoryController {
 			}
 		}
 		
-		List<FeedBack> listFeedBacks = feedBackService.findByAccessoryId(id);
+		List<Feedback> listFeedBacks = feedBackService.findByAccessoryId(id);
 		Double accessoryRatePoint = 0.0;
 		Double sumStar = 0.0;
 		int totalFeedBack = 0;
-		for (FeedBack feedBack : listFeedBacks) {
+		for (Feedback feedBack : listFeedBacks) {
 			sumStar += (double)feedBack.getStar();
 			if(feedBack.getStatus()) {
 				totalFeedBack += 1;

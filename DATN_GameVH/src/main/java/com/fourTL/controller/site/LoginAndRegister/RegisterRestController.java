@@ -36,7 +36,7 @@ public class RegisterRestController {
 			return ResponseEntity.badRequest().build();
 		} else {
 			if (account.getUsername() != null && account.getPassword() != null && account.getFullname() != null
-					&& account.getEmail() != null && account.getAddress() != null) {
+					&& account.getEmail() != null && account.getLocation() != null) {
 				account.setPhoto("user.png");
 				account.setPassword(pe.encode(account.getPassword()));
 				Role role = rolesDAO.findById("CUST").get();

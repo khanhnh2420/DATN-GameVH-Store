@@ -34,7 +34,7 @@ public class MyAccountRestController {
 			return ResponseEntity.notFound().build();
 		}
 		Account user = accountsDAO.findById(username).get();
-		user.getOrders().sort((o1, o2) -> o2.getCreateDate().compareTo(o1.getCreateDate()));
+		user.getOrderData().sort((o1, o2) -> o2.getCreateDate().compareTo(o1.getCreateDate()));
 		return ResponseEntity.ok(user);
 	}
 	

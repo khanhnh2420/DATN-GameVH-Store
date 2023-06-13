@@ -21,7 +21,7 @@ public class MyAccountController {
 	@RequestMapping("/account")
 	public String account(@RequestParam("username") String username, Model model) {
 		Account user = accountsDAO.findById(username).get();
-		user.getOrders().sort((o1, o2) -> o2.getCreateDate().compareTo(o1.getCreateDate()));
+		user.getOrderData().sort((o1, o2) -> o2.getCreateDate().compareTo(o1.getCreateDate()));
 		model.addAttribute("user", user);
 		return "site/dashboard";
 	}

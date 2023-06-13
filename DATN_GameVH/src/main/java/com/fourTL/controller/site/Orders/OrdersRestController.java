@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fourTL.dao.Order_dataDAO;
-import com.fourTL.entities.OrderDetail;
+import com.fourTL.entities.Orderdetail;
 
 @CrossOrigin("*")
 @RestController
@@ -21,10 +21,10 @@ public class OrdersRestController {
 	Order_dataDAO ordersDAO;
 
 	@GetMapping("{orderId}")
-	public ResponseEntity<List<OrderDetail>> getListOrderDetails(@PathVariable("orderId") Long orderId) {
+	public ResponseEntity<List<Orderdetail>> getListOrderDetails(@PathVariable("orderId") Long orderId) {
 		if (!ordersDAO.existsById(orderId)) {
 			return ResponseEntity.notFound().build();
 		}
-		return ResponseEntity.ok(ordersDAO.findById(orderId).get().getOrderDetails());
+		return ResponseEntity.ok(ordersDAO.findById(orderId).get().getOrderdetail());
 	}
 }

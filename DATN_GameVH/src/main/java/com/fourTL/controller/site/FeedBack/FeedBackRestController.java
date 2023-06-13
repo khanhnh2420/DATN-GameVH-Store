@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fourTL.entities.FeedBack;
+import com.fourTL.entities.Feedback;
 import com.fourTL.service.FeedBackService;
 
 @CrossOrigin("*")
@@ -29,19 +29,19 @@ public class FeedBackRestController {
 	FeedBackService feedBackService;
 
 	@RequestMapping("/getProduct/{productId}")
-	public ResponseEntity<List<FeedBack>> getAllFeedBackByProductId(@PathVariable("productId") Integer productId) {
-		List<FeedBack> listFeedBacks = feedBackService.findByProductId(productId);
+	public ResponseEntity<List<Feedback>> getAllFeedBackByProductId(@PathVariable("productId") Integer productId) {
+		List<Feedback> listFeedBacks = feedBackService.findByProductId(productId);
 		// Order By Z-A CreateDate
-		Comparator<FeedBack> dateComparator = Comparator.comparing(FeedBack::getCreateDate);
+		Comparator<Feedback> dateComparator = Comparator.comparing(Feedback::getCreateDate);
 		Collections.sort(listFeedBacks, dateComparator.reversed());
 		return ResponseEntity.ok(listFeedBacks);
 	}
 	
 	@RequestMapping("/getAccessory/{accessoryId}")
-	public ResponseEntity<List<FeedBack>> getAllFeedBackByAccessoryId(@PathVariable("accessoryId") Integer accessoryId) {
-		List<FeedBack> listFeedBacks = feedBackService.findByAccessoryId(accessoryId);
+	public ResponseEntity<List<Feedback>> getAllFeedBackByAccessoryId(@PathVariable("accessoryId") Integer accessoryId) {
+		List<Feedback> listFeedBacks = feedBackService.findByAccessoryId(accessoryId);
 		// Order By Z-A CreateDate
-		Comparator<FeedBack> dateComparator = Comparator.comparing(FeedBack::getCreateDate);
+		Comparator<Feedback> dateComparator = Comparator.comparing(Feedback::getCreateDate);
 		Collections.sort(listFeedBacks, dateComparator.reversed());
 		return ResponseEntity.ok(listFeedBacks);
 	}

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.fourTL.DTO.ProductDTO;
 import com.fourTL.DTO.impl.ProductDTOImpl;
 import com.fourTL.dao.ProductDAO;
-import com.fourTL.entities.FeedBack;
+import com.fourTL.entities.Feedback;
 import com.fourTL.entities.Product;
 import com.fourTL.service.FeedBackService;
 import com.fourTL.service.ProductService;
@@ -82,11 +82,11 @@ public class ProductController {
 			}
 		} 
 		
-		List<FeedBack> listFeedBacks = feedBackService.findByProductId(id);
+		List<Feedback> listFeedBacks = feedBackService.findByProductId(id);
 		Double productRatePoint = 0.0;
 		Double sumStar = 0.0;
 		int totalFeedBack = 0;
-		for (FeedBack feedBack : listFeedBacks) {
+		for (Feedback feedBack : listFeedBacks) {
 			sumStar += (double)feedBack.getStar();
 			if(feedBack.getStatus()) {
 				totalFeedBack += 1;

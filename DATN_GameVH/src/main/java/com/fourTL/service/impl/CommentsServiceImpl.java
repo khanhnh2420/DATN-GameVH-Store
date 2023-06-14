@@ -1,14 +1,14 @@
 package com.fourTL.service.impl;
 
 
-import com.fourTL.dao.BlogWithCommentsDTO;
-import com.fourTL.dao.CommentDAO;
-import com.fourTL.entities.Comment;
-import com.fourTL.service.CommentsService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.fourTL.dao.CommentDAO;
+import com.fourTL.entities.Comment;
+import com.fourTL.service.CommentsService;
 
 @Service
 public class CommentsServiceImpl implements CommentsService {

@@ -1,7 +1,7 @@
 package com.fourTL.entities;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -38,7 +38,7 @@ public class Product  implements Serializable{
     @Column(name="Offer", precision=22)
     private double offer;
     @Column(name="CreateDate")
-    private LocalDate createDate;
+    private Date createDate;
     @Column(name="Available", precision=3)
     private short available;
     @Column(name="Source", nullable=false, length=255)
@@ -54,10 +54,10 @@ public class Product  implements Serializable{
     @OneToMany(mappedBy="product")
     private List<Feedback> feedback;
     @OneToMany(mappedBy="product")
-    private List<Orderdetail> orderdetail;
+    private List<OrderDetail> orderDetail;
     @OneToMany(mappedBy="product")
     private List<Banner> banner;
     @ManyToOne
     @JoinColumn(name="CategoryId")
-    private Category category;	
+    private Category category;
 }

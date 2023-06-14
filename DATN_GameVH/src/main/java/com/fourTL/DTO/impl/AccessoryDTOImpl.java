@@ -4,6 +4,8 @@ import java.util.Date;
 
 import com.fourTL.DTO.AccessoryDTO;
 
+import lombok.Setter;
+
 public class AccessoryDTOImpl implements AccessoryDTO {
     private Integer id;
     private String name;

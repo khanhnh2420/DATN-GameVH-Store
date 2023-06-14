@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +14,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.Data;
 
 @SuppressWarnings("serial")
@@ -35,6 +39,7 @@ public class Accessory implements Serializable{
     private double salePrice;
     @Column(name="Offer", nullable=false, precision=22)
     private double offer;
+    @Temporal(TemporalType.DATE)
     @Column(name="CreateDate", nullable=false)
     private Date createDate;
     @Column(name="Available", nullable=false, length=1)
@@ -47,10 +52,13 @@ public class Accessory implements Serializable{
     private String details;
     @Column(name="Status", nullable=false, length=1)
     private boolean status;
+    @JsonIgnore
     @OneToMany(mappedBy="accessory")
     private List<Favorite> favorite;
+    @JsonIgnore
     @OneToMany(mappedBy="accessory")
     private List<Feedback> feedback;
+    @JsonIgnore
     @OneToMany(mappedBy="accessory")
-    private List<OrderDetail> orderDetail;
+    private List<Orderdetail> orderdetail;
 }

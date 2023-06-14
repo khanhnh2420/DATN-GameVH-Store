@@ -11,8 +11,8 @@ import lombok.Data;
 
 @SuppressWarnings("serial")
 @Data
-@Entity(name="order_detail")
-public class OrderDetail  implements Serializable{
+@Entity(name="orderdetail")
+public class Orderdetail  implements Serializable{
 	@Id
     @Column(name="Id", unique=true, nullable=false, precision=19)
     private long id;

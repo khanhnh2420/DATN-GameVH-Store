@@ -1,20 +1,22 @@
 package com.fourTL.service.impl;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import com.fourTL.dao.BlogDAO;
 import com.fourTL.dao.BlogWithCommentsDTO;
 import com.fourTL.dao.CommentDAO;
 import com.fourTL.entities.Blog;
 import com.fourTL.entities.Comment;
 import com.fourTL.service.BlogsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Service;
+
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 @Service
 public class BlogsServiceImpl implements BlogsService {
    @Autowired

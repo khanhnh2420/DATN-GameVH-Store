@@ -63,5 +63,5 @@ public class OrderData  implements Serializable{
     @JoinColumn(name="Username", nullable=false)
     private Account account;
     @OneToMany(mappedBy="orderData")
-    private List<OrderDetail> orderDetail;
+    private List<Orderdetail> orderdetail;
 }

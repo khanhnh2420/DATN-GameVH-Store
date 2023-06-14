@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fourTL.dao.OrderDetailDAO;
 import com.fourTL.dao.Order_dataDAO;
-import com.fourTL.entities.OrderDetail;
+import com.fourTL.entities.Orderdetail;
 import com.fourTL.entities.OrderData;
 
 @RestController
@@ -35,7 +35,7 @@ public class thanhtoancontroller {
 	}
 	
 	@GetMapping("/vieworderdetail")
-	public ResponseEntity<List<OrderDetail>> getAll1(Model model) {
+	public ResponseEntity<List<Orderdetail>> getAll1(Model model) {
 		return ResponseEntity.ok(orderDetailsDAO.findAll());
 	}
 
@@ -46,7 +46,7 @@ public class thanhtoancontroller {
 	}
 	
 	@PostMapping("/createorderdetail")
-	public ResponseEntity<OrderDetail> createOrder(@RequestBody OrderDetail orderDetails) {
+	public ResponseEntity<Orderdetail> createOrder(@RequestBody Orderdetail orderDetails) {
 		orderDetailsDAO.save(orderDetails);
 		return ResponseEntity.ok(orderDetails);
 	}

@@ -20,7 +20,7 @@ import com.fourTL.dao.OrderDetailDAO;
 import com.fourTL.dao.Order_dataDAO;
 import com.fourTL.entities.Category;
 import com.fourTL.entities.MailInfo;
-import com.fourTL.entities.OrderDetail;
+import com.fourTL.entities.Orderdetail;
 import com.fourTL.entities.OrderData;
 import com.fourTL.service.MailService;
 
@@ -89,7 +89,7 @@ public class InvoiceManagementRestController {
 	}
 	
 	@GetMapping("/orderdetail/{id}")
-	public ResponseEntity<List<OrderDetail>> srcgame(Model model, @PathVariable("id") Long id) {
-		return ResponseEntity.ok(ordersdao.findById(id).get().getOrderDetail());
+	public ResponseEntity<List<Orderdetail>> srcgame(Model model, @PathVariable("id") Long id) {
+		return ResponseEntity.ok(ordersdao.findById(id).get().getOrderdetail());
 	}
 }

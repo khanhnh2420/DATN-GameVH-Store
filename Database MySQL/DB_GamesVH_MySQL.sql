@@ -1887,7 +1887,7 @@ INSERT INTO `Comment` (`Id`, `BlogId`, `Username`, `Content`, `CreateDate`, `Sta
 INSERT INTO `Comment` (`Id`, `BlogId`, `Username`, `Content`, `CreateDate`, `Status`) VALUES (2, 4, 'nguyenvanbao', 'Giật lagggg game tệ', '2023-02-02 00:00:00', 1);
 INSERT INTO `Comment` (`Id`, `BlogId`, `Username`, `Content`, `CreateDate`, `Status`) VALUES (3, 4, 'dangkimchi', 'bản cập nhật tốt', '2023-02-02 00:00:00', 1);
 INSERT INTO `Comment` (`Id`, `BlogId`, `Username`, `Content`, `CreateDate`, `Status`) VALUES (4, 4, 'hoangtunglam', 'Sân cỏ xấu quá, lỗi chuyển động không mượt', '2023-02-02 00:00:00', 0);
-INSERT INTO `Comment` (`Id`, `BlogId`, `Username`, `Content`, `CreateDate`, `Status`) VALUES (7, 4, 'hoangtunglam', 'Năm nay không biết nó fix cái dynamic potential nửa vời của career mode và phòng thủ siêu ngu chưa', '2023-02-02 00:00:00', 0);
+INSERT INTO `Comment` (`Id`, `BlogId`, `Username`, `Content`, `CreateDate`, `Status`) VALUES (7, 3, 'hoangtunglam', 'Năm nay không biết nó fix cái dynamic potential nửa vời của career mode và phòng thủ siêu ngu chưa', '2023-02-02 00:00:00', 0);
 INSERT INTO `Comment` (`Id`, `BlogId`, `Username`, `Content`, `CreateDate`, `Status`) VALUES (9, 4, 'nguyenhongnhan', 'Mình thì chẳng cần gì mới nhiều cả, chỉ cần trong cái manager career nó fix lại cái dynamic potential, để tránh việc mấy cầu thủ trẻ đôn lên đội 1 cuối mùa này thì mùa sau chưa gì đã rớt 5-7 điểm POT vô lí.', '2023-02-02 00:00:00', 1);
 
 

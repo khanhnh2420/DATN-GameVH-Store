@@ -9,11 +9,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @SuppressWarnings("serial")
 @Data
-@Entity(name="coupon_owner")
+@Entity
+@Table(name="coupon_owner")
 public class CouponOwner implements Serializable{
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

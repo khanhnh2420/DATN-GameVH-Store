@@ -10,18 +10,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fourTL.dao.Order_dataDAO;
-import com.fourTL.entities.Orderdetail;
+import com.fourTL.dao.OrderDataDAO;
+import com.fourTL.entities.OrderDetail;
 
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/orders")
 public class OrdersRestController {
 	@Autowired
-	Order_dataDAO ordersDAO;
+	OrderDataDAO ordersDAO;
 
 	@GetMapping("{orderId}")
-	public ResponseEntity<List<Orderdetail>> getListOrderDetails(@PathVariable("orderId") Long orderId) {
+	public ResponseEntity<List<OrderDetail>> getListOrderDetails(@PathVariable("orderId") Long orderId) {
 		if (!ordersDAO.existsById(orderId)) {
 			return ResponseEntity.notFound().build();
 		}

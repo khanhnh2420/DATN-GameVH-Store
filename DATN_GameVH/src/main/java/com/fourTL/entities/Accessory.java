@@ -60,5 +60,5 @@ public class Accessory implements Serializable{
     private List<Feedback> feedback;
     @JsonIgnore
     @OneToMany(mappedBy="accessory")
-    private List<Orderdetail> orderdetail;
+    private List<OrderDetail> orderdetail;
 }

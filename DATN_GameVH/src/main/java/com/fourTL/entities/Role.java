@@ -7,11 +7,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @SuppressWarnings("serial")
 @Data
-@Entity(name="role")
+@Entity
+@Table(name="role")
 public class Role  implements Serializable{
 	@Id
     @Column(name="Id", unique=true, nullable=false, length=10)

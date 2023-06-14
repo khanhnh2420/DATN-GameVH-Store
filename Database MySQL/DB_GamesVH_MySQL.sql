@@ -324,7 +324,7 @@ CREATE TABLE IF NOT EXISTS `DB_GamesVH`.`order_data` (
 -- -----------------------------------------------------
 -- Table `DB_GamesVH`.`orderDetail`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `DB_GamesVH`.`orderDetail` (
+CREATE TABLE IF NOT EXISTS `DB_GamesVH`.`order_detail` (
   `Id` BIGINT NOT NULL AUTO_INCREMENT,
   `order_dataId` BIGINT NOT NULL,
   `ProductId` INT NULL DEFAULT NULL,
@@ -1962,45 +1962,33 @@ INSERT INTO `FeedBack` (`Id`, `ProductId`, `AccessoryId`, `Username`, `Content`,
 INSERT INTO `FeedBack` (`Id`, `ProductId`, `AccessoryId`, `Username`, `Content`, `CreateDate`, `Status`, `Star`) VALUES (2, 2, NULL, 'nguyenvanbao', 'Giật lagggg game tệ', '2023-02-02 00:00:00', 1, 5);
 INSERT INTO `FeedBack` (`Id`, `ProductId`, `AccessoryId`, `Username`, `Content`, `CreateDate`, `Status`, `Star`) VALUES (3, 3, NULL, 'dangkimchi', 'bản cập nhật tốt', '2023-02-02 00:00:00', 1, 5);
 INSERT INTO `FeedBack` (`Id`, `ProductId`, `AccessoryId`, `Username`, `Content`, `CreateDate`, `Status`, `Star`) VALUES (4, 4, NULL, 'hoangtunglam', 'Sân cỏ xấu quá, lỗi chuyển động không mượt', '2023-02-02 00:00:00', 1, 4);
-INSERT INTO `FeedBack` (`Id`, `ProductId`, `AccessoryId`, `Username`, `Content`, `CreateDate`, `Status`, `Star`) VALUES (5, 4, NULL, 'hoangtunglam', 'Năm nay không biết nó fix cái dynamic potential nửa vời của career mode và phòng thủ siêu ngu chưa', '2023-02-02 00:00:00', 1, 3);
 INSERT INTO `FeedBack` (`Id`, `ProductId`, `AccessoryId`, `Username`, `Content`, `CreateDate`, `Status`, `Star`) VALUES (6, 4, NULL, 'nguyenhongnhan', 'Mình thì chẳng cần gì mới nhiều cả, chỉ cần trong cái manager career nó fix lại cái dynamic potential, để tránh việc mấy cầu thủ trẻ đôn lên đội 1 cuối mùa này thì mùa sau chưa gì đã rớt 5-7 điểm POT vô lí.', '2023-02-02 00:00:00', 1, 5);
 INSERT INTO `FeedBack` (`Username`, `Content`, `Status`, `Star`, `CreateDate`, `ProductId`, `AccessoryId`)
 VALUES
     ('cust', 'Sản phẩm rất tốt, tôi rất hài lòng với chất lượng và hiệu suất của nó.', 1, 5, NOW(), 1, NULL),
     ('dangkimchi', 'Đáng giá mỗi đồng.', 1, 4, NOW(), 2, NULL),
     ('dire', 'Phụ kiện gaming chất lượng cao, tôi rất hài lòng.', 1, 5, NOW(), 3, NULL),
-    ('hoangtunglam', 'Sản phẩm không đạt yêu cầu, cần cải thiện.', 0, 2, NOW(), 4, NULL),
      ('hoangtunglam', 'Sản phẩm không đạt yêu cầu, cần cải thiện.', 0, 2, NOW(), 1, NULL),
     ('lethithuy', 'Sản phẩm hơi đắt nhưng chất lượng rất tốt.', 1, 4, NOW(), 5, NULL),
     ('lethuhien', 'Phụ kiện gaming hữu ích và giá cả hợp lý.', 1, 4, NOW(), 6, NULL),
     ('lethuhien', 'Phụ kiện gaming hữu ích và giá cả hợp lý.', 1, 4, NOW(), 1, NULL),
     ('nguyenhongnhan', 'Sản phẩm giao hàng nhanh chóng, rất tốt.', 1, 5, NOW(), 7, NULL),
-    ('nguyenvana', 'Chất lượng sản phẩm tuyệt vời, giá cả phải chăng.', 1, 5, NOW(), 8, NULL),
     ('nguyenvana', 'Chất lượng sản phẩm tuyệt vời, giá cả phải chăng.', 1, 5, NOW(), 1, NULL),
     ('nguyenvanbao', 'Phụ kiện gaming chất lượng đáng tin cậy.', 1, 4, NOW(), 9, NULL),
     ('phamthuc', 'Sản phẩm đáng mua, tôi sẽ giới thiệu cho bạn bè.', 1, 5, NOW(), 10, NULL),
-    ('phamthuc', 'Sản phẩm đáng mua, tôi sẽ giới thiệu cho bạn bè.', 1, 5, NOW(), 1, NULL),
     ('staf', 'Sản phẩm tuyệt vời, đáng để sở hữu.', 1, 5, NOW(), 11, NULL),
     ('tranthanhthao', 'Phụ kiện gaming giúp tôi có trải nghiệm tuyệt vời.', 1, 4, NOW(), 12, NULL),
     ('tranthanhthao', 'Phụ kiện gaming giúp tôi có trải nghiệm tuyệt vời.', 1, 4, NOW(), 1, NULL),
-	('nguyenhongnhan', 'Sản phẩm giao hàng nhanh chóng, rất tốt.', 1, 5, NOW(), 7, NULL),
     ('nguyenvana', 'Chất lượng sản phẩm tuyệt vời, giá cả phải chăng.', 1, 5, NOW(), 8, NULL),
-    ('nguyenvanbao', 'Phụ kiện gaming chất lượng đáng tin cậy.', 1, 4, NOW(), 9, NULL),
-    ('phamthuc', 'Sản phẩm đáng mua, tôi sẽ giới thiệu cho bạn bè.', 1, 5, NOW(), 10, NULL),
-    ('staf', 'Sản phẩm tuyệt vời, đáng để sở hữu.', 1, 5, NOW(), 11, NULL),
-    ('tranthanhthao', 'Phụ kiện gaming giúp tôi có trải nghiệm tuyệt vời.', 1, 4, NOW(), 12, NULL),
     ('cust', 'Sản phẩm rất tốt, tôi rất hài lòng với chất lượng và hiệu suất của nó.', 1, 5, NOW(), NULL, 1),
     ('dangkimchi', 'Đáng giá mỗi đồng.', 1, 4, NOW(), NULL, 2),
     ('dire', 'Phụ kiện gaming chất lượng cao, tôi rất hài lòng.', 1, 5, NOW(), NULL, 3),
-    ('hoangtunglam', 'Sản phẩm không đạt yêu cầu, cần cải thiện.', 0, 2, NOW(), NULL, 4),
     ('lethithuy', 'Sản phẩm hơi đắt nhưng chất lượng rất tốt.', 1, 4, NOW(), NULL, 5),
     ('lethuhien', 'Phụ kiện gaming hữu ích và giá cả hợp lý.', 1, 4, NOW(), NULL, 6),
     ('nguyenhongnhan', 'Sản phẩm giao hàng nhanh chóng, rất tốt.', 1, 5, NOW(), NULL, 7),
-    ('nguyenvana', 'Chất lượng sản phẩm tuyệt vời, giá cả phải chăng.', 1, 5, NOW(), NULL, 8),
     ('nguyenvanbao', 'Phụ kiện gaming chất lượng đáng tin cậy.', 1, 4, NOW(), NULL, 9),
     ('phamthuc', 'Sản phẩm đáng mua, tôi sẽ giới thiệu cho bạn bè.', 1, 5, NOW(), NULL, 10),
-    ('staf', 'Sản phẩm tuyệt vời, đáng để sở hữu.', 1, 5, NOW(), NULL, 11),
-    ('tranthanhthao', 'Phụ kiện gaming giúp tôi có trải nghiệm tuyệt vời.', 1, 4, NOW(), NULL, 12);
+    ('staf', 'Sản phẩm tuyệt vời, đáng để sở hữu.', 1, 5, NOW(), NULL, 11);
 
 -- Data
 -- Data Favorite
@@ -2112,30 +2100,30 @@ VALUES ('C1V9B3N7M5X2Z6', 'lethuhien', '2022-03-02', '92 Đinh Tiên Hoàng, Qu�
 
 -- Data
 -- Data orderDetail
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (1, 11, 1, 200000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (2, 11, 2, 250000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (3, 11, 3, 180000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (4, 12, 4, 300000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (5, 12, 5, 350000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (6, 13, 6, 120000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (7, 13, 7, 150000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (8, 14, 8, 450000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (9, 15, 9, 280000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (10, 16, 10, 220000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (11, 1, 1, 200000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (12, 2, 2, 250000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (13, 3, 3, 180000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (14, 4, 4, 300000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (15, 5, 5, 350000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (16, 6, 6, 120000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (17, 7, 7, 150000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (18, 8, 8, 450000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (19, 9, 9, 280000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (20, 10, 10, 220000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (21, 17, 8, 450000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (22, 18, 9, 280000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (23, 19, 10, 220000, NULL, 0);
-INSERT INTO `orderDetail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (24, 20, 10, 220000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (1, 11, 1, 200000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (2, 11, 2, 250000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (3, 11, 3, 180000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (4, 12, 4, 300000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (5, 12, 5, 350000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (6, 13, 6, 120000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (7, 13, 7, 150000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (8, 14, 8, 450000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (9, 15, 9, 280000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (10, 16, 10, 220000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (11, 1, 1, 200000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (12, 2, 2, 250000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (13, 3, 3, 180000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (14, 4, 4, 300000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (15, 5, 5, 350000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (16, 6, 6, 120000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (17, 7, 7, 150000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (18, 8, 8, 450000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (19, 9, 9, 280000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (20, 10, 10, 220000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (21, 17, 8, 450000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (22, 18, 9, 280000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (23, 19, 10, 220000, NULL, 0);
+INSERT INTO `order_detail` (`Id`, `order_dataId`, `ProductId`, `Price`, `AccessoryId`, `AccessoryQty`) VALUES (24, 20, 10, 220000, NULL, 0);
 
 -- COMMENT
 ALTER TABLE Account MODIFY COLUMN Password VARCHAR(255) COMMENT 'Mật khẩu đăng nhập';
@@ -2146,10 +2134,10 @@ ALTER TABLE Account MODIFY COLUMN Photo VARCHAR(255) COMMENT 'Hình ảnh';
 ALTER TABLE Category MODIFY COLUMN Id CHAR(4) COMMENT 'Mã loại';
 ALTER TABLE Category MODIFY COLUMN Name VARCHAR(255) COMMENT 'Tên tiếng Việt';
 
-ALTER TABLE orderDetail MODIFY COLUMN Id BIGINT COMMENT 'Mã chi tiết';
-ALTER TABLE orderDetail MODIFY COLUMN order_dataId BIGINT COMMENT 'Mã hóa đơn';
-ALTER TABLE orderDetail MODIFY COLUMN ProductId INT COMMENT 'Mã hàng hóa';
-ALTER TABLE orderDetail MODIFY COLUMN Price DOUBLE COMMENT 'Đơn giá bán';
+ALTER TABLE order_detail MODIFY COLUMN Id BIGINT COMMENT 'Mã chi tiết';
+ALTER TABLE order_detail MODIFY COLUMN order_dataId BIGINT COMMENT 'Mã hóa đơn';
+ALTER TABLE order_detail MODIFY COLUMN ProductId INT COMMENT 'Mã hàng hóa';
+ALTER TABLE order_detail MODIFY COLUMN Price DOUBLE COMMENT 'Đơn giá bán';
 
 ALTER TABLE `order_data` MODIFY COLUMN CreateDate DATE COMMENT 'Ngày đặt hàng';
 ALTER TABLE `order_data` MODIFY COLUMN Address VARCHAR(255) COMMENT 'Địa chỉ nhận';
@@ -2165,7 +2153,7 @@ ALTER TABLE Product MODIFY COLUMN Available TINYINT COMMENT 'Đang kinh doanh ?'
 ALTER TABLE Product MODIFY COLUMN CategoryId CHAR(4) COMMENT 'Mã loại, FK';
 
 ALTER TABLE Account MODIFY COLUMN Photo VARCHAR(255) DEFAULT 'Photo.gif';
-ALTER TABLE orderDetail MODIFY COLUMN Price DOUBLE DEFAULT 0;
+ALTER TABLE order_detail MODIFY COLUMN Price DOUBLE DEFAULT 0;
 ALTER TABLE `order_data` MODIFY COLUMN CreateDate DATE DEFAULT (CURRENT_DATE);
 ALTER TABLE Product MODIFY COLUMN Poster VARCHAR(255) DEFAULT 'Poster.jpg';
 ALTER TABLE Product MODIFY COLUMN Thumbnail VARCHAR(255) DEFAULT 'Thumbnail.jpg';

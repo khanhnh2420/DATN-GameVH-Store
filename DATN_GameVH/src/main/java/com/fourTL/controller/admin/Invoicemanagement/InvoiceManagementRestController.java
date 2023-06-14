@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fourTL.controller.mail.contact.mail_CONSTANT;
 import com.fourTL.dao.CategoryDAO;
 import com.fourTL.dao.OrderDetailDAO;
-import com.fourTL.dao.Order_dataDAO;
+import com.fourTL.dao.OrderDataDAO;
 import com.fourTL.entities.Category;
 import com.fourTL.entities.MailInfo;
-import com.fourTL.entities.Orderdetail;
+import com.fourTL.entities.OrderDetail;
 import com.fourTL.entities.OrderData;
 import com.fourTL.service.MailService;
 
@@ -35,7 +35,7 @@ import jakarta.mail.MessagingException;
 public class InvoiceManagementRestController {
 	mail_CONSTANT mailBody = new mail_CONSTANT();
 	@Autowired
-	Order_dataDAO ordersdao;
+	OrderDataDAO ordersdao;
 
 	@Autowired
 	CategoryDAO categoriesDAO;
@@ -89,7 +89,7 @@ public class InvoiceManagementRestController {
 	}
 	
 	@GetMapping("/orderdetail/{id}")
-	public ResponseEntity<List<Orderdetail>> srcgame(Model model, @PathVariable("id") Long id) {
+	public ResponseEntity<List<OrderDetail>> srcgame(Model model, @PathVariable("id") Long id) {
 		return ResponseEntity.ok(ordersdao.findById(id).get().getOrderdetail());
 	}
 }

@@ -10,11 +10,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @SuppressWarnings("serial")
 @Data
-@Entity(name="comment")
+@Entity
+@Table(name="comment")
 public class Comment implements Serializable {
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

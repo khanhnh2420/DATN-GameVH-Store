@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fourTL.dao.OrderDetailDAO;
-import com.fourTL.dao.Order_dataDAO;
-import com.fourTL.entities.Orderdetail;
+import com.fourTL.dao.OrderDataDAO;
+import com.fourTL.entities.OrderDetail;
 import com.fourTL.entities.OrderData;
 
 @RestController
@@ -24,7 +24,7 @@ import com.fourTL.entities.OrderData;
 public class thanhtoancontroller {
 
 	@Autowired
-	Order_dataDAO ordersdao;
+	OrderDataDAO ordersdao;
 
 	@Autowired
 	OrderDetailDAO orderDetailsDAO;
@@ -35,7 +35,7 @@ public class thanhtoancontroller {
 	}
 	
 	@GetMapping("/vieworderdetail")
-	public ResponseEntity<List<Orderdetail>> getAll1(Model model) {
+	public ResponseEntity<List<OrderDetail>> getAll1(Model model) {
 		return ResponseEntity.ok(orderDetailsDAO.findAll());
 	}
 
@@ -46,7 +46,7 @@ public class thanhtoancontroller {
 	}
 	
 	@PostMapping("/createorderdetail")
-	public ResponseEntity<Orderdetail> createOrder(@RequestBody Orderdetail orderDetails) {
+	public ResponseEntity<OrderDetail> createOrder(@RequestBody OrderDetail orderDetails) {
 		orderDetailsDAO.save(orderDetails);
 		return ResponseEntity.ok(orderDetails);
 	}

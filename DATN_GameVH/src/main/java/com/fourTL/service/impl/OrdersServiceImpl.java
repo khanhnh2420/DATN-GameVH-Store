@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fourTL.dao.Order_dataDAO;
+import com.fourTL.dao.OrderDataDAO;
 import com.fourTL.entities.OrderData;
 import com.fourTL.service.OrdersService;
 
@@ -15,7 +15,7 @@ import com.fourTL.service.OrdersService;
 public abstract class OrdersServiceImpl implements OrdersService {
 
 	@Autowired
-	Order_dataDAO ordersdao;
+	OrderDataDAO ordersdao;
 
 	@Override
 	public List<OrderData> findAll() {

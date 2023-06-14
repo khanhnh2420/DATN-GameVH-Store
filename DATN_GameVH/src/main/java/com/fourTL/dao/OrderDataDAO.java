@@ -14,9 +14,9 @@ import com.fourTL.entities.OrderData;
 
 
 
-public interface Order_dataDAO extends JpaRepository<OrderData, Long>{
+public interface OrderDataDAO extends JpaRepository<OrderData, Long>{
 	
-	 @Query("SELECT o FROM Order_data o WHERE o.account.username = ?1")
+	 @Query("SELECT o FROM OrderData o WHERE o.account.username = ?1")
 	 	List<OrderData> findByUsernameContaining(String search);
 	
 }

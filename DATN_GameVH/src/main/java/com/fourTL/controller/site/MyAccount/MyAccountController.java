@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fourTL.dao.AccountDAO;
-import com.fourTL.dao.Order_dataDAO;
+import com.fourTL.dao.OrderDataDAO;
 import com.fourTL.entities.Account;
 
 @Controller
@@ -16,7 +16,7 @@ public class MyAccountController {
 	AccountDAO accountsDAO;
 	
 	@Autowired
-	Order_dataDAO ordersDAO;
+	OrderDataDAO ordersDAO;
 	
 	@RequestMapping("/account")
 	public String account(@RequestParam("username") String username, Model model) {

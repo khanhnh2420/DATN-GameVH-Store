@@ -88,7 +88,7 @@ public class ProductController {
 		int totalFeedBack = 0;
 		for (Feedback feedBack : listFeedBacks) {
 			sumStar += (double)feedBack.getStar();
-			if(feedBack.isStatus()) {
+			if(feedBack.getStatus()) {
 				totalFeedBack += 1;
 			}
 		}

@@ -20,13 +20,16 @@ public class CouponOwner implements Serializable{
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="Id", unique=true, nullable=false, precision=19)
-    private long id;
+    private Long id;
+	
     @Column(name="Status", nullable=false, length=1)
-    private boolean status;
+    private Boolean status;
+    
     @ManyToOne(optional=false)
-    @JoinColumn(name="Username", nullable=false)
+    @JoinColumn(name="AccountId", nullable=false)
     private Account account;
+    
     @ManyToOne(optional=false)
-    @JoinColumn(name="CouponCode", nullable=false)
+    @JoinColumn(name="CouponId", nullable=false)
     private Coupon coupon;
 }

@@ -14,8 +14,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.Data;
 
 @SuppressWarnings("serial")
@@ -26,39 +24,53 @@ public class Accessory implements Serializable{
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="Id", unique=true, nullable=false, precision=10)
-    private int id;
+    private Integer id;
+	
     @Column(name="Name", unique=true, nullable=false, length=50)
     private String name;
+    
     @Column(name="Poster", unique=true, length=50)
     private String poster;
+    
     @Column(name="Thumbnail", unique=true, length=255)
     private String thumbnail;
+    
     @Column(name="OriginPrice", nullable=false, precision=22)
-    private double originPrice;
+    private Double originPrice;
+    
     @Column(name="SalePrice", nullable=false, precision=22)
-    private double salePrice;
+    private Double salePrice;
+    
     @Column(name="Offer", nullable=false, precision=22)
-    private double offer;
-    @Temporal(TemporalType.DATE)
+    private Double offer;
+    
     @Column(name="CreateDate", nullable=false)
     private Date createDate;
+    
     @Column(name="Available", nullable=false, length=1)
-    private boolean available;
+    private Boolean available;
+    
     @Column(name="Supplier", nullable=false, length=255)
     private String supplier;
+    
     @Column(name="Qty", nullable=false, precision=10)
-    private int qty;
+    private Integer qty;
+    
     @Column(name="Details", nullable=false, length=500)
     private String details;
+    
     @Column(name="Status", nullable=false, length=1)
-    private boolean status;
+    private Boolean status;
+    
     @JsonIgnore
     @OneToMany(mappedBy="accessory")
     private List<Favorite> favorite;
+    
     @JsonIgnore
     @OneToMany(mappedBy="accessory")
     private List<Feedback> feedback;
+    
     @JsonIgnore
     @OneToMany(mappedBy="accessory")
-    private List<OrderDetail> orderdetail;
+    private List<OrderDetail> orderDetail;
 }

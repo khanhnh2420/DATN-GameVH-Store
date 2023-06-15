@@ -90,6 +90,6 @@ public class InvoiceManagementRestController {
 	
 	@GetMapping("/orderdetail/{id}")
 	public ResponseEntity<List<OrderDetail>> srcgame(Model model, @PathVariable("id") Long id) {
-		return ResponseEntity.ok(ordersdao.findById(id).get().getOrderdetail());
+		return ResponseEntity.ok(ordersdao.findById(id).get().getOrderDetail());
 	}
 }

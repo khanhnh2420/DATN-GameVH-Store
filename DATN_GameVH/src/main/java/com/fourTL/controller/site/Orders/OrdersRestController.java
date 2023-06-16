@@ -25,6 +25,6 @@ public class OrdersRestController {
 		if (!ordersDAO.existsById(orderId)) {
 			return ResponseEntity.notFound().build();
 		}
-		return ResponseEntity.ok(ordersDAO.findById(orderId).get().getOrderdetail());
+		return ResponseEntity.ok(ordersDAO.findById(orderId).get().getOrderDetail());
 	}
 }

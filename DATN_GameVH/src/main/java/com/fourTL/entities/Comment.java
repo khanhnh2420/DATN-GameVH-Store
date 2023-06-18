@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Data;
@@ -17,21 +18,28 @@ import lombok.Data;
 @SuppressWarnings("serial")
 @Data
 @Entity
+@Table(name="comment")
 public class Comment implements Serializable {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	Integer id;
-	String content;
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "CreateDate")
-	Date createDate = new Date();
-	Boolean status;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="Id", unique=true, nullable=false, precision=10)
+    private Integer id;
 	
-	@ManyToOne
-	@JoinColumn(name = "Username")
-	Account account;
-	
-	@ManyToOne
-	@JoinColumn(name = "BlogId")
-	Blog blog;
+    @Column(name="Content", nullable=false, length=255)
+    private String content;
+    
+    @Temporal(TemporalType.DATE)
+    @Column(name="CreateDate", nullable=false)
+    private Date createDate;
+    
+    @Column(name="Status", nullable=false, length=1)
+    private Boolean status;
+    
+    @ManyToOne(optional=false)
+    @JoinColumn(name="AccountId", nullable=false)
+    private Account account;
+    
+    @ManyToOne(optional=false)
+    @JoinColumn(name="BlogId", nullable=false)
+    private Blog blog;
 }

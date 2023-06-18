@@ -1,8 +1,6 @@
 package com.fourTL.controller.site.LoginAndRegister;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
@@ -64,7 +62,7 @@ public class LoginController {
 				account.setPassword(pe.encode("123"));
 				account.setFullname(oauth2.getPrincipal().getAttribute("name"));
 				account.setEmail(oauth2.getPrincipal().getAttribute("email"));
-				account.setAddress("");
+				account.setLocation(null);
 				account.setPhoto("user.png");
 				Role role = rolesDAO.findById("CUST").get();
 

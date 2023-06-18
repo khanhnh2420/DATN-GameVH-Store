@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fourTL.dao.AccountDAO;
 import com.fourTL.dao.OrderDetailDAO;
-import com.fourTL.dao.Order_dataDAO;
+import com.fourTL.dao.OrderDataDAO;
 import com.fourTL.entities.Account;
 
 @CrossOrigin("*")
@@ -23,7 +23,7 @@ public class MyAccountRestController {
 	AccountDAO accountsDAO;
 
 	@Autowired
-	Order_dataDAO ordersDAO;
+	OrderDataDAO ordersDAO;
 
 	@Autowired
 	OrderDetailDAO orderDetailsDAO;
@@ -34,7 +34,7 @@ public class MyAccountRestController {
 			return ResponseEntity.notFound().build();
 		}
 		Account user = accountsDAO.findById(username).get();
-		user.getOrders().sort((o1, o2) -> o2.getCreateDate().compareTo(o1.getCreateDate()));
+		user.getOrderData().sort((o1, o2) -> o2.getCreateDate().compareTo(o1.getCreateDate()));
 		return ResponseEntity.ok(user);
 	}
 	

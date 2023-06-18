@@ -2,14 +2,14 @@ package com.fourTL.service;
 
 import java.util.List;
 
-import com.fourTL.entities.FeedBack;
+import com.fourTL.entities.Feedback;
 
 public interface FeedBackService {
-	List<FeedBack> findAll();
+	List<Feedback> findAll();
 
-	FeedBack findById(Integer id);
+	Feedback findById(Integer id);
 	
-	List<FeedBack> findByProductId(Integer productId);
+	List<Feedback> findByProductId(Integer productId);
 	
-	List<FeedBack> findByAccessoryId(Integer accessoryId);
+	List<Feedback> findByAccessoryId(Integer accessoryId);
 }

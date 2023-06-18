@@ -6,16 +6,16 @@ import java.util.List;
 
 
 
-import com.fourTL.entities.Order_data;
+import com.fourTL.entities.OrderData;
 
 
 
 
 public interface OrdersService {
 	
-	List<Order_data> findAll();
+	List<OrderData> findAll();
 
-	Order_data findById(Long id);
+	OrderData findById(Long id);
 	
 
 }

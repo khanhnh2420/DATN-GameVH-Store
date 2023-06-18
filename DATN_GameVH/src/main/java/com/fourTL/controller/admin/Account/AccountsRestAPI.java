@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fourTL.dao.AccountDAO;
 import com.fourTL.dao.CategoryDAO;
-
 import com.fourTL.entities.Account;
-import com.fourTL.entities.Category;
 
 
 

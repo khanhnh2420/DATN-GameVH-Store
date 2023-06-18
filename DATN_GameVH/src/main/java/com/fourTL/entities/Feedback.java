@@ -18,19 +18,25 @@ import lombok.Data;
 @SuppressWarnings("serial")
 @Data
 @Entity
-@Table(name="favorite")
-public class Favorite implements Serializable{
+@Table(name="feedback")
+public class Feedback implements Serializable{
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="Id", unique=true, nullable=false, precision=10)
     private Integer id;
 	
+    @Column(name="Content", nullable=false, length=255)
+    private String content;
+    
     @Column(name="Status", nullable=false, length=1)
     private Boolean status;
     
+    @Column(name="Star", nullable=false, precision=10)
+    private Integer star;
+    
     @Temporal(TemporalType.DATE)
-    @Column(name="LikeDate", nullable=false)
-    private Date likeDate;
+    @Column(name="CreateDate", nullable=false)
+    private Date createDate;
     
     @ManyToOne
     @JoinColumn(name="AccessoryId")

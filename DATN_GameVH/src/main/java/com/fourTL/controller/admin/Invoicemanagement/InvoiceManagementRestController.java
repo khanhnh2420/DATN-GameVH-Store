@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fourTL.controller.mail.contact.mail_CONSTANT;
 import com.fourTL.dao.CategoryDAO;
 import com.fourTL.dao.OrderDetailDAO;
-import com.fourTL.dao.Order_dataDAO;
+import com.fourTL.dao.OrderDataDAO;
 import com.fourTL.entities.Category;
 import com.fourTL.entities.MailInfo;
 import com.fourTL.entities.OrderDetail;
-import com.fourTL.entities.Order_data;
+import com.fourTL.entities.OrderData;
 import com.fourTL.service.MailService;
 
 import jakarta.mail.MessagingException;
@@ -35,7 +35,7 @@ import jakarta.mail.MessagingException;
 public class InvoiceManagementRestController {
 	mail_CONSTANT mailBody = new mail_CONSTANT();
 	@Autowired
-	Order_dataDAO ordersdao;
+	OrderDataDAO ordersdao;
 
 	@Autowired
 	CategoryDAO categoriesDAO;
@@ -47,7 +47,7 @@ public class InvoiceManagementRestController {
 	MailService mailService;
 
 	@GetMapping("")
-	public ResponseEntity<List<Order_data>> getAll(Model model) {
+	public ResponseEntity<List<OrderData>> getAll(Model model) {
 		return ResponseEntity.ok(ordersdao.findAll());
 	}
 
@@ -57,12 +57,12 @@ public class InvoiceManagementRestController {
 	}
 	
 	@GetMapping("/search/{search}")
-	public ResponseEntity<List<Order_data>> search(Model model, @PathVariable("search") String search) {
+	public ResponseEntity<List<OrderData>> search(Model model, @PathVariable("search") String search) {
 		return ResponseEntity.ok(ordersdao.findByUsernameContaining(search));
 	}
 	
 	@GetMapping("{id}")
-	public ResponseEntity<Order_data> getOne(@PathVariable("id") Long id) {
+	public ResponseEntity<OrderData> getOne(@PathVariable("id") Long id) {
 		if(!ordersdao.existsById(id)) {
 			return ResponseEntity.notFound().build();
 		}
@@ -90,6 +90,6 @@ public class InvoiceManagementRestController {
 	
 	@GetMapping("/orderdetail/{id}")
 	public ResponseEntity<List<OrderDetail>> srcgame(Model model, @PathVariable("id") Long id) {
-		return ResponseEntity.ok(ordersdao.findById(id).get().getOrderDetails());
+		return ResponseEntity.ok(ordersdao.findById(id).get().getOrderDetail());
 	}
 }

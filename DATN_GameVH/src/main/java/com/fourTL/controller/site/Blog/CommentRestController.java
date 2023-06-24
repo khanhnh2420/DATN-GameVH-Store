@@ -10,6 +10,8 @@ import com.fourTL.entities.Blog;
 import com.fourTL.entities.Comment;
 import com.fourTL.service.BlogsService;
 import com.fourTL.service.CommentsService;
+
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,19 +46,13 @@ public class CommentRestController {
     AccountDAO accountDAO;
 
 // đợi fix bug vẫnbuggg id
-  /*  @PostMapping("/createCMT/{id}")
-    public ResponseEntity<Account> createcmt(@PathVariable("id") Integer blogId,@RequestBody CommentDTO1 dto){
-      //  System.out.println(" testtt" + cmmdao);
-        Comment entity = new Comment();
-        BeanUtils.copyProperties(dto, entity);
-        Account account = accountDAO.findById(dto.getUsername()).get();
-        entity.setAccount(account);
-        Blog blog = blogsService.findById(blogId);
-//        Blog blog = blogsService.findById(dto.getBlogId());
-       entity.setBlog(blog);
-     commentsService.save(entity);
-    return  ResponseEntity.ok(account);
-    }*/
+
+    @PostMapping("/createCMT")
+    public ResponseEntity<Object> createcmt(@RequestBody CommentDTO1 dto){
+
+     commentsService.save(dto);
+    return  ResponseEntity.ok(dto);
+    }
     @GetMapping("/create")
     public List<Comment> getAll(){
         return commentsService.findAll();

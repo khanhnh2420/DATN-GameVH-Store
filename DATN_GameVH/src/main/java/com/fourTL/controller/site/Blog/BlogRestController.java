@@ -85,7 +85,7 @@ public class BlogRestController {
 
                 blogList.add(blogsDTO);
             }
-        }
+        }  
 
         long totalElements = blogsService.getTotalNumberOfBlogs(); // Tổng số phần tử trong danh sách
 

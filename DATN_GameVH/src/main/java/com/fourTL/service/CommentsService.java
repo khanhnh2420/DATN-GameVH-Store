@@ -1,6 +1,6 @@
 package com.fourTL.service;
 
-import com.fourTL.dao.CommentDAO;
+import com.fourTL.DTO.CommentDTO1;
 import com.fourTL.entities.Comment;
 
 
@@ -13,7 +13,8 @@ public interface CommentsService {
 
     //Comment findById(Integer id);
     List<Comment> findAllCommentAndBlogByIdBlog(Integer blogId);
- //Comment createCMT(Comment comment);
 
-    Comment save(Comment entity);
+    Comment save(CommentDTO1 dto);
+    //Comment createCMT(Comment comment);
+
 }

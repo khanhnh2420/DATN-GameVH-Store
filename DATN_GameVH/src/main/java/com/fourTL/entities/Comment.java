@@ -13,20 +13,28 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @SuppressWarnings("serial")
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name="comment")
 public class Comment implements Serializable {
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="Id", unique=true, nullable=false, precision=10)
     private Integer id;
-	
+
+    @Column(name="AccountId", nullable=false, length=255)
+    private String AccountId;
     @Column(name="Content", nullable=false, length=255)
     private String content;
+    @Column(name="Content", nullable=false, length=255)
+    private String BlogId;
     
     @Temporal(TemporalType.DATE)
     @Column(name="CreateDate", nullable=false)

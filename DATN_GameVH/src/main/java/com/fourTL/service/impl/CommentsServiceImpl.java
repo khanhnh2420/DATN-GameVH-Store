@@ -1,10 +1,11 @@
 package com.fourTL.service.impl;
 
 
+import com.fourTL.DTO.CommentDTO1;
 import com.fourTL.dao.CommentDAO;
 import com.fourTL.entities.Comment;
-import com.fourTL.service.AcountService;
 import com.fourTL.service.CommentsService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +61,10 @@ public class CommentsServiceImpl implements CommentsService {
     }*/
 
     @Override
-    public Comment save(Comment entity) {
-        return cmtDao.save(entity);
+    public Comment save(CommentDTO1 dto) {
+        Comment cmt = new Comment();
+        BeanUtils.copyProperties(dto, cmt);
+        cmtDao.save(cmt);
+        return cmt;
     }
 }

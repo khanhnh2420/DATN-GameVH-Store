@@ -43,17 +43,18 @@ public class CommentRestController {
     @Autowired
     AccountDAO accountDAO;
 
-// đợi fix bug
- /*   @PostMapping("/createCMT")
-    public ResponseEntity<Account> createcmt(@RequestBody CommentDTO1 dto){
+// đợi fix bug vẫnbuggg id
+  /*  @PostMapping("/createCMT/{id}")
+    public ResponseEntity<Account> createcmt(@PathVariable("id") Integer blogId,@RequestBody CommentDTO1 dto){
       //  System.out.println(" testtt" + cmmdao);
         Comment entity = new Comment();
         BeanUtils.copyProperties(dto, entity);
         Account account = accountDAO.findById(dto.getUsername()).get();
         entity.setAccount(account);
+        Blog blog = blogsService.findById(blogId);
 //        Blog blog = blogsService.findById(dto.getBlogId());
-//        entity.setBlog(blog);
-//      commentsService.save(entity);
+       entity.setBlog(blog);
+     commentsService.save(entity);
     return  ResponseEntity.ok(account);
     }*/
     @GetMapping("/create")

@@ -73,14 +73,18 @@ public class BlogRestController {
         List<BlogsDTO> blogList = new ArrayList<>();
 
         for (Blog bls : blogsService.findAllByOrderByCreateDateDesc(pageable)) {
-            BlogsDTO blogsDTO = new BlogsDTO();
-            blogsDTO.setId(bls.getId());
-            blogsDTO.setTittle(bls.getTittle());
-            blogsDTO.setContent(bls.getContent());
-            blogsDTO.setCreateDate(bls.getCreateDate());
-            blogsDTO.setUsername(bls.getAccount().getFullname());
+            if (bls.getStatus()==true) {
 
-            blogList.add(blogsDTO);
+                BlogsDTO blogsDTO = new BlogsDTO();
+
+                blogsDTO.setId(bls.getId());
+                blogsDTO.setTittle(bls.getTittle());
+                blogsDTO.setContent(bls.getContent());
+                blogsDTO.setCreateDate(bls.getCreateDate());
+                blogsDTO.setUsername(bls.getAccount().getFullname());
+
+                blogList.add(blogsDTO);
+            }
         }
 
         long totalElements = blogsService.getTotalNumberOfBlogs(); // Tổng số phần tử trong danh sách

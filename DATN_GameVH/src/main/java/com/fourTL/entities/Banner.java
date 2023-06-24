@@ -41,6 +41,6 @@ public class Banner implements Serializable{
     private Boolean status;
     
     @ManyToOne(optional=false)
-    @JoinColumn(name="ProductId", nullable=false)
+    @JoinColumn(name="product_id", nullable=false)
     private Product product;
 }

@@ -23,10 +23,10 @@ public class Authority  implements Serializable{
     private Integer id;
 	
     @ManyToOne(optional=false)
-    @JoinColumn(name="RoleId", nullable=false)
+    @JoinColumn(name="role_id", nullable=false)
     private Role role;
     
     @ManyToOne(optional=false)
-    @JoinColumn(name="AccountId", nullable=false)
+    @JoinColumn(name="account_id", nullable=false)
     private Account account;
 }

@@ -11,13 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.fourTL.DTO.AccessoryDTO;
 import com.fourTL.DTO.ProductDTO;
-import com.fourTL.DTO.impl.ProductDTOImpl;
 import com.fourTL.dao.OrderDetailDAO;
 import com.fourTL.entities.OrderDetail;
 import com.fourTL.entities.Product;
-import com.fourTL.service.AccessoryService;
 import com.fourTL.service.ProductService;
 
 @Controller
@@ -25,9 +22,6 @@ public class HomeController {
 
 	@Autowired
 	ProductService productService;
-
-	@Autowired
-	AccessoryService accessoryService;
 
 	@Autowired
 	OrderDetailDAO orderDetailsDAO;
@@ -65,17 +59,13 @@ public class HomeController {
 		// List Product New Releases
 		List<ProductDTO> listProductNewReleases = productService.findProductFeedBack();
 		List<Product> listProductFindAll = productService.findAll();
-		addMissingAccessories(listProductFindAll, listProductNewReleases);
+//		addMissingAccessories(listProductFindAll, listProductNewReleases);
 		// Order By Z-A CreateDate
 		Comparator<ProductDTO> newReleasesComparator = Comparator.comparing(ProductDTO::getCreateDate);
 		Collections.sort(listProductNewReleases, newReleasesComparator.reversed());
 		// Get Limit 6 Product
 		listProductNewReleases = listProductNewReleases.subList(0, Math.min(6, listProductNewReleases.size()));
 		model.addAttribute("productNewReleases", listProductNewReleases);
-
-		// List accessories random 6 product
-		List<AccessoryDTO> listAccessories = accessoryService.findAccessoryFeedBack();
-		model.addAttribute("accessories", getRandom(listAccessories, 5));
 
 		return "site/home";
 	}
@@ -95,16 +85,16 @@ public class HomeController {
 		return randomList;
 	}
 	
-	public void addMissingAccessories(List<Product> productsFindAll, List<ProductDTO> productsDisplay) {
-		for (Product product : productsFindAll) {
-			if (!isAccessoryInList(productsDisplay, product.getId())) {
-				ProductDTO productDTO = new ProductDTOImpl(product.getId(), product.getName(),
-						product.getPoster(), product.getThumbnail(), product.getSalePrice(), product.getOffer(),
-						product.getDetails(), 0.0, null, product.getCategory().getName(), product.getCategory().getId(), product.getCreateDate());
-				productsDisplay.add(productDTO);
-			}
-		}
-	}
+//	public void addMissingAccessories(List<Product> productsFindAll, List<ProductDTO> productsDisplay) {
+//		for (Product product : productsFindAll) {
+//			if (!isAccessoryInList(productsDisplay, product.getId())) {
+//				ProductDTO productDTO = new ProductDTOImpl(product.getId(), product.getName(),
+//						product.getPoster(), product.getThumbnail(), product.getSalePrice(), product.getOffer(),
+//						product.getDetails(), 0.0, null, product.getCategory().getName(), product.getCategory().getId(), product.getCreateDate());
+//				productsDisplay.add(productDTO);
+//			}
+//		}
+//	}
 
 	public boolean isAccessoryInList(List<ProductDTO> productsDisplay, int productId) {
 		for (ProductDTO productDTO : productsDisplay) {

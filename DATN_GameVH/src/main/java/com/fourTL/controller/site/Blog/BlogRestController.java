@@ -11,18 +11,18 @@ import com.fourTL.service.BlogsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping()
+@RequestMapping("/api/blog")
 public class BlogRestController {
 
     @Autowired
@@ -33,8 +33,6 @@ public class BlogRestController {
 
     @Autowired
     CategoryDAO categoriesDAO;
-
-    @RequestMapping("blog")
 
 //    private ResponseEntity<HashMap<Integer, BlogsDTO>> getAllBlog() {
 //
@@ -69,9 +67,11 @@ public class BlogRestController {
 //        return ResponseEntity.ok(blogList);
 //    }
     // pageable
-    public ResponseEntity<Page<BlogsDTO>> getAllBlog(Pageable pageable) {
+@GetMapping("getbloglist")
+    public ResponseEntity<Page<BlogsDTO>> getAllBlog(@RequestParam("page") Optional<Integer> page,
+			@RequestParam("size") Optional<Integer> size) {
         List<BlogsDTO> blogList = new ArrayList<>();
-
+   Pageable pageable = PageRequest.of(page.orElse(0), size.orElse(9));
         for (Blog bls : blogsService.findAllByOrderByCreateDateDesc(pageable)) {
             if (bls.getStatus()==true) {
 

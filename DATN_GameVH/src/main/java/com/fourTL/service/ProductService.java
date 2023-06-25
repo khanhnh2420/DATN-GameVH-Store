@@ -3,6 +3,7 @@ package com.fourTL.service;
 import java.util.List;
 
 import com.fourTL.DTO.ProductDTO;
+import com.fourTL.entities.Favorite;
 import com.fourTL.entities.Product;
 
 public interface ProductService {
@@ -12,4 +13,5 @@ public interface ProductService {
 	Product findById(Integer id);
 	
 	List<ProductDTO> findProductFeedBack();
+	
 }

@@ -23,7 +23,7 @@ public class Account  implements Serializable{
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="Id", unique=true, nullable=false, precision=10)
-    private int id;
+    private Integer id;
 	
     @Column(name="Username", unique=true, nullable=false, length=50)
     private String username;

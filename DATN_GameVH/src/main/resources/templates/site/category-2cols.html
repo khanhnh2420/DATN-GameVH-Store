@@ -3,13 +3,14 @@
 	th:replace="~{/layout_site/layout.html :: dynamic(~{::title},~{::body})}">
 
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>CATEGORY</title>
-	<meta name="keywords" content="HTML5 Template">
-	<meta name="description" content="4TL">
-	<meta name="author" content="p-themes">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>CATEGORY</title>
+<meta name="keywords" content="HTML5 Template">
+<meta name="description" content="4TL">
+<meta name="author" content="p-themes">
 </head>
 
 <body>
@@ -19,9 +20,8 @@
 			<div class="page-header text-center"
 				style="background-image: url('../assets/images/page-header-bg3.jpg'); background-position: center center; height: 15em;">
 				<div class="container mt-5">
-					<h1 class="page-title text-warning" style="text-shadow: 3px 2px #FF0000;">
-						Games
-					</h1>
+					<h1 class="page-title text-warning"
+						style="text-shadow: 3px 2px #FF0000;">Games</h1>
 				</div>
 				<!-- End .container -->
 			</div>
@@ -30,7 +30,8 @@
 				<div class="container">
 					<ol class="breadcrumb">
 						<li class="breadcrumb-item"><a th:href="@{|/|}">Home</a></li>
-						<li class="breadcrumb-item"><a link="/category" ng-click="goToCategoryPage($event,6)">Shop</a></li>
+						<li class="breadcrumb-item"><a link="/category"
+							ng-click="goToCategoryPage($event,6)">Shop</a></li>
 						<li class="breadcrumb-item active" aria-current="page">Products</li>
 					</ol>
 				</div>
@@ -45,8 +46,8 @@
 							<div class="toolbox">
 								<div class="toolbox-left">
 									<div class="toolbox-info">
-										Showing <span>{{products.numberOfElements}} of {{products.totalElements}}</span>
-										Products
+										Showing <span>{{products.numberOfElements}} of
+											{{products.totalElements}}</span> Products
 									</div>
 									<!-- End .toolbox-info -->
 								</div>
@@ -73,7 +74,8 @@
 												<rect x="0" y="6" width="4" height="4" />
 												<rect x="6" y="6" width="10" height="4" />
 											</svg>
-										</a> <a link="/category-2cols" ng-click="goToCategoryPage($event,6)"
+										</a> <a link="/category-2cols"
+											ng-click="goToCategoryPage($event,6)"
 											class="btn-layout active"> <svg width="10" height="10">
 												<rect x="0" y="0" width="4" height="4" />
 												<rect x="6" y="0" width="4" height="4" />
@@ -89,8 +91,9 @@
 												<rect x="6" y="6" width="4" height="4" />
 												<rect x="12" y="6" width="4" height="4" />
 											</svg>
-										</a> <a link="/category-4cols" ng-click="goToCategoryPage($event,12)"
-											class="btn-layout"> <svg width="22" height="10">
+										</a> <a link="/category-4cols"
+											ng-click="goToCategoryPage($event,12)" class="btn-layout">
+											<svg width="22" height="10">
 												<rect x="0" y="0" width="4" height="4" />
 												<rect x="6" y="0" width="4" height="4" />
 												<rect x="12" y="0" width="4" height="4" />
@@ -118,26 +121,23 @@
 										<div class="product product-7 text-center">
 											<figure class="product-media">
 												<a href="/product/detail/{{item.id}}"> <img
-														src="assets/images/products/{{item.poster}}" alt="Product image"
-														class="product-image">
+													src="assets/images/products/{{item.poster}}"
+													alt="Product image" class="product-image">
 												</a>
 
 												<div class="product-action-vertical">
 													<a href="#"
 														class="btn-product-icon btn-wishlist btn-expandable"><span>add
 															to wishlist</span></a> <a href="popup/quickView.html"
-														class="btn-product-icon btn-quickview"
-														title="Quick view"><span>Quick
-															view</span></a> <a href="#"
-														class="btn-product-icon btn-compare"
+														class="btn-product-icon btn-quickview" title="Quick view"><span>Quick
+															view</span></a> <a href="#" class="btn-product-icon btn-compare"
 														title="Compare"><span>Compare</span></a>
 												</div>
 												<!-- End .product-action-vertical -->
 
 												<div class="product-action">
 													<a data-product-id="{{item.id}}" ng-click="addCart($event)"
-														class="btn-product btn-cart"><span>add
-															to cart</span></a>
+														class="btn-product btn-cart"><span>add to cart</span></a>
 												</div>
 												<!-- End .product-action -->
 											</figure>
@@ -145,22 +145,31 @@
 
 											<div class="product-body">
 												<div class="product-cat">
-													<a href="#">{{item.category.name}}</a>
+													<a th:href="@{|/category-2cols|}">{{item.categoryName}}</a>
 												</div>
 												<!-- End .product-cat -->
 												<h3 class="product-title">
 													<a href="/product/detail/{{item.id}}">{{item.name}}</a>
 												</h3>
 												<!-- End .product-title -->
-												<div class="product-price">{{item.price | number:0}} VND</div>
+												<div class="product-price">
+													<span class="new-price" ng-show="{{item.offer <= 0}}">{{item.salePrice
+														| number:0}} VND</span> <span class="new-price"
+														ng-show="{{item.offer > 0}}">{{item.salePrice -
+														(item.salePrice * item.offer) | number:0}} VND</span> <span
+														class="old-price" ng-show="{{item.offer > 0}}">{{item.salePrice
+														| number:0}} VND</span>
+												</div>
 												<!-- End .product-price -->
-												<div class="ratings-container">
+												<div class="ratings-container" ng-if="item.countFeedBack != null">
 													<div class="ratings">
-														<div class="ratings-val" style="width: 20%;"></div>
+														<div class="ratings-val"
+															ng-style="{'width': item.rate * 20 + '%'}"></div>
 														<!-- End .ratings-val -->
 													</div>
 													<!-- End .ratings -->
-													<span class="ratings-text">( 2 Reviews )</span>
+													<span class="ratings-text">( {{item.countFeedBack}}
+														Reviews )</span>
 												</div>
 												<!-- End .rating-container -->
 											</div>
@@ -181,19 +190,22 @@
 										<button class="page-link page-link-prev" aria-label="Previous"
 											ng-click="getPrevPage()" tabindex="-1"
 											aria-disabled="{{currentPage === 1}}">
-											<span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
+											<span aria-hidden="true"><i
+												class="icon-long-arrow-left"></i></span>Prev
 										</button>
 									</li>
 									<li class="page-item"
 										ng-repeat="pNum in [].constructor(products.totalPages) track by $index"
 										ng-class="{ active: $index === currentPage }">
-										<button class="page-link" ng-click="get_ByPage($index)">{{$index + 1}}</button>
+										<button class="page-link" ng-click="get_ByPage($index)">{{$index
+											+ 1}}</button>
 									</li>
 									<li class="page-item-total">of {{products.totalPages}}</li>
 									<li class="page-item" ng-class="{ disabled: products.last }">
 										<button class="page-link page-link-next" aria-label="Next"
 											ng-click="getNextPage()">
-											Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+											Next <span aria-hidden="true"><i
+												class="icon-long-arrow-right"></i></span>
 										</button>
 									</li>
 								</ul>
@@ -210,21 +222,22 @@
 
 								<div class="widget widget-collapsible">
 									<h3 class="widget-title">
-										<a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true"
-											aria-controls="widget-1"> Category </a>
+										<a data-toggle="collapse" href="#widget-1" role="button"
+											aria-expanded="true" aria-controls="widget-1"> Category </a>
 									</h3>
 									<!-- End .widget-title -->
 
 									<div class="collapse show" id="widget-1">
 										<div class="widget-body">
-											<div class="filter-items filter-items-count" ng-controller="Category">
-												<div class="filter-item" ng-repeat="(key, value) in categories">
+											<div class="filter-items filter-items-count"
+												ng-controller="Category">
+												<div class="filter-item"
+													ng-repeat="(key, value) in categories">
 													<div class="custom-control custom-checkbox">
 														<input type="checkbox" class="custom-control-input"
 															ng-click="get_ByCategory($event,key)"
 															id="{{'cat-' + $index}}"> <label
-															class="custom-control-label"
-															for="{{'cat-' + $index}}">{{value.nameCategory}}</label>
+															class="custom-control-label" for="{{'cat-' + $index}}">{{value.nameCategory}}</label>
 													</div>
 													<!-- End .custom-checkbox -->
 													<span class="item-count">{{value.qtyProduct}}</span>
@@ -240,8 +253,8 @@
 								<!-- End .widget -->
 								<div class="widget widget-collapsible">
 									<h3 class="widget-title">
-										<a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true"
-											aria-controls="widget-5"> Price </a>
+										<a data-toggle="collapse" href="#widget-5" role="button"
+											aria-expanded="true" aria-controls="widget-5"> Price </a>
 									</h3>
 									<!-- End .widget-title -->
 

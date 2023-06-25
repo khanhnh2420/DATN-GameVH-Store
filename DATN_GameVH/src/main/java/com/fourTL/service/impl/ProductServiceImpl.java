@@ -27,9 +27,8 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<ProductDTO> findTopRatedProducts() {
+	public List<ProductDTO> findProductFeedBack() {
 		// TODO Auto-generated method stub
-		return pDAO.findTopRatedProducts();
+		return pDAO.findProductFeedBack();
 	}
-	
 }

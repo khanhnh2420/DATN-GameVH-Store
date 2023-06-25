@@ -146,22 +146,29 @@
 
 											<div class="product-body">
 												<div class="product-cat">
-													<a href="#">{{item.category.name}}</a>
+													<a th:href="@{|/category-4cols|}">{{item.categoryName}}</a>
 												</div>
 												<!-- End .product-cat -->
 												<h3 class="product-title">
 													<a href="/product/detail/{{item.id}}">{{item.name}}</a>
 												</h3>
 												<!-- End .product-title -->
-												<div class="product-price">{{item.price | number:0}} VND</div>
+												<div class="product-price">
+													<span class="new-price" ng-show="{{item.offer <= 0}}">{{item.salePrice
+														| number:0}} VND</span> <span class="new-price"
+														ng-show="{{item.offer > 0}}">{{item.salePrice
+														- (item.salePrice * item.offer) | number:0}} VND</span> <span
+														class="old-price" ng-show="{{item.offer > 0}}">{{item.salePrice
+														| number:0}} VND</span>
+												</div>
 												<!-- End .product-price -->
-												<div class="ratings-container">
+												<div class="ratings-container" ng-if="item.countFeedBack != null">
 													<div class="ratings">
-														<div class="ratings-val" style="width: 20%;"></div>
+														<div class="ratings-val" ng-style="{'width': item.rate * 20 + '%'}"></div>
 														<!-- End .ratings-val -->
 													</div>
 													<!-- End .ratings -->
-													<span class="ratings-text">( 2 Reviews )</span>
+													<span class="ratings-text">( {{item.countFeedBack}} Reviews )</span>
 												</div>
 												<!-- End .rating-container -->
 											</div>

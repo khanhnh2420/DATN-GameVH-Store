@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.fourTL.dao.OrderDetailDAO;
-import com.fourTL.dao.Order_dataDAO;
+import com.fourTL.dao.OrderDataDAO;
 import com.fourTL.entities.OrderDetail;
-import com.fourTL.entities.Order_data;
+import com.fourTL.entities.OrderData;
 
 
 
@@ -23,7 +23,7 @@ import com.fourTL.entities.Order_data;
 public class CheckoutController {
 	
 	@Autowired
-    private Order_dataDAO ordersDAO;
+    private OrderDataDAO ordersDAO;
 	
 	@Autowired
     private OrderDetailDAO detailsDAO;
@@ -35,7 +35,7 @@ public class CheckoutController {
 	
 
 	@PostMapping("/createorders")
-    public String addCustomer(@ModelAttribute("customer") OrderDetail details, Order_data orders, Model model) {
+    public String addCustomer(@ModelAttribute("customer") OrderDetail details, OrderData orders, Model model) {
         ordersDAO.save(orders);
         detailsDAO.save(details);
         model.addAttribute("message", "Customer added successfully");

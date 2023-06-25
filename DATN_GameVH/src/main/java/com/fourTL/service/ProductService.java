@@ -11,5 +11,5 @@ public interface ProductService {
 
 	Product findById(Integer id);
 	
-	List<ProductDTO> findTopRatedProducts();
+	List<ProductDTO> findProductFeedBack();
 }

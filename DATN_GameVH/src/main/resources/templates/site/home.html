@@ -358,11 +358,10 @@
 								<div class="product" th:each="p:${productsTrending}">
 									<figure class="product-media">
 										<!-- <span class="product-label label-sale">Sale</span> -->
-										<span class="product-label label-top"
-											th:if="${p.product.offer > 0}"
-											th:text="'SALE ' + ${#numbers.formatDecimal(p.product.offer * 100, 1, 'COMMA', 0, 'POINT')} + '%'">Top</span>
-										<a th:href="@{|/product/detail/${p.product.id}|}"> <img
-											th:src="@{|/assets/images/products/${p.product.poster}|}"
+										<span class="product-label label-top" th:if="${p.offer > 0}"
+											th:text="'SALE ' + ${#numbers.formatDecimal(p.offer * 100, 1, 'COMMA', 0, 'POINT')} + '%'">Top</span>
+										<a th:href="@{|/product/detail/${p.id}|}"> <img
+											th:src="@{|/assets/images/products/${p.poster}|}"
 											alt="Product image" class="product-image">
 										</a>
 
@@ -373,8 +372,7 @@
 										<!-- End .product-action-vertical -->
 
 										<div class="product-action">
-											<a class="btn-product btn-cart"
-												th:data-product-id="${p.product.id}"
+											<a class="btn-product btn-cart" th:data-product-id="${p.id}"
 												ng-click="addCart($event)"><span>add to cart</span></a>
 										</div>
 										<!-- End .product-action -->
@@ -383,29 +381,38 @@
 
 									<div class="product-body">
 										<div class="product-cat">
-											<a href="#" th:text="${p.product.category.name}">Shooter</a>
+											<a th:href="@{|/category|}" th:text="${p.categoryName}">Shooter</a>
 										</div>
 										<!-- End .product-cat -->
 										<h3 class="product-title">
-											<a th:href="@{|/product/detail/${p.product.id}|}"
-												th:utext="${p.product.name}">Call of Duty <br>WWII
-												- Gold Edition
+											<a th:href="@{|/product/detail/${p.id}|}"
+												th:utext="${p.name}">Call of Duty <br>WWII - Gold
+												Edition
 											</a>
 										</h3>
 										<!-- End .product-title -->
 										<div class="product-price">
-											<span class="new-price d-block w-100"
-												th:if="${p.product.offer <= 0}"
-												th:text="${#numbers.formatDecimal(p.product.salePrice, 1, 'COMMA', 0, 'POINT')} + ' VND'">1232</span>
-											<span class="new-price d-block w-100"
-												th:if="${p.product.offer > 0}"
-												th:text="${#numbers.formatDecimal(p.product.salePrice - (p.product.salePrice * p.product.offer), 1, 'COMMA', 0, 'POINT')} + ' VND'">1232</span>
-											<span class="old-price d-block w-100"
-												th:if="${p.product.offer > 0}"
-												th:text="${#numbers.formatDecimal(p.product.salePrice, 1, 'COMMA', 0, 'POINT')} + ' VND'">1232</span>
+											<span class="new-price d-block w-100" th:if="${p.offer <= 0}"
+												th:text="${#numbers.formatDecimal(p.salePrice, 1, 'COMMA', 0, 'POINT')} + ' VND'">1232</span>
+											<span class="new-price d-block w-100" th:if="${p.offer > 0}"
+												th:text="${#numbers.formatDecimal(p.salePrice - (p.salePrice * p.offer), 1, 'COMMA', 0, 'POINT')} + ' VND'">1232</span>
+											<span class="old-price d-block w-100" th:if="${p.offer > 0}"
+												th:text="${#numbers.formatDecimal(p.salePrice, 1, 'COMMA', 0, 'POINT')} + ' VND'">1232</span>
 										</div>
 
 										<!-- End .product-price -->
+										<div class="ratings-container">
+											<div class="ratings">
+												<div class="ratings-val"
+													th:style="'width: ' + ${p.rate * 20} + '%;'"></div>
+												<!-- End .ratings-val -->
+											</div>
+											<!-- End .ratings -->
+											<span class="ratings-text"
+												th:utext="'( ' + ${p.countFeedBack} + ' Reviews )'">(
+												2 Reviews )</span>
+										</div>
+										<!-- End .rating-container -->
 									</div>
 									<!-- End .product-body -->
 								</div>
@@ -443,7 +450,7 @@
                                             }
                                         }
                                     }'>
-								<div class="product" th:each="p:${productTopRated}" ng-controller="Category">
+								<div class="product" th:each="p:${productNewReleases}">
 									<figure class="product-media">
 										<!-- <span class="product-label label-sale">Sale</span> -->
 										<span class="product-label label-top" th:if="${p.offer > 0}"
@@ -469,7 +476,7 @@
 
 									<div class="product-body">
 										<div class="product-cat">
-											<a href="#" th:text="${p.categoryName}" ng-click="get_ByCategory($event,'${p.categoryId}')">Shooter</a>
+											<a th:href="@{|/category|}" th:text="${p.categoryName}">Shooter</a>
 										</div>
 										<!-- End .product-cat -->
 										<h3 class="product-title">
@@ -489,13 +496,16 @@
 										</div>
 
 										<!-- End .product-price -->
-										<div class="ratings-container">
+										<div class="ratings-container" th:style="'display: ' + ${p.rate == 0 ? 'none' : ''} + ';'">
 											<div class="ratings">
-												<div class="ratings-val" th:style="'width: ' + ${p.rate * 20} + '%;'"></div>
+												<div class="ratings-val"
+													th:style="'width: ' + ${p.rate * 20} + '%;'"></div>
 												<!-- End .ratings-val -->
 											</div>
 											<!-- End .ratings -->
-											<span class="ratings-text" th:utext="'( ' + ${p.countFeedBack} + ' Reviews )'">( 2 Reviews )</span>
+											<span class="ratings-text"
+												th:utext="'( ' + ${p.countFeedBack} + ' Reviews )'">(
+												2 Reviews )</span>
 										</div>
 										<!-- End .rating-container -->
 									</div>
@@ -535,7 +545,7 @@
                                             }
                                         }
                                     }'>
-								<div class="product" th:each="p:${productTopRated}" ng-controller="Category">
+								<div class="product" th:each="p:${productTopRated}">
 									<figure class="product-media">
 										<!-- <span class="product-label label-sale">Sale</span> -->
 										<span class="product-label label-top" th:if="${p.offer > 0}"
@@ -561,7 +571,7 @@
 
 									<div class="product-body">
 										<div class="product-cat">
-											<a href="#" th:text="${p.categoryName}" ng-click="get_ByCategory($event,'${p.categoryId}')">Shooter</a>
+											<a th:href="@{|/category|}" th:text="${p.categoryName}">Shooter</a>
 										</div>
 										<!-- End .product-cat -->
 										<h3 class="product-title">
@@ -583,11 +593,14 @@
 										<!-- End .product-price -->
 										<div class="ratings-container">
 											<div class="ratings">
-												<div class="ratings-val" th:style="'width: ' + ${p.rate * 20} + '%;'"></div>
+												<div class="ratings-val"
+													th:style="'width: ' + ${p.rate * 20} + '%;'"></div>
 												<!-- End .ratings-val -->
 											</div>
 											<!-- End .ratings -->
-											<span class="ratings-text" th:utext="'( ' + ${p.countFeedBack} + ' Reviews )'">( 2 Reviews )</span>
+											<span class="ratings-text"
+												th:utext="'( ' + ${p.countFeedBack} + ' Reviews )'">(
+												2 Reviews )</span>
 										</div>
 										<!-- End .rating-container -->
 									</div>
@@ -731,7 +744,7 @@
 
 											<div class="product-body">
 												<div class="product-cat">
-													<a href="#" th:text=${p.category.name}>Shooter</a>
+													<a th:href="@{|/category|}" th:text=${p.categoryName}>Shooter</a>
 												</div>
 												<!-- End .product-cat -->
 												<h3 class="product-title">
@@ -752,6 +765,18 @@
 														th:text="${#numbers.formatDecimal(p.salePrice, 1, 'COMMA', 0, 'POINT')} + ' VND'">1232</span>
 												</div>
 												<!-- End .product-price -->
+												<div class="ratings-container">
+													<div class="ratings">
+														<div class="ratings-val"
+															th:style="'width: ' + ${p.rate * 20} + '%;'"></div>
+														<!-- End .ratings-val -->
+													</div>
+													<!-- End .ratings -->
+													<span class="ratings-text"
+														th:utext="'( ' + ${p.countFeedBack} + ' Reviews )'">(
+														2 Reviews )</span>
+												</div>
+												<!-- End .rating-container -->
 											</div>
 											<!-- End .product-body -->
 										</div>
@@ -946,7 +971,18 @@
 									th:text="${#numbers.formatDecimal(item.salePrice, 1, 'COMMA', 0, 'POINT')} + ' VND'">1232</span>
 							</div>
 							<!-- End .product-price -->
-							<!-- End .product-price -->
+							<div class="ratings-container">
+								<div class="ratings">
+									<div class="ratings-val"
+										th:style="'width: ' + ${item.rate * 20} + '%;'"></div>
+									<!-- End .ratings-val -->
+								</div>
+								<!-- End .ratings -->
+								<span class="ratings-text"
+									th:utext="'( ' + ${item.countFeedBack} + ' Reviews )'">( 2
+									Reviews )</span>
+							</div>
+							<!-- End .rating-container -->
 						</div>
 						<!-- End .product-body -->
 					</div>

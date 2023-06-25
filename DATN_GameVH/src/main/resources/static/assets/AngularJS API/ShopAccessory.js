@@ -11,7 +11,6 @@ app.controller("Shop-ctrl", function ($scope, $http, $anchorScroll, $location) {
 		}
 		$http.get(url).then(resp => {
 			$scope.accessories = resp.data;
-			console.log($scope.accessories);
 		}).catch(error => {
 			console.log("Error", error)
 		})

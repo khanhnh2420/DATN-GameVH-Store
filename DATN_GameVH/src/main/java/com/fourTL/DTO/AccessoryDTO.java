@@ -2,7 +2,7 @@ package com.fourTL.DTO;
 
 import java.util.Date;
 
-public interface ProductDTO{
+public interface AccessoryDTO{
 	Integer getId();
 	String getName();
 	String getPoster();
@@ -12,7 +12,5 @@ public interface ProductDTO{
 	String getDetails();
 	Double getRate();
 	Integer getCountFeedBack();
-	String getCategoryName();
-	String getCategoryId();
 	Date getCreateDate();
 }

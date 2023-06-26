@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fourTL.controller.mail.contact.mail_CONSTANT;
 import com.fourTL.dao.CategoryDAO;
-import com.fourTL.dao.OrderDetailDAO;
 import com.fourTL.dao.OrderDataDAO;
+import com.fourTL.dao.OrderDetailDAO;
 import com.fourTL.entities.Category;
 import com.fourTL.entities.MailInfo;
-import com.fourTL.entities.OrderDetail;
 import com.fourTL.entities.OrderData;
+import com.fourTL.entities.OrderDetail;
 import com.fourTL.service.MailService;
 
 import jakarta.mail.MessagingException;

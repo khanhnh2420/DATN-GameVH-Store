@@ -14,7 +14,6 @@
 //import com.fourTL.entities.Accessory;
 //import com.fourTL.entities.Cart;
 //import com.fourTL.entities.Product;
-//import com.fourTL.service.AccessoryService;
 //import com.fourTL.service.ProductService;
 //
 //import jakarta.servlet.http.HttpSession;
@@ -27,9 +26,6 @@
 //	@Autowired
 //	ProductService pService;
 //	
-//	@Autowired
-//	AccessoryService accessoryService;
-//
 //	@PostMapping("/addCart/{id}")
 //	private HashMap<String, Cart> addItem(HttpSession ss, @PathVariable("id") Integer productID) {
 //		HashMap<String, Cart> cartItems = (HashMap<String, Cart>) ss.getAttribute("myCart");

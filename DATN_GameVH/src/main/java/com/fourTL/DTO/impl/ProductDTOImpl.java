@@ -1,6 +1,6 @@
 package com.fourTL.DTO.impl;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import com.fourTL.DTO.ProductDTO;
 
@@ -15,13 +15,13 @@ public class ProductDTOImpl implements ProductDTO {
 	private Double rate;
 	private Integer countFeedBack;
 	private String categoryName;
-	private String categoryId;
-	private Date createDate;
+	private Integer categoryId;
+	private LocalDate createDate;
 
 	// Constructor
 	public ProductDTOImpl(Integer id, String name, String poster, String thumbnail, Double salePrice, Double offer,
-			String details, Double rate, Integer countFeedBack, String categoryName, String categoryId,
-			Date createDate) {
+			String details, Double rate, Integer countFeedBack, String categoryName, Integer categoryId,
+			LocalDate localDate) {
 		this.id = id;
 		this.name = name;
 		this.poster = poster;
@@ -33,7 +33,7 @@ public class ProductDTOImpl implements ProductDTO {
 		this.countFeedBack = countFeedBack;
 		this.categoryName = categoryName;
 		this.categoryId = categoryId;
-		this.createDate = createDate;
+		this.createDate = localDate;
 	}
 
 	// Getter methods
@@ -88,12 +88,12 @@ public class ProductDTOImpl implements ProductDTO {
 	}
 
 	@Override
-	public String getCategoryId() {
+	public Integer getCategoryId() {
 		return categoryId;
 	}
 
 	@Override
-	public Date getCreateDate() {
+	public LocalDate getCreateDate() {
 		return createDate;
 	}
 }

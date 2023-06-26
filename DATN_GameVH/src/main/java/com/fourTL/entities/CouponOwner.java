@@ -15,21 +15,22 @@ import lombok.Data;
 @SuppressWarnings("serial")
 @Data
 @Entity
-@Table(name="coupon_owner")
-public class CouponOwner implements Serializable{
+@Table(name = "coupon_owner")
+public class CouponOwner implements Serializable {
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="Id", unique=true, nullable=false, precision=19)
     private Long id;
-	
+
     @Column(name="Status", nullable=false, length=1)
     private Boolean status;
-    
+
     @ManyToOne(optional=false)
-    @JoinColumn(name="AccountId", nullable=false)
+    @JoinColumn(name="account_id", nullable=false)
     private Account account;
-    
+
     @ManyToOne(optional=false)
-    @JoinColumn(name="CouponId", nullable=false)
+    @JoinColumn(name="coupon_id", nullable=false)
     private Coupon coupon;
+
 }

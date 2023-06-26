@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.fourTL.dao.OrderDetailDAO;
 import com.fourTL.dao.OrderDataDAO;
-import com.fourTL.entities.OrderDetail;
+import com.fourTL.dao.OrderDetailDAO;
 import com.fourTL.entities.OrderData;
+import com.fourTL.entities.OrderDetail;
 
 
 

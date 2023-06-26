@@ -1,7 +1,6 @@
 package com.fourTL.service.impl;
 
 import java.io.File;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +10,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.fourTL.entities.MailInfo;
+import com.fourTL.DTO.MailInfo;
 import com.fourTL.service.MailService;
 
 import jakarta.mail.MessagingException;

@@ -1,9 +1,8 @@
 package com.fourTL.service;
 
-import com.fourTL.entities.Comment;
-
-
 import java.util.List;
+
+import com.fourTL.entities.Comment;
 
 public interface CommentsService {
     List<Comment> findAll();

@@ -1,4 +1,4 @@
-package com.fourTL.entities;
+package com.fourTL.DTO;
 
 import java.util.Date;
 

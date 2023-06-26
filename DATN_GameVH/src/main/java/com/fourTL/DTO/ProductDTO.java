@@ -1,6 +1,6 @@
 package com.fourTL.DTO;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public interface ProductDTO{
 	Integer getId();
@@ -13,6 +13,6 @@ public interface ProductDTO{
 	Double getRate();
 	Integer getCountFeedBack();
 	String getCategoryName();
-	String getCategoryId();
-	Date getCreateDate();
+	Integer getCategoryId();
+	LocalDate getCreateDate();
 }

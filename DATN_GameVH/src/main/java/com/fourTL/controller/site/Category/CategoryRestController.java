@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fourTL.dao.CategoryDAO;
 import com.fourTL.dao.ProductDAO;
 import com.fourTL.entities.Category;
+import com.fourTL.entities.Product;
+import com.fourTL.service.CategoryService;
 
 @CrossOrigin("*")
 @RestController
@@ -19,14 +22,16 @@ import com.fourTL.entities.Category;
 public class CategoryRestController {
 
 	@Autowired
-	CategoryDAO cDAO;
-
-	@Autowired
-	ProductDAO pDAO;
+	CategoryService categoryService;
 
 	@GetMapping("/getAll")
 	public ResponseEntity<List<Category>> getAllCategories() {
-	    return ResponseEntity.ok(cDAO.findAll());
+	    return ResponseEntity.ok(categoryService.findAll());
+	}
+	
+	@GetMapping("/getProduct/{categoryId}")
+	public ResponseEntity<List<Product>> getAllProductByCategory(@PathVariable("categoryId") Integer categoryId) {
+	    return ResponseEntity.ok(categoryService.findById(categoryId).getProduct());
 	}
 	
 //	@GetMapping("/countProduct")

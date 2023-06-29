@@ -1,0 +1,948 @@
+<div class="wrap-container" ng-controller="HomeController">
+	<div class="image-bg-body"></div>
+	<main class="main" ng-controller="CartController">
+		<div class="mb-2"></div>
+		<!-- End .mb-2 -->
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-3 d-none d-xl-block">
+					<nav class="side-nav box">
+						<div class="sidenav-title user-select-none">Danh mục</div>
+						<!-- End .sidenav-title -->
+						<ul class="menu-vertical sf-arrows" style="max-height: 26em;"
+							ng-controller="CategoryController">
+							<li class="my-3 ml-5" style="font-weight: 800;">GAMES</li>
+							<li ng-repeat="(key, value) in categories" style="cursor: pointer;"><a
+									href="/shop/{{value.type}}/{{value.categoryId}}" ng-if="value.type == 'Game'">{{value.name}}</a>
+							</li>
+							<li class="my-3 ml-5" style="font-weight: 800;">PHỤ KIỆN</li>
+							<li ng-repeat="(key, value) in categories" style="cursor: pointer;"><a
+								href="/shop/{{value.type}}/{{value.categoryId}}" ng-if="value.type == 'PK'">{{value.name}}</a>
+							</li>
+						</ul>
+						<!-- End .menu -->
+					</nav>
+					<!-- End .side-nav -->
+				</div>
+				<!-- End .col-lg-3 -->
+
+				<div class="col-lg-8 col-xl-6">
+					<div class="banner banner-overlay banner-lg  content-left">
+						<a href="#"> <img src="/assets/images/demos/demo-19/banners/banner-1.jpg" alt="Banner">
+						</a>
+						<div class="banner-content">
+							<h4 class="banner-subtitle">Pre-order now</h4>
+							<img src="/assets/images/demos/demo-19/banners/banner-1-title.png" alt="Banner 1 Title"
+								width="217" height="54" class="mb-1">
+							<a href="#" class="banner-link size-lg">Pre-Order Now<i
+									class="icon-long-arrow-right"></i></a>
+						</div>
+					</div>
+					<!-- End .banner -->
+				</div>
+				<!-- End .col-lg-6 -->
+
+				<div class="col-sm-6 col-lg-4 col-xl-3">
+					<div class="banner banner-overlay banner-sm content-right">
+						<a href="#"> <img src="/assets/images/demos/demo-19/banners/banner-2.jpg" alt="Banner">
+						</a>
+						<div class="banner-content text-right">
+							<h4 class="banner-subtitle">Weekend Offer</h4>
+							<img class="banner-title-img" src="/assets/images/demos/demo-19/banners/banner-2-title.png"
+								alt="Banner-2">
+							<h4 class="banner-price">
+								Save<span class="price">$19,99</span>
+							</h4>
+							<a href="#" class="banner-link">Buy Now<i class="icon-long-arrow-right"></i></a>
+						</div>
+					</div>
+					<!-- End .banner -->
+
+					<div class="banner banner-overlay d-none d-lg-block banner-sm content-right align-center">
+						<a href="#"> <img src="/assets/images/demos/demo-19/banners/banner-3.jpg" alt="Banner">
+						</a>
+						<div class="banner-content text-right">
+							<img class="banner-title-img" src="/assets/images/demos/demo-19/banners/banner-3-title.png"
+								alt="Banner-3">
+							<h5 class="text-white">35% OFF</h5>
+							<a href="#" class="banner-link">Buy Now<i class="icon-long-arrow-right"></i></a>
+						</div>
+					</div>
+					<!-- End .banner -->
+				</div>
+				<!-- End .col-lg-3 -->
+
+				<div class="col-sm-6 col-lg-3">
+					<div class="banner banner-overlay banner-sm content-right align-center">
+						<a href="#"> <img src="/assets/images/demos/demo-19/banners/banner-4.jpg" alt="Banner">
+						</a>
+						<div class="banner-content" style="left: auto; right: 3rem; align-items: flex-start;">
+							<h4 class="banner-subtitle">Weekend Sale</h4>
+							<img class="banner-title-img" src="/assets/images/demos/demo-19/banners/banner-4-title.png"
+								alt="Banner-4">
+							<h4 class="banner-price">
+								<span class="off">25% off</span>
+							</h4>
+							<a href="#" class="banner-link">Buy Now<i class="icon-long-arrow-right"></i></a>
+						</div>
+					</div>
+					<!-- End .banner -->
+				</div>
+				<!-- End .col-lg-3 -->
+
+				<div class="col-lg-9">
+					<div class="banner banner-overlay banner-lg">
+						<a href="#"> <img src="/assets/images/demos/demo-19/banners/banner-5.jpg" alt="Banner">
+						</a>
+						<div class="banner-content">
+							<h4 class="banner-subtitle">Amazing Value</h4>
+							<img class="banner-title-img mb-1"
+								src="/assets/images/demos/demo-19/banners/banner-5-title.png" alt="Banner-5"> <a
+								href="#" class="banner-link">Pre-Order
+								Now<i class="icon-long-arrow-right"></i>
+							</a>
+						</div>
+					</div>
+					<!-- End .banner -->
+				</div>
+				<!-- End .col-lg-9 -->
+			</div>
+			<!-- End .row -->
+		</div>
+		<!-- End .container -->
+
+		<div class="icon-boxes-container icon-boxes-separator bg-transparent">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-6 col-lg-3">
+						<div class="icon-box icon-box-side">
+							<span class="icon-box-icon"> <i class="icon-rocket"></i>
+							</span>
+							<div class="icon-box-content">
+								<h3 class="icon-box-title">Miễn phí vận chuyển</h3>
+								<!-- End .icon-box-title -->
+								<p>Đơn hàng trên 1.000.000</p>
+							</div>
+							<!-- End .icon-box-content -->
+						</div>
+						<!-- End .icon-box -->
+					</div>
+					<!-- End .col-sm-6 col-lg-3 -->
+
+					<div class="col-sm-6 col-lg-3">
+						<div class="icon-box icon-box-side">
+							<span class="icon-box-icon"> <i class="icon-rotate-left"></i>
+							</span>
+
+							<div class="icon-box-content">
+								<h3 class="icon-box-title">Đổi trả miễn phí</h3>
+								<!-- End .icon-box-title -->
+								<p>Trong 30 ngày</p>
+							</div>
+							<!-- End .icon-box-content -->
+						</div>
+						<!-- End .icon-box -->
+					</div>
+					<!-- End .col-sm-6 col-lg-3 -->
+
+					<div class="col-sm-6 col-lg-3">
+						<div class="icon-box icon-box-side">
+							<span class="icon-box-icon"> <i class="icon-info-circle"></i>
+							</span>
+
+							<div class="icon-box-content">
+								<h3 class="icon-box-title">Giảm 20% cho đơn hàng</h3>
+								<!-- End .icon-box-title -->
+								<p>Đầu tiên của bạn</p>
+							</div>
+							<!-- End .icon-box-content -->
+						</div>
+						<!-- End .icon-box -->
+					</div>
+					<!-- End .col-sm-6 col-lg-3 -->
+
+					<div class="col-sm-6 col-lg-3">
+						<div class="icon-box icon-box-side">
+							<span class="icon-box-icon"> <i class="icon-life-ring"></i>
+							</span>
+
+							<div class="icon-box-content">
+								<h3 class="icon-box-title">Chúng tôi hỗ trợ</h3>
+								<!-- End .icon-box-title -->
+								<p>24/7 Đội ngũ chuyên nghiệp</p>
+							</div>
+							<!-- End .icon-box-content -->
+						</div>
+						<!-- End .icon-box -->
+					</div>
+					<!-- End .col-sm-6 col-lg-3 -->
+				</div>
+				<!-- End .row -->
+			</div>
+			<!-- End .container -->
+		</div>
+		<!-- End .icon-boxes-container -->
+
+		<div class="bg-light pt-3 pb-5 mb-5">
+			<div class="container">
+				<ul class="nav nav-pills nav-big nav-border-anim justify-content-center mb-3" role="tablist">
+					<li class="nav-item">
+						<a class="nav-link" ng-class="{ 'active': activeTab === 'products-trending-tab' }"
+							ng-click="changeTab('products-trending-tab')" role="tab"
+							aria-controls="products-trending-tab" aria-selected="true">Thịnh hành</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" ng-class="{ 'active': activeTab === 'products-new-tab' }"
+							ng-click="changeTab('products-new-tab')" role="tab" aria-controls="products-new-tab"
+							aria-selected="false">Mới nhất</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" ng-class="{ 'active': activeTab === 'products-best-tab' }"
+							ng-click="changeTab('products-best-tab')" role="tab" aria-controls="products-best-tab"
+							aria-selected="false">Đánh giá cao nhất</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div id="products-trending-tab" class="tab-pane fade p-0"
+						ng-class="{ 'show active': activeTab === 'products-trending-tab' }">
+						<div class="carousel-container">
+							<div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow owl-loaded owl-drag"
+								data-toggle="owl" data-owl-options='{
+                                        "nav": false, 
+                                        "dots": true,
+                                        "margin": 20,
+                                        "loop": false,
+                                        "responsive": {
+                                            "0": {
+                                                "items":2
+                                            },
+                                            "480": {
+                                                "items":2
+                                            },
+                                            "768": {
+                                                "items":3
+                                            },
+                                            "992": {
+                                                "items":4
+                                            },
+                                            "1200": {
+                                                "items":5,
+                                                "nav": true
+                                            }
+                                        }
+                                    }'>
+								<div class="owl-stage mb-1">
+									<div class="owl-item" ng-repeat="p in topSellings">
+										<div class="product">
+											<figure class="product-media">
+												<!-- <span class="product-label label-sale">Sale</span> -->
+												<span class="product-label label-top" ng-show="p.offer > 0">SALE
+													{{p.offer * 100 | number:0}}%</span>
+												<a href="/product/detail/{{p.id}}"> <img
+														src="/assets/images/products/{{p.poster}}" alt="Product image"
+														class="product-image">
+												</a>
+
+												<div class="product-action-vertical">
+													<a href="#" class="btn-product-icon btn-wishlist"
+														title="Add to Wishlist"><span>add to wishlist</span></a>
+												</div>
+												<!-- End .product-action-vertical -->
+
+												<div class="product-action">
+													<a class="btn-product btn-cart" data-product-id="{{p.id}}"
+														ng-click="addCart($event)"><span>add to cart</span></a>
+												</div>
+												<!-- End .product-action -->
+											</figure>
+											<!-- End .product-media -->
+
+											<div class="product-body">
+												<div class="product-cat">
+													<a href="/shop/{{p.type}}/{{p.categoryId}}">{{p.categoryName}}</a>
+												</div>
+												<!-- End .product-cat -->
+												<h3 class="product-title">
+													<a href="/product/detail/{{p.id}}">{{p.name}}</a>
+												</h3>
+												<!-- End .product-title -->
+												<div class="product-price">
+													<span class="new-price d-block w-100"
+														ng-show="{{p.offer <= 0}}">{{p.salePrice | vndFormat}}</span>
+													<span class="new-price d-block w-100"
+														ng-show="{{p.offer > 0}}">{{p.salePrice -
+														(p.salePrice * p.offer) | vndFormat}}</span>
+													<span class="old-price d-block w-100"
+														ng-show="{{p.offer > 0}}">{{p.salePrice | vndFormat}}</span>
+												</div>
+
+												<!-- End .product-price -->
+												<div class="ratings-container" ng-if="p.rate != 0">
+													<div class="ratings">
+														<div class="ratings-val"
+															ng-style="{'width': (p.rate * 20) + '%'};"></div>
+														<!-- End .ratings-val -->
+													</div>
+													<!-- End .ratings -->
+													<span class="ratings-text">(
+														{{p.countFeedBack}} Reviews )</span>
+												</div>
+												<!-- End .rating-container -->
+											</div>
+											<!-- End .product-body -->
+										</div>
+										<!-- End .product -->
+									</div>
+
+								</div>
+
+							</div>
+							<!-- End .owl-carousel -->
+						</div>
+
+					</div>
+					<!-- .End .tab-pane -->
+					<div id="products-new-tab" class="tab-pane fade p-0"
+						ng-class="{ 'show active': activeTab === 'products-new-tab' }">
+						<div class="carousel-container">
+							<div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow owl-loaded owl-drag"
+								data-toggle="owl" data-owl-options='{
+											"nav": false, 
+											"dots": true,
+											"margin": 20,
+											"loop": false,
+											"responsive": {
+												"0": {
+													"items":2
+												},
+												"480": {
+													"items":2
+												},
+												"768": {
+													"items":3
+												},
+												"992": {
+													"items":4
+												},
+												"1200": {
+													"items":5,
+													"nav": true
+												}
+											}
+										}'>
+								<div class="owl-stage mb-1">
+									<div class="owl-item" ng-repeat="p in topNewReleases">
+										<div class="product">
+											<figure class="product-media">
+												<!-- <span class="product-label label-sale">Sale</span> -->
+												<span class="product-label label-top" ng-show="p.offer > 0">SALE
+													{{p.offer * 100 | number:0}}%</span>
+												<a href="/product/detail/{{p.id}}"> <img
+														src="/assets/images/products/{{p.poster}}" alt="Product image"
+														class="product-image">
+												</a>
+
+												<div class="product-action-vertical">
+													<a href="#" class="btn-product-icon btn-wishlist"
+														title="Add to Wishlist"><span>add to wishlist</span></a>
+												</div>
+												<!-- End .product-action-vertical -->
+
+												<div class="product-action">
+													<a class="btn-product btn-cart" data-product-id="{{p.id}}"
+														ng-click="addCart($event)"><span>add to cart</span></a>
+												</div>
+												<!-- End .product-action -->
+											</figure>
+											<!-- End .product-media -->
+
+											<div class="product-body">
+												<div class="product-cat">
+													<a href="/shop/{{p.type}}/{{p.categoryId}}">{{p.categoryName}}</a>
+												</div>
+												<!-- End .product-cat -->
+												<h3 class="product-title">
+													<a href="/product/detail/{{p.id}}">{{p.name}}</a>
+												</h3>
+												<!-- End .product-title -->
+												<div class="product-price">
+													<span class="new-price d-block w-100"
+														ng-show="{{p.offer <= 0}}">{{p.salePrice | vndFormat}}</span>
+													<span class="new-price d-block w-100"
+														ng-show="{{p.offer > 0}}">{{p.salePrice -
+														(p.salePrice * p.offer) | vndFormat}}</span>
+													<span class="old-price d-block w-100"
+														ng-show="{{p.offer > 0}}">{{p.salePrice | vndFormat}}</span>
+												</div>
+
+												<!-- End .product-price -->
+												<div class="ratings-container" ng-if="p.rate != 0">
+													<div class="ratings">
+														<div class="ratings-val"
+															ng-style="{'width': (p.rate * 20) + '%'};"></div>
+														<!-- End .ratings-val -->
+													</div>
+													<!-- End .ratings -->
+													<span class="ratings-text">(
+														{{p.countFeedBack}} Reviews )</span>
+												</div>
+												<!-- End .rating-container -->
+											</div>
+											<!-- End .product-body -->
+										</div>
+										<!-- End .product -->
+									</div>
+
+								</div>
+
+							</div>
+							<!-- End .owl-carousel -->
+						</div>
+
+					</div>
+					<!-- .End .tab-pane -->
+					<div id="products-best-tab" class="tab-pane fade p-0"
+						ng-class="{ 'show active': activeTab === 'products-best-tab' }">
+						<div class="carousel-container">
+							<div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow owl-loaded owl-drag"
+								data-toggle="owl" data-owl-options='{
+											"nav": false, 
+											"dots": true,
+											"margin": 20,
+											"loop": false,
+											"responsive": {
+												"0": {
+													"items":2
+												},
+												"480": {
+													"items":2
+												},
+												"768": {
+													"items":3
+												},
+												"992": {
+													"items":4
+												},
+												"1200": {
+													"items":5,
+													"nav": true
+												}
+											}
+										}'>
+								<div class="owl-stage mb-1">
+									<div class="owl-item" ng-repeat="p in topRates">
+										<div class="product">
+											<figure class="product-media">
+												<!-- <span class="product-label label-sale">Sale</span> -->
+												<span class="product-label label-top" ng-show="p.offer > 0">SALE
+													{{p.offer * 100 | number:0}}%</span>
+												<a href="/product/detail/{{p.id}}"> <img
+														src="/assets/images/products/{{p.poster}}" alt="Product image"
+														class="product-image">
+												</a>
+
+												<div class="product-action-vertical">
+													<a href="#" class="btn-product-icon btn-wishlist"
+														title="Add to Wishlist"><span>add to wishlist</span></a>
+												</div>
+												<!-- End .product-action-vertical -->
+
+												<div class="product-action">
+													<a class="btn-product btn-cart" data-product-id="{{p.id}}"
+														ng-click="addCart($event)"><span>add to cart</span></a>
+												</div>
+												<!-- End .product-action -->
+											</figure>
+											<!-- End .product-media -->
+
+											<div class="product-body">
+												<div class="product-cat">
+													<a href="/shop/{{p.type}}/{{p.categoryId}}">{{p.categoryName}}</a>
+												</div>
+												<!-- End .product-cat -->
+												<h3 class="product-title">
+													<a href="/product/detail/{{p.id}}">{{p.name}}</a>
+												</h3>
+												<!-- End .product-title -->
+												<div class="product-price">
+													<span class="new-price d-block w-100"
+														ng-show="{{p.offer <= 0}}">{{p.salePrice | vndFormat}}</span>
+													<span class="new-price d-block w-100"
+														ng-show="{{p.offer > 0}}">{{p.salePrice -
+														(p.salePrice * p.offer) | vndFormat}}</span>
+													<span class="old-price d-block w-100"
+														ng-show="{{p.offer > 0}}">{{p.salePrice | vndFormat}}</span>
+												</div>
+
+												<!-- End .product-price -->
+												<div class="ratings-container" ng-if="p.rate != 0">
+													<div class="ratings">
+														<div class="ratings-val"
+															ng-style="{'width': (p.rate * 20) + '%'};"></div>
+														<!-- End .ratings-val -->
+													</div>
+													<!-- End .ratings -->
+													<span class="ratings-text">(
+														{{p.countFeedBack}} Reviews )</span>
+												</div>
+												<!-- End .rating-container -->
+											</div>
+											<!-- End .product-body -->
+										</div>
+										<!-- End .product -->
+									</div>
+
+								</div>
+
+							</div>
+							<!-- End .owl-carousel -->
+						</div>
+
+					</div>
+					<!-- .End .tab-pane -->
+				</div>
+				<!-- End .tab-content -->
+			</div>
+			<!-- End .container -->
+		</div>
+		<!-- End .bg-light pt-4 pb-4 -->
+
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-sm-6 col-md-4">
+					<div class="banner banner-overlay banner-sm banner-ad content-left align-center">
+						<a href="#"> <img src="/assets/images/demos/demo-19/banners/banner-6.jpg" alt="Banner">
+						</a>
+						<div class="banner-content">
+							<h4 class="banner-subtitle">Weekend Offer</h4>
+							<img class="banner-title-img" src="/assets/images/demos/demo-19/banners/banner-6-title.png"
+								alt="Banner-6">
+							<h4 class="banner-price">
+								<span class="off" style="font-weight: 600;">Save <span
+										class="price">$19.99</span></span>
+							</h4>
+							<a href="#" class="banner-link">Buy Now<i class="icon-long-arrow-right"></i></a>
+						</div>
+					</div>
+					<!-- End .banner -->
+				</div>
+				<!-- End .col-md-4 -->
+
+				<div class="col-sm-6 col-md-4">
+					<div class="banner banner-overlay banner-sm banner-ad content-left align-center">
+						<a href="#"> <img src="/assets/images/demos/demo-19/banners/banner-7.jpg" alt="Banner">
+						</a>
+						<div class="banner-content">
+							<h4 class="banner-subtitle" style="letter-spacing: 0.1em;">Amazing
+								Deal on an</h4>
+							<h2 class="banner-title mb-0" style="font-size: 3rem;">XBOX
+								ONE</h2>
+							<h4 class="banner-price">
+								<span class="off" style="font-weight: 600;">Save $50</span>
+							</h4>
+							<a href="#" class="banner-link">Buy Now<i class="icon-long-arrow-right"></i></a>
+						</div>
+					</div>
+					<!-- End .banner -->
+				</div>
+				<!-- End .col-md-4 -->
+
+				<div class="col-sm-6 col-md-4">
+					<div class="banner banner-overlay banner-sm banner-ad content-left align-center">
+						<a href="#"> <img src="/assets/images/demos/demo-19/banners/banner-8.jpg" alt="Banner">
+						</a>
+						<div class="banner-content">
+							<h4 class="banner-price text-white mb-1">Save $29.00</h4>
+							<img class="banner-title-img mb-2"
+								src="/assets/images/demos/demo-19/banners/banner-8-title.png" alt="Banner-8"> <a
+								href="#" class="banner-link">Buy
+								Now<i class="icon-long-arrow-right"></i>
+							</a>
+						</div>
+					</div>
+					<!-- End .banner -->
+				</div>
+				<!-- End .col-md-4 -->
+			</div>
+			<!-- End .row -->
+		</div>
+		<!-- End .container -->
+
+		<div class="container">
+			<hr class="mt-0 mb-4">
+		</div>
+		<!-- End .container -->
+
+		<div class="container">
+			<div class="heading heading-flex mb-2 mb-lg-3">
+				<div class="heading-left">
+					<h2 class="title mb-0">Top Games hay</h2>
+					<!-- End .title -->
+				</div>
+				<!-- End .heading-left -->
+
+				<div class="heading-right">
+					<a th:href="@{|/category|}" class="title-link" style="cursor: pointer;">Xem thêm sản phẩm<i
+							class="icon-long-arrow-right"></i>
+					</a>
+				</div>
+				<!-- End .heading-right -->
+			</div>
+			<!-- End .heading -->
+
+			<div class="games-soon">
+				<div class="row">
+					<div class="col-lg-7">
+						<div class="products">
+							<div class="row">
+								<div ng-repeat="p in listGames | limitTo: 6" class="col-6 col-md-4">
+									<div class="product">
+										<figure class="product-media">
+											<span class="product-label label-top" ng-if="p.offer > 0">SALE {{p.offer *
+												100 | number:0}}%</span>
+											<a href="/product/detail/{{p.id}}"> <img
+													src="/assets/images/products/{{p.poster}}" alt="Product image"
+													class="product-image">
+											</a>
+
+											<div class="product-action-vertical">
+												<a href="#" class="btn-product-icon btn-wishlist"
+													title="Add to Wishlist"><span>add to wishlist</span></a>
+											</div>
+											<!-- End .product-action-vertical -->
+
+											<div class="product-action">
+												<a data-product-id="{{p.id}}" ng-click="addCart($event)" style="cursor: pointer;"
+													class="btn-product btn-cart"><span>add to cart</span></a>
+											</div>
+											<!-- End .product-action -->
+										</figure>
+										<!-- End .product-media -->
+
+										<div class="product-body">
+											<div class="product-cat">
+												<a href="/shop/{{p.type}}/{{p.categoryId}}">{{p.categoryName}}</a>
+											</div>
+											<!-- End .product-cat -->
+											<h3 class="product-title">
+												<a href="/product/detail/{{p.id}}">{{p.name}}</a>
+											</h3>
+											<!-- End .product-title -->
+											<div class="product-price">
+												<span class="new-price d-block w-100"
+													ng-show="{{p.offer <= 0}}">{{p.salePrice | vndFormat}}</span>
+												<span class="new-price d-block w-100"
+													ng-show="{{p.offer > 0}}">{{p.salePrice -
+													(p.salePrice * p.offer) | vndFormat}}</span>
+												<span class="old-price d-block w-100"
+													ng-show="{{p.offer > 0}}">{{p.salePrice | vndFormat}}</span>
+											</div>
+											<!-- End .product-price -->
+											<div class="ratings-container" ng-if="p.rate != 0">
+												<div class="ratings">
+													<div class="ratings-val" ng-style="{'width': (p.rate * 20) + '%'};">
+													</div>
+													<!-- End .ratings-val -->
+												</div>
+												<!-- End .ratings -->
+												<span class="ratings-text">(
+													{{p.countFeedBack}} Reviews )</span>
+											</div>
+											<!-- End .rating-container -->
+										</div>
+										<!-- End .product-body -->
+									</div>
+									<!-- End .product -->
+								</div>
+								<!-- End .col-sm-6 col-md-4 -->
+							</div>
+							<!-- End .row -->
+						</div>
+						<!-- End .products -->
+					</div>
+					<!-- End .col-lg-7 -->
+
+					<div class="col-lg-5 order-lg-first mt-1">
+						<div class="carousel-container">
+							<div class="games-banners-slider custom-carousel owl-carousel-2-items owl-simple"
+								data-toggle="owl" data-owl-options='{
+                                        "nav": false, 
+                                        "dots": true,
+                                        "margin": 0,
+                                        "loop": false,
+                                        "items":1
+                                    }'>
+								<div class="banner banner-overlay product-banner">
+									<a href="#"> <img src="/assets/images/demos/demo-19/banners/banner-9.jpg"
+											alt="Banner">
+									</a>
+									<div class="banner-content align-items-center center">
+										<img class="banner-title-img mb-1"
+											src="/assets/images/demos/demo-19/banners/banner-9-title.png"
+											alt="Banner-9">
+										<h4 class="banner-price mb-2" style="font-weight: 600;">$29.99</h4>
+										<a href="#" class="banner-link size-lg">Pre-Order Now<i
+												class="icon-long-arrow-right"></i></a>
+									</div>
+								</div>
+								<!-- End .banner -->
+
+								<div class="banner banner-overlay product-banner">
+									<a href="#"> <img src="/assets/images/demos/demo-19/banners/banner-10.jpg"
+											alt="Banner">
+									</a>
+									<div class="banner-content align-items-center">
+										<h4 class="banner-subtitle" style="letter-spacing: 0.1em;">Out
+											14 May 2019</h4>
+										<img class="banner-title-img mb-1"
+											src="/assets/images/demos/demo-19/banners/banner-10-title.png"
+											alt="Banner-10"> <a href="#" class="banner-link size-lg">Pre-Order Now<i
+												class="icon-long-arrow-right"></i></a>
+									</div>
+								</div>
+								<!-- End .banner -->
+
+							</div>
+							<!-- End .owl-carousel -->
+						</div>
+					</div>
+					<!-- End .col-lg-5 -->
+				</div>
+				<!-- End .row -->
+			</div>
+			<!-- End .games-soon -->
+		</div>
+		<!-- End .container -->
+
+		<div class="mb-3"></div>
+		<!-- End .mb-3 -->
+
+		<div class="container">
+			<div class="cta cta-horizontal cta-horizontal-box bg-image mb-4"
+				style="background-image: url(/assets/images/demos/demo-19/bg-2.jpg);">
+				<div class="row align-items-center">
+					<div class="col-lg-5">
+						<h3 class="cta-title text-primary">Hãy tham gia ngay với chúng tôi</h3>
+						<!-- End .cta-title -->
+						<p class="cta-desc text-light">Đăng ký để nhận những thông báo mới nhất và phiếu giảm giá!</p>
+						<!-- End .cta-desc -->
+					</div>
+					<!-- End .col-lg-5 -->
+
+					<div class="col-lg-7 d-flex justify-content-lg-end">
+						<form action="#">
+							<div class="input-group">
+								<input type="email" class="form-control form-control-white"
+									placeholder="Hãy nhập email của bạn..." aria-label="Email Adress" required>
+								<div class="input-group-append">
+									<button class="btn btn-primary-white btn-rounded" type="submit">
+										<span>Đăng ký</span><i class="icon-long-arrow-right"></i>
+									</button>
+								</div>
+								<!-- .End .input-group-append -->
+							</div>
+							<!-- .End .input-group -->
+						</form>
+					</div>
+					<!-- End .col-lg-8 -->
+				</div>
+				<!-- End .row -->
+			</div>
+			<!-- End .cta -->
+		</div>
+		<!-- End .container -->
+		<div class="container">
+			<div class="heading heading-flex" style="height: 3em; align-items: unset;">
+				<div class="heading-left">
+					<h2 class="title mb-5">Phụ kiện</h2>
+					<!-- End .title -->
+				</div>
+				<!-- End .heading-left -->
+
+				<div class="heading-right">
+					<a href="/accessory" class="title-link">Xem thêm sản phẩm <i class="icon-long-arrow-right"></i>
+					</a>
+				</div>
+				<!-- End .heading-right -->
+			</div>
+			<!-- End .heading -->
+			<div class="carousel-container">
+				<div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow owl-loaded owl-drag"
+					data-toggle="owl" data-owl-options='{
+								"nav": false, 
+								"dots": true,
+								"margin": 20,
+								"loop": false,
+								"responsive": {
+									"0": {
+										"items":2
+									},
+									"480": {
+										"items":2
+									},
+									"768": {
+										"items":3
+									},
+									"992": {
+										"items":4
+									},
+									"1200": {
+										"items":5,
+										"nav": true
+									}
+								}
+							}'>
+					<div class="owl-stage mb-1">
+						<div class="owl-item" ng-repeat="p in listAccessories | limitTo: 6">
+							<div class="product">
+								<figure class="product-media">
+									<!-- <span class="product-label label-sale">Sale</span> -->
+									<span class="product-label label-top" ng-show="p.offer > 0">SALE
+										{{p.offer * 100 | number:0}}%</span>
+									<a href="/product/detail/{{p.id}}"> <img
+											src="/assets/images/products/{{p.poster}}" alt="Product image"
+											class="product-image">
+									</a>
+
+									<div class="product-action-vertical">
+										<a href="#" class="btn-product-icon btn-wishlist"
+											title="Add to Wishlist"><span>add to wishlist</span></a>
+									</div>
+									<!-- End .product-action-vertical -->
+
+									<div class="product-action">
+										<a class="btn-product btn-cart" data-product-id="{{p.id}}" style="cursor: pointer;"
+											ng-click="addCart($event)"><span>add to cart</span></a>
+									</div>
+									<!-- End .product-action -->
+								</figure>
+								<!-- End .product-media -->
+
+								<div class="product-body">
+									<div class="product-cat">
+										<a href="/shop/{{p.type}}/{{p.categoryId}}">{{p.categoryName}}</a>
+									</div>
+									<!-- End .product-cat -->
+									<h3 class="product-title">
+										<a href="/product/detail/{{p.id}}">{{p.name}}</a>
+									</h3>
+									<!-- End .product-title -->
+									<div class="product-price">
+										<span class="new-price d-block w-100"
+											ng-show="{{p.offer <= 0}}">{{p.salePrice | vndFormat}}</span>
+										<span class="new-price d-block w-100"
+											ng-show="{{p.offer > 0}}">{{p.salePrice -
+											(p.salePrice * p.offer) | vndFormat}}</span>
+										<span class="old-price d-block w-100"
+											ng-show="{{p.offer > 0}}">{{p.salePrice | vndFormat}}</span>
+									</div>
+
+									<!-- End .product-price -->
+									<div class="ratings-container" ng-if="p.rate != 0">
+										<div class="ratings">
+											<div class="ratings-val"
+												ng-style="{'width': (p.rate * 20) + '%'};"></div>
+											<!-- End .ratings-val -->
+										</div>
+										<!-- End .ratings -->
+										<span class="ratings-text">(
+											{{p.countFeedBack}} Reviews )</span>
+									</div>
+									<!-- End .rating-container -->
+								</div>
+								<!-- End .product-body -->
+							</div>
+							<!-- End .product -->
+						</div>
+
+					</div>
+
+				</div>
+				<!-- End .owl-carousel -->
+			</div>
+			<div class="mb-5"></div>
+			<!-- End .mb-4 -->
+		</div>
+		<!-- End .container -->
+
+		<div class="blog-posts bg-light pt-4 pb-5">
+			<div class="container">
+				<div class="heading heading-flex" style="height: 3em; align-items: unset;">
+					<div class="heading-left">
+						<h2 class="title mb-5">Bài viết</h2>
+						<!-- End .title -->
+					</div>
+					<!-- End .heading-left -->
+	
+					<div class="heading-right">
+						<a href="/accessory" class="title-link">Xem thêm bài viết <i class="icon-long-arrow-right"></i>
+						</a>
+					</div>
+					<!-- End .heading-right -->
+				</div>
+				<!-- End .heading -->
+				<div class="carousel-container">
+					<div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow owl-loaded owl-drag"
+						data-toggle="owl" data-owl-options='{
+									"nav": false, 
+									"dots": true,
+									"margin": 20,
+									"loop": false,
+									"responsive": {
+										"0": {
+											"items":2
+										},
+										"480": {
+											"items":2
+										},
+										"768": {
+											"items":3
+										},
+										"992": {
+											"items":4
+										},
+										"1200": {
+											"items":5,
+											"nav": true
+										}
+									}
+								}'>
+						<div class="owl-stage mb-1">
+							<div class="owl-item" ng-repeat="p in listAccessories | limitTo: 6">
+								<article class="entry">
+									<figure class="entry-media">
+										<a href="single.html"> <img src="/assets/images/demos/demo-19/blog/post-1.jpg"
+												alt="image desc">
+										</a>
+									</figure>
+									<!-- End .entry-media -->
+		
+									<div class="entry-body">
+										<div class="entry-meta">
+											<a href="#">Nov 22, 2018</a>, 0 Comments
+										</div>
+										<!-- End .entry-meta -->
+		
+										<h3 class="entry-title">
+											<a href="single.html">Morbi in sem quis dui placerat mauris
+												sit ornare.</a>
+										</h3>
+										<!-- End .entry-title -->
+									</div>
+									<!-- End .entry-body -->
+								</article>
+								<!-- End .entry -->
+							</div>
+	
+						</div>
+	
+					</div>
+					<!-- End .owl-carousel -->
+				</div>
+				<!-- End .mb-4 -->
+			</div>
+			<!-- End .container -->	
+		</div>
+		<!-- End .blog-posts -->
+	</main>
+</div>

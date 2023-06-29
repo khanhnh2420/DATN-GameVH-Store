@@ -43,7 +43,7 @@ public class HomeRestController {
 			if (listTopSelling.size() == 6) {
 				break;
 			} else {
-				if(orderDetail.getProduct().getAvailable()) {
+				if (orderDetail.getProduct().getAvailable()) {
 					listTopSelling.add(convertProductToProductDTO(orderDetail.getProduct()));
 				}
 			}
@@ -57,7 +57,7 @@ public class HomeRestController {
 		List<ProductDTO> listProductNewReleases = new ArrayList<>();
 		List<Product> listProductFindAll = productService.findAll();
 		for (Product product : listProductFindAll) {
-			if(product.getAvailable()) {
+			if (product.getAvailable()) {
 				listProductNewReleases.add(convertProductToProductDTO(product));
 			}
 		}
@@ -75,7 +75,7 @@ public class HomeRestController {
 		List<ProductDTO> listProductTopRated = new ArrayList<>();
 		List<Product> listProductFindAll = productService.findAll();
 		for (Product product : listProductFindAll) {
-			if(product.getAvailable()) {
+			if (product.getAvailable()) {
 				listProductTopRated.add(convertProductToProductDTO(product));
 			}
 		}
@@ -87,35 +87,35 @@ public class HomeRestController {
 		listProductTopRated = listProductTopRated.subList(0, Math.min(6, listProductTopRated.size()));
 		return ResponseEntity.ok(listProductTopRated);
 	}
-	
+
 	@GetMapping("getListGame")
 	public ResponseEntity<List<ProductDTO>> getListGame() {
 		// List Product New Releases
 		List<ProductDTO> listProductGame = new ArrayList<>();
 		List<Product> listProductFindAll = productService.findAll();
 		for (Product product : listProductFindAll) {
-			if(product.getType().equalsIgnoreCase("Game")) {
-				if(product.getAvailable()) {
+			if (product.getType().equalsIgnoreCase("Game")) {
+				if (product.getAvailable()) {
 					listProductGame.add(convertProductToProductDTO(product));
 				}
-				
-			}	
+
+			}
 		}
 
 		return ResponseEntity.ok(listProductGame);
 	}
-	
+
 	@GetMapping("getListAccessory")
 	public ResponseEntity<List<ProductDTO>> getListAccessory() {
 		// List Product New Releases
 		List<ProductDTO> listProductAccessory = new ArrayList<>();
 		List<Product> listProductFindAll = productService.findAll();
 		for (Product product : listProductFindAll) {
-			if(product.getType().equalsIgnoreCase("Phụ kiện")) {
-				if(product.getAvailable()) {
+			if (product.getType().equalsIgnoreCase("PK")) {
+				if (product.getAvailable()) {
 					listProductAccessory.add(convertProductToProductDTO(product));
 				}
-			}	
+			}
 		}
 
 		return ResponseEntity.ok(listProductAccessory);
@@ -128,7 +128,7 @@ public class HomeRestController {
 				Double sum = 0.0;
 				Double avgStar = 0.0;
 				Integer countFeedBack = 0;
-				
+
 				if (!listFeedBackByProduct.isEmpty()) {
 					for (Feedback f : listFeedBackByProduct) {
 						sum += f.getStar();
@@ -139,8 +139,8 @@ public class HomeRestController {
 
 				ProductDTO productDTO = new ProductDTOImpl(product.getId(), product.getName(), product.getPoster(),
 						product.getThumbnail(), product.getSalePrice(), product.getOffer(), product.getDetails(),
-						avgStar, countFeedBack, product.getCategory().getName(), product.getCategory().getId(),
-						product.getCreateDate());
+						avgStar, countFeedBack, product.getCategory().getName(), product.getCategory().getCategoryId(),
+						product.getType(), product.getCreateDate());
 				return productDTO;
 			}
 		}

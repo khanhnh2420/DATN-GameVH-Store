@@ -15,12 +15,13 @@ public class ProductDTOImpl implements ProductDTO {
 	private Double rate;
 	private Integer countFeedBack;
 	private String categoryName;
-	private Integer categoryId;
+	private String categoryId;
+	private String type;
 	private LocalDate createDate;
 
 	// Constructor
 	public ProductDTOImpl(Integer id, String name, String poster, String thumbnail, Double salePrice, Double offer,
-			String details, Double rate, Integer countFeedBack, String categoryName, Integer categoryId,
+			String details, Double rate, Integer countFeedBack, String categoryName, String categoryId, String type,
 			LocalDate localDate) {
 		this.id = id;
 		this.name = name;
@@ -33,6 +34,7 @@ public class ProductDTOImpl implements ProductDTO {
 		this.countFeedBack = countFeedBack;
 		this.categoryName = categoryName;
 		this.categoryId = categoryId;
+		this.type = type;
 		this.createDate = localDate;
 	}
 
@@ -88,8 +90,13 @@ public class ProductDTOImpl implements ProductDTO {
 	}
 
 	@Override
-	public Integer getCategoryId() {
+	public String getCategoryId() {
 		return categoryId;
+	}
+	
+	@Override
+	public String getType() {
+		return type;
 	}
 
 	@Override

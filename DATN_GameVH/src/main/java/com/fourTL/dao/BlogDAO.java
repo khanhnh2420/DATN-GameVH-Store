@@ -1,14 +1,15 @@
 package com.fourTL.dao;
 
 
-import com.fourTL.entities.Blog;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.fourTL.entities.Blog;
 @Repository
 public interface BlogDAO extends JpaRepository<Blog, Integer> {
     // find all theo ngay moi tạo để ở trên

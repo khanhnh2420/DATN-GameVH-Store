@@ -1,12 +1,12 @@
 package com.fourTL.dao;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
-import com.fourTL.entities.Comment;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
+import com.fourTL.entities.Comment;
 
 public interface CommentDAO extends JpaRepository<Comment, Integer>{
     //@Query(value = "SELECT c.Content, b.Id AS blogId FROM Comment c INNER JOIN Blog b ON c.BlogId = b.Id WHERE b.Id = :blogId ORDER BY c.CreateDate DESC ", nativeQuery = true)

@@ -1,41 +1,39 @@
-//package com.fourTL.controller.site.Category;
-//
-//import java.util.HashMap;
-//import java.util.List;
-//import java.util.Optional;
-//
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.data.domain.Page;
-//import org.springframework.data.domain.PageImpl;
-//import org.springframework.data.domain.PageRequest;
-//import org.springframework.data.domain.Pageable;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.CrossOrigin;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestParam;
-//import org.springframework.web.bind.annotation.RestController;
-//
-//import com.fourTL.DTO.ProductDTO;
-//import com.fourTL.DTO.impl.ProductDTOImpl;
-//import com.fourTL.dao.CategoryDAO;
-//import com.fourTL.dao.ProductDAO;
-//import com.fourTL.entities.Category;
-//import com.fourTL.entities.CategoryDTO;
-//import com.fourTL.entities.Product;
-//
-//@CrossOrigin("*")
-//@RestController
-//@RequestMapping("category")
-//public class CategoryRestController {
-//
-//	@Autowired
-//	CategoryDAO cDAO;
-//
-//	@Autowired
-//	ProductDAO pDAO;
-//
+package com.fourTL.controller.site.Category;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.fourTL.dao.CategoryDAO;
+import com.fourTL.dao.ProductDAO;
+import com.fourTL.entities.Category;
+import com.fourTL.entities.Product;
+import com.fourTL.service.CategoryService;
+
+@CrossOrigin("*")
+@RestController
+@RequestMapping("/api/category")
+public class CategoryRestController {
+
+	@Autowired
+	CategoryService categoryService;
+
+	@GetMapping("/getAll")
+	public ResponseEntity<List<Category>> getAllCategories() {
+	    return ResponseEntity.ok(categoryService.findAll());
+	}
+	
+	@GetMapping("/getProduct/{categoryId}")
+	public ResponseEntity<List<Product>> getAllProductByCategory(@PathVariable("categoryId") Integer categoryId) {
+	    return ResponseEntity.ok(categoryService.findById(categoryId).getProduct());
+	}
+	
 //	@GetMapping("/countProduct")
 //	private ResponseEntity<HashMap<String, CategoryDTO>> getByCateGory() {
 //		HashMap<String, CategoryDTO> listCateAndCountProduct = new HashMap<>();
@@ -49,7 +47,7 @@
 //		}
 //		return ResponseEntity.ok(listCateAndCountProduct);
 //	}
-//	
+	
 //	@RequestMapping("/getAll")
 //	public ResponseEntity<Page<ProductDTO>> getAllProducts(
 //			@RequestParam("page") Optional<Integer> page, 
@@ -66,7 +64,7 @@
 //		Page<ProductDTO> productsDisplayPageable = new PageImpl<>(pageContent, pageable, productsDisplay.size());
 //	    return ResponseEntity.ok(productsDisplayPageable);
 //	}
-//	
+	
 //	public void addMissingAccessories(List<Product> productsFindAll, List<ProductDTO> productsDisplay) {
 //		for (Product product : productsFindAll) {
 //			if (!isAccessoryInList(productsDisplay, product.getId())) {
@@ -77,7 +75,7 @@
 //			}
 //		}
 //	}
-//
+
 //	public boolean isAccessoryInList(List<ProductDTO> productsDisplay, int productId) {
 //		for (ProductDTO productDTO : productsDisplay) {
 //			if (productDTO.getId() == productId) {
@@ -136,5 +134,5 @@
 //		}
 //		return ResponseEntity.ok(products);
 //	}
-//
-//}
+
+}

@@ -25,7 +25,7 @@ import com.fourTL.entities.Account;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/admin/api/accounts")
+@RequestMapping("/api/account")
 public class AccountsRestAPI {
 	@Autowired
 	AccountDAO accountsDAO;

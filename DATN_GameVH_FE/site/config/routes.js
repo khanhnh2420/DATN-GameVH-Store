@@ -74,7 +74,8 @@ app.config(function ($routeProvider, $locationProvider) {
             pageTitle: 'CỬA HÀNG'
         })
         .otherwise({
-            templateUrl: '/views/error-404.html'
+            templateUrl: '/views/404.html',
+            pageTitle: 'KHÔNG TÌM THẤY TRANG'
         })
 }).run(function ($rootScope, $route) {
     $rootScope.$on('$routeChangeSuccess', function () {

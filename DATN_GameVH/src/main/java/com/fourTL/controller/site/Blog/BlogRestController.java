@@ -1,5 +1,6 @@
 package com.fourTL.controller.site.Blog;
 
+import com.fourTL.DTO.BlogsDTO;
 import com.fourTL.dao.BlogDAO;
 
 
@@ -68,7 +69,7 @@ public class BlogRestController {
     // pageable
 @GetMapping("getbloglist")
     public ResponseEntity<Page<BlogsDTO>> getAllBlog(@RequestParam("page") Optional<Integer> page,
-			@RequestParam("size") Optional<Integer> size) {
+                                                     @RequestParam("size") Optional<Integer> size) {
         List<BlogsDTO> blogList = new ArrayList<>();
    Pageable pageable = PageRequest.of(page.orElse(0), size.orElse(9));
         for (Blog bls : blogsService.findAllByOrderByCreateDateDesc(pageable)) {

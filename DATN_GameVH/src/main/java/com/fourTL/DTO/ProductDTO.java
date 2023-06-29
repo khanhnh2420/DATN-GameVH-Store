@@ -13,6 +13,7 @@ public interface ProductDTO{
 	Double getRate();
 	Integer getCountFeedBack();
 	String getCategoryName();
-	Integer getCategoryId();
+	String getCategoryId();
+	String getType();
 	LocalDate getCreateDate();
 }

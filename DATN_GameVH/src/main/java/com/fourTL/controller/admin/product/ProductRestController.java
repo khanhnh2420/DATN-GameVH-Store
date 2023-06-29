@@ -1,5 +1,6 @@
 package com.fourTL.controller.admin.product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,24 +27,68 @@ import com.fourTL.service.ProductService;
 public class ProductRestController {
 	@Autowired
 	ProductDAO productsDAO;
-	
+
 	@Autowired
 	RoleDAO rolesDAO;
-	
+
 	@Autowired
 	CategoryDAO categoriesDAO;
-	
+
 	@Autowired
 	ProductService productService;
-	
-	@Autowired 
+
+	@Autowired
 	FeedBackService feedBackService;
-	
+
 	@GetMapping("getProductDTO/{productId}")
 	public ResponseEntity<ProductDTO> getProductDTOById(@PathVariable("productId") Integer productId) {
 		return ResponseEntity.ok(convertProductToProductDTO(productService.findById(productId)));
 	}
-	
+
+	@GetMapping("getAllProductDTO")
+	public ResponseEntity<List<ProductDTO>> getAllProductDTO() {
+		List<ProductDTO> listProductFindAllDTO = new ArrayList<>();
+		List<Product> listProductFindAll = productService.findAll();
+		for (Product product : listProductFindAll) {
+			if (product.getAvailable()) {
+				listProductFindAllDTO.add(convertProductToProductDTO(product));
+			}
+		}
+		return ResponseEntity.ok(listProductFindAllDTO);
+	}
+
+	@GetMapping("getAllProductDTO/{type}")
+	public ResponseEntity<List<ProductDTO>> getAllProductDTOByType(@PathVariable("type") String type) {
+		List<ProductDTO> listProductFindAllDTO = new ArrayList<>();
+		List<Product> listProductFindAll = productService.findAll();
+		for (Product product : listProductFindAll) {
+			if (product.getType().equalsIgnoreCase(type)) {
+				if (product.getAvailable()) {
+					listProductFindAllDTO.add(convertProductToProductDTO(product));
+				}
+			}
+		}
+		return ResponseEntity.ok(listProductFindAllDTO);
+	}
+
+	@GetMapping("getAllProductDTO/{type}/{category}")
+	public ResponseEntity<List<ProductDTO>> getAllProductDTOByTypeAndCategory(@PathVariable("type") String type,
+			@PathVariable("category") String category) {
+		List<ProductDTO> listProductFindAllDTO = new ArrayList<>();
+		List<Product> listProductFindAll = productService.findAll();
+		for (Product product : listProductFindAll) {
+			if (product.getType().equalsIgnoreCase(type)) {
+				if (product.getCategory().getCategoryId().equalsIgnoreCase(category)) {
+					if (product.getAvailable()) {
+						listProductFindAllDTO.add(convertProductToProductDTO(product));
+					}
+				}
+
+			}
+		}
+		return ResponseEntity.ok(listProductFindAllDTO);
+	}
+
 	private ProductDTO convertProductToProductDTO(Product product) {
 		if (product != null) {
 			if (product.getAvailable()) {
@@ -51,7 +96,7 @@ public class ProductRestController {
 				Double sum = 0.0;
 				Double avgStar = 0.0;
 				Integer countFeedBack = 0;
-				
+
 				if (!listFeedBackByProduct.isEmpty()) {
 					for (Feedback f : listFeedBackByProduct) {
 						sum += f.getStar();
@@ -62,19 +107,19 @@ public class ProductRestController {
 
 				ProductDTO productDTO = new ProductDTOImpl(product.getId(), product.getName(), product.getPoster(),
 						product.getThumbnail(), product.getSalePrice(), product.getOffer(), product.getDetails(),
-						avgStar, countFeedBack, product.getCategory().getName(), product.getCategory().getId(),
-						product.getCreateDate());
+						avgStar, countFeedBack, product.getCategory().getName(), product.getCategory().getCategoryId(),
+						product.getType(), product.getCreateDate());
 				return productDTO;
 			}
 		}
 		return null;
 	}
-	
+
 	@GetMapping("/{productId}")
 	public ResponseEntity<Product> getProductById(@PathVariable("productId") Integer productId) {
 		return ResponseEntity.ok(productService.findById(productId));
 	}
-	
+
 //	@GetMapping("")
 //	public ResponseEntity<List<Product>> getAll() {
 //		List<Product> products = productsDAO.findAll();

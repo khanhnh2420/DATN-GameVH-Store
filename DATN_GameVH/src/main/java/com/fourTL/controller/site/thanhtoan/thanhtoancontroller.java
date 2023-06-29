@@ -5,7 +5,6 @@ package com.fourTL.controller.site.thanhtoan;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fourTL.dao.OrderDetailDAO;
 import com.fourTL.dao.OrderDataDAO;
-import com.fourTL.entities.OrderDetail;
+import com.fourTL.dao.OrderDetailDAO;
 import com.fourTL.entities.OrderData;
+import com.fourTL.entities.OrderDetail;
 
 @RestController
 @RequestMapping("/api")

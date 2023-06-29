@@ -2,7 +2,7 @@ package com.fourTL.service;
 
 import org.springframework.stereotype.Service;
 
-import com.fourTL.entities.MailInfo;
+import com.fourTL.DTO.MailInfo;
 
 import jakarta.mail.MessagingException;
 

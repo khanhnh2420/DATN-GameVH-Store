@@ -6,7 +6,6 @@ import com.fourTL.dao.BlogDAO;
 import com.fourTL.dao.CategoryDAO;
 
 import com.fourTL.entities.Blog;
-import com.fourTL.DTO.BlogsDTO;
 import com.fourTL.service.BlogsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

@@ -367,7 +367,7 @@
 
 										<div class="product-action-vertical">
 											<a href="#" class="btn-product-icon btn-wishlist"
-												title="Add to Wishlist"><span>add to wishlist</span></a>
+												title="addWishlist(item.favorite.product.id)"><span>add to wishlist</span></a>
 										</div>
 										<!-- End .product-action-vertical -->
 
@@ -462,7 +462,7 @@
 
 										<div class="product-action-vertical">
 											<a href="#" class="btn-product-icon btn-wishlist"
-												title="Add to Wishlist"><span>add to wishlist</span></a>
+												title="addWishlist(item.favorite.product.id)"><span>add to wishlist</span></a>
 										</div>
 										<!-- End .product-action-vertical -->
 
@@ -496,7 +496,8 @@
 										</div>
 
 										<!-- End .product-price -->
-										<div class="ratings-container" th:style="'display: ' + ${p.rate == 0 ? 'none' : ''} + ';'">
+										<div class="ratings-container"
+											th:style="'display: ' + ${p.rate == 0 ? 'none' : ''} + ';'">
 											<div class="ratings">
 												<div class="ratings-val"
 													th:style="'width: ' + ${p.rate * 20} + '%;'"></div>
@@ -557,7 +558,7 @@
 
 										<div class="product-action-vertical">
 											<a href="#" class="btn-product-icon btn-wishlist"
-												title="Add to Wishlist"><span>add to wishlist</span></a>
+												title="addWishlist(item.favorite.product.id)"><span>add to wishlist</span></a>
 										</div>
 										<!-- End .product-action-vertical -->
 
@@ -730,7 +731,8 @@
 
 												<div class="product-action-vertical">
 													<a href="#" class="btn-product-icon btn-wishlist"
-														title="Add to Wishlist"><span>add to wishlist</span></a>
+														title="addWishlist(item.favorite.product.id)"><span>add to
+															wishlist</span></a>
 												</div>
 												<!-- End .product-action-vertical -->
 
@@ -941,7 +943,7 @@
 
 							<div class="product-action-vertical">
 								<a href="#" class="btn-product-icon btn-wishlist"
-									title="Add to Wishlist"><span>add to wishlist</span></a>
+									title="addWishlist(item.favorite.product.id)"><span>add to wishlist</span></a>
 							</div>
 							<!-- End .product-action-vertical -->
 
@@ -979,8 +981,8 @@
 								</div>
 								<!-- End .ratings -->
 								<span class="ratings-text"
-									th:utext="'( ' + ${item.countFeedBack} + ' Reviews )'">( 2
-									Reviews )</span>
+									th:utext="'( ' + ${item.countFeedBack} + ' Reviews )'">(
+									2 Reviews )</span>
 							</div>
 							<!-- End .rating-container -->
 						</div>
@@ -1179,6 +1181,7 @@
 	<script src="assets/js/main.js"></script>
 	<script src="assets/js/demos/demo-19.js"></script>
 	<script src="assets/AngularJS API/Cart.js"></script>
+	<script type="text/javascript" src="/assets/AngularJS API/wishlist.js"></script>
 </body>
 
 </html>

@@ -85,8 +85,10 @@
 									<p hidden id="ProductID" th:text="${item.id}"></p>
 									<div class="ratings-container">
 										<div class="ratings">
-											<div class="ratings-val" th:if="${totalFeedBack != 0}" th:style="'width: ' + ${productRatePoint} + '%;'"></div>
-											<div class="ratings-val" th:if="${totalFeedBack == 0}" th:style="'width: ' + ${100} + '%;'"></div>
+											<div class="ratings-val" th:if="${totalFeedBack != 0}"
+												th:style="'width: ' + ${productRatePoint} + '%;'"></div>
+											<div class="ratings-val" th:if="${totalFeedBack == 0}"
+												th:style="'width: ' + ${100} + '%;'"></div>
 											<!-- End .ratings-val -->
 										</div>
 										<!-- End .ratings -->
@@ -118,7 +120,7 @@
 											class="btn-product btn-cart"><span>add to cart</span></a>
 
 										<div class="details-action-wrapper">
-											<a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add
+											<a href="#" class="btn-product btn-wishlist" title="Wishlist" ng-click="addWishlist(item.favorite.product.id)"><span>Add
 													to Wishlist</span></a> <a href="#" class="btn-product btn-compare"
 												title="Compare"><span>Add to Compare</span></a>
 										</div>
@@ -168,7 +170,9 @@
 															<li ng-repeat="item in feedbacks">
 																<div class="reviews">
 																	<div class="review" style="border-bottom: none;">
-																		<div class="row no-gutters pt-1 pb-1" ng-if="item.status" style="border-bottom: 0.1rem solid #ebebeb;">
+																		<div class="row no-gutters pt-1 pb-1"
+																			ng-if="item.status"
+																			style="border-bottom: 0.1rem solid #ebebeb;">
 																			<div class="col-auto">
 																				<h4>
 																					<a href="#">{{item.account.username}}</a>
@@ -272,7 +276,7 @@
 
 								<div class="product-action-vertical">
 									<a href="#" class="btn-product-icon btn-wishlist"
-										title="Add to Wishlist"><span>add to wishlist</span></a>
+										title="Add to Wishlist" ng-click="addWishlist(item.favorite.product.id)"><span>add to wishlist</span></a>
 								</div>
 								<!-- End .product-action-vertical -->
 
@@ -348,6 +352,7 @@
 	<script src="/assets/js/main.js"></script>
 	<script src="/assets/AngularJS API/Product-detail.js"></script>
 	<script src="/assets/AngularJS API/FeedBackProduct.js"></script>
+	<script type="text/javascript" src="/assets/AngularJS API/wishlist.js"></script>
 </body>
 
 </html>

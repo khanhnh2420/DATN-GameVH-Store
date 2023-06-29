@@ -1,4 +1,4 @@
-package com.fourTL.entities;
+package com.fourTL.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

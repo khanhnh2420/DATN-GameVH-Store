@@ -1,4 +1,4 @@
-<div class="wrap-container">
+<div class="wrap-container" ng-controller="LoginController">
 	<header class="header header-intro-clearance header-3">
 		<div class="header-top">
 			<div class="container">
@@ -36,7 +36,7 @@
 										<!-- End .header-menu -->
 									</div>
 								</li>
-								<li><a href="/views/login.html">Đăng nhập / Đăng ký</a></li>
+								<li><a href="#" ng-click="redirectToLogin()">Đăng nhập / Đăng ký</a></li>
 
 								<!-- <li><a href="/account?username=nguyenvana">nguyenvana</a>
 										| <a href="#?/logout">Sign Out</a></li> -->
@@ -113,8 +113,7 @@
 							<a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
 								aria-haspopup="true" aria-expanded="false" data-display="static">
 								<div class="icon">
-									<i class="icon-shopping-cart"></i> <span class="cart-count"
-										>{{cart.length}}</span>
+									<i class="icon-shopping-cart"></i> <span class="cart-count">{{cart.length}}</span>
 								</div>
 								<p>Giỏ hàng</p>
 							</a>
@@ -131,12 +130,14 @@
 
 													<span class="cart-product-info"> <span class="cart-product-qty">x {{
 															item.Qty }}<span class="new-price d-block w-100"
-															ng-show="{{item.offer <= 0}}">{{item.salePrice | vndFormat}}</span>
-														<span class="new-price d-block w-100"
-															ng-show="{{item.offer > 0}}">{{item.salePrice -
-															(item.salePrice * item.offer) | vndFormat}}</span>
-														<span class="old-price d-block w-100"
-															ng-show="{{item.offer > 0}}">{{item.salePrice | vndFormat}}</span>
+																ng-show="{{item.offer <= 0}}">{{item.salePrice |
+																vndFormat}}</span>
+															<span class="new-price d-block w-100"
+																ng-show="{{item.offer > 0}}">{{item.salePrice -
+																(item.salePrice * item.offer) | vndFormat}}</span>
+															<span class="old-price d-block w-100"
+																ng-show="{{item.offer > 0}}">{{item.salePrice |
+																vndFormat}}</span>
 
 												</div>
 												<!-- End .product-cart-details -->
@@ -157,7 +158,8 @@
 								<!-- End .cart-product -->
 
 								<div class="dropdown-cart-total">
-									<span>Tổng tiền</span> <span class="cart-total-price">{{TotalPrice | vndFormat}}{{cart.length > 0 ? '' : '0 VND'}}</span>
+									<span>Tổng tiền</span> <span class="cart-total-price">{{TotalPrice |
+										vndFormat}}{{cart.length > 0 ? '' : '0 VND'}}</span>
 								</div>
 								<!-- End .dropdown-cart-total -->
 
@@ -194,8 +196,10 @@
 												<div class="menu-title">Danh mục games</div>
 												<!-- End .menu-title -->
 												<ul style="max-height: 16em;" ng-controller="CategoryController">
-													<li ng-repeat="(key, value) in categories" ng-if="value.type == 'Game'"><a
-															href="/shop/{{value.type}}/{{value.categoryId}}">{{value.name}}</a></li>
+													<li ng-repeat="(key, value) in categories"
+														ng-if="value.type == 'Game'"><a
+															href="/shop/{{value.type}}/{{value.categoryId}}">{{value.name}}</a>
+													</li>
 												</ul>
 
 											</div>
@@ -205,8 +209,8 @@
 
 										<div class="col-md-6">
 											<div class="banner banner-overlay">
-												<a href="category.html"> <img
-														src="/assets/images/menu/banner-3.jpg" alt="Banner">
+												<a href="category.html"> <img src="/assets/images/menu/banner-3.jpg"
+														alt="Banner">
 
 													<div class="banner-content banner-content-bottom">
 														<div class="banner-title text-white">
@@ -223,7 +227,7 @@
 									</div>
 									<!-- End .row -->
 								</div> <!-- End .megamenu megamenu-sm -->
-							<li><a href="/shop/PK"class="sf-with-ul text-nowrap">Phụ kiện</a>
+							<li><a href="/shop/PK" class="sf-with-ul text-nowrap">Phụ kiện</a>
 
 								<div class="megamenu megamenu-sm">
 									<div class="row no-gutters">
@@ -232,8 +236,10 @@
 												<div class="menu-title">Danh mục phụ kiện</div>
 												<!-- End .menu-title -->
 												<ul style="max-height: 16em;" ng-controller="CategoryController">
-													<li ng-repeat="(key, value) in categories" ng-if="value.type == 'PK'"><a
-														href="/shop/{{value.type}}/{{value.categoryId}}">{{value.name}}</a></li>
+													<li ng-repeat="(key, value) in categories"
+														ng-if="value.type == 'PK'"><a
+															href="/shop/{{value.type}}/{{value.categoryId}}">{{value.name}}</a>
+													</li>
 												</ul>
 
 											</div>
@@ -243,8 +249,8 @@
 
 										<div class="col-md-6">
 											<div class="banner banner-overlay">
-												<a href="category.html"> <img
-														src="/assets/images/menu/banner-3.jpg" alt="Banner">
+												<a href="category.html"> <img src="/assets/images/menu/banner-3.jpg"
+														alt="Banner">
 
 													<div class="banner-content banner-content-bottom">
 														<div class="banner-title text-white">

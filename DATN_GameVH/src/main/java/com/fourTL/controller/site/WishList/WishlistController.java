@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class WishlistController {
-	@RequestMapping("/viewWishlist")
+	@RequestMapping("/wishlist")
 	private String Wishlist(Model model) {
 		return "site/wishlist";
 	}

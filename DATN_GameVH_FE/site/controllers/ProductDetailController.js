@@ -1,4 +1,4 @@
-app.controller("ProductDetailController", function (ProductService, FeedbackService, HomeService, $scope, $routeParams, $timeout, $rootScope) {
+app.controller("ProductDetailController", function (ProductService, FeedbackService, $scope, $routeParams, $timeout, $rootScope) {
     $scope.product = {}; // Thông tin sản phẩm sẽ được hiển thị trên trang chi tiết
     $scope.thumbnails = []; // Mảng hình ảnh thumbnail của sản phẩm
     $scope.feedbacks = []; // Tất cả các feedback đã được duyệt của sản phẩm
@@ -19,7 +19,7 @@ app.controller("ProductDetailController", function (ProductService, FeedbackServ
     ProductService.getProduct(productId).then(function (product) {
         if (product.data.type == "Game") {
             // Lấy tất cả sản phẩm game
-            HomeService.getListGame().then(function (response) {
+            ProductService.getListGame().then(function (response) {
                 $scope.sameProduct = response.data;
                 $scope.checkPrevAndNextProduct($scope.sameProduct);
                 $scope.randomizeArray($scope.sameProduct);
@@ -29,7 +29,7 @@ app.controller("ProductDetailController", function (ProductService, FeedbackServ
             });
         } else {
             // Lấy tất cả sản phẩm phụ kiện
-            HomeService.getListAccessory().then(function (response) {
+            ProductService.getListAccessory().then(function (response) {
                 $scope.sameProduct = response.data;
                 $scope.checkPrevAndNextProduct($scope.sameProduct);
                 $scope.randomizeArray($scope.sameProduct);

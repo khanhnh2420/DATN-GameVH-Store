@@ -50,15 +50,10 @@ app.config(function ($routeProvider, $locationProvider) {
             templateUrl: '/views/staff-list.html',
             pageTitle: 'Staff List'
         })
-        
-        // .when('/leave', {
-        //     templateUrl: '/views/leaves.html',
-        //     pageTitle: 'Leaves'
-        // })
-        // .when('/attendance', {
-        //     templateUrl: '/views/attendance.html',
-        //     pageTitle: 'Attendance'
-        // })
+        .when('/login', {
+            templateUrl: '/views/login.html',
+            pageTitle: 'Login'
+        })
         .otherwise({
             templateUrl: '/views/error-404.html'
         })

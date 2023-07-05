@@ -1,7 +1,6 @@
-package com.fourTL.DTO;
+package com.gamevh.dto;
 
-import com.fourTL.entities.Account;
-import com.fourTL.entities.Blog;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

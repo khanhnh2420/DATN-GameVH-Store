@@ -31,7 +31,7 @@ public class UserService implements UserDetailsService {
 					.orElseThrow(() -> new UsernameNotFoundException(username + "not found!"));
 
 			// Tạo UserDetails từ Account
-			String password = account.getPassword();
+			String password = account.getPassword().toString();
 			String[] roles = account.getAuthority().stream().map(au -> au.getRole().getId())
 					.collect(Collectors.toList()).toArray(new String[0]);
 			return User.withUsername(username).password(password).roles(roles).build();

@@ -1,10 +1,11 @@
-package com.fourTL.service.impl;
+package com.gamevh.service.impl;
 
 
-import com.fourTL.DTO.CommentDTO1;
-import com.fourTL.dao.CommentDAO;
-import com.fourTL.entities.Comment;
-import com.fourTL.service.CommentsService;
+
+import com.gamevh.dto.CommentDTO1;
+import com.gamevh.entities.Comment;
+import com.gamevh.reponsitory.CommentRepository;
+import com.gamevh.service.CommentService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,9 +13,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CommentsServiceImpl implements CommentsService {
+public class CommentsServiceImpl implements CommentService {
     @Autowired
-    CommentDAO cmtDao;
+    CommentRepository cmtDao;
 
 
 

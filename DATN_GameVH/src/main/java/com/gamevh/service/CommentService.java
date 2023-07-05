@@ -2,12 +2,10 @@ package com.gamevh.service;
 
 import java.util.List;
 
-<<<<<<< HEAD:DATN_GameVH/src/main/java/com/fourTL/service/CommentsService.java
-import com.fourTL.DTO.CommentDTO1;
-import com.fourTL.entities.Comment;
-=======
+
+import com.gamevh.dto.CommentDTO1;
 import com.gamevh.entities.Comment;
->>>>>>> origin/develop:DATN_GameVH/src/main/java/com/gamevh/service/CommentService.java
+
 
 public interface CommentService {
     List<Comment> findAll();

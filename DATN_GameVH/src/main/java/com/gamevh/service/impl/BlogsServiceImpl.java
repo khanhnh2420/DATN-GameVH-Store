@@ -1,11 +1,13 @@
-package com.fourTL.service.impl;
+package com.gamevh.service.impl;
 
-import com.fourTL.dao.BlogDAO;
-import com.fourTL.DTO.BlogWithCommentsDTO;
-import com.fourTL.dao.CommentDAO;
-import com.fourTL.entities.Blog;
-import com.fourTL.entities.Comment;
-import com.fourTL.service.BlogsService;
+
+
+import com.gamevh.dto.BlogWithCommentsDTO;
+import com.gamevh.entities.Blog;
+import com.gamevh.entities.Comment;
+import com.gamevh.reponsitory.BlogRepository;
+import com.gamevh.reponsitory.CommentRepository;
+import com.gamevh.service.BlogsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,9 +20,9 @@ import java.util.List;
 @Service
 public class BlogsServiceImpl implements BlogsService {
    @Autowired
-   BlogDAO blgsDao;
+   BlogRepository blgsDao;
    @Autowired
-    CommentDAO commentDAO;
+   CommentRepository commentDAO;
 
 
     //@Query("SELECT MAX(ThoiGianBlog) AS LatestDate FROM Blogs")

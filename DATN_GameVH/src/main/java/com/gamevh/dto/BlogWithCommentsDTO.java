@@ -1,7 +1,8 @@
-package com.fourTL.DTO;
+package com.gamevh.dto;
 
-import com.fourTL.entities.Blog;
-import com.fourTL.entities.Comment;
+
+import com.gamevh.entities.Blog;
+import com.gamevh.entities.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

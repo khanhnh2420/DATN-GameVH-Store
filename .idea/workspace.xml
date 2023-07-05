@@ -2,7 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d7504e78-ffe0-40b2-aecd-f0f9523206a2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/fourTL/controller/site/Blog/BlogRestController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/fourTL/controller/site/Blog/CommentRestController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/fourTL/controller/site/thanhtoan/PaymentController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/dto/BlogWithCommentsDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/dto/BlogWithCommentsDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/dto/CommentDTO1.java" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/dto/CommentDTO1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/restcontroller/BlogRC.java" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/restcontroller/BlogRC.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/restcontroller/CommentRC.java" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/restcontroller/CommentRC.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/BlogsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/BlogsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/CommentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/impl/BlogsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/impl/BlogsServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/impl/CommentsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/impl/CommentsServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,15 +31,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/DA_TN/DATN-GameVH-Store/DATN_GameVH&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "E:/DA_TN/DATN-Website-GamesVH/DATN_GameVH",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -40,6 +51,7 @@
       <workItem from="1682692810920" duration="74000" />
       <workItem from="1684676918796" duration="191000" />
       <workItem from="1684941809077" duration="369000" />
+      <workItem from="1688576829412" duration="132000" />
     </task>
     <servers />
   </component>

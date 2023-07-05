@@ -1,7 +1,8 @@
-package com.fourTL.service;
+package com.gamevh.service;
 
-import com.fourTL.DTO.BlogWithCommentsDTO;
-import com.fourTL.entities.Blog;
+
+import com.gamevh.dto.BlogWithCommentsDTO;
+import com.gamevh.entities.Blog;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

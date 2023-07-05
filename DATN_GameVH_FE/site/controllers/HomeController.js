@@ -1,4 +1,4 @@
-app.controller("HomeController", function (HomeService, $scope, $timeout, $rootScope) {
+app.controller("HomeController", function (ProductService, $scope, $timeout, $rootScope) {
     $scope.activeTab = 'products-trending-tab';
     $scope.topSellings = [];
     $scope.topNewReleases = [];
@@ -7,35 +7,35 @@ app.controller("HomeController", function (HomeService, $scope, $timeout, $rootS
     $scope.listAccessories = [];
 
     $scope.loadData = function () {
-        HomeService.getTop6Selling().then(function (response) {
+        ProductService.getTop6Selling().then(function (response) {
             $scope.topSellings = response.data;
             $scope.checkCarouselInitialization();
         }).catch(function (error) {
             console.error('Lỗi khi lấy top 6 sản phẩm bán chạy nhất:', error);
         });
 
-        HomeService.getTop6NewRelease().then(function (response) {
+        ProductService.getTop6NewRelease().then(function (response) {
             $scope.topNewReleases = response.data;
             $scope.checkCarouselInitialization();
         }).catch(function (error) {
             console.error('Lỗi khi lấy top 6 sản phẩm mới nhất:', error);
         });
 
-        HomeService.getTop6Rated().then(function (response) {
+        ProductService.getTop6Rated().then(function (response) {
             $scope.topRates = response.data;
             $scope.checkCarouselInitialization();
         }).catch(function (error) {
             console.error('Lỗi khi lấy top 6 sản phẩm đánh giá cao nhất:', error);
         });
 
-        HomeService.getListGame().then(function (response) {
+        ProductService.getListGame().then(function (response) {
             $scope.listGames = response.data;
             $scope.randomizeArray($scope.listGames);
         }).catch(function (error) {
             console.error('Lỗi khi lấy danh sách game:', error);
         });
 
-        HomeService.getListAccessory().then(function (response) {
+        ProductService.getListAccessory().then(function (response) {
             $scope.listAccessories = response.data;
             $scope.randomizeArray($scope.listAccessories);
             $scope.checkCarouselInitialization();

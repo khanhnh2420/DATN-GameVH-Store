@@ -8,4 +8,6 @@ import com.gamevh.entities.Account;
 
 public interface AccountRepository extends JpaRepository<Account, String>{
 	List<Account> findByUsernameContaining(String search);
+	
+	Account findById(Integer accountId);
 }

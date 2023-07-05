@@ -11,19 +11,24 @@ import com.gamevh.service.AccountService;
 
 
 @Service
-public abstract class AccountServiceImpl implements AccountService {
+public class AccountServiceImpl implements AccountService {
 
 	@Autowired
-	AccountRepository accountsDAO;
+	AccountRepository accountRepository;
 
 	@Override
 	public List<Account> findAll() {
-		return accountsDAO.findAll();
+		return accountRepository.findAll();
 	}
 
 	@Override
-	public Account findById(String username) {
-		return accountsDAO.findById(username).get();
+	public Account findById(Integer AccountId) {
+		return accountRepository.findById(AccountId);
+	}
+
+	@Override
+	public List<Account> findByUsername(String username) {
+		return accountRepository.findByUsernameContaining(username);
 	}
 	
 }

@@ -5,19 +5,19 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>LOGIN</title>
+	<title>ĐĂNG NHẬP</title>
 	<meta name="keywords" content="HTML5 Template">
 	<meta name="description" content="4TL">
 	<meta name="author" content="p-themes">
 	<!-- Favicon -->
 	<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png">
-	<link rel="manifest" href="/assets/images/icons/site.html">
+	<link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/gamesVH-favicon-32x32-1.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/gamesVH-favicon-16x16.png">
+	<link rel="manifest" href="/assets/images/icons.html">
 	<link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
-	<link rel="shortcut icon" href="/assets/images/icons/favicon.ico">
-	<meta name="apple-mobile-web-app-title" content="4TL">
-	<meta name="application-name" content="4TL">
+	<link rel="shortcut icon" href="/assets/images/icons/gamesVH-favicon1.ico">
+	<meta name="apple-mobile-web-app-title" content="Molla">
+	<meta name="application-name" content="Molla">
 	<meta name="msapplication-TileColor" content="#cc9966">
 	<meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
 	<meta name="theme-color" content="#ffffff">
@@ -45,8 +45,12 @@
 	<!-- AngularJS config -->
 	<script src="/config/app.js"></script>
 
-	<!-- AngularJS config -->
+	<!-- AngularJS Controller -->
 	<script src="/controllers/LoginController.js"></script>
+
+	<!-- AngularJS Service -->
+	<script src="/services/api/AccountService.js"></script>
+	<script src="/services/api/BcryptService.js"></script>
 </head>
 
 <body ng-app="app">
@@ -59,62 +63,85 @@
 						<div class="form-tab">
 							<ul class="nav nav-pills nav-fill nav-border-anim" role="tablist">
 								<li class="nav-item"><a class="nav-link active" id="signin-tab" data-toggle="tab"
-										href="#signin" role="tab" aria-controls="signin" aria-selected="true">Sign
-										In</a></li>
+										href="#signin" role="tab" aria-controls="signin" aria-selected="true">Đăng
+										nhập</a></li>
 								<li class="nav-item"><a class="nav-link" id="register-tab" data-toggle="tab"
-										href="#register" role="tab" aria-controls="register"
-										aria-selected="false">Register</a></li>
+										href="#register" role="tab" aria-controls="register" aria-selected="false">Đăng
+										ký</a></li>
 							</ul>
 							<div class="tab-content" id="tab-content-5">
 								<div class="tab-pane fade show active" id="signin" role="tabpanel"
 									aria-labelledby="signin-tab">
-									<form ng-controller="LoginController">
+									<form ng-controller="LoginController" name="LoginForm" novalidate
+										ng-submit="login()">
 										<div class="form-group">
-											<label for="singin-email">Username *</label> <input type="text" ng-model="account.username"
-												class="form-control" id="singin-email" name="username" required>
+											<label for="singin-email">Tên đăng nhập *</label>
+											<input type="text" ng-model="account.username" class="form-control"
+												ng-class="{'is-invalid': (LoginForm.username.$invalid && LoginForm.username.$touched) || (LoginForm.$submitted && LoginForm.username.$invalid) || (LoginForm.$submitted && isValidUsername)}"
+												name="username" ng-required="true" />
 										</div>
 										<!-- End .form-group -->
 
+										<div class="mb-1 text-danger font-weight-bold">
+											<div
+												ng-show="(LoginForm.username.$error.required && LoginForm.username.$touched) || (LoginForm.$submitted && LoginForm.username.$invalid)">
+												Tên đăng nhập không được để trống!
+											</div>
+										</div>
+										<!-- End Error Username-->
+
 										<div class="form-group">
-											<label for="singin-password">Password *</label> <input type="password" ng-model="account.password"
-												class="form-control" id="singin-password" name="password" required>
+											<label for="singin-password">Mật khẩu *</label> <input type="password"
+												ng-model="account.password" class="form-control" id="singin-password"
+												ng-class="{'is-invalid': (LoginForm.password.$invalid && LoginForm.password.$touched) || (LoginForm.$submitted && LoginForm.password.$invalid) || (LoginForm.$submitted && isValidPassword)}"
+												name="password" required>
 										</div>
 										<!-- End .form-group -->
+
+										<div class="mb-1 text-danger font-weight-bold">
+											<div
+												ng-show="(LoginForm.password.$error.required && LoginForm.password.$touched) || (LoginForm.$submitted && LoginForm.password.$invalid)">
+												Mật khẩu không được để trống!
+											</div>
+											<div ng-show="LoginForm.$submitted && isValidPassword">
+												Sai mật khẩu!
+											</div>
+										</div>
+										<!-- End Error Password-->
 
 										<div class="form-footer">
-											<button type="button" ng-click="login()" class="btn btn-outline-primary-2">
-												<span>LOG IN</span> <i class="icon-long-arrow-right"></i>
+											<button type="submit" class="btn btn-outline-primary-2">
+												<span>ĐĂNG NHẬP</span> <i class="icon-long-arrow-right"></i>
 											</button>
 
 											<div class="custom-control custom-checkbox">
-												<input type="checkbox" class="custom-control-input"
+												<input type="checkbox" class="custom-control-input" ng-model="rememberMe"
 													id="signin-remember"> <label class="custom-control-label"
-													for="remember">Remember
-													Me</label>
+													for="signin-remember">Lưu đăng nhập</label>
 											</div>
 											<!-- End .custom-checkbox -->
 
-											<a href="#" class="forgot-link">Forgot Your Password?</a>
+											<a href="#" class="forgot-link">Quên mật khẩu ?</a>
 
 										</div>
-										<h4 class="text-center text-danger">[[${messageFailed}]]</h4>
+										<h4 class="text-danger font-weight-bold text-center">{{message}}</h4>
 										<!-- End .form-footer -->
 									</form>
 
 									<div class="form-choice">
-										<p class="text-center">or sign in with</p>
+										<p class="text-center">Hoặc đăng nhập bằng</p>
 										<div class="row">
 											<div class="col-sm-6">
 												<a href="/oauth2/authorization/google" class="btn btn-login btn-g"> <i
 														class="icon-google"></i>
-													Login With Google
+													Đăng nhập với Google
 												</a>
 											</div>
 											<!-- End .col-6 -->
 											<div class="col-sm-6">
 												<a href="/oauth2/authorization/facebook" class="btn btn-login btn-f"> <i
 														class="icon-facebook-f"></i>
-													Login With Facebook
+													Đăng nhập với Facebook
 												</a>
 											</div>
 											<!-- End .col-6 -->

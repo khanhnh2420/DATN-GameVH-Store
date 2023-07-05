@@ -14,16 +14,16 @@ import com.gamevh.service.OrderService;
 public abstract class OrderServiceImpl implements OrderService {
 
 	@Autowired
-	OrderDataRepository ordersdao;
+	OrderDataRepository orderDataRepository;
 
 	@Override
 	public List<OrderData> findAll() {
-		return ordersdao.findAll();
+		return orderDataRepository.findAll();
 	}
 
 	@Override
 	public OrderData findById(Long id) {
-		return ordersdao.findById(id).get();
+		return orderDataRepository.findById(id).get();
 	}
 	
 }

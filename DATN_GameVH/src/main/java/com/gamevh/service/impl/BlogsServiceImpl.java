@@ -34,7 +34,9 @@ public class BlogsServiceImpl implements BlogsService {
     public List<Blog> findAll() {
         return blgsDao.findAll();
     }
-
+    public Blog save(Blog blog) {
+    	return blgsDao.save(blog);
+    }
     public Blog findById(Integer id) {
         return blgsDao.findById(id).get();
     }

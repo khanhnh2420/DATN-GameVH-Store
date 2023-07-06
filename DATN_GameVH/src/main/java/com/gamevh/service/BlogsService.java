@@ -25,4 +25,6 @@ public interface BlogsService {
 	public BlogWithCommentsDTO getBlogWithComments(Integer id);
 
 	public long getTotalNumberOfBlogs();
+
+	Blog save(Blog blog);
 }

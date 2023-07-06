@@ -1,4 +1,5 @@
-package com.fourTL.DTO;
+package com.gamevh.dto;
+
 
 import java.io.Serializable;
 

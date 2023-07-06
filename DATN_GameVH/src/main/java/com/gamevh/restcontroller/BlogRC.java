@@ -4,6 +4,7 @@ import com.gamevh.dto.BlogsDTO;
 import com.gamevh.entities.Blog;
 import com.gamevh.reponsitory.CategoryRepository;
 import com.gamevh.service.BlogsService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,11 +21,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/blog")
 public class BlogRC {
+	@Autowired
     BlogsService blogsService;
 
     @Autowired
     CategoryRepository categoriesDAO;
-    @GetMapping("getbloglist")
+    @GetMapping("/getbloglist")
     public ResponseEntity<Page<BlogsDTO>> getAllBlog(@RequestParam("page") Optional<Integer> page,
                                                      @RequestParam("size") Optional<Integer> size) {
         List<BlogsDTO> blogList = new ArrayList<>();

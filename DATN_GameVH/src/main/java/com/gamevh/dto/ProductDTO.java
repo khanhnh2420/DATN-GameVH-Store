@@ -8,6 +8,7 @@ public interface ProductDTO{
 	String getPoster();
 	String getThumbnail();
 	Double getSalePrice();
+	Double getOriginPrice(); 
 	Double getOffer();
 	String getDetails();
 	Double getRate();

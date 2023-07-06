@@ -10,6 +10,7 @@ public class ProductDTOImpl implements ProductDTO {
 	private String poster;
 	private String thumbnail;
 	private Double salePrice;
+	private Double originPrice;
 	private Double offer;
 	private String details;
 	private Double rate;
@@ -20,13 +21,14 @@ public class ProductDTOImpl implements ProductDTO {
 	private LocalDate createDate;
 
 	// Constructor
-	public ProductDTOImpl(Integer id, String name, String poster, String thumbnail, Double salePrice, Double offer,
+	public ProductDTOImpl(Integer id, String name, String poster, String thumbnail,Double originPrice, Double salePrice, Double offer,
 			String details, Double rate, Integer countFeedBack, String categoryName, String categoryId, String type,
 			LocalDate localDate) {
 		this.id = id;
 		this.name = name;
 		this.poster = poster;
 		this.thumbnail = thumbnail;
+		this.originPrice = originPrice;
 		this.salePrice = salePrice;
 		this.offer = offer;
 		this.details = details;
@@ -62,6 +64,11 @@ public class ProductDTOImpl implements ProductDTO {
 	@Override
 	public Double getSalePrice() {
 		return salePrice;
+	}
+	
+	@Override
+	public Double getOriginPrice() {
+		return originPrice;
 	}
 
 	@Override

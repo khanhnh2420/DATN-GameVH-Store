@@ -34,6 +34,12 @@ public class ProductRC {
 
 	@Autowired
 	FeedbackService feedBackService;
+	
+	@GetMapping("/getAll")
+    public ResponseEntity<List<Product>> getAllProducts() {
+        List<Product> products = productService.findAll();
+        return ResponseEntity.ok(products);
+    }
 
 	@GetMapping("getProductDTO/{productId}")
 	public ResponseEntity<ProductDTO> getProductDTOById(@PathVariable("productId") Integer productId) {
@@ -193,7 +199,7 @@ public class ProductRC {
 				}
 
 				ProductDTO productDTO = new ProductDTOImpl(product.getId(), product.getName(), product.getPoster(),
-						product.getThumbnail(), product.getSalePrice(), product.getOffer(), product.getDetails(),
+						product.getThumbnail(),product.getOriginPrice(), product.getSalePrice(), product.getOffer(), product.getDetails(),
 						avgStar, countFeedBack, product.getCategory().getName(), product.getCategory().getCategoryId(),
 						product.getType(), product.getCreateDate());
 				return productDTO;

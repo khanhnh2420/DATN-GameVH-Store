@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,7 +39,27 @@ public class AccountRC {
 		if (optionalUsername.isPresent() && !optionalUsername.get().trim().equals("")) {
 			List<Account> accounts = accountService.findByUsername(optionalUsername.get());
 			if (!accounts.isEmpty()) {
-				AccountDTO accountDTO = accountMapper.modelToLoginDto(accounts.get(0));
+				AccountDTO accountDTO = accountMapper.modelToDto(accounts.get(0));
+				if (accountDTO != null) {
+					if (authorityService.findByAccountAndRole(accountDTO.getId(), "CUST") != null) {
+						accountDTO.setRole("CUST");
+					}
+				}
+				return ResponseEntity.ok(accountDTO);
+			}
+		}
+
+		return null;
+	}
+	
+	@GetMapping("email/{email}")
+	public ResponseEntity<AccountDTO> getAccountByEmail(@PathVariable("email") Optional<String> email) {
+		Optional<String> optionalEmail = email;
+
+		if (optionalEmail.isPresent() && !optionalEmail.get().trim().equals("")) {
+			List<Account> accounts = accountService.findByEmail(optionalEmail.get());
+			if (!accounts.isEmpty()) {
+				AccountDTO accountDTO = accountMapper.modelToDto(accounts.get(0));
 				if (accountDTO != null) {
 					if (authorityService.findByAccountAndRole(accountDTO.getId(), "CUST") != null) {
 						accountDTO.setRole("CUST");
@@ -50,14 +72,13 @@ public class AccountRC {
 		return null;
 	}
 
-//	@GetMapping("")
-//	public ResponseEntity<Page<Account>> getAllAccounts(
-//			@RequestParam("page") Optional<Integer> page, 
-//			@RequestParam("size") Optional<Integer> size) {
-//		Pageable pageable = PageRequest.of(page.orElse(0), size.orElse(6));
-//		Page<Account> accounts = accountsDAO.findAll(pageable);
-//		return ResponseEntity.ok(accounts);
-//	}
+	@PostMapping("create")
+	public ResponseEntity<Account> getAllAccounts(@RequestBody Account account) {
+		if(accountService.findByUsername(account.getUsername()).isEmpty() && accountService.findByEmail(account.getEmail()).isEmpty()) {
+			accountService.add(account);
+		}
+		return ResponseEntity.ok(account);
+	}
 //	
 //	@GetMapping("/search/{search}")
 //	public ResponseEntity<List<Account>> search(Model model, @PathVariable("search") String search) {

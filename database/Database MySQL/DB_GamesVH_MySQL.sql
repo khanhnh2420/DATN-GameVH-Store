@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `DB_GamesVH`.`Account` (
   `Password` VARCHAR(60) NOT NULL,
   `Fullname` VARCHAR(50) NOT NULL,
   `Email` VARCHAR(50) NOT NULL UNIQUE,
-  `Photo` VARCHAR(50) NOT NULL UNIQUE,
+  `Photo` VARCHAR(50) NOT NULL,
   `Status` TINYINT(1) NOT NULL,
   PRIMARY KEY (`Id`));
  
@@ -327,19 +327,19 @@ INSERT INTO Role (Id, Name) VALUES ('STAF', 'Nhân Viên');
 -- Data
 -- Data Account
 INSERT INTO `Account` (`Username`, `Password`, `Fullname`, `Email`, `Photo`, `status`) VALUES 
-('cust', '$2a$10$REel/nhIn4pF8JssL84rcu1m82mRO71eIwPcGA7GX17OAHuRfdsRq', 'Người dùng', 'cust@gmail.com', 'user.png', 1),
-('dangkimchi', '$2a$10$REel/nhIn4pF8JssL84rcu1m82mRO71eIwPcGA7GX17OAHuRfdsRq', 'Đặng Kim Chi', 'dangkimchi@gmail.com', 'user1.png', 1),
-('dire', '$2a$10$REel/nhIn4pF8JssL84rcu1m82mRO71eIwPcGA7GX17OAHuRfdsRq', 'Quản Lý', 'dire@gmail.com', 'user2.png', 1),
-('hoangtunglam', '$2a$10$REel/nhIn4pF8JssL84rcu1m82mRO71eIwPcGA7GX17OAHuRfdsRq', 'Hoàng Tùng Lâm', 'hoangtunglam@gmail.com', 'user3.png', 1),
-('lethithuy', '$2a$10$REel/nhIn4pF8JssL84rcu1m82mRO71eIwPcGA7GX17OAHuRfdsRq', 'Lê Thị Thúy', 'lethithuy@gmail.com', 'user4.png', 1),
-('lethuhien', '$2a$10$REel/nhIn4pF8JssL84rcu1m82mRO71eIwPcGA7GX17OAHuRfdsRq', 'Lê Thùy Hiền', 'lethuhien@gmail.com', 'user5.png', 1),
-('nguyenvana', '$2a$10$REel/nhIn4pF8JssL84rcu1m82mRO71eIwPcGA7GX17OAHuRfdsRq', 'Nguyễn Văn A', 'nguyenvana@gmail.com', 'user6.png', 1),
-('nguyenvanbao', '$2a$10$REel/nhIn4pF8JssL84rcu1m82mRO71eIwPcGA7GX17OAHuRfdsRq', 'Nguyễn Văn Bảo', 'nguyenvanbao@gmail.com', 'user7.png', 1),
-('nguyenhongnhan', '$2a$10$REel/nhIn4pF8JssL84rcu1m82mRO71eIwPcGA7GX17OAHuRfdsRq', 'Nguyễn Hồng Nhân', 'nguyenhongnhan@gmail.com', 'user8.png', 1),
-('phamthuc', '$2a$10$REel/nhIn4pF8JssL84rcu1m82mRO71eIwPcGA7GX17OAHuRfdsRq', 'Phạm Thục', 'phamthuc@gmail.com', 'user9.png', 1),
-('staf', '$2a$10$REel/nhIn4pF8JssL84rcu1m82mRO71eIwPcGA7GX17OAHuRfdsRq', 'Nhân Viên', 'sta@gmail.com', 'user10.png', 1),
-('tranthanhthao', '$2a$10$REel/nhIn4pF8JssL84rcu1m82mRO71eIwPcGA7GX17OAHuRfdsRq', 'Trần Thanh Thảo', 'tranthanhthao@gmail.com', 'user11.png', 1),
-('tranvanb', '$2a$10$REel/nhIn4pF8JssL84rcu1m82mRO71eIwPcGA7GX17OAHuRfdsRq', 'Trần Văn B', 'tranvanb@gmail.com', 'user12.png', 1);
+('cust', '$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee', 'Người dùng', 'cust@gmail.com', 'user.png', 1),
+('dangkimchi', '$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee', 'Đặng Kim Chi', 'dangkimchi@gmail.com', 'user1.png', 1),
+('dire', '$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee', 'Quản Lý', 'dire@gmail.com', 'user2.png', 1),
+('hoangtunglam', '$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee', 'Hoàng Tùng Lâm', 'hoangtunglam@gmail.com', 'user3.png', 1),
+('lethithuy', '$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee', 'Lê Thị Thúy', 'lethithuy@gmail.com', 'user4.png', 1),
+('lethuhien', '$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee', 'Lê Thùy Hiền', 'lethuhien@gmail.com', 'user5.png', 1),
+('nguyenvana', '$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee', 'Nguyễn Văn A', 'nguyenvana@gmail.com', 'user6.png', 1),
+('nguyenvanbao', '$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee', 'Nguyễn Văn Bảo', 'nguyenvanbao@gmail.com', 'user7.png', 1),
+('nguyenhongnhan', '$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee', 'Nguyễn Hồng Nhân', 'nguyenhongnhan@gmail.com', 'user8.png', 0),
+('phamthuc', '$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee', 'Phạm Thục', 'phamthuc@gmail.com', 'user9.png', 1),
+('staf', '$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee', 'Nhân Viên', 'sta@gmail.com', 'user10.png', 1),
+('tranthanhthao', '$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee', 'Trần Thanh Thảo', 'tranthanhthao@gmail.com', 'user11.png', 1),
+('tranvanb', '$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee', 'Trần Văn B', 'tranvanb@gmail.com', 'user12.png', 0);
 
 -- Data
 -- Data Location

@@ -11,5 +11,9 @@ public interface AccountService {
 
 	Account findById(Integer AccountId);
 	
+	Account add(Account account);
+	
 	List<Account> findByUsername(String username);
+	
+	List<Account> findByEmail(String email);
 }

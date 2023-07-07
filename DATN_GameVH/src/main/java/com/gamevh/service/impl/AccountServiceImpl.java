@@ -30,5 +30,14 @@ public class AccountServiceImpl implements AccountService {
 	public List<Account> findByUsername(String username) {
 		return accountRepository.findByUsernameContaining(username);
 	}
-	
+
+	@Override
+	public Account add(Account account) {
+		return accountRepository.save(account);
+	}
+
+	@Override
+	public List<Account> findByEmail(String email) {
+		return accountRepository.findByEmailContaining(email);
+	}	
 }

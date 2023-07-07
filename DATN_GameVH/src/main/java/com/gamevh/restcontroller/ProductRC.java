@@ -1,5 +1,9 @@
 package com.gamevh.restcontroller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -7,14 +11,24 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 
 import com.gamevh.dto.ProductDTO;
 import com.gamevh.dto.impl.ProductDTOImpl;
+import com.gamevh.entities.Category;
 import com.gamevh.entities.Feedback;
 import com.gamevh.entities.OrderDetail;
 import com.gamevh.entities.Product;
@@ -207,4 +221,117 @@ public class ProductRC {
 		}
 		return null;
 	}
+	
+//	@PostMapping("createProduct")
+//	public ResponseEntity<HttpStatus> createProduct(@Validated @RequestBody ProductDTO dto) {
+//	    if (dto != null) {
+//	        // Tạo mới sản phẩm và lưu vào cơ sở dữ liệu
+//	        Product product = new Product();
+//	        product.setName(dto.getName());
+//	        product.setPoster(dto.getPoster());
+//	        product.setOriginPrice(dto.getOriginPrice());
+//	        product.setSalePrice(dto.getSalePrice());
+//	        product.setOffer(dto.getOffer());
+//	        product.setCreateDate(dto.getCreateDate());
+//	        product.setAvailable(dto.isAvailable());
+//	        product.setSource(dto.getSource());
+//	        product.setLink(dto.getLink());
+//	        product.setDetails(dto.getDetails());
+//	        product.setQty(dto.getQty());
+//	        product.setStatus(dto.isStatus());
+//	        product.setType(dto.getType());
+//
+//	        Category category = new Category();
+//	        category.setId(dto.getId());
+//	        category.setCategoryId(dto.getCategoryId());
+//	        category.setName(dto.getCategoryName());;
+//	        category.setType(dto.getType());
+//
+//	        product.setCategory(category);
+//
+//	        Product createdProduct = productService.createProduct(product);
+//
+//	        // Lưu 3 hình ảnh thumbnail
+//	        String[] thumbnails = dto.getThumbnail().split("-\\*-");
+//	        for (int i = 0; i < thumbnails.length; i++) {
+//	            String thumbnail = thumbnails[i];
+//	            String fileName = saveThumbnailImage(thumbnail);
+//	            // Lưu đường dẫn thumbnail vào sản phẩm
+//	            createdProduct.addThumbnail(fileName);
+//	        }
+//
+//	        // Cập nhật thông tin sản phẩm sau khi đã lưu đường dẫn thumbnail
+//	        productService.updateProduct(createdProduct);
+//
+//	        return ResponseEntity.ok().build();
+//	    }
+//	    return ResponseEntity.badRequest().build();
+//	}
+//	
+	@PostMapping("upload")
+	public ResponseEntity<String> uploadFile(@RequestParam("productImage") MultipartFile file) throws IOException {
+	    String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
+	    try {
+	        // Lấy loại media của file
+	        String contentType = file.getContentType();
+
+	        // Tạo đường dẫn đến thư mục trong dự án
+	        Path targetLocation = Path.of("").toAbsolutePath()
+	                .normalize();
+
+	        // Tạo thư mục nếu chưa tồn tại
+	        Files.createDirectories(targetLocation);
+
+	        // Tạo đường dẫn tới file trong thư mục đích với đuôi phần mở rộng phù hợp
+	        String fileExtension = "." + contentType.substring(contentType.lastIndexOf("/") + 1);
+	        String newFileName = fileName + fileExtension;
+	        Path targetFile = targetLocation.resolve(newFileName);
+
+	        // Lưu file vào thư mục đích
+	        Files.copy(file.getInputStream(), targetFile, StandardCopyOption.REPLACE_EXISTING);
+
+	        // Lưu đường dẫn file mới vào biến responseData
+	        String responseData = "{\"fileName\": \"" + newFileName + "\"}";
+
+	      
+	        return ResponseEntity.ok(responseData);
+	    } catch (IOException ex) {
+	        ex.printStackTrace();
+	        // Xử lý lỗi nếu cần thiết
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	    }
+	}
+
+	private String saveThumbnailImage(String thumbnail) {
+	    try {
+	        // Lấy đường dẫn thư mục lưu trữ hình ảnh thumbnail
+	        Path targetLocation = Path.of("").toAbsolutePath()
+	                .normalize();
+	        Files.createDirectories(targetLocation);
+
+	        // Tạo đường dẫn tới file thumbnail trong thư mục đích với đuôi phần mở rộng phù hợp
+	        String fileName = thumbnail;
+	        Path targetFile = targetLocation.resolve(fileName);
+
+	        // Lưu file thumbnail vào thư mục đích
+	        String filePath = saveThumbnail(targetFile);
+
+	        // Trả về đường dẫn file sau khi lưu thành công
+	        return filePath;
+	    } catch (IOException ex) {
+	        ex.printStackTrace();
+	        // Xử lý lỗi nếu cần thiết
+	        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error saving thumbnail image");
+	    }
+	}
+
+	private String saveThumbnail(Path targetFile) throws IOException {
+	    // Code xử lý lưu file thumbnail vào thư mục và trả về đường dẫn file sau khi lưu thành công
+	    // Thực hiện logic lưu file tại đây
+	    // Trả về đường dẫn file sau khi lưu thành công
+	    return targetFile.toString();
+	}
+
+
 }

@@ -11,24 +11,12 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
     ProductAdminService.getAllProducts()
         .then(function(response) {
             $scope.products = response.data;
-            // Do additional processing or actions with the retrieved products here
+
         })
         .catch(function(error) {
             console.error('Lỗi khi lấy danh sách sản phẩm:', error);
         });
 
-
-
-    ProductAdminService.getSameProducts(productId)
-        .then(function(response) {
-            $scope.sameProduct = response.data;
-            $scope.checkPrevAndNextProduct($scope.sameProduct);
-            $scope.randomizeArray($scope.sameProduct);
-            $scope.checkCarouselInitialization();
-        })
-        .catch(function(error) {
-            console.error('Lỗi khi lấy danh sách sản phẩm cùng loại:', error);
-        });
 
     // Lấy sản phẩm trước và sau của sản phẩm (previous and next)
     $scope.checkPrevAndNextProduct = function(listProduct) {

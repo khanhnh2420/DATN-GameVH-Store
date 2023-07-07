@@ -1,5 +1,5 @@
 <div class="wrap-container" ng-controller="LoginController">
-	<header class="header header-intro-clearance header-3">
+	<header class="header header-intro-clearance header-3" ng-controller="HeaderController">
 		<div class="header-top">
 			<div class="container">
 				<div class="header-left">
@@ -36,7 +36,8 @@
 										<!-- End .header-menu -->
 									</div>
 								</li>
-								<li><a href="#" ng-click="redirectToLogin()">Đăng nhập / Đăng ký</a></li>
+								<li ng-show="account == null || account == undefined"><a href="#" ng-click="redirectToLogin()">Đăng nhập / Đăng ký</a></li>
+								<li ng-show="account != null && account != undefined"><a href="/profile">Xin chào, {{account.fullname}}</a> | <a href="#" ng-click="redirectToLogin()">Đăng xuất</a></li>
 
 								<!-- <li><a href="/account?username=nguyenvana">nguyenvana</a>
 										| <a href="#?/logout">Sign Out</a></li> -->
@@ -85,7 +86,7 @@
 				<div class="header-right">
 					<div class="header-dropdown-link">
 						<div class="account">
-							<a href="#?/login/form" title="My account">
+							<a href="/profile" title="Tài khoản của tôi">
 								<div class="icon">
 									<i class="icon-user"></i>
 								</div>
@@ -100,7 +101,7 @@
 						<!-- End .compare-dropdown -->
 
 						<div class="wishlist">
-							<a href="#" title="Wishlist">
+							<a href="#" title="Yêu thích">
 								<div class="icon">
 									<i class="icon-heart-o"></i> <span class="wishlist-count badge">3</span>
 								</div>

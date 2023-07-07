@@ -77,9 +77,14 @@ app.config(function($routeProvider, $locationProvider) {
             templateUrl: '/views/shop-4cols.html',
             pageTitle: 'CỬA HÀNG'
         })
+        .when('/profile', {
+            templateUrl: '/views/profile.html',
+            pageTitle: 'TÀI KHOẢN CỦA TÔI'
+        })
         .otherwise({
             templateUrl: '/views/404.html',
-            pageTitle: 'KHÔNG TÌM THẤY TRANG'
+            pageTitle: 'KHÔNG TÌM THẤY TRANG',
+            controller: 'GoogleSigninController'
         })
 }).run(function($rootScope, $route) {
     $rootScope.$on('$routeChangeSuccess', function() {

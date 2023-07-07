@@ -13,15 +13,15 @@ import com.gamevh.service.ProductService;
 public class ProductServiceImpl implements ProductService {
 
 	@Autowired
-	ProductRepository pDAO;
+	ProductRepository productRepository;
 
 	@Override
 	public List<Product> findAll() {
-		return pDAO.findAll();
+		return productRepository.findAll();
 	}
 
 	@Override
 	public Product findById(Integer id) {
-		return pDAO.findById(id).get();
+		return productRepository.findById(id).get();
 	}
 }

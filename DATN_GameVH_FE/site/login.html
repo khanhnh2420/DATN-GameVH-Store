@@ -5,22 +5,24 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>LOGIN</title>
+	<title>ĐĂNG NHẬP</title>
 	<meta name="keywords" content="HTML5 Template">
 	<meta name="description" content="4TL">
 	<meta name="author" content="p-themes">
 	<!-- Favicon -->
 	<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png">
-	<link rel="manifest" href="/assets/images/icons/site.html">
+	<link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/gamesVH-favicon-32x32-1.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/gamesVH-favicon-16x16.png">
+	<link rel="manifest" href="/assets/images/icons.html">
 	<link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
-	<link rel="shortcut icon" href="/assets/images/icons/favicon.ico">
-	<meta name="apple-mobile-web-app-title" content="4TL">
-	<meta name="application-name" content="4TL">
+	<link rel="shortcut icon" href="/assets/images/icons/gamesVH-favicon1.ico">
+	<meta name="apple-mobile-web-app-title" content="Molla">
+	<meta name="application-name" content="Molla">
 	<meta name="msapplication-TileColor" content="#cc9966">
 	<meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
 	<meta name="theme-color" content="#ffffff">
+	<meta name="google-signin-client_id"
+		content="826014525988-k8mo1nf93legn462lbsrrjmbir6plrsc.apps.googleusercontent.com">
 
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
 	<link rel="stylesheet" href="/assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
@@ -32,6 +34,7 @@
 	<link rel="stylesheet" href="/assets/css/style.css">
 	<link rel="stylesheet" href="/assets/css/skins/skin-demo-19.css">
 	<link rel="stylesheet" href="/assets/css/demos/demo-19.css">
+
 	<!-- AngularJS -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"
 		integrity="sha512-KZmyTq3PLx9EZl0RHShHQuXtrvdJ+m35tuOiwlcZfs/rE7NZv29ygNA8SFCkMXTnYZQK2OX0Gm2qKGfvWEtRXA=="
@@ -42,11 +45,19 @@
 		integrity="sha512-y1qD3hz/IAf8W4+/UMLZ+CN6LIoUGi7srWJ3r1R17Hid8x0yXe+1B5ZelkaL1Mjzedzu0Cg3HBvDG02SAgSzBw=="
 		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+	<!-- Google signin -->
+
+
 	<!-- AngularJS config -->
 	<script src="/config/app.js"></script>
 
-	<!-- AngularJS config -->
+	<!-- AngularJS Controller -->
 	<script src="/controllers/LoginController.js"></script>
+	<script src="/controllers/FacebookSigninController.js"></script>
+
+	<!-- AngularJS Service -->
+	<script src="/services/api/AccountService.js"></script>
+	<script src="/services/api/BcryptService.js"></script>
 </head>
 
 <body ng-app="app">
@@ -59,63 +70,92 @@
 						<div class="form-tab">
 							<ul class="nav nav-pills nav-fill nav-border-anim" role="tablist">
 								<li class="nav-item"><a class="nav-link active" id="signin-tab" data-toggle="tab"
-										href="#signin" role="tab" aria-controls="signin" aria-selected="true">Sign
-										In</a></li>
+										href="#signin" role="tab" aria-controls="signin" aria-selected="true">Đăng
+										nhập</a></li>
 								<li class="nav-item"><a class="nav-link" id="register-tab" data-toggle="tab"
-										href="#register" role="tab" aria-controls="register"
-										aria-selected="false">Register</a></li>
+										href="#register" role="tab" aria-controls="register" aria-selected="false">Đăng
+										ký</a></li>
 							</ul>
 							<div class="tab-content" id="tab-content-5">
 								<div class="tab-pane fade show active" id="signin" role="tabpanel"
-									aria-labelledby="signin-tab">
-									<form ng-controller="LoginController">
+									aria-labelledby="signin-tab" ng-controller="LoginController">
+									<form name="LoginForm" novalidate ng-submit="login()">
 										<div class="form-group">
-											<label for="singin-email">Username *</label> <input type="text" ng-model="account.username"
-												class="form-control" id="singin-email" name="username" required>
+											<label for="singin-email">Tên đăng nhập *</label>
+											<input type="text" ng-model="account.username" class="form-control"
+												ng-class="{'is-invalid': (LoginForm.username.$invalid && LoginForm.username.$touched) || (LoginForm.$submitted && LoginForm.username.$invalid) || (LoginForm.$submitted && isValidUsername)}"
+												name="username" ng-required="true" />
 										</div>
 										<!-- End .form-group -->
 
+										<div class="mb-1 text-danger font-weight-bold">
+											<div
+												ng-show="(LoginForm.username.$error.required && LoginForm.username.$touched) || (LoginForm.$submitted && LoginForm.username.$invalid)">
+												Tên đăng nhập không được để trống!
+											</div>
+										</div>
+										<!-- End Error Username-->
+
 										<div class="form-group">
-											<label for="singin-password">Password *</label> <input type="password" ng-model="account.password"
-												class="form-control" id="singin-password" name="password" required>
+											<label for="singin-password">Mật khẩu *</label> <input type="password"
+												ng-model="account.password" class="form-control" id="singin-password"
+												ng-class="{'is-invalid': (LoginForm.password.$invalid && LoginForm.password.$touched) || (LoginForm.$submitted && LoginForm.password.$invalid) || (LoginForm.$submitted && isValidPassword)}"
+												name="password" required>
 										</div>
 										<!-- End .form-group -->
+
+										<div class="mb-1 text-danger font-weight-bold">
+											<div
+												ng-show="(LoginForm.password.$error.required && LoginForm.password.$touched) || (LoginForm.$submitted && LoginForm.password.$invalid)">
+												Mật khẩu không được để trống!
+											</div>
+											<div ng-show="LoginForm.$submitted && isValidPassword">
+												Sai mật khẩu!
+											</div>
+										</div>
+										<!-- End Error Password-->
 
 										<div class="form-footer">
-											<button type="button" ng-click="login()" class="btn btn-outline-primary-2">
-												<span>LOG IN</span> <i class="icon-long-arrow-right"></i>
+											<button type="submit" class="btn btn-outline-primary-2">
+												<span>ĐĂNG NHẬP</span> <i class="icon-long-arrow-right"></i>
 											</button>
 
 											<div class="custom-control custom-checkbox">
 												<input type="checkbox" class="custom-control-input"
-													id="signin-remember"> <label class="custom-control-label"
-													for="remember">Remember
-													Me</label>
+													ng-model="rememberMe" id="signin-remember"> <label
+													class="custom-control-label" for="signin-remember">Lưu đăng
+													nhập</label>
 											</div>
 											<!-- End .custom-checkbox -->
 
-											<a href="#" class="forgot-link">Forgot Your Password?</a>
+											<a href="#" class="forgot-link">Quên mật khẩu ?</a>
 
 										</div>
-										<h4 class="text-center text-danger">[[${messageFailed}]]</h4>
+										<h4 class="text-danger font-weight-bold text-center">{{message}}</h4>
 										<!-- End .form-footer -->
 									</form>
 
 									<div class="form-choice">
-										<p class="text-center">or sign in with</p>
+										<p class="text-center">Hoặc đăng nhập bằng</p>
 										<div class="row">
 											<div class="col-sm-6">
-												<a href="/oauth2/authorization/google" class="btn btn-login btn-g"> <i
+												<a href="#" class="btn btn-login btn-g" ng-click="oauthSignIn()"> <i
 														class="icon-google"></i>
-													Login With Google
+													Đăng nhập với Google
 												</a>
 											</div>
 											<!-- End .col-6 -->
 											<div class="col-sm-6">
-												<a href="/oauth2/authorization/facebook" class="btn btn-login btn-f"> <i
-														class="icon-facebook-f"></i>
-													Login With Facebook
+												<!-- The JS SDK Login Button -->
+
+												<a href="#" class="btn btn-login btn-f fb-login-button"
+													scope="public_profile,email" onlogin="checkLoginState();">
+													Đăng nhập với facebook
 												</a>
+
+												<!-- Load the JS SDK asynchronously -->
+												<script async defer crossorigin="anonymous"
+													src="https://connect.facebook.net/en_US/sdk.js"></script>
 											</div>
 											<!-- End .col-6 -->
 										</div>
@@ -127,50 +167,48 @@
 								<div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
 									<form>
 										<div class="form-group">
-											<label for="register-username">Username *</label> <input
+											<label for="register-username">Tên đăng nhập *</label> <input
 												ng-model="form.username" type="text" class="form-control"
 												id="register-username" name="register-username" required>
 										</div>
 										<div class="d-flex justify-content-between">
 											<div class="form-group">
-												<label for="register-password">Password *</label> <input
+												<label for="register-password">Mật khẩu *</label> <input
 													ng-model="form.password" type="password" class="form-control"
 													id="register-password" name="register-password" required>
 											</div>
 											<div class="form-group">
-												<label for="register-confirmpassword">Confirm
-													Password *</label> <input type="password" class="form-control"
+												<label for="register-confirmpassword">Xác thực mật khẩu *</label> <input type="password" class="form-control"
 													id="register-confirmpassword" ng-model="confirmPassword"
 													name="register-confirmpassword" required>
 											</div>
 										</div>
 										<div class="form-group">
-											<label for="register-fullname">Fullname *</label> <input
+											<label for="register-fullname">Họ và tên *</label> <input
 												ng-model="form.fullname" type="text" class="form-control"
 												id="register-fullname" name="register-fullname" required>
 										</div>
 										<div class="form-group">
-											<label for="register-email">Your email address *</label> <input
+											<label for="register-email">Email *</label> <input
 												ng-model="form.email" type="email" class="form-control"
 												id="register-email" name="register-email" required>
 										</div>
-										<div class="form-group">
-											<label for="register-address">Address *</label> <input
+										<!-- <div class="form-group">
+											<label for="register-address">Địa chỉ *</label> <input
 												ng-model="form.address" type="text" class="form-control"
 												id="register-address" name="register-address" required>
-										</div>
+										</div> -->
 										<!-- End .form-group -->
 										<div class="form-footer">
 											<button type="button" ng-click="Register()"
 												class="btn btn-outline-primary-2">
-												<span>SIGN UP</span> <i class="icon-long-arrow-right"></i>
+												<span>ĐĂNG KÝ</span> <i class="icon-long-arrow-right"></i>
 											</button>
 
 											<div class="custom-control custom-checkbox">
 												<input type="checkbox" class="custom-control-input" id="register-policy"
 													required> <label class="custom-control-label"
-													for="register-policy">I
-													agree to the <a href="#">privacy policy</a> *
+													for="register-policy">Tôi chấp nhận với <a href="#">Điều khoản và dịch vụ</a> *
 												</label>
 											</div>
 											<!-- End .custom-checkbox -->
@@ -181,19 +219,26 @@
 									</form>
 
 									<div class="form-choice">
-										<p class="text-center">or sign in with</p>
+										<p class="text-center">Hoặc đăng nhập bằng</p>
 										<div class="row">
 											<div class="col-sm-6">
-												<a href="/oauth2/authorization/google" class="btn btn-login btn-g"> <i
+												<a href="#" class="btn btn-login btn-g" ng-click="oauthSignIn()"> <i
 														class="icon-google"></i>
-													Login With Google
+													Đăng nhập với Google
 												</a>
 											</div>
 											<!-- End .col-6 -->
 											<div class="col-sm-6">
-												<a href="/oauth2/authorization/facebook" class="btn btn-login  btn-f">
-													<i class="icon-facebook-f"></i> Login With Facebook
+												<!-- The JS SDK Login Button -->
+
+												<a href="#" class="btn btn-login btn-f fb-login-button"
+													scope="public_profile,email" onlogin="checkLoginState();">
+													Đăng nhập với facebook
 												</a>
+
+												<!-- Load the JS SDK asynchronously -->
+												<script async defer crossorigin="anonymous"
+													src="https://connect.facebook.net/en_US/sdk.js"></script>
 											</div>
 											<!-- End .col-6 -->
 										</div>

@@ -1,0 +1,871 @@
+<!-- Header -->
+<div ng-include="'/templates/header.html'"></div>
+<!-- /Header -->
+
+<!-- Sidebar -->
+<div ng-include="'/templates/sidebar.html'"></div>
+<!-- /Sidebar -->
+
+<!-- Page Wrapper -->
+<div class="page-wrapper" ng-controller="ProductController">
+
+    <!-- Page Content -->
+    <div class="content container-fluid">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Product</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Product</li>
+                    </ul>
+                </div>
+                <div class="col-auto float-right ml-auto">
+                    <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_Product"><i
+							class="fa fa-plus"></i> Add Product</a>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+
+        <!-- Search Filter -->
+        <div class="row filter-row">
+            <div class="col-sm-6 col-md-2">
+                <div class="form-group form-focus">
+                    <input type="text" class="form-control">
+                    <label class="focus-label">Name</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-2">
+                <div class="form-group form-focus select-focus">
+                    <label class="focus-label">Created Date</label>
+                    <input class="form-control" type="date">
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-2">
+                <div class="form-group form-focus select-focus">
+                    <label class="focus-label">Type Product</label>
+                    <select class="select">
+						<option>Game</option>
+						<option>Phụ kiện</option>
+					</select>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-2">
+                <div class="form-group form-focus select-focus">
+                    <label class="focus-label">Category Product</label>
+                    <select class="select">
+						<option>Chiến Thuật</option>
+						<option>FPS</option>
+						<option>Hành Động</option>
+						<option>Kinh Dị</option>
+						<option>Lập Trình</option>
+					</select>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-2">
+                <div class="form-group form-focus select-focus">
+                    <label class="focus-label">Category Accessory</label>
+                    <select class="select">
+						<option>Ghế</option>
+						<option>Màn Hình</option>
+						<option>Tai nghe</option>
+						<option>Chuột</option>
+					</select>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-2">
+                <a href="#" class="btn btn-success btn-block"> Search </a>
+            </div>
+        </div>
+        <!-- /Search Filter -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table datatable" id="tableProduct">
+                        <thead>
+                            <tr>
+                                <th class="text-center">#</th>
+                                <td class="text-center">Poster</td>
+                                <th>Name</th>
+                                <th>Origin Price</th>
+                                <th>Sale Price</th>
+                                <th>Source</th>
+                                <th class="text-nowrap">Created Date</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th class="text-right no-sort">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- <tr ng-repeat="product in products">
+                                <td class="text-center">{{product.id}}</td>
+                                <td class="text-center">
+                                    <h2 class="table-poster">
+                                        <a href="#" class="poster"><img alt="" src="/assets/img/products/{{ product.poster }}" data-zoom-image="/assets/img/products/{{ product.poster }}" alt="product image"></a>
+                                    </h2>
+                                </td>
+                                <td><a href="#" class="text-dark" data-toggle="modal" data-target="#edit_Product">{{ product.name }}</a></td>
+                                <td>{{ product.originPrice | vndFormat}}</td>
+                                <td>{{ product.salePrice | vndFormat}}</td>
+                                <td>{{ product.source }}</td>
+                                <td>{{ product.createDate | dateFormat}}</td>
+                                <td>{{ product.category.type }}</td>
+                                <td><span class="badge bg-inverse-{{ product.status == 'Đã đăng' ? 'success' : 'danger' }}">{{ product.status }}</span></td>
+                                <td class="text-right">
+                                    <div class="dropdown dropdown-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_Product"><i class="fa fa-pencil m-r-5"></i>Edit</a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_Product"><i class="fa fa-trash-o m-r-5"></i>Delete</a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#comment_Product"><i class="fa fa-pencil-square-o m-r-5"></i>Comment</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr> -->
+
+
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Content -->
+
+    <!-- Add Product Modal -->
+    <div id="add_Product" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-8">
+                            <form>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">ID </label>
+                                            <input class="form-control" type="text" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Product Name </label>
+                                            <input class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Origin Price</label>
+                                            <input class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Sale Price </label>
+                                            <input class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Type </label>
+                                            <select class="select">
+												<option>Game</option>
+												<option>Phụ kiện</option>
+											</select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Category </label>
+                                            <select class="select">
+												<option>Chiến Thuật</option>
+												<option>FPS</option>
+												<option>Hành Động</option>
+												<option>Kinh Dị</option>
+												<option>Lập Trình</option>
+											</select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Status </label>
+                                            <select class="select">
+												<option>Chưa đăng</option>
+												<option>Đã đăng</option>
+											</select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Quantity </label>
+                                            <input class="form-control" type="number">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label>Description</label>
+                                            <textarea class="form-control" rows="5">Assassin Creed Valhalla 1là phiên bản mới nhất của dòng game hành động nhập vai lịch sử nổi tiếng Assassin Creed. Trong game, người chơi sẽ hóa thân thành Eivor, một vị vua hoặc nữ hoàng của người Viking, và tham gia vào cuộc chiến giữa người Viking và quân đội của người Anh vào thế kỷ thứ 9.</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-sm-12 col-md-4 theme-blush">
+                            <h4 class="d-flex justify-content-center">IMAGE POSTER</h4>
+                            <div class="card border-0">
+                                <div class="body d-flex justify-content-center">
+                                    <input type="file" class="dropify">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row  d-flex justify-content-center">
+                                        <h4 class=" ">IMAGE THUMBNAIL</h4>
+                                        <h5 class="text-danger fs-3 mt-1 ml-2">*Only 3 Photos*</h5>
+                                    </div>
+
+                                    <form action="#" class="dropzone d-flex justify-content-center flex-wrap" id="dropzone_remove"></form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">ADD</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Add Product Modal -->
+
+    <!-- Edit Product Modal -->
+    <div id="edit_Product" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-8">
+                            <form>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">ID </label>
+                                            <input class="form-control" type="text" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Product Name </label>
+                                            <input class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Origin Price</label>
+                                            <input class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Sale Price </label>
+                                            <input class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Link </label>
+                                            <input class="form-control" type="email">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Category </label>
+                                            <select class="select">
+												<option>Chiến Thuật</option>
+												<option>FPS</option>
+												<option>Hành Động</option>
+												<option>Kinh Dị</option>
+												<option>Lập Trình</option>
+											</select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Status </label>
+                                            <select class="select">
+												<option>Chưa đăng</option>
+												<option>Đã đăng</option>
+											</select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label>Description</label>
+                                            <textarea class="form-control" rows="5">Assassin Creed Valhalla 1là phiên bản mới nhất của dòng game hành động nhập vai lịch sử nổi tiếng Assassin Creed. Trong game, người chơi sẽ hóa thân thành Eivor, một vị vua hoặc nữ hoàng của người Viking, và tham gia vào cuộc chiến giữa người Viking và quân đội của người Anh vào thế kỷ thứ 9.</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-sm-12 col-md-4 theme-blush">
+                            <h4 class="d-flex justify-content-center">IMAGE POSTER</h4>
+                            <div class="card border-0">
+                                <div class="body d-flex justify-content-center">
+                                    <input type="file" class="dropify">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row  d-flex justify-content-center">
+                                        <h4 class=" ">IMAGE THUMBNAIL</h4>
+                                        <h5 class="text-danger fs-3 mt-1 ml-2">*Only 3 Photos*</h5>
+                                    </div>
+
+                                    <form action="#" class="dropzone d-flex justify-content-center flex-wrap" id="dropzone_remove"></form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Edit Product Modal -->
+
+
+    <!-- Comment Product Modal -->
+    <div id="comment_Product" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Comments Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-striped custom-table datatable">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Username</th>
+                                            <th style="width: 300px;">Comment</th>
+                                            <th>Star</th>
+                                            <th>Created Date</th>
+                                            <th>Status</th>
+                                            <th class="text-right no-sort">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</a>
+                                            </td>
+                                            <td>Lê Đăng Dương</td>
+                                            <td class="d-flex text-wrap">Giật lagggg game tệ Giật lagggg game tệ Giật lagggg game tệ Giật lagggg game tệ Giật lagggg game tệ</td>
+                                            <td>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star "></span>
+                                                <span class="fa fa-star"></span>
+                                                <span class="fa fa-star"></span>
+                                            </td>
+                                            <td>12:24:42 <br> 01/02/2023 </td>
+
+                                            <td>
+                                                <div class="dropdown action-label">
+                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fa fa-dot-circle-o text-success"></i> Đã Duyệt
+                                                    </a>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-success"></i>
+															Đã Duyệt</a>
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-danger"></i>
+															Chưa Duyệt</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-right">
+                                                <div class=" text-right">
+                                                    <button href="#" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Delete</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</a>
+                                            </td>
+                                            <td>Lê Đăng Dương 2</td>
+                                            <td class="d-flex text-wrap">Giật lagggg game tệ Giật lagggg game tệ Giật lagggg game tệ Giật lagggg game tệ Giật lagggg game tệ Giật lagggg game tệ Giật lagggg game tệ Giật lagggg game tệ Giật lagggg game tệ Giật lagggg game tệ Giật lagggg
+                                                game tệ</td>
+                                            <td>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star"></span>
+                                            </td>
+                                            <td>12:24:42 <br> 01/02/2023 </td>
+                                            <td>
+                                                <div class="dropdown action-label">
+                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fa fa-dot-circle-o text-danger"></i> Chưa Duyệt
+                                                    </a>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-success"></i>
+															Đã Duyệt</a>
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-danger"></i>
+															Chưa Duyệt</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-right">
+                                                <div class=" text-right">
+                                                    <button href="#" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Delete</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</a>
+                                            </td>
+                                            <td>Lê Đăng Dương 3</td>
+                                            <td>Giật lagggg game tệ</td>
+                                            <td>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star "></span>
+                                                <span class="fa fa-star"></span>
+                                                <span class="fa fa-star"></span>
+                                            </td>
+                                            <td>12:24:42 <br> 01/02/2023 </td>
+                                            <td>
+                                                <div class="dropdown action-label">
+                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fa fa-dot-circle-o text-success"></i> Đã Duyệt
+                                                    </a>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-success"></i>
+															Đã Duyệt</a>
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-danger"></i>
+															Chưa Duyệt</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-right">
+                                                <div class=" text-right">
+                                                    <button href="#" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Delete</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>4</a>
+                                            </td>
+                                            <td>Lê Đăng Dương 4</td>
+                                            <td>Giật lagggg game tệ</td>
+                                            <td>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                            </td>
+                                            <td>12:24:42 <br> 01/02/2023 </td>
+                                            <td>
+                                                <div class="dropdown action-label">
+                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fa fa-dot-circle-o text-success"></i> Đã Duyệt
+                                                    </a>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-success"></i>
+															Đã Duyệt</a>
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-danger"></i>
+															Chưa Duyệt</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-right">
+                                                <div class=" text-right">
+                                                    <button href="#" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Delete</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>5</a>
+                                            </td>
+                                            <td>Lê Đăng Dương 5</td>
+                                            <td>Giật lagggg game tệ</td>
+                                            <td>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star"></span>
+                                            </td>
+                                            <td>12:24:42 <br> 01/02/2023 </td>
+                                            <td>
+                                                <div class="dropdown action-label">
+                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fa fa-dot-circle-o text-success"></i> Đã Duyệt
+                                                    </a>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-success"></i>
+															Đã Duyệt</a>
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-danger"></i>
+															Chưa Duyệt</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-right">
+                                                <div class=" text-right">
+                                                    <button href="#" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Delete</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>6</a>
+                                            </td>
+                                            <td>Lê Đăng Dương 6</td>
+                                            <td>Giật lagggg game tệ</td>
+                                            <td>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star "></span>
+                                                <span class="fa fa-star"></span>
+                                                <span class="fa fa-star"></span>
+                                            </td>
+                                            <td>12:24:42 <br> 01/02/2023 </td>
+                                            <td>
+                                                <div class="dropdown action-label">
+                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fa fa-dot-circle-o text-success"></i> Đã Duyệt
+                                                    </a>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-success"></i>
+															Đã Duyệt</a>
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-danger"></i>
+															Chưa Duyệt</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-right">
+                                                <div class=" text-right">
+                                                    <button href="#" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Delete</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>7</a>
+                                            </td>
+                                            <td>Lê Đăng Dương 7</td>
+                                            <td>Giật lagggg game tệ</td>
+                                            <td>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                            </td>
+                                            <td>12:24:42 <br> 01/02/2023 </td>
+                                            <td>
+                                                <div class="dropdown action-label">
+                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fa fa-dot-circle-o text-success"></i> Đã Duyệt
+                                                    </a>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-success"></i>
+															Đã Duyệt</a>
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-danger"></i>
+															Chưa Duyệt</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-right">
+                                                <div class=" text-right">
+                                                    <button href="#" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Delete</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>7</a>
+                                            </td>
+                                            <td>Lê Đăng Dương 7</td>
+                                            <td>Giật lagggg game tệ</td>
+                                            <td>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star "></span>
+                                                <span class="fa fa-star"></span>
+                                                <span class="fa fa-star"></span>
+                                            </td>
+                                            <td>12:24:42 <br> 01/02/2023 </td>
+                                            <td>
+                                                <div class="dropdown action-label">
+                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fa fa-dot-circle-o text-success"></i> Đã Duyệt
+                                                    </a>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-success"></i>
+															Đã Duyệt</a>
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-danger"></i>
+															Chưa Duyệt</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-right">
+                                                <div class=" text-right">
+                                                    <button href="#" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Delete</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>7</a>
+                                            </td>
+                                            <td>Lê Đăng Dương 7</td>
+                                            <td>Giật lagggg game tệ</td>
+                                            <td>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star"></span>
+                                                <span class="fa fa-star"></span>
+                                            </td>
+                                            <td>12:24:42 <br> 01/02/2023 </td>
+                                            <td>
+                                                <div class="dropdown action-label">
+                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fa fa-dot-circle-o text-success"></i> Đã Duyệt
+                                                    </a>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-success"></i>
+															Đã Duyệt</a>
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-danger"></i>
+															Chưa Duyệt</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-right">
+                                                <div class=" text-right">
+                                                    <button href="#" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Delete</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>7</a>
+                                            </td>
+                                            <td>Lê Đăng Dương 7</td>
+                                            <td>Giật lagggg game tệ</td>
+                                            <td>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star"></span>
+                                                <span class="fa fa-star"></span>
+                                            </td>
+                                            <td>12:24:42 <br> 01/02/2023 </td>
+                                            <td>
+                                                <div class="dropdown action-label">
+                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fa fa-dot-circle-o text-success"></i> Đã Duyệt
+                                                    </a>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-success"></i>
+															Đã Duyệt</a>
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-danger"></i>
+															Chưa Duyệt</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-right">
+                                                <div class=" text-right">
+                                                    <button href="#" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Delete</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>7</a>
+                                            </td>
+                                            <td>Lê Đăng Dương 7</td>
+                                            <td>Giật lagggg game tệ</td>
+                                            <td>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star"></span>
+                                                <span class="fa fa-star"></span>
+                                            </td>
+                                            <td>12:24:42 <br> 01/02/2023 </td>
+                                            <td>
+                                                <div class="dropdown action-label">
+                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fa fa-dot-circle-o text-success"></i> Đã Duyệt
+                                                    </a>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-success"></i>
+															Đã Duyệt</a>
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-danger"></i>
+															Chưa Duyệt</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-right">
+                                                <div class=" text-right">
+                                                    <button href="#" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Delete</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>7</a>
+                                            </td>
+                                            <td>Lê Đăng Dương 7</td>
+                                            <td>Giật lagggg game tệ</td>
+                                            <td>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star checked"></span>
+                                                <span class="fa fa-star"></span>
+                                                <span class="fa fa-star"></span>
+                                            </td>
+                                            <td>12:24:42 <br> 01/02/2023 </td>
+                                            <td>
+                                                <div class="dropdown action-label">
+                                                    <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fa fa-dot-circle-o text-success"></i> Đã Duyệt
+                                                    </a>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-success"></i>
+															Đã Duyệt</a>
+                                                        <a class="dropdown-item" href="#"><i
+																class="fa fa-dot-circle-o text-danger"></i>
+															Chưa Duyệt</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-right">
+                                                <div class=" text-right">
+                                                    <button href="#" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Delete</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="submit-section">
+                            <button class="btn btn-primary submit-btn">Submit</button>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Comment Product Modal -->
+
+    <!-- Delete Product Modal -->
+    <div class="modal custom-modal fade" id="delete_Product" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="form-header">
+                        <h3>Delete Product</h3>
+                        <p>Are you sure want to delete?</p>
+                    </div>
+                    <div class="modal-btn delete-action">
+                        <div class="row">
+                            <div class="col-6">
+                                <a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
+                            </div>
+                            <div class="col-6">
+                                <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Delete Product Modal -->
+    <!-- Delete Comment Modal -->
+    <div class="modal custom-modal fade" id="delete_comment" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="form-header">
+                        <h3>Delete Product</h3>
+                        <p>Are you sure want to delete?</p>
+                    </div>
+                    <div class="modal-btn delete-action">
+                        <div class="row">
+                            <div class="col-6">
+                                <a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
+                            </div>
+                            <div class="col-6">
+                                <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Delete Comment Modal -->
+
+</div>
+<!-- /Page Wrapper -->

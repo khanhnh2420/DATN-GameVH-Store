@@ -15,10 +15,10 @@ app.factory('ProductAdminService', function($http) {
             return $http.post(baseUrl, productData);
         },
         updateProduct: function(productId, productData) {
-            return $http.put(baseUrl + '/' + productId, productData);
+            return $http.put(baseUrl + '/update' + productId, productData);
         },
         deleteProduct: function(productId) {
-            return $http.delete(baseUrl + '/' + productId);
+            return $http.delete(baseUrl + '/delete' + productId);
         }
     };
 });

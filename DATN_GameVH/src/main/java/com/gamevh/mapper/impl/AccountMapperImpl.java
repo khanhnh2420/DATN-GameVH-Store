@@ -50,24 +50,4 @@ public class AccountMapperImpl implements AccountMapper {
 
 		return account;
 	}
-
-	@Override
-	public AccountDTO modelToLoginDto(Account account) {
-		if (account == null) {
-			return null;
-		}
-
-		AccountDTO accountDTO = new AccountDTO();
-
-		accountDTO.setEmail(null);
-		accountDTO.setFullname(null);
-		accountDTO.setId(account.getId());
-		accountDTO.setPassword(account.getPassword());
-		accountDTO.setPhoto(null);
-		accountDTO.setStatus(account.getStatus());
-		accountDTO.setUsername(account.getUsername());
-		accountDTO.setRole(null);
-
-		return accountDTO;
-	}
 }

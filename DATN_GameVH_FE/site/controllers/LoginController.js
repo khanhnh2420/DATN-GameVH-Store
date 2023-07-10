@@ -1,11 +1,15 @@
 app.controller("LoginController", function (AccountService, BcryptService, $scope, $window) {
     $scope.account = {}; // Thông tin người dùng nhập từ form
     $scope.user = {}; // Thông tin người dùng lấy từ Server
-    $scope.message; // Trạng thái
     $scope.rememberMe; // Lưu đăng nhập
+    $scope.message = ($window.sessionStorage.getItem("messageLogin") != null) ? $window.sessionStorage.getItem("messageLogin") : null;// Trạng thái
+    $window.sessionStorage.removeItem("messageLogin");
+
 
     // Trở về trang đăng nhập
     $scope.redirectToLogin = function () {
+        $window.localStorage.removeItem("username");
+        $window.sessionStorage.removeItem("username");
         $window.location.href = 'login.html';
     };
 
@@ -40,15 +44,14 @@ app.controller("LoginController", function (AccountService, BcryptService, $scop
                                 // Kiểm tra quyền của người dùng có phải là CUST hay không ?
                                 $scope.message = "Bạn không có quyền truy cập trang này!";
                             } else {
-                                // Đăng nhập thành công trở về trang chủ
-                                $scope.userAccount = {
-                                    "username": $scope.user.username,
-                                    "rememberMe": false
-                                }
+                                // Kiểm tra xem người dùng có tích rememberMe không để xử lý tương ứng
+                                $scope.userAccount = $scope.user.username;
                                 if ($scope.rememberMe) {
-                                    $scope.userAccount.rememberMe = true;
+                                    $scope.saveAccountToLocalStorage($scope.userAccount);
                                 }
-                                $scope.saveAccountToLocalStorage($scope.userAccount);
+                                $scope.saveAccountToSessionStorage($scope.userAccount);
+
+                                // Đăng nhập thành công trở về trang chủ
                                 $window.location.href = '/';
                             }
                         }).catch(function (error) {
@@ -63,14 +66,46 @@ app.controller("LoginController", function (AccountService, BcryptService, $scop
                     $scope.login();
                 });
             } else {
+                // Set form về invalid để ném lỗi
                 $scope.LoginForm.$invalid = true;
                 $scope.login();
             }
         }
     };
 
-    // Lưu account lên local storage 
+    // Lưu account lên local storage để lưu đăng nhập khi người dùng check rememberMe
     $scope.saveAccountToLocalStorage = function (user) {
-        $window.localStorage.setItem("user", JSON.stringify(user));
+        $window.localStorage.setItem("username", user);
+    }
+
+    // Lưu account lên session storage để lưu đăng nhập trong phiên hiện tại
+    $scope.saveAccountToSessionStorage = function (user) {
+        $window.sessionStorage.setItem("username", user);
+    }
+
+    /*
+ * Create form to request access token from Google's OAuth 2.0 server.
+ */
+    $scope.oauthSignIn = function () {
+        // Google's OAuth 2.0 endpoint for requesting an access token
+        var oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
+
+        // Parameters to pass to OAuth 2.0 endpoint.
+        var params = {
+            'client_id': '826014525988-k8mo1nf93legn462lbsrrjmbir6plrsc.apps.googleusercontent.com',
+            'redirect_uri': 'http://localhost:3000',
+            'response_type': 'token',
+            'scope': 'https://www.googleapis.com/auth/drive.metadata.readonly',
+            'include_granted_scopes': 'true',
+            'state': 'pass-through value'
+        };
+
+        // Create the URL with query parameters
+        var url = oauth2Endpoint + '?' + Object.keys(params).map(function (key) {
+            return key + '=' + encodeURIComponent(params[key]);
+        }).join('&');
+
+        // Redirect to the URL
+        window.location.href = url;
     }
 });

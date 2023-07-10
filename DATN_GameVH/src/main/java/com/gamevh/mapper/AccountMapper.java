@@ -10,8 +10,6 @@ public interface AccountMapper {
 	
 	AccountDTO modelToDto(Account account);
 	
-	AccountDTO modelToLoginDto(Account account);
-	
 	Account dtoToModel (AccountDTO accountDTO);
 	
 }

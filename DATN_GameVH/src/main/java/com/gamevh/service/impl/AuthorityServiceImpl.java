@@ -17,4 +17,8 @@ public class AuthorityServiceImpl implements AuthorityService{
 		return authorityRepository.findByAccountAndRole(accountId, roleId);
 	}
 
+	@Override
+	public Authority add(Authority authority) {
+		return authorityRepository.save(authority);
+	}
 }

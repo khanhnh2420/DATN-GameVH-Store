@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gamevh.service.EncryptionService;
@@ -24,8 +25,8 @@ public class BCryptEncryptionRC {
 		return null; 
 	}
 	
-	@GetMapping("compare/{string}/{encryptedString}")
-	public Boolean compare(@PathVariable("string") String string, @PathVariable("encryptedString") String encryptedString) {
+	@GetMapping("compare")
+	public Boolean compare(@RequestParam("string") String string, @RequestParam("encryptedString") String encryptedString) {
 		if(string != null) {
 			return encryptionService.compare(string, encryptedString);
 		}

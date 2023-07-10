@@ -1,4 +1,4 @@
-app.controller('GoogleSigninController', function ($location, $window, GoogleService, AccountService) {
+app.controller('GoogleSigninController', function ($location, $window, GoogleService, AccountService, AuthorityService) {
     var currentUrl = $location.url();
 
     // Xử lý URL hiện tại với các tham số query
@@ -21,15 +21,29 @@ app.controller('GoogleSigninController', function ($location, $window, GoogleSer
                 // Tạo account với thông tin từ email của người dùng và pass mặc định là 123
                 var account = {
                     "username": user.email,
-                    "password": "$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee",
+                    "password": "123",
                     "fullname": user.name,
                     "email": user.email,
                     "photo": "user.png",
                     "status": true
                 }
+
                 // Tạo account trên database với thông tin của email người dùng
                 AccountService.createAccount(account).then(function (account) {
                     var account = account.data;
+                    var auth = {
+                        "account": account,
+                        "role": {
+                            "id": "CUST",
+                            "name": "Người Dùng"
+                        }
+                    }
+                    // Tạo role cho account 
+                    AuthorityService.creatAuthority(auth).then(function (authority) {
+                    }).catch(function (error) {
+                        console.error('Lỗi khi tạo role cho account:', error);
+                    });
+
                     if (account.id != null) {
                         $window.sessionStorage.setItem("username", account.username);
                         $window.location.href = '/';

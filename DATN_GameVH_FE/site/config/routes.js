@@ -1,4 +1,4 @@
-app.config(function ($routeProvider, $locationProvider) {
+app.config(function($routeProvider, $locationProvider) {
     $locationProvider.html5Mode({
         enabled: true,
         requireBase: false
@@ -12,6 +12,10 @@ app.config(function ($routeProvider, $locationProvider) {
         })
         .when('/index.html', {
             redirectTo: '/'
+        })
+        .when('/wishlist', {
+            templateUrl: '/views/wishlist.html',
+            pageTitle: 'DANH SÁCH YÊU THÍCH'
         })
         .when('/product/detail/:productId', {
             templateUrl: '/views/product-detail.html',
@@ -73,13 +77,17 @@ app.config(function ($routeProvider, $locationProvider) {
             templateUrl: '/views/shop-4cols.html',
             pageTitle: 'CỬA HÀNG'
         })
+        .when('/profile', {
+            templateUrl: '/views/profile.html',
+            pageTitle: 'TÀI KHOẢN CỦA TÔI'
+        })
         .otherwise({
             templateUrl: '/views/404.html',
-            pageTitle: 'KHÔNG TÌM THẤY TRANG'
+            pageTitle: 'KHÔNG TÌM THẤY TRANG',
+            controller: 'GoogleSigninController'
         })
-}).run(function ($rootScope, $route) {
-    $rootScope.$on('$routeChangeSuccess', function () {
+}).run(function($rootScope, $route) {
+    $rootScope.$on('$routeChangeSuccess', function() {
         $rootScope.pageTitle = $route.current.pageTitle;
     });
 });
-

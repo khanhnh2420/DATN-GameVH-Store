@@ -1,5 +1,7 @@
 package com.gamevh.service.impl;
 
+
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +15,34 @@ import com.gamevh.service.ProductService;
 public class ProductServiceImpl implements ProductService {
 
 	@Autowired
-	ProductRepository pDAO;
+	ProductRepository productRepository;
 
 	@Override
 	public List<Product> findAll() {
-		return pDAO.findAll();
+		return productRepository.findAll();
 	}
 
 	@Override
 	public Product findById(Integer id) {
-		return pDAO.findById(id).get();
+		return productRepository.findById(id).get();
 	}
+
+	@Override
+	public Product createProduct(Product product) {
+		return productRepository.save(product);
+	}
+
+	
+
+	@Override
+	public Product updateProduct(Product product) {
+		 return productRepository.save(product);
+	}
+
+	@Override
+	public void deleteProduct(Product product) {
+		 productRepository.delete(product);
+	}
+
+	
 }

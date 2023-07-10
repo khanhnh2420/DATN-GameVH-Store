@@ -45,19 +45,18 @@
 		integrity="sha512-y1qD3hz/IAf8W4+/UMLZ+CN6LIoUGi7srWJ3r1R17Hid8x0yXe+1B5ZelkaL1Mjzedzu0Cg3HBvDG02SAgSzBw=="
 		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-	<!-- Google signin -->
-
-
 	<!-- AngularJS config -->
 	<script src="/config/app.js"></script>
 
 	<!-- AngularJS Controller -->
 	<script src="/controllers/LoginController.js"></script>
 	<script src="/controllers/FacebookSigninController.js"></script>
+	<script src="/controllers/RegisterController.js"></script>
 
 	<!-- AngularJS Service -->
 	<script src="/services/api/AccountService.js"></script>
 	<script src="/services/api/BcryptService.js"></script>
+	<script src="/services/api/AuthorityService.js"></script>
 </head>
 
 <body ng-app="app">
@@ -164,35 +163,109 @@
 									<!-- End .form-choice -->
 								</div>
 								<!-- .End .tab-pane -->
-								<div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
-									<form>
+								<div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab"
+									ng-controller="RegisterController">
+									<form name="RegisterForm" novalidate ng-submit="Register()">
 										<div class="form-group">
-											<label for="register-username">Tên đăng nhập *</label> <input
-												ng-model="form.username" type="text" class="form-control"
-												id="register-username" name="register-username" required>
+											<label for="register-username">Tên đăng nhập *</label>
+											<input ng-model="form.username" type="text" class="form-control"
+												ng-class="{'is-invalid': (RegisterForm.registerUsername.$invalid && RegisterForm.registerUsername.$touched) || (RegisterForm.$submitted && RegisterForm.registerUsername.$invalid)}"
+												id="register-username" name="registerUsername" required
+												ng-pattern="/^[a-zA-Z][a-zA-Z0-9]*$/" ng-trim="false">
 										</div>
+										<!-- End .form-group -->
+
+										<div class="mb-1 text-danger font-weight-bold">
+											<div
+												ng-show="(RegisterForm.registerUsername.$error.required && RegisterForm.registerUsername.$touched) || (RegisterForm.$submitted && RegisterForm.registerUsername.$error.required)">
+												Tên đăng nhập không được để trống!
+											</div>
+											<div
+												ng-show="(RegisterForm.registerUsername.$error.pattern && RegisterForm.registerUsername.$touched) || (RegisterForm.$submitted && RegisterForm.registerUsername.$error.pattern)">
+												Tên đăng nhập không được bắt đầu bằng số và không chứa kí tự đặc biệt và
+												khoảng trắng!
+											</div>
+										</div>
+										<!-- End Error Username-->
+
+
 										<div class="d-flex justify-content-between">
 											<div class="form-group">
-												<label for="register-password">Mật khẩu *</label> <input
-													ng-model="form.password" type="password" class="form-control"
-													id="register-password" name="register-password" required>
+												<label for="register-password">Mật khẩu *</label>
+												<input ng-model="form.password" type="password" class="form-control"
+													ng-class="{'is-invalid': (RegisterForm.registerPassword.$invalid && RegisterForm.registerPassword.$touched) || (RegisterForm.$submitted && RegisterForm.registerPassword.$invalid) || (RegisterForm.$submitted && isValidPassword)}"
+													id="register-password" name="registerPassword" required
+													ng-trim="false" ng-pattern="/^\S+$/">
+												<div class="mt-1 text-danger font-weight-bold">
+													<div
+														ng-show="(RegisterForm.registerPassword.$error.required && RegisterForm.registerPassword.$touched) || (RegisterForm.$submitted && RegisterForm.registerPassword.$error.required)">
+														Mật khẩu không được để trống!
+													</div>
+													<div
+														ng-show="(RegisterForm.registerPassword.$error.pattern && RegisterForm.registerPassword.$touched) || (RegisterForm.$submitted && RegisterForm.registerPassword.$error.pattern)">
+														Mật khẩu không được chứa <br> khoảng trắng!
+													</div>
+												</div>
+												<!-- End Error Password-->
 											</div>
+
 											<div class="form-group">
-												<label for="register-confirmpassword">Xác thực mật khẩu *</label> <input type="password" class="form-control"
+												<label for="register-confirmpassword">Xác thực mật khẩu *</label>
+												<input type="password" class="form-control"
 													id="register-confirmpassword" ng-model="confirmPassword"
-													name="register-confirmpassword" required>
+													ng-class="{'is-invalid': (passwordMatchError && RegisterForm.registerConfirmPassword.$touched) || (RegisterForm.$submitted && passwordMatchError)}"
+													name="registerConfirmPassword" required
+													ng-change="checkPasswordMatch()">
+												<div class="mb-1 text-danger font-weight-bold">
+													<div ng-show="LoginForm.$submitted && isValidPassword">
+														Sai mật khẩu!
+													</div>
+													<div ng-show="passwordMatchError">
+														Mật khẩu không khớp!
+													</div>
+												</div>
+												<!-- End Error Password-->
 											</div>
 										</div>
+
 										<div class="form-group">
 											<label for="register-fullname">Họ và tên *</label> <input
 												ng-model="form.fullname" type="text" class="form-control"
-												id="register-fullname" name="register-fullname" required>
+												ng-class="{'is-invalid': (RegisterForm.registerFullname.$invalid && RegisterForm.registerFullname.$touched) || (RegisterForm.$submitted && RegisterForm.registerFullname.$invalid) || (RegisterForm.$submitted && isValidFullname)}"
+												id="register-fullname" name="registerFullname" required>
 										</div>
+										<!-- End .form-group -->
+
+										<div class="mb-1 text-danger font-weight-bold">
+											<div
+												ng-show="(RegisterForm.registerFullname.$error.required && RegisterForm.registerFullname.$touched) || (RegisterForm.$submitted && RegisterForm.registerFullname.$invalid)">
+												Họ và tên không được để trống!
+											</div>
+										</div>
+										<!-- End Error Fullname-->
+
 										<div class="form-group">
-											<label for="register-email">Email *</label> <input
-												ng-model="form.email" type="email" class="form-control"
-												id="register-email" name="register-email" required>
+											<label for="register-email">Email *</label>
+											<input ng-model="form.email" type="email" class="form-control"
+												id="register-email"
+												ng-class="{'is-invalid': (RegisterForm.registerEmail.$invalid && RegisterForm.registerEmail.$touched) || (RegisterForm.$submitted && RegisterForm.registerEmail.$invalid)}"
+												name="registerEmail" required>
 										</div>
+										<!-- End .form-group -->
+
+										<div class="mb-1 text-danger font-weight-bold">
+											<div
+												ng-show="(RegisterForm.registerEmail.$error.required && RegisterForm.registerEmail.$touched) || (RegisterForm.$submitted && RegisterForm.registerEmail.$error.required)">
+												Email không được để trống!
+											</div>
+											<div
+												ng-show="RegisterForm.registerEmail.$error.email && RegisterForm.registerEmail.$touched">
+												Email không đúng định dạng!
+											</div>
+										</div>
+										<!-- End Error Email-->
+
+
 										<!-- <div class="form-group">
 											<label for="register-address">Địa chỉ *</label> <input
 												ng-model="form.address" type="text" class="form-control"
@@ -200,15 +273,17 @@
 										</div> -->
 										<!-- End .form-group -->
 										<div class="form-footer">
-											<button type="button" ng-click="Register()"
-												class="btn btn-outline-primary-2">
+											<button type="submit" class="btn btn-outline-primary-2">
 												<span>ĐĂNG KÝ</span> <i class="icon-long-arrow-right"></i>
 											</button>
 
 											<div class="custom-control custom-checkbox">
 												<input type="checkbox" class="custom-control-input" id="register-policy"
-													required> <label class="custom-control-label"
-													for="register-policy">Tôi chấp nhận với <a href="#">Điều khoản và dịch vụ</a> *
+													name="registerPolicy" ng-model="form.agree" required>
+												<label class="custom-control-label"
+													ng-class="{'text-danger': RegisterForm.registerPolicy.$invalid && RegisterForm.$submitted}"
+													for="register-policy">
+													Tôi chấp nhận với <a href="#">Điều khoản và dịch vụ</a> *
 												</label>
 											</div>
 											<!-- End .custom-checkbox -->

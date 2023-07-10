@@ -8,21 +8,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gamevh.entities.Authority;
-import com.gamevh.service.AuthorityService;
+import com.gamevh.dto.MomoDTO;
+import com.gamevh.dto.MomoResultDTO;
+import com.gamevh.service.MomoService;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/api/authority")
-public class AuthorityRC {
+@RequestMapping("api/momo")
+public class MomoRC {
 	@Autowired
-	AuthorityService authorityService;
+	MomoService momoService;
 	
 	@PostMapping("create")
-	public ResponseEntity<Authority> getAllAuthoritys(@RequestBody Authority authority) {
-		if(authorityService.findByAccountAndRole(authority.getAccount().getId(), authority.getRole().getId()) == null) {
-			authorityService.add(authority);
-		}
-		return ResponseEntity.ok(authority);
+	public ResponseEntity<MomoResultDTO> createMomoOrder(@RequestBody MomoDTO momo) {
+		return ResponseEntity.ok(momoService.createOrder(momo));
 	}
 }

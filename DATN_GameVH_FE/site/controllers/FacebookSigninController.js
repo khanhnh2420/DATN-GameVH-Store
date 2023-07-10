@@ -29,7 +29,7 @@ function testAPI() {                      // Testing Graph API after login.  See
         // Sử dụng createAccount()
         var account = {
             "username": response.id,
-            "password": "$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee",
+            "password": "123",
             "fullname": response.name,
             "email": null,
             "photo": "user.png",
@@ -37,7 +37,6 @@ function testAPI() {                      // Testing Graph API after login.  See
         }
 
         createAccount(account);
-        console.log(response);
     });
 }
 
@@ -49,6 +48,16 @@ function createAccount(user) {
     xhr.onload = function () {
         if (xhr.status === 200) {
             var account = JSON.parse(xhr.responseText);
+            var auth = {
+                "account": account,
+                "role": {
+                    "id": "CUST",
+                    "name": "Người Dùng"
+                }
+            }
+
+            createAuthority(auth)
+
             window.sessionStorage.setItem("username", account.username);
             window.location.href = '/';
         } else {
@@ -61,4 +70,24 @@ function createAccount(user) {
     };
 
     xhr.send(JSON.stringify(user));
+}
+
+function createAuthority(auth) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", host + '/api/authority/create');
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            var authority = JSON.parse(xhr.responseText);
+        } else {
+            console.error("Lỗi khi tạo role cho tài khoản:", xhr.statusText);
+        }
+    };
+
+    xhr.onerror = function () {
+        console.error("Lỗi khi tạo role cho tài khoản");
+    };
+
+    xhr.send(JSON.stringify(auth));
 }

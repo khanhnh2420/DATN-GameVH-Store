@@ -1,4 +1,4 @@
-app.controller("LoginController", function (AccountService, BcryptService, $scope, $window, $element) {
+app.controller("LoginController", function (AccountService, BcryptService, $scope, $window) {
     $scope.account = {}; // Thông tin người dùng nhập từ form
     $scope.user = {}; // Thông tin người dùng lấy từ Server
     $scope.rememberMe; // Lưu đăng nhập

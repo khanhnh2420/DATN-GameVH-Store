@@ -2,6 +2,9 @@ package com.gamevh.restcontroller;
 
 import java.util.List;
 
+import com.gamevh.dto.FullOrderDTO;
+import com.gamevh.service.OrderService;
+import com.gamevh.service.impl.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -34,6 +37,8 @@ public class OrderDataRC {
 	OrderDataRepository ordersdao;
 
 	@Autowired
+	OrderServiceImpl orderService;
+	@Autowired
 	CategoryRepository categoriesDAO;
 	
 	@Autowired
@@ -45,6 +50,11 @@ public class OrderDataRC {
 	@GetMapping("")
 	public ResponseEntity<List<OrderData>> getAll(Model model) {
 		return ResponseEntity.ok(ordersdao.findAll());
+	}
+
+	@GetMapping("/full/{orderId}")
+	public FullOrderDTO findOne(@PathVariable("orderId") String orderId){
+		return orderService.findOne(orderId);
 	}
 
 	@GetMapping("/categories")

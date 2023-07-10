@@ -6,8 +6,8 @@ app.factory('WishlistService', function($http) {
             return $http.get(baseUrl + '/getAll/' + accountid);
         },
 
-        // addWishlist: function() {
-        //     return $http.post(baseUrl + '/addWishlist/');
-        // }
+        addWishlist: function() {
+            return $http.post(baseUrl + '/addWishlist/');
+        }
     };
 });

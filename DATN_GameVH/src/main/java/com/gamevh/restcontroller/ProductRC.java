@@ -35,6 +35,7 @@ import com.gamevh.entities.Feedback;
 import com.gamevh.entities.OrderDetail;
 import com.gamevh.entities.Product;
 import com.gamevh.reponsitory.OrderDetailRepository;
+import com.gamevh.service.CategoryService;
 import com.gamevh.service.FeedbackService;
 import com.gamevh.service.ProductService;
 
@@ -44,6 +45,9 @@ import com.gamevh.service.ProductService;
 public class ProductRC {
 	@Autowired
 	ProductService productService;
+	
+	@Autowired
+	CategoryService categoryService;
 
 	@Autowired
 	OrderDetailRepository orderDetailsDAO;
@@ -348,10 +352,10 @@ public class ProductRC {
 	}
 
 	@PostMapping("updateProduct/{id}")
-	public ResponseEntity<HttpStatus> updateProduct(@PathVariable Integer id, @Validated @RequestBody ProductDTO dto) {
+	public ResponseEntity<HttpStatus> updateProduct(@PathVariable Integer id, @Validated @RequestBody ProductDTOImpl dto) {
 	    Product product = productService.findById(id);
 	    if (product != null) {
-	        // Update the fields with new values from DTO
+	        // Update product theo productdtoimpl
 	        product.setName(dto.getName());
 	        product.setPoster(dto.getPoster());
 	        product.setOriginPrice(dto.getOriginPrice());
@@ -366,13 +370,20 @@ public class ProductRC {
 	        product.setStatus(dto.getStatus());
 	        product.setType(dto.getType());
 
-	        Category category = new Category();
-	        category.setId(dto.getId());
-	        category.setCategoryId(dto.getCategoryId());
-	        category.setName(dto.getCategoryName());
-	        category.setType(dto.getType());
-
-	        product.setCategory(category);
+	        // Update Category trong Product
+//	        Category category = product.getCategory();
+//	        if (category != null) {
+//	            category.setCategoryId(dto.getCategoryId());
+//	            category.setName(dto.getCategoryName());
+//	            category.setType(dto.getType());
+//	        } else {
+//	            category = new Category();
+//	            category.setCategoryId(dto.getCategoryId());
+//	            category.setName(dto.getCategoryName());
+//	            category.setType(dto.getType());
+//	            product.setCategory(category);
+//	        }
+	        product.getCategory().setCategoryId(dto.getCategoryId());
 
 	        productService.updateProduct(product);
 
@@ -380,6 +391,10 @@ public class ProductRC {
 	    }
 	    return ResponseEntity.notFound().build();
 	}
+
+
+
+
 
 
 	@DeleteMapping("deleteProduct/{id}")

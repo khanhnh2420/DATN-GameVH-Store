@@ -6,6 +6,8 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
+import com.gamevh.service.GoogleDriveService;
+
 @SpringBootApplication
 public class Application {
 
@@ -16,5 +18,10 @@ public class Application {
 	@Bean
     public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
         return restTemplateBuilder.build();
+    }
+	
+	@Bean
+    public GoogleDriveService googleDriveService() {
+        return new GoogleDriveService();
     }
 }

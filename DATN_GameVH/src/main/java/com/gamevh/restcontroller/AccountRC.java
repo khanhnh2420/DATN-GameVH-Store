@@ -18,6 +18,7 @@ import com.gamevh.entities.Account;
 import com.gamevh.mapper.AccountMapper;
 import com.gamevh.service.AccountService;
 import com.gamevh.service.AuthorityService;
+import com.gamevh.service.EncryptionService;
 
 @CrossOrigin("*")
 @RestController
@@ -31,6 +32,9 @@ public class AccountRC {
 
 	@Autowired
 	AccountMapper accountMapper;
+	
+	@Autowired
+	EncryptionService encryptionService;
 
 	@GetMapping("{username}")
 	public ResponseEntity<AccountDTO> getAccountLogin(@PathVariable("username") Optional<String> username) {
@@ -75,6 +79,7 @@ public class AccountRC {
 	@PostMapping("create")
 	public ResponseEntity<Account> getAllAccounts(@RequestBody Account account) {
 		if(accountService.findByUsername(account.getUsername()).isEmpty() && accountService.findByEmail(account.getEmail()).isEmpty()) {
+			account.setPassword(encryptionService.encrypt(account.getPassword()));
 			accountService.add(account);
 		}
 		return ResponseEntity.ok(account);

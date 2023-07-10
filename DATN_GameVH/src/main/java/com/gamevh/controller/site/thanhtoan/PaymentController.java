@@ -1,4 +1,4 @@
-package com.fourTL.controller.site.thanhtoan;
+package com.gamevh.controller.site.thanhtoan;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fourTL.DTO.PaymentResDTO;
-import com.fourTL.DTO.TransactionStatusDTO;
-import com.fourTL.config.Config;
+import com.gamevh.config.Config;
+import com.gamevh.dto.PaymentResDTO;
+import com.gamevh.dto.TransactionStatusDTO;
 
 @RestController
 @RequestMapping("/api/payment")

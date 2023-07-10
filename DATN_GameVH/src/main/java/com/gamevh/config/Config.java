@@ -1,5 +1,5 @@
 
-package com.fourTL.config;
+package com.gamevh.config;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;

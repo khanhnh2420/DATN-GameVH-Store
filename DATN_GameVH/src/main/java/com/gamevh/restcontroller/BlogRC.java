@@ -15,9 +15,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -92,19 +94,43 @@ public class BlogRC {
         Blog updateb = blogsService.save(existingBlog);
         return ResponseEntity.ok(updateb);
     }
-    
-    @PutMapping("blogsDelete/{id}/delete")
+    @PutMapping("blogsDelete/{id}")
     public ResponseEntity<Void> deleteBlog(@PathVariable Integer id) {
         // Kiểm tra xem đối tượng Blog có tồn tại trong cơ sở dữ liệu không
         Blog optionalBlog = blogsService.findById(id);
-        if( optionalBlog==null) {
-        	 return ResponseEntity.notFound().build();
-        	 }
-           
-            // Đặt trạng thái của đối tượng Blog thành 0
-        optionalBlog.setStatus(false);
+        if (optionalBlog != null) {
+            // Đặt trạng thái của đối tượng Blog thành false
+            optionalBlog.setStatus(false);
             blogsService.save(optionalBlog);
             return ResponseEntity.noContent().build();
-       
-        
-    }}
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+    
+    // findbyusername người tạo
+    
+    @GetMapping("findByUsername")
+    public ResponseEntity<List<Blog>> findByUsername(@RequestParam String username) {
+        List<Blog> blogs = blogsService.findByUsername(username);
+        if (blogs.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(blogs);
+        }
+    }
+    // searh nhiều điều kiện , 
+    // search theo title đang lấy All
+    @GetMapping("searchBlogbyManyRequest")
+    public ResponseEntity<List<Blog>> searchBlogs(@RequestParam(required = false) String tittle,
+                                                  @RequestParam(required = false) String username,
+                                                  @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate createDate) {
+        List<Blog> blogs = blogsService.searchBlogs(tittle, username, createDate);
+        if (blogs.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(blogs);
+        }
+    }
+    
+    }

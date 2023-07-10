@@ -5,6 +5,7 @@ import com.gamevh.entities.Blog;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface BlogsService {
@@ -27,4 +28,8 @@ public interface BlogsService {
 	public long getTotalNumberOfBlogs();
 
 	Blog save(Blog blog);
+
+	List<Blog> findByUsername(String username);
+
+	List<Blog> searchBlogs(String title, String username, LocalDate createDate);
 }

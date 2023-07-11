@@ -32,4 +32,8 @@ public interface BlogsService {
 	List<Blog> findByUsername(String username);
 
 	List<Blog> searchBlogs(String title, String username, LocalDate createDate);
+
+	//Blog getBlogbyID(Integer id);
+
+	Blog findAllgetID(Integer blogid);
 }

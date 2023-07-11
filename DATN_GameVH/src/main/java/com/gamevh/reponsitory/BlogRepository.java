@@ -29,6 +29,9 @@ public interface BlogRepository extends JpaRepository<Blog, Integer> {
 
     List<Blog> findByAccount_Username(String username);
 	List<Blog> findAll(Specification<Blog> spec);
+	
+	@Query(value= "SELECT * FROM blog u WHERE u.id = ?1", nativeQuery = true)
+	Blog findAllBlogsById(Integer blogid);
     
 }
 

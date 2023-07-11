@@ -62,10 +62,8 @@ public class CommentsServiceImpl implements CommentService {
     }*/
 
     @Override
-    public Comment save(CommentDTO1 dto) {
-        Comment cmt = new Comment();
-        BeanUtils.copyProperties(dto, cmt);
-        cmtDao.save(cmt);
-        return cmt;
+    public Comment save(Comment cmt) {
+        
+    return cmtDao.save(cmt);
     }
 }

@@ -3,6 +3,7 @@ package com.gamevh.service.impl;
 
 
 import com.gamevh.dto.BlogWithCommentsDTO;
+import com.gamevh.entities.Account;
 import com.gamevh.entities.Blog;
 import com.gamevh.entities.Comment;
 import com.gamevh.reponsitory.BlogRepository;
@@ -19,6 +20,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
 @Service
 public class BlogsServiceImpl implements BlogsService {
    @Autowired
@@ -42,6 +44,11 @@ public class BlogsServiceImpl implements BlogsService {
     public Blog findById(Integer id) {
         return blgsDao.findById(id).get();
     }
+    
+    @Override
+	public Blog findAllgetID(Integer blogid) {
+		return blgsDao.findAllBlogsById(blogid);
+	}
 
     @Override
     public List<Blog> getListLastestBlogs() {

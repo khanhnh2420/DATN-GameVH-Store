@@ -29,26 +29,26 @@ public class CategoryServiceImpl implements CategoryService{
 
 	@Override
 	public Category addCategory(Category category){
-		return categoryDAO.save(category);
+		return categoryRepository.save(category);
 	}
 
 	@Override
 	public Category updateCategory(String categoryId, Category newCategory){
-		Category category = categoryDAO.findByCategoryId(categoryId)
+		Category category = categoryRepository.findByCategoryId(categoryId)
 				.orElseThrow(() -> new CustomException
 						("Không tìm thấy danh mục sản phẩm với id " + categoryId, HttpStatus.NOT_FOUND));
 		category.setCategoryId(newCategory.getCategoryId());
 		category.setName(newCategory.getName());
 		category.setType(newCategory.getType());
-		return categoryDAO.save(category);
+		return categoryRepository.save(category);
 	}
 
 	@Override
 	public void deleteCategory(String categoryId){
-		Category category = categoryDAO.findByCategoryId(categoryId)
+		Category category = categoryRepository.findByCategoryId(categoryId)
 				.orElseThrow(() -> new CustomException
 						("Không tìm thấy danh mục sản phẩm với id " + categoryId, HttpStatus.NOT_FOUND));
-		categoryDAO.delete(category);
+		categoryRepository.delete(category);
 	}
 	
 }

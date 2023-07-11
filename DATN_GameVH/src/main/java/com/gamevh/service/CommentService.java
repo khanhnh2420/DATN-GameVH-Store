@@ -15,7 +15,7 @@ public interface CommentService {
     //Comment findById(Integer id);
     List<Comment> findAllCommentAndBlogByIdBlog(Integer blogId);
 
-    Comment save(CommentDTO1 dto);
+    Comment save(Comment dto);
     //Comment createCMT(Comment comment);
 
 }

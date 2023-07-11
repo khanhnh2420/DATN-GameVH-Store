@@ -40,7 +40,7 @@ public class Account  implements Serializable{
     @Column(name="Email", unique=true, length=255)
     private String email;
     
-    @Column(name="Photo", unique=true, length=255)
+    @Column(name="Photo", unique=false, length=255)
     private String photo;
     
     @Column(name="Status", nullable=false, length=1)

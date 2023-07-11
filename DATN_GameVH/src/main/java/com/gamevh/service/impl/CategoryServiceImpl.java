@@ -15,16 +15,16 @@ import com.gamevh.service.CategoryService;
 public class CategoryServiceImpl implements CategoryService{
 
 	@Autowired
-	CategoryRepository categoryDAO;
+	CategoryRepository categoryRepository;
 	
 	@Override
 	public List<Category> findAll() {
-		return categoryDAO.findAll();
+		return categoryRepository.findAll();
 	}
 
 	@Override
 	public Category findById(Integer id) {
-		return categoryDAO.findById(id).get();
+		return categoryRepository.findById(id).get();
 	}
 
 	@Override

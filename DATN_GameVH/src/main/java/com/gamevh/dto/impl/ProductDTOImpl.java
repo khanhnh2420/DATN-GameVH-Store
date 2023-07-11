@@ -10,7 +10,13 @@ public class ProductDTOImpl implements ProductDTO {
 	private String poster;
 	private String thumbnail;
 	private Double salePrice;
+	private Double originPrice;
 	private Double offer;
+	private Boolean available;
+    private String source;
+    private String link;
+    private Integer qty;
+    private Boolean status;
 	private String details;
 	private Double rate;
 	private Integer countFeedBack;
@@ -20,15 +26,21 @@ public class ProductDTOImpl implements ProductDTO {
 	private LocalDate createDate;
 
 	// Constructor
-	public ProductDTOImpl(Integer id, String name, String poster, String thumbnail, Double salePrice, Double offer,
-			String details, Double rate, Integer countFeedBack, String categoryName, String categoryId, String type,
+	public ProductDTOImpl(Integer id, String name, String poster, String thumbnail,Double originPrice, Double salePrice, Double offer,Boolean available,String source,String link,
+			Integer qty,Boolean status,String details, Double rate, Integer countFeedBack, String categoryName, String categoryId, String type,
 			LocalDate localDate) {
 		this.id = id;
 		this.name = name;
 		this.poster = poster;
 		this.thumbnail = thumbnail;
+		this.originPrice = originPrice;
 		this.salePrice = salePrice;
 		this.offer = offer;
+		this.available = available;
+		this.source = source;
+		this.link = link;
+		this.qty = qty;
+		this.status = status;
 		this.details = details;
 		this.rate = rate;
 		this.countFeedBack = countFeedBack;
@@ -63,10 +75,40 @@ public class ProductDTOImpl implements ProductDTO {
 	public Double getSalePrice() {
 		return salePrice;
 	}
+	
+	@Override
+	public Double getOriginPrice() {
+		return originPrice;
+	}
 
 	@Override
 	public Double getOffer() {
 		return offer;
+	}
+	
+	@Override
+	public Boolean getAvailable() {
+		return available;
+	}
+	
+	@Override
+	public Boolean getStatus() {
+		return status;
+	}
+	
+	@Override
+	public String getSource() {
+		return source;
+	}
+	
+	@Override
+	public String getLink() {
+		return link;
+	}
+	
+	@Override
+	public Integer getQty() {
+		return qty;
 	}
 
 	@Override

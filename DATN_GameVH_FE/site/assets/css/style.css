@@ -15807,7 +15807,7 @@ button:focus {
 }
 
 .checkout textarea.form-control {
-    min-height: 150px
+    min-height: 100px
 }
 
 .checkout .custom-control {
@@ -20045,4 +20045,110 @@ button:focus {
 
 .custom-carousel .owl-dots .owl-dot.active {
     background-color: #000;
+}
+
+.coupon {
+    position: relative;
+    display: inline-block;
+}
+
+.ticket-frame {
+    position: relative;
+    display: inline-block;
+}
+
+.ticket-frame::before,
+.ticket-frame::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 10px;
+    background-color: #000000;
+    z-index: 0; /* Đặt z-index nhỏ hơn để pseudo-elements nằm phía sau ảnh */
+}
+
+.ticket-frame::before {
+    left: 0;
+    clip-path: polygon(0 0, 10px 10px, 10px calc(100% - 10px), 0 100%);
+}
+
+.ticket-frame::after {
+    right: 0;
+    clip-path: polygon(0 10px, 10px 0, 10px 100%, 0 calc(100% - 10px));
+}
+
+.ticket-image {
+    display: block;
+    width: 397px;
+    height: 99px;
+    clip-path: polygon(0 10px, 10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%,
+            10px 100%, 0 calc(100% - 10px));
+    position: relative; /* Thêm thuộc tính position: relative; */
+    z-index: 1; /* Đặt z-index cao hơn để ảnh nằm phía trước pseudo-elements */
+}
+
+.ticket-content {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    color: #ffffff;
+    z-index: 1;
+}
+
+.ticket-content h2 {
+    margin: 0;
+}
+
+/* .discount-percentage {
+    display: inline-block;
+    background-color: #ff0000;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 5px 10px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border-radius: 4px;
+} */
+
+.close-button {
+    position: absolute;
+    top: -20px;
+    right: -10px;
+    width: 50px;
+    height: 95px;
+    cursor: pointer;
+}
+
+.close-button:before,
+.close-button:after {
+    content: '';
+    position: absolute;
+    top: 70%;
+    left: 90%;
+    width: 45px;
+    height: 7px;
+    background-color: red;
+    transition: transform 0.3s;
+}
+
+.close-button:before {
+    transform: translate(-50%, -450%) rotate(-45deg);
+}
+
+.close-button:after {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.close-button:hover:before {
+    content: '';
+    transform: translate(-50%, -300%) rotate(130deg);
+}
+
+.close-button:hover:after {
+    content: '';
+    transform: translate(-50%, -300%) rotate(45deg);
 }

@@ -6,635 +6,442 @@
 <div ng-include="'/templates/sidebar.html'"></div>
 <!-- /Sidebar -->
 
-
 <!-- Page Wrapper -->
-<div class="page-wrapper">
+<div class="page-wrapper" ng-controller="OrderController">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Order List</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+            <li class="breadcrumb-item active">Order List</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
 
-	<!-- Page Content -->
-	<div class="content container-fluid">
+    <!-- Search Filter -->
+    <div class="row filter-row">
+      <div class="col-sm-6 col-md-3">
+        <div class="form-group form-focus">
+          <input type="text" class="form-control floating" />
+          <label class="focus-label">Order ID</label>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <div class="form-group form-focus">
+          <input type="text" class="form-control floating" />
+          <label class="focus-label">User Name</label>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <div class="form-group form-focus cal-icon">
+          <input type="text" class="form-control floating datetimepicker" />
+          <label class="focus-label">Created Date</label>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <a href="#" class="btn btn-success btn-block"> Search </a>
+      </div>
+    </div>
+    <!-- /Search Filter -->
 
-		<!-- Page Header -->
-		<div class="page-header">
-			<div class="row align-items-center">
-				<div class="col">
-					<h3 class="page-title">Order List</h3>
-					<ul class="breadcrumb">
-						<li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-						<li class="breadcrumb-item active">Order List</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-		<!-- /Page Header -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table table-striped custom-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Created Date</th>
+                <th>Shipping Fee</th>
+                <th>Total Price</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>Status</th>
+                <th class="text-right no-sort">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="order in orders">
+                <td>{{order.id}}</td>
+                <td>{{order.fullname}}</td>
+                <td>{{order.createDate | date: "dd/MM/yyyy"}}</td>
+                <td>{{order.shippingFee | currency: 'đ ' : '0'}}</td>
+                <td>{{order.totalPrice | currency:'đ ' : '0'}}</td>
+                <td>{{order.address}}</td>
+                <td>{{order.phone}}</td>
+                <td>
+                  <div class="dropdown action-label">
+                    <a class="btn btn-white btn-sm btn-rounded" href="#" data-toggle="dropdown" aria-expanded="false">
+                      <span ng-if="order.status=== 'Đã Hoàn Thành'">
+                        <i class="fa fa-dot-circle-o text-success"></i> Đã Hoàn
+                        Thành
+                      </span>
+                      <span ng-if="order.status=== 'Đã Hủy'">
+                        <i class="fa fa-dot-circle-o text-danger"></i> Đã Hủy
+                      </span>
+                      <span ng-if="order.status=== 'Chờ Xác Nhận'">
+                        <i class="fa fa-dot-circle-o text-warning"></i> Chờ Xác
+                        Nhận
+                      </span>
+                    </a>
+                  </div>
+                </td>
+                <td class="text-right">
+                  <div class="text-right">
+                    <button ng-click="viewData(order)" href="#" type="button" data-toggle="modal"
+                      data-target="#data_order" class="btn btn-primary">
+                      View
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Page Content -->
 
-		<!-- Search Filter -->
-		<div class="row filter-row">
-			<div class="col-sm-6 col-md-3">
-				<div class="form-group form-focus">
-					<input type="text" class="form-control floating">
-					<label class="focus-label">Order ID</label>
-				</div>
-			</div>
-			<div class="col-sm-6 col-md-3">
-				<div class="form-group form-focus">
-					<input type="text" class="form-control floating">
-					<label class="focus-label">User Name</label>
-				</div>
-			</div>
-			<div class="col-sm-6 col-md-3 ">
-				<div class="form-group form-focus cal-icon">
-					<input type="text" class="form-control floating datetimepicker  ">
-					<label class="focus-label">Created Date</label>
-				</div>
-			</div>
-			<div class="col-sm-6 col-md-3">
-				<a href="#" class="btn btn-success btn-block"> Search </a>
-			</div>
-		</div>
-		<!-- /Search Filter -->
+  <!-- Order Data Modal -->
+  <div id="data_order" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header row">
+          <div class="tabs active mr-4" id="tab01">
+            <h3>ORDER DATA</h3>
+          </div>
+          <div class="tabs ml-4" id="tab02">
+            <h3>ORDER DETAIL</h3>
+          </div>
+          <button type="button" class="close mr-3 mt-1" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="line"></div>
+        <div class="modal-body p-5">
+          <fieldset class="show" id="tab011">
+            <form>
+              <div class="row">
+                <div class="col-sm-12">
+                  <h2 class="modal-title">User Information</h2>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="col-form-label">Username <span class="text-danger">*</span></label>
+                    <div class="form-control" type="text">
+                      {{selectedOrderData.account.username}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="col-form-label">Email <span class="text-danger">*</span></label>
+                    <div class="form-control" type="text">
+                      {{selectedOrderData.email}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="col-form-label">Phone <span class="text-danger">*</span></label>
+                    <div class="form-control" type="text">
+                      {{selectedOrderData.phone}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="col-form-label">City <span class="text-danger">*</span></label>
+                    <div class="form-control" type="text">
+                      {{selectedOrderData.city}}
+                    </div>
+                  </div>
+                </div>
 
-		<div class="row">
-			<div class="col-md-12">
-				<div class="table-responsive">
-					<table class="table table-striped custom-table datatable">
-						<thead>
-							<tr>
-								<th>ID</th>
-								<th>Username</th>
-								<th>Created Date</th>
-								<th>Shipping Fee</th>
-								<th>Total Price</th>
-								<th>Address</th>
-								<th>Phone</th>
-								<th>Status</th>
-								<th class="text-right no-sort">Action</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>1</td>
-								<td>Lê Đăng Dương</td>
-								<td>02/04/2023</td>
-								<td>50000</td>
-								<td>500000</td>
-								<td>12 Nguyễn Du, Quận 1, TP.HCM</td>
-								<td>0984772410</td>
-								<td>
-									<div class="dropdown action-label">
-										<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-											data-toggle="dropdown" aria-expanded="false">
-											<i class="fa fa-dot-circle-o text-success"></i> Đã Hoàn Thành
-										</a>
-										<div class="dropdown-menu">
-											<a class="dropdown-item" href="#"><i
-													class="fa fa-dot-circle-o text-warning"></i>Chờ Xác Nhận</a>
-											<a class="dropdown-item" href="#"><i
-													class="fa fa-dot-circle-o text-danger"></i> Đã Hủy</a>
-										</div>
-									</div>
-								</td>
-								<td class="text-right">
-									<div class="text-right">
-										<button href="#" type="button" data-toggle="modal" data-target="#data_order"
-											class="btn btn-primary">Data</button>
-										
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>Lê Đăng Dương</td>
-								<td>02/04/2023</td>
-								<td>50000</td>
-								<td>500000</td>
-								<td>12 Nguyễn Du, Quận 1, TP.HCM</td>
-								<td>0984772410</td>
-								<td>
-									<div class="dropdown action-label">
-										<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-											data-toggle="dropdown" aria-expanded="false">
-											<i class="fa fa-dot-circle-o text-success"></i> Đã Hoàn Thành
-										</a>
-										<div class="dropdown-menu">
-											<a class="dropdown-item" href="#"><i
-													class="fa fa-dot-circle-o text-warning"></i>Chờ Xác Nhận</a>
-											<a class="dropdown-item" href="#"><i
-													class="fa fa-dot-circle-o text-danger"></i> Đã Hủy</a>
-										</div>
-									</div>
-								</td>
-								<td class="text-right">
-									<div class="text-right">
-										<button href="#" type="button" data-toggle="modal" data-target="#data_order"
-											class="btn btn-primary">Data</button>
-										
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>Lê Đăng Dương</td>
-								<td>02/04/2023</td>
-								<td>50000</td>
-								<td>500000</td>
-								<td>12 Nguyễn Du, Quận 1, TP.HCM</td>
-								<td>0984772410</td>
-								<td>
-									<div class="dropdown action-label">
-										<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-											data-toggle="dropdown" aria-expanded="false">
-											<i class="fa fa-dot-circle-o text-danger"></i> Đã Hủy
-										</a>
-										<div class="dropdown-menu">
-											<a class="dropdown-item" href="#"><i
-													class="fa fa-dot-circle-o text-warning"></i>Chờ Xác Nhận</a>
-											<a class="dropdown-item" href="#"><i
-													class="fa fa-dot-circle-o text-success"></i> Đã Hoàn
-												Thành</a>
-										</div>
-									</div>
-								</td>
-								<td class="text-right">
-									<div class="text-right">
-										<button href="#" type="button" data-toggle="modal" data-target="#data_order"
-											class="btn btn-primary">Data</button>
-										
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>4</td>
-								<td>Lê Đăng Dương</td>
-								<td>02/04/2023</td>
-								<td>50000</td>
-								<td>500000</td>
-								<td>12 Nguyễn Du, Quận 1, TP.HCM</td>
-								<td>0984772410</td>
-								<td>
-									<div class="dropdown action-label">
-										<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-											data-toggle="dropdown" aria-expanded="false">
-											<i class="fa fa-dot-circle-o text-warning"></i>Chờ Xác Nhận
-										</a>
-										<div class="dropdown-menu">
-											<a class="dropdown-item" href="#"><i
-													class="fa fa-dot-circle-o text-success"></i> Đã Hoàn
-												Thành</a>
-											<a class="dropdown-item" href="#"><i
-													class="fa fa-dot-circle-o text-danger"></i> Đã Hủy</a>
-										</div>
-									</div>
-								</td>
-								<td class="text-right">
-									<div class="text-right">
-										<button href="#" type="button" data-toggle="modal" data-target="#data_order"
-											class="btn btn-primary">Data</button>
-										
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>Lê Đăng Dương</td>
-								<td>02/04/2023</td>
-								<td>50000</td>
-								<td>500000</td>
-								<td>12 Nguyễn Du, Quận 1, TP.HCM</td>
-								<td>0984772410</td>
-								<td>
-									<div class="dropdown action-label">
-										<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-											data-toggle="dropdown" aria-expanded="false">
-											<i class="fa fa-dot-circle-o text-success"></i> Đã Hoàn Thành
-										</a>
-										<div class="dropdown-menu">
-											<a class="dropdown-item" href="#"><i
-													class="fa fa-dot-circle-o text-warning"></i>Chờ Xác Nhận</a>
-											<a class="dropdown-item" href="#"><i
-													class="fa fa-dot-circle-o text-danger"></i> Đã Hủy</a>
-										</div>
-									</div>
-								</td>
-								<td class="text-right">
-									<div class="text-right">
-										<button href="#" type="button" data-toggle="modal" data-target="#data_order"
-											class="btn btn-primary">Data</button>
-										
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>6</td>
-								<td>Lê Đăng Dương</td>
-								<td>02/04/2023</td>
-								<td>50000</td>
-								<td>500000</td>
-								<td>12 Nguyễn Du, Quận 1, TP.HCM</td>
-								<td>0984772410</td>
-								<td>
-									<div class="dropdown action-label">
-										<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-											data-toggle="dropdown" aria-expanded="false">
-											<i class="fa fa-dot-circle-o text-success"></i> Đã Hoàn Thành
-										</a>
-										<div class="dropdown-menu">
-											<a class="dropdown-item" href="#"><i
-													class="fa fa-dot-circle-o text-warning"></i>Chờ Xác Nhận</a>
-											<a class="dropdown-item" href="#"><i
-													class="fa fa-dot-circle-o text-danger"></i> Đã Hủy</a>
-										</div>
-									</div>
-								</td>
-								<td class="text-right">
-									<div class="text-right">
-										<button href="#" type="button" data-toggle="modal" data-target="#data_order"
-											class="btn btn-primary">Data</button>
-										
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>7</td>
-								<td>Lê Đăng Dương</td>
-								<td>02/04/2023</td>
-								<td>50000</td>
-								<td>500000</td>
-								<td>12 Nguyễn Du, Quận 1, TP.HCM</td>
-								<td>0984772410</td>
-								<td>
-									<div class="dropdown action-label">
-										<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-											data-toggle="dropdown" aria-expanded="false">
-											<i class="fa fa-dot-circle-o text-success"></i> Đã Hoàn Thành
-										</a>
-										<div class="dropdown-menu">
-											<a class="dropdown-item" href="#"><i
-													class="fa fa-dot-circle-o text-warning"></i>Chờ Xác Nhận</a>
-											<a class="dropdown-item" href="#"><i
-													class="fa fa-dot-circle-o text-danger"></i> Đã Hủy</a>
-										</div>
-									</div>
-								</td>
-								<td class="text-right">
-									<div class="text-right">
-										<button href="#" type="button" data-toggle="modal" data-target="#data_order"
-											class="btn btn-primary">Data</button>
-										
-									</div>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- /Page Content -->
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="col-form-label">District</label>
+                    <div class="form-control" type="text">
+                      {{selectedOrderData.district}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="col-form-label">Ward</label>
+                    <div class="form-control" type="text">
+                      {{selectedOrderData.ward}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="col-form-label">Address</label>
+                    <div class="form-control m-auto" type="text">
+                      {{selectedOrderData.address}}
+                    </div>
+                  </div>
+                </div>
 
+                <div class="col-sm-12 mt-3">
+                  <h2 class="modal-title">Order Detail</h2>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="col-form-label">Created Date<span class="text-danger">*</span></label>
+                    <div class="cal-icon">
+                      <div class="form-control" type="text">
+                        {{selectedOrderData.createDate | date: 'dd/MM/yyyy'}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Payment Type <span class="text-danger">*</span></label>
+                    <div class="form-control" type="text">
+                      {{selectedOrderData.paymentType}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="col-form-label">Coupon</label>
+                    <div class="form-control" type="text">
+                      {{selectedOrderData.couponCode || ''}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="col-form-label">Shipping Fee</label>
+                    <div class="form-control" type="text">
+                      {{selectedOrderData.shippingFee | currency: 'đ ': '0'}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="col-form-label">Total Price</label>
+                    <div class="form-control" type="text">
+                      {{selectedOrderData.totalPrice | currency: 'đ ': '0'}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Status <span class="text-danger">*</span></label>
+                    <div class="form-control" type="text">
+                      {{selectedOrderData.status}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </fieldset>
+          <fieldset id="tab021">
+            <form>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="table-responsive">
+                    <table class="table table-striped custom-table datatable">
+                      <h3>PRODUCT</h3>
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Name</th>
+                          <th>Origin Price</th>
+                          <th>Sale Price</th>
+                          <th>Category</th>
+                          <th>Source</th>
+                          <th>Type</th>
+                          <th>Quantity</th>
+                          <th>Total Price</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="detail in selectedorderDetail">
+                          <td>{{detail.index + 1}}</td>
+                          <td>{{detail.product.name}}</td>
+                          <td>{{detail.product.originPrice}}</td>
+                          <td>{{detail.product.salePrice}}</td>
+                          <td>{{detail.product.category.name}}</td>
+                          <td>{{detail.product.source}}</td>
+                          <td>{{detail.product.category.game}}</td>
+                          <td>{{detail.product.qty}}</td>
+                          <td class="font-weight-bold">{{detail.price}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Order Data Modal -->
 
+  <!-- Edit Order Modal -->
+  <div id="edit_Order" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Order</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="row">
+              <div class="col-sm-12">
+                <h2 class="modal-title">User Information</h2>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-form-label">Username <span class="text-danger">*</span></label>
+                  <input ng-value="selectedOrderData.address" class="form-control" type="text" />
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-form-label">Email <span class="text-danger">*</span></label>
+                  <input class="form-control" type="email" />
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-form-label">Phone <span class="text-danger">*</span></label>
+                  <input class="form-control" type="number" />
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-form-label">City <span class="text-danger">*</span></label>
+                  <input class="form-control" type="text" value="TP HCM" />
+                </div>
+              </div>
 
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-form-label">District</label>
+                  <input class="form-control" type="text" value="Quận Phú Nhuận" />
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-form-label">Ward</label>
+                  <input class="form-control" type="text" value="Phường 12" />
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="col-form-label">Address</label>
+                  <input class="form-control" type="text" value="63 Phan Đình Phùng, Quận Phú Nhuận, TP.HCM" />
+                </div>
+              </div>
 
-	<!-- Order Data Modal -->
-	<div id="data_order" class="modal custom-modal fade" role="dialog">
-		<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-			<div class="modal-content">
-				<div class="modal-header row ">
-					<div class="tabs active mr-4" id="tab01">
-						<h3>ORDER DATA</h3>
-					</div>
-					<div class="tabs ml-4" id="tab02">
-						<h3>ORDER DETAIL</h3>
-					</div>
-					<button type="button" class="close mr-3 mt-1" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="line"></div>
-				<div class="modal-body p-5">
-					<fieldset class="show" id="tab011">
-						<form>
-							<div class="row">
-								<div class="col-sm-12">
-									<h2 class="modal-title">User Information</h2>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="col-form-label">Username <span
-												class="text-danger">*</span></label>
-										<input class="form-control" type="text">
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="col-form-label">Email <span class="text-danger">*</span></label>
-										<input class="form-control" type="email">
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="col-form-label">Phone <span class="text-danger">*</span></label>
-										<input class="form-control" type="number">
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="col-form-label">City <span class="text-danger">*</span></label>
-										<input class="form-control" type="text" value="TP HCM">
-									</div>
-								</div>
+              <div class="col-sm-12 mt-3">
+                <h2 class="modal-title">Order Detail</h2>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-form-label">Created Date<span class="text-danger">*</span></label>
+                  <div class="cal-icon">
+                    <div class="form-control" type="text">
+                      {{selectedOrderDetail.createDate | date: 'dd/MM/yyyy'}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Payment Type <span class="text-danger">*</span></label>
+                  <select class="select">
+                    <option>Online</option>
+                    <option selected>Offline</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-form-label">Coupon</label>
+                  <input class="form-control" type="text" />
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-form-label">Shipping Fee</label>
+                  <input class="form-control" type="text" />
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-form-label">Total Price</label>
+                  <input class="form-control" type="text" />
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Status <span class="text-danger">*</span></label>
+                  <select class="select">
+                    <option>Đã Hoàn Thành</option>
+                    <option>Đã Hủy</option>
+                    <option selected>Chờ xác nhận</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="submit-section">
+              <button class="btn btn-primary submit-btn">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Edit Order Modal -->
 
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="col-form-label">District</label>
-										<input class="form-control" type="text" value="Quận Phú Nhuận">
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="col-form-label">Ward</label>
-										<input class="form-control" type="text" value="Phường 12">
-									</div>
-								</div>
-								<div class="col-sm-12">
-									<div class="form-group">
-										<label class="col-form-label">Address</label>
-										<input class="form-control" type="text"
-											value="63 Phan Đình Phùng, Quận Phú Nhuận, TP.HCM">
-									</div>
-								</div>
-
-
-
-								<div class="col-sm-12 mt-3">
-									<h2 class="modal-title">Order Detail</h2>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="col-form-label">Created Date<span
-												class="text-danger">*</span></label>
-										<div class="cal-icon">
-											<input class="form-control datetimepicker " type="text" value="2019/05/20">
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label>Payment Type <span class="text-danger">*</span></label>
-										<select class="select">
-											<option>VNPay</option>
-											<option>Paypal</option>
-											<option>CoD</option>
-											<option selected>Momo</option>
-										</select>
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="col-form-label">Coupon</label>
-										<input class="form-control" type="text">
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="col-form-label">Shipping Fee</label>
-										<input class="form-control" type="text">
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label class="col-form-label">Total Price</label>
-										<input class="form-control" type="text">
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label>Status <span class="text-danger">*</span></label>
-										<select class="select">
-											<option>Đã Hoàn Thành</option>
-											<option>Đã Hủy</option>
-											<option selected>Chờ xác nhận</option>
-										</select>
-									</div>
-								</div>
-
-							</div>
-							
-						</form>
-
-					</fieldset>
-					<fieldset id="tab021">
-						<form>
-							<div class="row">
-								<div class="col-md-12">
-									<div class="table-responsive">
-										<table class="table table-striped custom-table datatable">
-											<h3>PRODUCT</h3>
-											<thead>
-												<tr>
-													<th>#</th>
-													<th>Name</th>
-													<th>Origin Price </th>
-													<th>Sale Price</th>
-													<th>Category</th>
-													<th>Source</th>
-													<th>Type</th>
-													<th>Quantity</th>
-													<th>Total Price</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>1</td>
-													<td>Assassin Creed Valhalla</td>
-													<td>220000</td>
-													<td>200000</td>
-													<td>Hành Động</td>
-													<td>Ubisoft</td>
-													<td>Game</td>
-													<td>1</td>
-													<td class="font-weight-bold">200000</td>
-
-												</tr>
-												<tr>
-													<td>1</td>
-													<td>Ghế Gaming</td>
-													<td>220000</td>
-													<td>200000</td>
-													<td>Ghế</td>
-													<td>Ubisoft</td>
-													<td>Phụ Kiện</td>
-													<td>20</td>
-													<td class="font-weight-bold">200000</td>
-
-												</tr>
-
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-							
-						</form>
-					</fieldset>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-</div>
-<!-- Order Data Modal -->
-
-
-
-
-<!-- Edit Order Modal -->
-<div id="edit_Order" class="modal custom-modal fade" role="dialog">
-	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Edit Order</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<form>
-					<div class="row">
-						<div class="col-sm-12">
-							<h2 class="modal-title">User Information</h2>
-						</div>
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label class="col-form-label">Username <span class="text-danger">*</span></label>
-								<input class="form-control" type="text">
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label class="col-form-label">Email <span class="text-danger">*</span></label>
-								<input class="form-control" type="email">
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label class="col-form-label">Phone <span class="text-danger">*</span></label>
-								<input class="form-control" type="number">
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label class="col-form-label">City <span class="text-danger">*</span></label>
-								<input class="form-control" type="text" value="TP HCM">
-							</div>
-						</div>
-
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label class="col-form-label">District</label>
-								<input class="form-control" type="text" value="Quận Phú Nhuận">
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label class="col-form-label">Ward</label>
-								<input class="form-control" type="text" value="Phường 12">
-							</div>
-						</div>
-						<div class="col-sm-12">
-							<div class="form-group">
-								<label class="col-form-label">Address</label>
-								<input class="form-control" type="text"
-									value="63 Phan Đình Phùng, Quận Phú Nhuận, TP.HCM">
-							</div>
-						</div>
-
-
-
-						<div class="col-sm-12 mt-3">
-							<h2 class="modal-title">Order Detail</h2>
-						</div>
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label class="col-form-label">Created Date<span class="text-danger">*</span></label>
-								<div class="cal-icon">
-									<input class="form-control datetimepicker " type="text" value="2019/05/20">
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label>Payment Type <span class="text-danger">*</span></label>
-								<select class="select">
-									<option>Online</option>
-									<option selected>Offline</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label class="col-form-label">Coupon</label>
-								<input class="form-control" type="text">
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label class="col-form-label">Shipping Fee</label>
-								<input class="form-control" type="text">
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label class="col-form-label">Total Price</label>
-								<input class="form-control" type="text">
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label>Status <span class="text-danger">*</span></label>
-								<select class="select">
-									<option>Đã Hoàn Thành</option>
-									<option>Đã Hủy</option>
-									<option selected>Chờ xác nhận</option>
-								</select>
-							</div>
-						</div>
-
-					</div>
-					<div class="submit-section">
-						<button class="btn btn-primary submit-btn">Submit</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- /Edit Order Modal -->
-
-<!-- Delete Order Modal -->
-<div class="modal custom-modal fade" id="delete_Order" role="dialog">
-	<div class="modal-dialog modal-dialog-centered">
-		<div class="modal-content">
-			<div class="modal-body">
-				<div class="form-header">
-					<h3>Delete Order</h3>
-					<p>Are you sure want to delete?</p>
-				</div>
-				<div class="modal-btn delete-action">
-					<div class="row">
-						<div class="col-6">
-							<a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
-						</div>
-						<div class="col-6">
-							<a href="javascript:void(0);" data-dismiss="modal"
-								class="btn btn-primary cancel-btn">Cancel</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- /Delete Employee Modal -->
-
+  <!-- Delete Order Modal -->
+  <div class="modal custom-modal fade" id="delete_Order" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="form-header">
+            <h3>Delete Order</h3>
+            <p>Are you sure want to delete?</p>
+          </div>
+          <div class="modal-btn delete-action">
+            <div class="row">
+              <div class="col-6">
+                <a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
+              </div>
+              <div class="col-6">
+                <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Delete Employee Modal -->
 </div>
 <!-- /Page Wrapper -->
+
+<style>
+  .form-control {
+    line-height: 30px;
+  }
+</style>

@@ -2,7 +2,9 @@ package com.gamevh.service.impl;
 
 import java.util.List;
 
+import com.gamevh.ExceptionHandling.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.gamevh.entities.Category;
@@ -25,5 +27,28 @@ public class CategoryServiceImpl implements CategoryService{
 		return categoryRepository.findById(id).get();
 	}
 
+	@Override
+	public Category addCategory(Category category){
+		return categoryDAO.save(category);
+	}
+
+	@Override
+	public Category updateCategory(String categoryId, Category newCategory){
+		Category category = categoryDAO.findByCategoryId(categoryId)
+				.orElseThrow(() -> new CustomException
+						("Không tìm thấy danh mục sản phẩm với id " + categoryId, HttpStatus.NOT_FOUND));
+		category.setCategoryId(newCategory.getCategoryId());
+		category.setName(newCategory.getName());
+		category.setType(newCategory.getType());
+		return categoryDAO.save(category);
+	}
+
+	@Override
+	public void deleteCategory(String categoryId){
+		Category category = categoryDAO.findByCategoryId(categoryId)
+				.orElseThrow(() -> new CustomException
+						("Không tìm thấy danh mục sản phẩm với id " + categoryId, HttpStatus.NOT_FOUND));
+		categoryDAO.delete(category);
+	}
 	
 }

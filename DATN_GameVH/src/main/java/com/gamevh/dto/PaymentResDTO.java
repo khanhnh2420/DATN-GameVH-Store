@@ -1,6 +1,5 @@
 package com.gamevh.dto;
 
-
 import java.io.Serializable;
 
 import lombok.Data;

@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="d7504e78-ffe0-40b2-aecd-f0f9523206a2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/fourTL/controller/site/Blog/BlogRestController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/fourTL/controller/site/Blog/CommentRestController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/fourTL/controller/site/thanhtoan/PaymentController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/dto/BlogWithCommentsDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/dto/BlogWithCommentsDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/dto/CommentDTO1.java" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/dto/CommentDTO1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/restcontroller/BlogRC.java" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/restcontroller/BlogRC.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/restcontroller/CommentRC.java" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/restcontroller/CommentRC.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/BlogsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/BlogsService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/CommentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/impl/BlogsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/impl/BlogsServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/impl/CommentsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/impl/CommentsServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DATN_GameVH/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/reponsitory/AccountRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/reponsitory/AccountRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/restcontroller/AccountRC.java" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/restcontroller/AccountRC.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/AccountService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/impl/AccountServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/DATN_GameVH/src/main/java/com/gamevh/service/impl/AccountServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +32,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "E:/DA_TN/DATN-Website-GamesVH/DATN_GameVH",
+    "last_opened_file_path": "C:/Users/thanh/OneDrive/Desktop/New folder/DATN_GameVH",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -51,7 +47,6 @@
       <workItem from="1682692810920" duration="74000" />
       <workItem from="1684676918796" duration="191000" />
       <workItem from="1684941809077" duration="369000" />
-      <workItem from="1688576829412" duration="132000" />
     </task>
     <servers />
   </component>

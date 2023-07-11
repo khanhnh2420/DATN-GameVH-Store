@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-	th:replace="~{/layout_site/layout.html :: dynamic(~{::title},~{::body})}">
+<html lang="en">
 
 <head>
 	<meta charset="UTF-8">
@@ -12,10 +11,10 @@
 	<meta name="author" content="p-themes">
 </head>
 
-<body ng-controller="ThanhtoanMana">
+<body>
 	<div class="wrap-container">
 		<div class="image-bg-body"></div>
-		<main class="main">
+		<main class="main" ng-controller="Checkout">
 			<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
 				<div class="container">
 					<h1 class="page-title">
@@ -140,33 +139,36 @@
 										<h3 class="summary-title">Đơn hàng của bạn</h3>
 										<!-- End .summary-title -->
 
-										<table class="table table-summary">
-											<thead>
+										<table class="table table-summary table-responsive">
+											<thead style="width: 3em;">
 												<tr>
-													<th>Sản phẩm</th>
-													<th>Tổng tiến</th>
+													<th class="text-left">Sản phẩm</th>
+													<th class="text-right">Giá tiền</th>
 												</tr>
 											</thead>
-
-											<tbody>
+											<tbody style="height: 23em;overflow-y: auto;display: block;">
 												<tr ng-repeat="item in cart">
-													<td><a
-															href="/product/detail/{{item.product.id}}">{{item.product.name}}</a>
+													<td><a href="/product/detail/{{item.product.id}}">{{
+															item.Qty }} x {{item.name}}</a>
 													</td>
-													<td>{{ item.product.price | number:0 }}</td>
+													<td>{{(item.salePrice - (item.salePrice * item.offer)) | vndFormat}}
+													</td>
 												</tr>
-
-												<!-- End .summary-subtotal -->
 												<tr>
 													<td>Vận chuyển:</td>
 													<td>Miễn phí</td>
 												</tr>
-												<tr class="summary-total">
-													<td>Tổng tiền:</td>
-													<td>{{cartTotal | number:0}}</td>
+												<tr>
+													<td>Khuyến mãi:</td>
+													<td>Miễn phí</td>
 												</tr>
-												<!-- End .summary-total -->
 											</tbody>
+											<tfoot>
+												<tr class="summary-total">
+													<td class="text-left mr-5">Tổng tiền:</td>
+													<td class="text-right">{{TotalPrice | number:0}}</td>
+												</tr>
+											</tfoot>
 										</table>
 										<!-- End .table table-summary -->
 									</div>
@@ -225,13 +227,12 @@
 										<span class="btn-hover-text"><i class="fa-solid fa-dollar-sign"></i> THANH TOÁN
 											ĐƠN HÀNG</span>
 									</button>
-									<button type="button" style="height: 8em;"
-										class="btn btn-outline-primary-2 btn-order btn-block"
-										th:attr="ng-click='create(\''+${#authentication.name}+'\')'">
+									<a type="button" style="height: 8em;"
+										class="btn btn-outline-primary-2 btn-order btn-block" href="/">
 										<span class="btn-text">TIẾP TỤC MUA SẮM</span>
 										<span class="btn-hover-text"><i class="fa-solid fa-store"></i> QUAY LẠI TRANG
 											CHỦ</span>
-									</button>
+									</a>
 								</div>
 							</div>
 							<!-- End .row -->

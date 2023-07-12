@@ -16,6 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Data;
 
 @SuppressWarnings("serial")
@@ -33,12 +34,25 @@ public class Blog implements Serializable{
 
     @Column(name="Content", nullable=false, columnDefinition = "LONGTEXT")
     private String content;
+    
+    @Column(name="Image", nullable=true)
+    private String Image;
 
     @Column(name="create_date", nullable=false)
     private LocalDate createDate;
 
     @Column(name="Status", nullable=false, length=1)
     private Boolean status;
+    
+    @Transient
+    private int commentCount;
+
+    public int getCommentCount() {
+        if (comment != null) {
+            return comment.size();
+        }
+        return 0;
+    }
 
     @ManyToOne(optional=false)
     @JoinColumn(name="account_id", nullable=false)

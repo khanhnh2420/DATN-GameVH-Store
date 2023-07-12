@@ -14,45 +14,41 @@ import java.util.TimeZone;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gamevh.config.Config;
+import com.gamevh.config.VNPayConfig;
 import com.gamevh.dto.PaymentResDTO;
-import com.gamevh.dto.TransactionStatusDTO;
 
+@CrossOrigin("*")
 @RestController
-@RequestMapping("/api/payment")
-public class PaymentController {
+@RequestMapping("api/vnpay")
+public class VNPayController {
 
-	@GetMapping("/create_payment")
-	public ResponseEntity<?> createPayment() throws Throwable {
-
-//		String orderType = req.getParameter("ordertype");
-//		long amount = Integer.parseInt(req.getParameter("amount")) * 100;
-//		String bankCode = req.getParameter("bankCode");
-
-		String inputMoney = "100000";
+	@GetMapping("/create/{amount}/{ipAddress}")
+	public ResponseEntity<?> createPayment(
+			@PathVariable("amount") String inputMoney,
+			@PathVariable("ipAddress") String ipAddress) throws Throwable {
 
 		long amount = Integer.parseInt(inputMoney) * 100;
 
-		String vnp_TxnRef = Config.getRandomNumber(8);
-//		String vnp_IpAddr = Config.getIpAddress(req);
-		String vnp_TmnCode = Config.vnp_TmnCode;
+		String vnp_TxnRef = VNPayConfig.getRandomNumber(8);
 
 		Map<String, String> vnp_Params = new HashMap<>();
-		vnp_Params.put("vnp_Version", Config.vnp_Version);
-		vnp_Params.put("vnp_Command", Config.vnp_Command);
-		vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
+		vnp_Params.put("vnp_Version", VNPayConfig.vnp_Version);
+		vnp_Params.put("vnp_Command", VNPayConfig.vnp_Command);
+		vnp_Params.put("vnp_TmnCode", VNPayConfig.vnp_TmnCode);
 		vnp_Params.put("vnp_Amount", String.valueOf(amount));
 		vnp_Params.put("vnp_CurrCode", "VND");
-//		vnp_Params.put("vnp_BankCode", "NCB");
 		vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
 		vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
 		vnp_Params.put("vnp_Locale", "vn");
-		vnp_Params.put("vnp_ReturnUrl", Config.vnp_Returnurl);
+		vnp_Params.put("vnp_ReturnUrl", VNPayConfig.vnp_Returnurl);
+		vnp_Params.put("vnp_IpAddr", ipAddress);
+		vnp_Params.put("vnp_OrderType", "250000");
 
 		Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -63,11 +59,11 @@ public class PaymentController {
 		String vnp_ExpireDate = formatter.format(cld.getTime());
 		vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
 
-		List fieldNames = new ArrayList(vnp_Params.keySet());
+		List<String> fieldNames = new ArrayList<String>(vnp_Params.keySet());
 		Collections.sort(fieldNames);
 		StringBuilder hashData = new StringBuilder();
 		StringBuilder query = new StringBuilder();
-		Iterator itr = fieldNames.iterator();
+		Iterator<String> itr = fieldNames.iterator();
 		while (itr.hasNext()) {
 			String fieldName = (String) itr.next();
 			String fieldValue = (String) vnp_Params.get(fieldName);
@@ -87,9 +83,9 @@ public class PaymentController {
 			}
 		}
 		String queryUrl = query.toString();
-		String vnp_SecureHash = Config.hmacSHA512(Config.vnp_HashSecret, hashData.toString());
+		String vnp_SecureHash = VNPayConfig.hmacSHA512(VNPayConfig.vnp_HashSecret, hashData.toString());
 		queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
-		String paymentUrl = Config.vnp_PayUrl + "?" + queryUrl;
+		String paymentUrl = VNPayConfig.vnp_PayUrl + "?" + queryUrl;
 
 		PaymentResDTO paymentResDTO = new PaymentResDTO();
 		paymentResDTO.setStatus("Ok");
@@ -97,27 +93,6 @@ public class PaymentController {
 		paymentResDTO.setURL(paymentUrl);
 
 		return ResponseEntity.status(HttpStatus.OK).body(paymentResDTO);
-
-	}
-
-	@GetMapping("/payment_infor")
-	public ResponseEntity<?> transaction(
-			@RequestParam(value = "vnp_Amount") String amount,
-			@RequestParam(value = "vnp_BankCode") String bankCode,
-			@RequestParam(value = "vnp_OrderInfo") String orderInfo,
-			@RequestParam(value = "vnp_ResponseCode") String responseCode) {
-
-		TransactionStatusDTO transactionStatusDTO = new TransactionStatusDTO();
-		if (responseCode.equals("00")) {
-			transactionStatusDTO.setStatus("Ok");
-			transactionStatusDTO.setMessage("Succcessfully");
-			transactionStatusDTO.setData("");
-		}else {
-			transactionStatusDTO.setStatus("No");
-			transactionStatusDTO.setMessage("Failed");
-			transactionStatusDTO.setData("");
-		}
-		return ResponseEntity.status(HttpStatus.OK).body(transactionStatusDTO);
 	}
 
 }

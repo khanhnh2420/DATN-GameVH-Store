@@ -97,6 +97,10 @@ app.config(function($routeProvider, $locationProvider) {
             templateUrl: '/views/blog-list.html',
             pageTitle: 'BÀI VIẾT'
         })
+        .when('/checkoutResult', {
+            templateUrl: '/views/checkoutResult.html',
+            pageTitle: 'THANH TOÁN THÀNH CÔNG'
+        })
         .otherwise({
             templateUrl: '/views/404.html',
             pageTitle: 'KHÔNG TÌM THẤY TRANG',

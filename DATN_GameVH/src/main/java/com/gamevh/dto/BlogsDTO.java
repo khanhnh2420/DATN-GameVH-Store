@@ -1,10 +1,10 @@
 package com.gamevh.dto;
 
-import java.util.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -13,7 +13,7 @@ public class BlogsDTO {
     private Integer id;
     private String tittle;
     private String content;
-    Date createDate = new Date();
+    LocalDate createDate;
     private String Username;
     //????
 

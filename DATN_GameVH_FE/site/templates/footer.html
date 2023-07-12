@@ -1,4 +1,4 @@
-<footer class="footer footer-dark">
+<footer class="footer footer-dark" ng-controller="LoginController">
 	<div class="footer-middle">
 		<div class="container">
 			<div class="row">
@@ -30,11 +30,11 @@
 						<!-- End .widget-title -->
 
 						<ul class="widget-list">
-							<li><a href="about.html">Về chúng tôi</a></li>
+							<li><a href="/aboutus">Về chúng tôi</a></li>
 							<li><a href="#">Chính sách bảo mật</a></li>
 							<li><a href="#">FAQ</a></li>
-							<li><a href="contact.html">Liên hệ với chúng tôi</a></li>
-							<li><a href="login.html">Đóng góp ý kiến</a></li>
+							<li><a href="/contact">Liên hệ với chúng tôi</a></li>
+							<li><a href="/feedback">Đóng góp ý kiến</a></li>
 						</ul>
 						<!-- End .widget-list -->
 					</div>
@@ -48,10 +48,10 @@
 						<!-- End .widget-title -->
 
 						<ul class="widget-list">
-							<li><a href="#">Cửa hàng</a></li>
-							<li><a href="#">Games</a></li>
-							<li><a href="#">Phụ kiện</a></li>
-							<li><a href="#">Bài viết</a></li>
+							<li><a href="/shop">Cửa hàng</a></li>
+							<li><a href="/shop/Game">Games</a></li>
+							<li><a href="/shop/PK">Phụ kiện</a></li>
+							<li><a href="/blog">Bài viết</a></li>
 							<li><a href="#">Điều khoản và dịch vụ</a></li>
 						</ul>
 						<!-- End .widget-list -->
@@ -66,11 +66,11 @@
 						<!-- End .widget-title -->
 
 						<ul class="widget-list">
-							<li><a href="#">Đăng nhập</a></li>
-							<li><a href="cart.html">Giỏ hàng</a></li>
-							<li><a href="#">Yêu thích</a></li>
-							<li><a href="#">Đơn hàng</a></li>
-							<li><a href="#">Giúp đỡ</a></li>
+							<li><a href="#" ng-click="redirectToLogin()">Đăng nhập</a></li>
+							<li><a href="/viewCart">Giỏ hàng</a></li>
+							<li><a href="/wishlist">Yêu thích</a></li>
+							<li><a href="/profile">Đơn hàng</a></li>
+							<li><a href="/contact">Giúp đỡ</a></li>
 						</ul>
 						<!-- End .widget-list -->
 					</div>

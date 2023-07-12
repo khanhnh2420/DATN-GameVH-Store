@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -27,11 +26,6 @@ public interface BlogRepository extends JpaRepository<Blog, Integer> {
     @Query(value = "SELECT TOP(10) b FROM Blog b INNER JOIN FETCH b.comment c GROUP BY b ORDER BY COUNT(c) DESC", nativeQuery = true)
     List<Blog> getListHighestComments();
 
-    List<Blog> findByAccount_Username(String username);
-	List<Blog> findAll(Specification<Blog> spec);
-	
-	@Query(value= "SELECT * FROM blog u WHERE u.id = ?1", nativeQuery = true)
-	Blog findAllBlogsById(Integer blogid);
-    
+
 }
 

@@ -14,7 +14,4 @@ public class CommentDTO {
     private String content_comment;
     Date createDate_comment = new Date();
     private String Username_comment;
-    //private Integer id_blog;
-    //private String fullname_account;
-
 }

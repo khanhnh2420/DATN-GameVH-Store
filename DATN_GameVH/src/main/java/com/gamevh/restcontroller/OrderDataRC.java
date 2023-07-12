@@ -2,6 +2,9 @@ package com.gamevh.restcontroller;
 
 import java.util.List;
 
+import com.gamevh.dto.FullOrderDTO;
+import com.gamevh.service.impl.OrderServiceImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -21,6 +24,7 @@ import com.gamevh.entities.OrderDetail;
 import com.gamevh.reponsitory.CategoryRepository;
 import com.gamevh.reponsitory.OrderDataRepository;
 import com.gamevh.service.MailService;
+import com.gamevh.service.OrderService;
 import com.gamevh.util.mail_CONSTANT;
 
 import jakarta.mail.MessagingException;
@@ -30,9 +34,14 @@ import jakarta.mail.MessagingException;
 @RequestMapping("/api/orderdata")
 public class OrderDataRC {
 	mail_CONSTANT mailBody = new mail_CONSTANT();
+	
 	@Autowired
 	OrderDataRepository ordersdao;
 
+	
+//	@Autowired
+//	OrderService orderService;
+	
 	@Autowired
 	CategoryRepository categoriesDAO;
 	
@@ -46,6 +55,11 @@ public class OrderDataRC {
 	public ResponseEntity<List<OrderData>> getAll(Model model) {
 		return ResponseEntity.ok(ordersdao.findAll());
 	}
+
+//	@GetMapping("/full/{orderId}")
+//	public FullOrderDTO findOne(@PathVariable("orderId") String orderId){
+//		return orderService.findOne(orderId);
+//	}
 
 	@GetMapping("/categories")
 	public ResponseEntity<List<Category>> getAllCategories(Model model) {

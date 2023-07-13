@@ -1,6 +1,6 @@
-app.controller("BlogDetailController", function (BlogService, FeedbackService, TimeService, $scope, $routeParams, $timeout, $rootScope) {
+app.controller("BlogDetailController", function (BlogService, CommentService, TimeService, $scope, $routeParams, $timeout, $rootScope) {
     $scope.blog = {}; // Thông tin bài viết sẽ được hiển thị trên trang chi tiết
-    $scope.conmments = []; // Tất cả các conmment đã được duyệt của bài viết
+    $scope.comments = []; // Tất cả các conmment đã được duyệt của bài viết
     $scope.blogIdPrev; // Bài viết trước đó
     $scope.blogIdNext; // Bài viết sau đó
     $scope.blogPopular = []; // Top 4 bài viết nhiều bình luận nhất
@@ -12,6 +12,11 @@ app.controller("BlogDetailController", function (BlogService, FeedbackService, T
         BlogService.getAllBlog()
             .then(function (resp) {
                 $scope.lstBlog = resp.data;
+                CommentService.getAllCommentByBlogId(blogId).then(function (resp) {
+                    $scope.comments = resp.data;
+                }).catch(function (error) {
+                    console.error('Lỗi khi lấy danh sách bình luận:', error);
+                });
                 //Lấy top 4 bài viết nhiều bình luận nhất
                 BlogService.getTop4BlogPopular().then(function (resp) {
                     $scope.blogPopular = resp.data;

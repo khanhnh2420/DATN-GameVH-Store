@@ -71,7 +71,6 @@ public class BlogServiceImpl implements BlogService {
 			blogDTO.setCreateDate(blog.getCreateDate());
 			blogDTO.setUsername(blog.getAccount().getFullname());
 			blogDTO.setCommentCount(blog.getCommentCount());
-			// Sao chép các thuộc tính khác tùy thuộc vào yêu cầu của bạn
 
 			blogDTOs.add(blogDTO);
 		}

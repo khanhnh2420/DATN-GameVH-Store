@@ -10,8 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentDTO {
-    private Integer id_comment;
-    private String content_comment;
-    Date createDate_comment = new Date();
-    private String Username_comment;
+    private Integer id;
+    private String content;
+    private Date createDate;
+    private String username;
+    private String avatarUser;
 }

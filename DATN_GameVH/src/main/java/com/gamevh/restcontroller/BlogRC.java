@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gamevh.dto.BlogDTO;
-import com.gamevh.entities.Blog;
 import com.gamevh.service.BlogService;
 
 @CrossOrigin("*")

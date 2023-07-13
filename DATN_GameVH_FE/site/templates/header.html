@@ -36,8 +36,11 @@
 										<!-- End .header-menu -->
 									</div>
 								</li>
-								<li ng-show="account == null || account == undefined"><a href="#" ng-click="redirectToLogin()">Đăng nhập / Đăng ký</a></li>
-								<li ng-show="account != null && account != undefined"><a href="/profile">Xin chào, {{account.fullname}}</a> | <a href="#" ng-click="redirectToLogin()">Đăng xuất</a></li>
+								<li ng-show="account == null || account == undefined"><a href="#"
+										ng-click="redirectToLogin()">Đăng nhập / Đăng ký</a></li>
+								<li ng-show="account != null && account != undefined"><a href="/profile">Xin chào,
+										{{account.fullname}}</a> | <a href="#" ng-click="redirectToLogin()">Đăng
+										xuất</a></li>
 
 								<!-- <li><a href="/account?username=nguyenvana">nguyenvana</a>
 										| <a href="#?/logout">Sign Out</a></li> -->
@@ -114,12 +117,15 @@
 							<a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
 								aria-haspopup="true" aria-expanded="false" data-display="static">
 								<div class="icon">
-									<i class="icon-shopping-cart"></i> <span class="cart-count">{{cart.length}}</span>
+									<i class="icon-shopping-cart"></i>
+									<span class="cart-count" ng-hide="cart.length === 0">
+										{{cart.length}}
+									</span>
 								</div>
 								<p>Giỏ hàng</p>
 							</a>
 
-							<div class="dropdown-menu dropdown-menu-right">
+							<div class="dropdown-menu dropdown-menu-right" ng-hide="cart.length === 0">
 								<div class="dropdown-cart-products box">
 									<ul style="max-height: 26em;">
 										<li ng-repeat="item in cart">

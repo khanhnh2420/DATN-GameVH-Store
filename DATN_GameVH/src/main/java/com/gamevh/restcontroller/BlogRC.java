@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gamevh.dto.BlogDTO;
+import com.gamevh.entities.Blog;
 import com.gamevh.service.BlogService;
 
 @CrossOrigin("*")
@@ -32,5 +34,10 @@ public class BlogRC {
 		// Lấy danh sách blog có status = true
 		List<BlogDTO> lstBlog = blogService.findTop4BlogsByCommentCountAndStatus();
 		return ResponseEntity.ok(lstBlog);
+	}
+	
+	@GetMapping("getBlogDetail/{blogId}")
+	public ResponseEntity<BlogDTO> getProductDTOById(@PathVariable("blogId") Integer blogId) {
+		return ResponseEntity.ok(blogService.findById(blogId));
 	}
 }

@@ -40,6 +40,11 @@
 		integrity="sha512-KZmyTq3PLx9EZl0RHShHQuXtrvdJ+m35tuOiwlcZfs/rE7NZv29ygNA8SFCkMXTnYZQK2OX0Gm2qKGfvWEtRXA=="
 		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+	<!-- Angular-sanitize -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.8.3/angular-sanitize.min.js"
+		integrity="sha512-dqbRITjlgYAKHWHwL8fK7VPOsFc702ybywomtYLRcjOzBHM3WgEGN0SQQR6IJKY4ZiJiZkNguOAcFZmalk+2sA=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 	<!-- Angular-route -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-route/1.8.3/angular-route.min.js"
 		integrity="sha512-y1qD3hz/IAf8W4+/UMLZ+CN6LIoUGi7srWJ3r1R17Hid8x0yXe+1B5ZelkaL1Mjzedzu0Cg3HBvDG02SAgSzBw=="
@@ -232,14 +237,19 @@
 											<label for="register-fullname">Họ và tên *</label> <input
 												ng-model="form.fullname" type="text" class="form-control"
 												ng-class="{'is-invalid': (RegisterForm.registerFullname.$invalid && RegisterForm.registerFullname.$touched) || (RegisterForm.$submitted && RegisterForm.registerFullname.$invalid) || (RegisterForm.$submitted && isValidFullname)}"
-												id="register-fullname" name="registerFullname" required>
+												id="register-fullname" name="registerFullname" required
+												ng-pattern="/^(([a-zA-Z\sÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*)([a-zA-Z\s\'ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*)([a-zA-Z\sÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]))*$/">
 										</div>
 										<!-- End .form-group -->
 
 										<div class="mb-1 text-danger font-weight-bold">
 											<div
-												ng-show="(RegisterForm.registerFullname.$error.required && RegisterForm.registerFullname.$touched) || (RegisterForm.$submitted && RegisterForm.registerFullname.$invalid)">
+												ng-show="(RegisterForm.registerFullname.$error.required && RegisterForm.registerFullname.$touched) || (RegisterForm.$submitted && RegisterForm.registerFullname.$error.required)">
 												Họ và tên không được để trống!
+											</div>
+											<div
+												ng-show="(RegisterForm.registerFullname.$error.pattern && RegisterForm.registerFullname.$touched) || (RegisterForm.$submitted && RegisterForm.registerFullname.$error.pattern)">
+												Họ và tên không được chứa số và kí tự đặc biệt!
 											</div>
 										</div>
 										<!-- End Error Fullname-->

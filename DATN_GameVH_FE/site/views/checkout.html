@@ -1,168 +1,243 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-	th:replace="~{/layout_site/layout.html :: dynamic(~{::title},~{::body})}">
-
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>CHECKOUT</title>
-	<meta name="keywords" content="HTML5 Template">
-	<meta name="description" content="4TL">
-	<meta name="author" content="p-themes">
-</head>
-
-<body ng-controller="ThanhtoanMana">
-	<div class="wrap-container">
-		<div class="image-bg-body"></div>
-		<main class="main">
-			<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
-				<div class="container">
-					<h1 class="page-title">
-						Thanh toán<span>Đơn hàng của tôi</span>
-					</h1>
-				</div>
-				<!-- End .container -->
+<div class="wrap-container" ng-controller="CheckoutController">
+	<div class="image-bg-body"></div>
+	<main class="main">
+		<div class="page-header text-center" style="background-image: url('/assets/images/page-header-bg.jpg')">
+			<div class="container">
+				<h1 class="page-title">
+					Thanh toán<span>Đơn hàng của tôi</span>
+				</h1>
 			</div>
-			<!-- End .page-header -->
-			<nav aria-label="breadcrumb" class="breadcrumb-nav">
+			<!-- End .container -->
+		</div>
+		<!-- End .page-header -->
+		<nav aria-label="breadcrumb" class="breadcrumb-nav">
+			<div class="container">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+					<li class="breadcrumb-item"><a href="/shop">Cửa hàng</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Thanh toán</li>
+				</ol>
+			</div>
+			<!-- End .container -->
+		</nav>
+		<!-- End .breadcrumb-nav -->
+
+		<div class="page-content">
+			<div class="checkout">
 				<div class="container">
-					<ol class="breadcrumb">
-						<li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
-						<li class="breadcrumb-item"><a href="/shop">Cửa hàng</a></li>
-						<li class="breadcrumb-item active" aria-current="page">Thanh toán</li>
-					</ol>
-				</div>
-				<!-- End .container -->
-			</nav>
-			<!-- End .breadcrumb-nav -->
+					<div class="checkout-discount">
+						<form action="#">
+							<input type="text" class="form-control" required id="checkout-discount-input"> <label
+								for="checkout-discount-input" class="text-truncate"><span>Hãy nhấn vào đây để nhập
+									mã giảm giá của bạn...</span>
+							</label>
+						</form>
+					</div>
+					<!-- End .checkout-discount -->
+					<form method="post" action="#">
+						<div class="row">
+							<div class="col-lg-9">
+								<h2 class="checkout-title">Thông tin thanh toán</h2>
 
-			<div class="page-content">
-				<div class="checkout">
-					<div class="container">
-						<div class="checkout-discount">
-							<form action="#">
-								<input type="text" class="form-control" required id="checkout-discount-input"> <label
-									for="checkout-discount-input" class="text-truncate"><span>Hãy nhấn vào đây để nhập mã giảm giá của bạn...</span>
-								</label>
-							</form>
-						</div>
-						<!-- End .checkout-discount -->
-						<form method="post" action="#">
-							<div class="row">
-								<div class="col-lg-9">
-									<h2 class="checkout-title">Thông tin thanh toán</h2>
+								<label>Họ và tên *</label> <input type="text" ng-model="form.account.fullname"
+									class="form-control" readonly>
+								<label>Địa chỉ nhận hàng *</label> <input type="text" class="form-control"
+									ng-model="form.address">
 
-									<label>Họ và tên *</label> <input type="text" ng-model="form.account.fullname"
-										class="form-control" readonly>
-									<label>Địa chỉ nhận hàng *</label> <input type="text" class="form-control"
-										ng-model="form.address">
-
-									<div class="row">
-										<div class="col-sm-6">
-											<label>Email *</label> <input type="email" ng-model="form.email"
-												class="form-control" required>
-										</div>
-										<!-- End .col-sm-6 -->
-
-										<div class="col-sm-6">
-											<label>Số điện thoại người nhận *</label> <input type="tel" class="form-control"
-												ng-model="form.phone" required>
-										</div>
-										<!-- End .col-sm-6 -->
-
+								<div class="row">
+									<div class="col-sm-4">
+										<label>Thành phố *</label>
+										<select class="form-control" name="" id=""></select>
 									</div>
-									<!-- End .row -->
+									<!-- End .col-sm-4 -->
 
-									<div class="row">
-										<div class="col-sm-6">
-											<label>Ghi chú đơn hàng</label>
-											<textarea class="form-control" cols="30" rows="4"
-												placeholder="Ghi chú về đơn đặt hàng của bạn, ví dụ: ghi chú đặc biệt cho giao hàng"></textarea>
-										</div>
-										<!-- End .col-sm-6 -->
-
-										<div class="col-sm-6">
-											<!-- Replace "test" with your own sandbox Business account app client ID -->
-											<script
-												src="https://www.paypal.com/sdk/js?client-id=AcaTYl3bLV1GeujO_XGfc3P3KGUeGUj_EMo8cLcqIl5esaS0GNpVrIX7o5P-mFXFJG86aM1McdZx0YSP&currency=USD"></script>
-											<!-- Set up a container element for the button -->
-											<div id="paypal-button-container"></div>
-
-										</div>
-										<!-- End .col-sm-6 -->
+									<div class="col-sm-4">
+										<label>Quận/Huyện *</label>
+										<select class="form-control" name="" id=""></select>
 									</div>
-									<!-- End .row -->
+									<!-- End .col-sm-4 -->
+
+									<div class="col-sm-4">
+										<label>Phường/Xã *</label>
+										<select class="form-control" name="" id=""></select>
+									</div>
+									<!-- End .col-sm-4 -->
 
 								</div>
-								<!-- End .col-lg-9 -->
-								<aside class="col-lg-3">
-									<div class="summary">
-										<h3 class="summary-title">Đơn hàng của bạn</h3>
-										<!-- End .summary-title -->
+								<!-- End .row -->
+								<div class="row">
+									<div class="col-sm-6">
+										<label>Email *</label> <input type="email" ng-model="form.email"
+											class="form-control" required>
+									</div>
+									<!-- End .col-sm-6 -->
 
-										<table class="table table-summary">
-											<thead>
-												<tr>
-													<th>Sản phẩm</th>
-													<th>Tổng tiến</th>
-												</tr>
-											</thead>
+									<div class="col-sm-6">
+										<label>Số điện thoại người nhận *</label> <input type="tel" class="form-control"
+											ng-model="form.phone" required>
+									</div>
+									<!-- End .col-sm-6 -->
 
+								</div>
+								<!-- End .row -->
+
+								<div class="row">
+									<div class="col-sm-6">
+										<label>Ghi chú đơn hàng</label>
+										<textarea class="form-control" cols="30" rows="2"
+											placeholder="Ghi chú về đơn đặt hàng của bạn, ví dụ: ghi chú đặc biệt cho giao hàng"></textarea>
+									</div>
+									<!-- End .col-sm-6 -->
+
+									<!-- <div class="col-sm-6">
+											 Replace "test" with your own sandbox Business account app client ID 
+											<script
+												src="https://www.paypal.com/sdk/js?client-id=AcaTYl3bLV1GeujO_XGfc3P3KGUeGUj_EMo8cLcqIl5esaS0GNpVrIX7o5P-mFXFJG86aM1McdZx0YSP&currency=USD"></script>
+											 Set up a container element for the button 
+											<div id="paypal-button-container"></div>
+
+										</div> -->
+									<div class="col-sm-6">
+										<label>Mã Khuyến mãi</label>
+										<br>
+										<div class="coupon">
+											<div class="ticket-frame">
+												<img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/92b78ced-1b1f-4a14-ad7e-4aa19910e24a/deifbc2-bcc43f88-e0e6-48ab-8478-658fef994cd2.png/v1/fill/w_1280,h_427,q_80,strp/jett_valorant_twitter_header_by_connorjones_deifbc2-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDI3IiwicGF0aCI6IlwvZlwvOTJiNzhjZWQtMWIxZi00YTE0LWFkN2UtNGFhMTk5MTBlMjRhXC9kZWlmYmMyLWJjYzQzZjg4LWUwZTYtNDhhYi04NDc4LTY1OGZlZjk5NGNkMi5wbmciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.Ejp1rc60MbEECnawk9LaIskMwB2gpMOwt5x6CofVIbs"
+													alt="Ticket Image" class="ticket-image img-responsive">
+												<div class="ticket-content">
+													<h2 class="text-white">Ticket Title</h2>
+													<p class="text-white">Additional ticket information goes here.
+													</p>
+													<button type="button" class="btn close-button"></button>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<!-- End .col-sm-6 -->
+								</div>
+								<!-- End .row -->
+
+							</div>
+							<!-- End .col-lg-9 -->
+							<aside class="col-lg-3">
+								<div class="summary p-4 pt-2" style="height: 51rem;">
+									<h3 class="summary-title">Đơn hàng của bạn</h3>
+									<!-- End .summary-title -->
+
+									<table class="table table-summary table-responsive">
+										<thead>
+											<tr>
+												<th scope="col" class="text-left">Sản phẩm</th>
+												<th scope="col" class="text-right" style="padding-left: 126px;">Giá tiền</th>
+											</tr>
+										</thead>
+										<tbody style="height: 12em;overflow-y: auto;display: block;">
+											<tr ng-repeat="item in cart">
+												<td><a href="/product/detail/{{item.product.id}}">{{item.Qty }} x {{item.name}}</a>
+												</td>
+												<td>{{(item.salePrice - (item.salePrice * item.offer)) | vndFormat}}
+												</td>
+											</tr>
+
+										</tbody>
+										<tfoot>
 											<tbody>
-												<tr ng-repeat="item in cart">
-													<td><a
-															href="/product/detail/{{item.product.id}}">{{item.product.name}}</a>
-													</td>
-													<td>{{ item.product.price | number:0 }}</td>
+												<tr>
+													<td style="height: 30px; border: none; border-bottom: 0.1rem solid #cccccc;"></td>
+													<td style="padding-left: 229px; height: 30px; border: none; border-bottom: 0.1rem solid #cccccc;"></td>
 												</tr>
-
-												<!-- End .summary-subtotal -->
 												<tr>
 													<td>Vận chuyển:</td>
 													<td>Miễn phí</td>
 												</tr>
-												<tr class="summary-total">
-													<td>Tổng tiền:</td>
-													<td>{{cartTotal | number:0}}</td>
+												<tr>
+													<td style="border: none; border-bottom: 0.1rem solid #cccccc;">Khuyến mãi:</td>
+													<td style="border: none; border-bottom: 0.1rem solid #cccccc;">...</td>
 												</tr>
-												<!-- End .summary-total -->
+												<tr class="summary-total">
+													<td class="text-left mr-5">Tổng tiền:</td>
+													<td class="text-right">{{TotalPrice | vndFormat}}</td>
+												</tr>
 											</tbody>
-										</table>
-										<!-- End .table table-summary -->
 
-										<button type="button" class="btn btn-outline-primary-2 btn-order btn-block"
-											th:attr="ng-click='create(\''+${#authentication.name}+'\')'">
-											<span class="btn-text">NƠI THANH TOÁN</span> <span
-												class="btn-hover-text">THANH TOÁN ĐƠN HÀNG</span>
-										</button>
+										</tfoot>
+									</table>
+									<!-- End .table table-summary -->
+								</div>
+								<!-- End .summary -->
+
+
+							</aside>
+							<!-- End .col-lg-3 -->
+						</div>
+						<!-- End .row -->
+
+						<div class="row">
+							<div class="col-lg-9">
+								<div class="summary">
+									<h3 class="summary-title">Phương thức thanh toán</h3>
+									<div class="d-flex flex-row align-items-center">
+										<label class="form-check form-check-inline mb-2 mr-5">
+											<input class="form-check-input" type="radio" name="payment-method" ng-model="paymentMethod"
+												value="momo">
+											<img class="img-thumbnail mx-3" src="/assets/images/payment/icon-momo.png"
+												alt="">
+											<p>Thanh toán bằng ví MoMo</p>
+										</label>
+										<label class="form-check form-check-inline mb-2">
+											<input class="form-check-input" type="radio" name="payment-method" ng-model="paymentMethod"
+												value="vnpay">
+											<img class="img-thumbnail mx-3" src="/assets/images/payment/icon-vnpay.png"
+												alt="">
+											<p>Thanh toán bằng ví VNPay</p>
+										</label>
 									</div>
-									<!-- End .summary -->
-								</aside>
-								<!-- End .col-lg-3 -->
+									<div class="d-flex flex-row align-items-center">
+										<label class="form-check form-check-inline mr-5">
+											<input class="form-check-input" type="radio" name="payment-method" ng-model="paymentMethod"
+												value="paypal">
+											<img class="img-thumbnail mx-3" src="/assets/images/payment/icon-paypal.png"
+												alt="">
+											<p>Thanh toán bằng ví Paypal</p>
+										</label>
+										<label class="form-check form-check-inline">
+											<input class="form-check-input" type="radio" name="payment-method" ng-model="paymentMethod"
+												value="cod">
+											<img class="img-thumbnail mx-3" src="/assets/images/payment/icon-cod.png"
+												alt="">
+											<p>Thanh toán khi nhận hàng (COD)</p>
+										</label>
+									</div>
+								</div>
 							</div>
-							<!-- End .row -->
-						</form>
-					</div>
-					<!-- End .container -->
+
+							<div class="col-lg-3">
+								<button type="button" style="height: 8em;"
+									class="btn btn-outline-primary-2 btn-order btn-block" ng-click="checkout()">
+									<span class="btn-text">THANH TOÁN</span>
+									<span class="btn-hover-text"><i class="fa-solid fa-dollar-sign"></i> THANH TOÁN
+										ĐƠN HÀNG</span>
+								</button>
+								<a type="button" style="height: 8em;"
+									class="btn btn-outline-primary-2 btn-order btn-block" href="/shop">
+									<span class="btn-text">TIẾP TỤC MUA SẮM</span>
+									<span class="btn-hover-text"><i class="fa-solid fa-store"></i> QUAY LẠI CỬA
+										HÀNG</span>
+								</a>
+							</div>
+						</div>
+						<!-- End .row -->
+					</form>
 				</div>
-				<!-- End .checkout -->
+				<!-- End .container -->
 			</div>
-			<!-- End .page-content -->
-		</main>
-	</div>
-
-	<!-- Plugins JS File -->
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/bootstrap.bundle.min.js"></script>
-	<script src="assets/js/jquery.hoverIntent.min.js"></script>
-	<script src="assets/js/jquery.waypoints.min.js"></script>
-	<script src="assets/js/superfish.min.js"></script>
-	<script src="assets/js/owl.carousel.min.js"></script>
-	<!-- Main JS File -->
-	<script src="assets/js/main.js"></script>
-	<script src="/assets/AngularJS API/paypal.js"></script>
-</body>
-
-
-</html>
+			<!-- End .checkout -->
+		</div>
+		<!-- End .page-content -->
+	</main>
+	
+	<!-- Toast message -->
+	<div id="toast"></div>
+	<!-- Toast message -->
+</div>

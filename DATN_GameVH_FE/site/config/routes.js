@@ -81,6 +81,26 @@ app.config(function($routeProvider, $locationProvider) {
             templateUrl: '/views/profile.html',
             pageTitle: 'TÀI KHOẢN CỦA TÔI'
         })
+        .when('/aboutus', {
+            templateUrl: '/views/about.html',
+            pageTitle: 'VỀ CHÚNG TÔI'
+        })
+        .when('/contact', {
+            templateUrl: '/views/contact.html',
+            pageTitle: 'LIÊN HỆ'
+        })
+        .when('/feedback', {
+            templateUrl: '/views/about.html',
+            pageTitle: 'GÓP Ý'
+        })
+        .when('/blog', {
+            templateUrl: '/views/blog-list.html',
+            pageTitle: 'BÀI VIẾT'
+        })
+        .when('/checkoutResult', {
+            templateUrl: '/views/checkoutResult.html',
+            pageTitle: 'THANH TOÁN THÀNH CÔNG'
+        })
         .otherwise({
             templateUrl: '/views/404.html',
             pageTitle: 'KHÔNG TÌM THẤY TRANG',

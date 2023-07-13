@@ -1,14 +1,24 @@
 package com.gamevh.restcontroller;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
+import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +36,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
+
+import org.springframework.http.MediaType;
+import org.eclipse.jetty.http.HttpStatus;
 
 import com.gamevh.dto.ProductDTO;
 import com.gamevh.dto.impl.ProductDTOImpl;
@@ -37,6 +49,7 @@ import com.gamevh.entities.Product;
 import com.gamevh.reponsitory.OrderDetailRepository;
 import com.gamevh.service.CategoryService;
 import com.gamevh.service.FeedbackService;
+import com.gamevh.service.GoogleDriveService;
 import com.gamevh.service.ProductService;
 
 @CrossOrigin("*")
@@ -54,6 +67,9 @@ public class ProductRC {
 
 	@Autowired
 	FeedbackService feedBackService;
+	
+	@Autowired
+	private GoogleDriveService driveService;
 	
 	@GetMapping("/getAll")
     public ResponseEntity<List<Product>> getAllProducts() {
@@ -230,7 +246,7 @@ public class ProductRC {
 	}
 	
 	@PostMapping("createProduct")
-	public ResponseEntity<HttpStatus> createProduct(@Validated @RequestBody ProductDTO dto) {
+	public ResponseEntity<HttpStatus> createProduct(@Validated @RequestBody ProductDTOImpl dto) {
 	    if (dto != null) {
 	        // Tạo mới sản phẩm và lưu vào cơ sở dữ liệu
 	        Product product = new Product();
@@ -251,11 +267,15 @@ public class ProductRC {
 	        Category category = new Category();
 	        category.setId(dto.getId());
 	        category.setCategoryId(dto.getCategoryId());
-	        category.setName(dto.getCategoryName());;
+	        category.setName(dto.getCategoryName());
 	        category.setType(dto.getType());
-
+	        
 	        product.setCategory(category);
-
+	        
+	        // Upload the image to Google Drive and get the file ID
+	        String fileId = uploadImageToDrive(dto.getPoster());
+	        product.setPoster(fileId);
+	        
 	        Product createdProduct = productService.createProduct(product);
 
 	        // Lưu 3 hình ảnh thumbnail
@@ -286,69 +306,78 @@ public class ProductRC {
 	    product.setThumbnail(thumbnails);
 	}
 	
-	@PostMapping("upload")
-	public ResponseEntity<String> uploadFile(@RequestParam("productImage") MultipartFile file) throws IOException {
-	    String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-
+	private String uploadImageToDrive(String imageUrl) {
 	    try {
-	        // Lấy loại media của file
-	        String contentType = file.getContentType();
+	        URL url = new URL(imageUrl);
+	        InputStream inputStream = url.openStream();
+	        String fileName = UUID.randomUUID().toString(); // Generate a unique file name
+	        String mimeType = URLConnection.guessContentTypeFromStream(inputStream);
+	        String folderId = "1xbZ557bXhtiEG-sPP4TRXf007THuPsns"; // ID của thư mục trên Google Drive để lưu file
 
-	        // Tạo đường dẫn đến thư mục trong dự án
-	        Path targetLocation = Path.of("").toAbsolutePath()
-	                .normalize();
-
-	        // Tạo thư mục nếu chưa tồn tại
-	        Files.createDirectories(targetLocation);
-
-	        // Tạo đường dẫn tới file trong thư mục đích với đuôi phần mở rộng phù hợp
-	        String fileExtension = "." + contentType.substring(contentType.lastIndexOf("/") + 1);
-	        String newFileName = fileName + fileExtension;
-	        Path targetFile = targetLocation.resolve(newFileName);
-
-	        // Lưu file vào thư mục đích
-	        Files.copy(file.getInputStream(), targetFile, StandardCopyOption.REPLACE_EXISTING);
-
-	        // Lưu đường dẫn file mới vào biến responseData
-	        String responseData = "{\"fileName\": \"" + newFileName + "\"}";
-
-	      
-	        return ResponseEntity.ok(responseData);
-	    } catch (IOException ex) {
-	        ex.printStackTrace();
-	        // Xử lý lỗi nếu cần thiết
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	        String fileId = driveService.uploadFile(inputStream, fileName, mimeType, folderId);
+	        inputStream.close();
+	        return fileId;
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR_500, "Error uploading image: " + e.getMessage(), e);
 	    }
 	}
+
+	@PostMapping("upload")
+	public ResponseEntity<Object> uploadImage(@RequestParam("image") MultipartFile image)
+	        throws GeneralSecurityException {
+	    try {
+	        if (!image.isEmpty()) {
+	        	
+	            String fileName = image.getOriginalFilename();
+	            String mimeType = image.getContentType();
+	            String folderId = "1xbZ557bXhtiEG-sPP4TRXf007THuPsns"; // ID của thư mục trên Google Drive để lưu file
+	            // URL example:
+	            // https://drive.google.com/drive/folders/10VLW7dddQHqi4-f4ddSTqxjN9YmLFZWi
+	            String fileId = driveService.uploadFile(image, fileName, mimeType, folderId);
+//	            System.out.println(fileId);
+	            // Xử lý thành công
+	            String responseData = "{\"fileId\": \"" + fileId + "\"}";
+				return ResponseEntity.ok(responseData);
+	        }
+	    } catch (IOException e) {
+	    	e.printStackTrace();
+	        // Xử lý lỗi
+	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST_400).contentType(MediaType.APPLICATION_JSON).body("Lỗi upload hình: " + e.getMessage());
+	    }
+
+	    return ResponseEntity.status(HttpStatus.BAD_REQUEST_400).contentType(MediaType.APPLICATION_JSON).body("Lỗi upload hình");
+	    
+	}
+	
+	
+	
+
 
 	private String saveThumbnailImage(String thumbnail) {
 	    try {
-	        // Lấy đường dẫn thư mục lưu trữ hình ảnh thumbnail
-	        Path targetLocation = Path.of("").toAbsolutePath()
-	                .normalize();
+	        // Define the target directory to store the thumbnail image
+	        String targetDirectory = "thumbnails";
+	        Path targetLocation = Paths.get(targetDirectory).toAbsolutePath().normalize();
 	        Files.createDirectories(targetLocation);
 
-	        // Tạo đường dẫn tới file thumbnail trong thư mục đích với đuôi phần mở rộng phù hợp
-	        String fileName = thumbnail;
+	        // Generate a unique file name for the thumbnail
+	        String fileName = UUID.randomUUID().toString() + ".jpg";
 	        Path targetFile = targetLocation.resolve(fileName);
 
-	        // Lưu file thumbnail vào thư mục đích
-	        String filePath = saveThumbnail(targetFile);
+	        // Read the thumbnail image from the provided path
+	        BufferedImage thumbnailImage = ImageIO.read(new File(thumbnail));
 
-	        // Trả về đường dẫn file sau khi lưu thành công
-	        return filePath;
+	        // Save the thumbnail image to the target directory using ImageIO
+	        ImageIO.write(thumbnailImage, "jpg", targetFile.toFile());
+
+	        // Return the file path after successful saving
+	        return targetFile.toString();
 	    } catch (IOException ex) {
 	        ex.printStackTrace();
-	        // Xử lý lỗi nếu cần thiết
-	        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error saving thumbnail image");
+	        // Handle the error if necessary
+	        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR_500, thumbnail, ex);
 	    }
-	}
-
-	private String saveThumbnail(Path targetFile) throws IOException {
-	    // Code xử lý lưu file thumbnail vào thư mục và trả về đường dẫn file sau khi lưu thành công
-	    // Thực hiện logic lưu file tại đây
-	    // Trả về đường dẫn file sau khi lưu thành công
-	    return targetFile.toString();
 	}
 
 	@PostMapping("updateProduct/{id}")
@@ -393,19 +422,5 @@ public class ProductRC {
 	}
 
 
-
-
-
-
-	@DeleteMapping("deleteProduct/{id}")
-	public ResponseEntity<HttpStatus> deleteProduct(@PathVariable Integer id) {
-	    Product product = productService.findById(id);
-	    if (product != null) {
-	        productService.deleteProduct(product);
-	        return ResponseEntity.ok().build();
-	    }
-	    return ResponseEntity.notFound().build();
-	}
-
-
+	
 }

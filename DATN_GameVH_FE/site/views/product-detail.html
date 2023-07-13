@@ -31,7 +31,7 @@
 							<div class="product-gallery">
 								<figure class="product-main-image">
 									<img id="product-zoom" class="zoom-image-custom"
-										src="/assets/images/products/{{product.poster}}"
+										src="https://drive.google.com/uc?id={{product.poster ? product.poster : '1k7mZ306aaQltWZVJBe-zbXizg2NmAogx'}}"
 										data-zoom-image="/assets/images/products/{{product.poster}}"
 										alt="product image">
 									<a href="#" id="btn-product-gallery" class="btn-product-gallery">
@@ -42,11 +42,11 @@
 
 								<div id="product-zoom-gallery" class="product-image-gallery product-gallery-masonry">
 									<a class="product-gallery-item" href="#" ng-repeat="i in thumbnails" ng-if="$index == 0">
-										<img class="zoom-image-custom" src="/assets/images/products/{{i}}"
+										<img class="zoom-image-custom" src="https://drive.google.com/uc?id={{i ? i : '1k7mZ306aaQltWZVJBe-zbXizg2NmAogx'}}"
 											alt="product cross">
 									</a>
 									<a class="product-gallery-item" href="#">
-										<img class="zoom-image-custom" src="/assets/images/products/{{i}}"
+										<img class="zoom-image-custom" src="https://drive.google.com/uc?id={{i ? i : '1k7mZ306aaQltWZVJBe-zbXizg2NmAogx'}}"
 											alt="product cross" ng-repeat="i in thumbnails" ng-if="$index != 0">
 									</a>
 								</div>
@@ -245,7 +245,7 @@
 										<span class="product-label label-top" ng-show="p.offer > 0">SALE
 											{{p.offer * 100 | number:0}}%</span>
 										<a href="/product/detail/{{p.id}}"> <img
-												src="/assets/images/products/{{p.poster}}" alt="Product image"
+												src="https://drive.google.com/uc?id={{p.poster ? p.poster : '1k7mZ306aaQltWZVJBe-zbXizg2NmAogx'}}" alt="Product image"
 												class="product-image">
 										</a>
 

@@ -1,8 +1,35 @@
 // Angular js
-app.controller("CheckoutController", function (MomoService, IPService, ZaloPayService, VNPayService, $scope, $http, $window) {
+app.controller("CheckoutController", function (AccountService, MomoService, IPService, ZaloPayService, VNPayService, $scope, $window) {
 	$scope.cart = [];
 	$scope.TotalPrice = 0;
 	$scope.paymentMethod = "cod";
+	$scope.form = {};
+
+	$scope.account = {}; // Biến lưu thông tin account 
+    $scope.username = null;
+
+    // Trở về trang đăng nhập
+    $scope.logout = function () {
+        $window.localStorage.removeItem("username");
+        $window.sessionStorage.removeItem("username");
+        $window.sessionStorage.setItem("messageLogin", "Bạn đã đăng xuất!");
+        $window.location.href = 'login.html';
+    };
+
+    AccountService.checkLogin().then(function (account) {
+        // Người dùng đã đăng nhập
+        $scope.account = account;
+    }).catch(function (error) {
+        // Người dùng chưa đăng nhập hoặc có lỗi
+        console.error('Lỗi đăng nhập hoặc chưa đăng nhập:', error);
+        if (error === "Người dùng chưa đăng nhập") {
+            // Xử lý logic khi người dùng chưa đăng nhập
+            $window.localStorage.removeItem("username");
+            $window.sessionStorage.removeItem("username");
+            $window.sessionStorage.setItem("messageLogin", "Vui lòng đăng nhập!");
+            $window.location.href = 'login.html';
+        }
+    });
 
 	function getCartData() {
 		$scope.cart = ($window.localStorage.getItem("carts") != null) ? JSON.parse($window.localStorage.getItem("carts")) : [];
@@ -19,61 +46,43 @@ app.controller("CheckoutController", function (MomoService, IPService, ZaloPaySe
 
 	$scope.load_all();
 
-	//Show thông báo khi mặc định chạy trang web (có thể có hoặc không)
-	// $scope.message = ($window.sessionStorage.getItem("messageCheckout") != null) ? JSON.parse($window.sessionStorage.getItem("messageCheckout")) : null;// Trạng thái
-	// $window.sessionStorage.removeItem("messageCheckout");
-
-	// if($scope.message) {
-	// 	if ($scope.message.success) {
-	// 		
-	// 	} else {
-	// 		
-	// 	}
-	// 	$scope.message = null;
-	// }
-
 	$scope.checkout = function () {
-		if ($scope.paymentMethod === "cod") {
-			// thánh toán khi nhận hàng
+		console.log($scope.form)
+		// if ($scope.paymentMethod === "cod") {
+		// 	// thánh toán khi nhận hàng
 
-		} else if ($scope.paymentMethod === "momo") {
-			// thánh toán qua momo
-			var date = new Date().getTime();
-			var orderId = "HD" + date;
-			var returnUrl = "http://localhost:3000/checkout";
-			var totalPrice = $scope.TotalPrice;
-			var OrerInfo = "Thanh toán đơn hàng " + orderId;
-			$scope.createMomoData(orderId, returnUrl, totalPrice, OrerInfo);
-		} else if ($scope.paymentMethod === "vnpay") {
-			// thánh toán qua vnpay
-			var totalPrice = $scope.TotalPrice;
-			IPService.getIPAddress()
-				.then(function (ipAddress) {
-					var userIP = ipAddress.data;
-					VNPayService.createOrder(totalPrice, userIP.ip).then(function (resp) {
-						console.log(resp)
-						$scope.zalopay = resp.data;
-						// Hiển thị thông báo khi thanh toán
-						if ($scope.zalopay) {
-							// $window.sessionStorage.setItem("messageCheckout", JSON.stringify(statusCheckout));
-							$window.location.href = $scope.zalopay.url;
-						} else {
-							var statusCheckout = {
-								"success": null,
-								"error": "Lỗi khi thanh toán qua momo!"
-							}
-							$window.sessionStorage.setItem("messageCheckout", JSON.stringify(statusCheckout));
-						}
-					})
-				})
-				.catch(function (error) {
-					console.log('Error:', error);
-				});
+		// } else if ($scope.paymentMethod === "momo") {
+		// 	// thánh toán qua momo
+		// 	var date = new Date().getTime();
+		// 	var orderId = "HD" + date;
+		// 	var returnUrl = "http://localhost:3000/checkoutResult";
+		// 	var totalPrice = $scope.TotalPrice;
+		// 	var OrerInfo = "Thanh toán đơn hàng " + orderId;
+		// 	$scope.createMomoData(orderId, returnUrl, totalPrice, OrerInfo);
+		// } else if ($scope.paymentMethod === "vnpay") {
+		// 	// thánh toán qua vnpay
+		// 	var totalPrice = $scope.TotalPrice;
+		// 	IPService.getIPAddress()
+		// 		.then(function (ipAddress) {
+		// 			var userIP = ipAddress.data;
+		// 			VNPayService.createOrder(totalPrice, userIP.ip).then(function (resp) {
+		// 				console.log(resp)
+		// 				$scope.zalopay = resp.data;
+		// 				// Hiển thị thông báo khi thanh toán
+		// 				if ($scope.zalopay) {
+		// 					// $window.sessionStorage.setItem("messageCheckout", JSON.stringify(statusCheckout));
+		// 					$window.location.href = $scope.zalopay.url;
+		// 				} 
+		// 			})
+		// 		})
+		// 		.catch(function (error) {
+		// 			console.log('Error:', error);
+		// 		});
 
-		} else if ($scope.paymentMethod === "paypal") {
-			// thánh toán qua paypal
+		// } else if ($scope.paymentMethod === "paypal") {
+		// 	// thánh toán qua paypal
 
-		}
+		// }
 	}
 
 	// $scope.zaloPayData = {
@@ -159,21 +168,7 @@ app.controller("CheckoutController", function (MomoService, IPService, ZaloPaySe
 		// Call API Momo
 		MomoService.createOrder(data).then(function (response) {
 			$scope.momo = response.data;
-			// Hiển thị thông báo khi thanh toán
-			if ($scope.momo) {
-				var statusCheckout = {
-					"success": "Thanh toán đơn hàng " + orderId + "thành công!",
-					"error": null
-				}
-				$window.sessionStorage.setItem("messageCheckout", JSON.stringify(statusCheckout));
-				$window.location.href = $scope.momo.payUrl;
-			} else {
-				var statusCheckout = {
-					"success": null,
-					"error": "Lỗi khi thanh toán qua momo!"
-				}
-				$window.sessionStorage.setItem("messageCheckout", JSON.stringify(statusCheckout));
-			}
+			$window.location.href = $scope.momo.payUrl;
 		}).catch(function (error) {
 			console.error('Lỗi khi tạo order Momo:', error);
 		});

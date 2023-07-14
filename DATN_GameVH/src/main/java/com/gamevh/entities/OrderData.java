@@ -70,9 +70,6 @@ public class OrderData  implements Serializable{
     @Column(name="Qty", nullable=false, precision=10)
     private Integer qty;
 
-    @Column(name="payment_code", unique=true, length=100)
-    private String paymentCode;
-
     @ManyToOne(optional=false)
     @JoinColumn(name="account_id", nullable=false)
     private Account account;

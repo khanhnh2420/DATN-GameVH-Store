@@ -1,4 +1,4 @@
-app.controller("BlogDetailController", function (BlogService, CommentService, TimeService, $scope, $routeParams, $timeout, $rootScope) {
+app.controller("BlogDetailController", function (BlogService, CommentService, TimeService, $scope, $routeParams, $window, $timeout) {
     $scope.blog = {}; // Thông tin bài viết sẽ được hiển thị trên trang chi tiết
     $scope.comments = []; // Tất cả các conmment đã được duyệt của bài viết
     $scope.blogIdPrev; // Bài viết trước đó
@@ -6,6 +6,10 @@ app.controller("BlogDetailController", function (BlogService, CommentService, Ti
     $scope.blogPopular = []; // Top 4 bài viết nhiều bình luận nhất
     var blogId = $routeParams.blogId; // ID của bài viết được truyền vào qua URL
 
+    $scope.username = $window.localStorage.getItem("username") || $window.sessionStorage.getItem("username");
+    if ($scope.username == null || $scope.username == undefined) {
+        $scope.username = "none";
+    }
     // Lấy bài viết theo ID để hiển thị trên trang chi tiết
     BlogService.getBlogById(blogId).then(function (resp) {
         $scope.blog = resp.data;

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.gamevh.dto.CommentDTO;
 import com.gamevh.entities.Comment;
-import com.gamevh.reponsitory.CommentRepository;
+import com.gamevh.repository.CommentRepository;
 import com.gamevh.service.CommentService;
 
 @Service

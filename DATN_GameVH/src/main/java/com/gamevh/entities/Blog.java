@@ -49,7 +49,13 @@ public class Blog implements Serializable{
 
     public int getCommentCount() {
         if (comment != null) {
-            return comment.size();
+            int count = 0;
+            for (Comment c : comment) {
+                if (c.getStatus()) {
+                    count++;
+                }
+            }
+            return count;
         }
         return 0;
     }

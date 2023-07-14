@@ -22,7 +22,7 @@ public class CommentRC {
 	CommentService commentService;
 	
 	@GetMapping("getComments/{blogId}")
-	public ResponseEntity<List<CommentDTO>> getCommentByBlogId(@PathVariable("blogId") Integer blogId) {
+	public ResponseEntity<List<CommentDTO>> getAllCommentByBlogId(@PathVariable("blogId") Integer blogId) {
 		return ResponseEntity.ok(commentService.findAllByBlogId(blogId));
 	}
 }

@@ -8,8 +8,4 @@ public interface CategoryService {
 	List<Category> findAll();
 
 	Category findById(Integer id);
-
-	Category addCategory(Category category);
-	Category updateCategory(String categoryId, Category newCategory);
-	void deleteCategory(String categoryId);
 }

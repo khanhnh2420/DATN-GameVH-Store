@@ -10,7 +10,7 @@ app.controller("ProductDetailController", function (ProductService, FeedbackServ
     // Lấy sản phẩm theo ID để hiển thị trên trang chi tiết
     ProductService.getProductDTO(productId).then(function (response) {
         $scope.product = response.data;
-        $scope.thumbnails = $scope.product.thumbnail.split('-*-');
+        $scope.thumbnails = $scope.product.thumbnail.split('***');
     }).catch(function (error) {
         console.error('Lỗi khi lấy sản phẩm DTO:', error);
     });

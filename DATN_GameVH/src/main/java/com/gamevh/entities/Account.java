@@ -18,7 +18,7 @@ import lombok.Data;
 @SuppressWarnings("serial")
 @Data
 @Entity
-@Table(name="account", indexes={@Index(name="account_Username_IX", columnList="Username", unique=true), @Index(name="account_Email_IX", columnList="Email", unique=true), @Index(name="account_Photo_IX", columnList="Photo", unique=true)})
+@Table(name="account", indexes={@Index(name="account_Username_IX", columnList="Username", unique=true), @Index(name="account_Email_IX", columnList="Email", unique=true), @Index(name="account_Photo_IX", columnList="Photo", unique=false)})
 public class Account  implements Serializable{
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

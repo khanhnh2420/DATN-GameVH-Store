@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gamevh.entities.OrderData;
-import com.gamevh.reponsitory.OrderDataRepository;
+import com.gamevh.repository.OrderDataRepository;
 import com.gamevh.service.OrderService;
 
 

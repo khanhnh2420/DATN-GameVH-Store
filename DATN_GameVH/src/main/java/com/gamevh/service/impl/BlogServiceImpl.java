@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.gamevh.dto.BlogDTO;
 import com.gamevh.entities.Blog;
-import com.gamevh.reponsitory.BlogRepository;
+import com.gamevh.repository.BlogRepository;
 import com.gamevh.service.BlogService;
 
 @Service

@@ -15,7 +15,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.stereotype.Service;
 
 import com.gamevh.entities.Account;
-import com.gamevh.reponsitory.AccountRepository;
+import com.gamevh.repository.AccountRepository;
 
 @Service
 public class UserService implements UserDetailsService {

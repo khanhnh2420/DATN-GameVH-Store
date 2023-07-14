@@ -1,4 +1,4 @@
-package com.gamevh.controller.site.thanhtoan;
+package com.gamevh.restcontroller;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -26,7 +26,7 @@ import com.gamevh.dto.PaymentResDTO;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("api/vnpay")
-public class VNPayController {
+public class VNPayRC {
 
 	@GetMapping("/create/{amount}/{ipAddress}")
 	public ResponseEntity<?> createPayment(

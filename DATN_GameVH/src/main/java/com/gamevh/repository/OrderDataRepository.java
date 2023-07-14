@@ -1,4 +1,4 @@
-package com.gamevh.reponsitory;
+package com.gamevh.repository;
 
 
 

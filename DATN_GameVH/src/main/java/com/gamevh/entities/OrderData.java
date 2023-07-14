@@ -40,15 +40,6 @@ public class OrderData  implements Serializable{
     @Column(name="Address", length=255)
     private String address;
 
-    @Column(name="City", nullable=false, length=100)
-    private String city;
-
-    @Column(name="District", nullable=false, length=100)
-    private String district;
-
-    @Column(name="Ward", nullable=false, length=100)
-    private String ward;
-
     @Column(name="payment_type", nullable=false, length=6)
     private String paymentType;
 
@@ -64,8 +55,11 @@ public class OrderData  implements Serializable{
     @Column(name="Phone", nullable=false, length=10)
     private String phone;
 
-    @Column(name="Status", nullable=false, length=13)
-    private String status;
+    @Column(name="order_status", nullable=false, length=100)
+    private String orderStatus;
+    
+    @Column(name="payment_status", nullable=false, length=1)
+    private Boolean paymentStatus;
 
     @Column(name="Note", length=255)
     private String note;

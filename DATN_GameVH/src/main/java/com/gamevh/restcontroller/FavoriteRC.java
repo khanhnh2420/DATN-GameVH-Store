@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gamevh.entities.Favorite;
-import com.gamevh.reponsitory.FavoriteRepository;
+import com.gamevh.repository.FavoriteRepository;
 import com.gamevh.service.FavoriteService;
 import com.gamevh.service.ProductService;
 

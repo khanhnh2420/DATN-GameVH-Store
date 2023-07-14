@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gamevh.entities.Category;
-import com.gamevh.reponsitory.CategoryRepository;
+import com.gamevh.repository.CategoryRepository;
 import com.gamevh.service.CategoryService;
 
 @Service

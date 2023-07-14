@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gamevh.entities.Account;
-import com.gamevh.reponsitory.AccountRepository;
+import com.gamevh.repository.AccountRepository;
 import com.gamevh.service.AccountService;
 
 

@@ -18,8 +18,8 @@ import com.gamevh.entities.Category;
 import com.gamevh.entities.MailInfo;
 import com.gamevh.entities.OrderData;
 import com.gamevh.entities.OrderDetail;
-import com.gamevh.reponsitory.CategoryRepository;
-import com.gamevh.reponsitory.OrderDataRepository;
+import com.gamevh.repository.CategoryRepository;
+import com.gamevh.repository.OrderDataRepository;
 import com.gamevh.service.MailService;
 import com.gamevh.util.mail_CONSTANT;
 

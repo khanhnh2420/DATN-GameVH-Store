@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gamevh.entities.Feedback;
-import com.gamevh.reponsitory.FeedbackRepository;
+import com.gamevh.repository.FeedbackRepository;
 import com.gamevh.service.FeedbackService;
 
 @Service

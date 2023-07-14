@@ -39,6 +39,9 @@ public class Location implements Serializable {
 
     @Column(name="Type", nullable=false, length=9)
     private String type;
+    
+    @Column(name="address_default", nullable=false, length = 1)
+    private Boolean addressDefault;
 
     @ManyToOne(optional=false)
     @JoinColumn(name="account_id", nullable=false)

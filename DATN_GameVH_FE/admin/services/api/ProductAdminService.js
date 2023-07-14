@@ -14,9 +14,10 @@ app.factory('ProductAdminService', function($http) {
         createProduct: function(productData) {
             return $http.post(baseUrl, productData);
         },
-        updateProduct: function(productId) {
-            return $http.put(baseUrl + '/updateProduct' + productId);
+        updateProduct: function(productId, productData) {
+            return $http.post(baseUrl + '/updateProduct/' + productId, productData);
         },
+
         deleteProduct: function(productId) {
             return $http.delete(baseUrl + '/delete' + productId);
         }

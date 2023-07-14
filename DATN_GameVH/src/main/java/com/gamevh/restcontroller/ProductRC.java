@@ -1,6 +1,7 @@
 package com.gamevh.restcontroller;
 
 import java.awt.image.BufferedImage;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,6 +37,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.http.ResponseEntity;
+
+
+
+
 
 import org.springframework.http.MediaType;
 import org.eclipse.jetty.http.HttpStatus;
@@ -279,7 +284,7 @@ public class ProductRC {
 	        Product createdProduct = productService.createProduct(product);
 
 	        // Lưu 3 hình ảnh thumbnail
-	        String[] thumbnails = dto.getThumbnail().split("-\\*-");
+	        String[] thumbnails = dto.getThumbnail().split("\\*\\*\\*");
 	        for (int i = 0; i < thumbnails.length; i++) {
 	            String thumbnail = thumbnails[i];
 	            String fileName = saveThumbnailImage(thumbnail);
@@ -300,28 +305,15 @@ public class ProductRC {
 	    if (thumbnails == null || thumbnails.isEmpty()) {
 	        thumbnails = fileName;
 	    } else {
-	        thumbnails += "-*-";
+	        thumbnails += "***";
 	        thumbnails += fileName;
 	    }
 	    product.setThumbnail(thumbnails);
 	}
-	
-	private String uploadImageToDrive(String imageUrl) {
-	    try {
-	        URL url = new URL(imageUrl);
-	        InputStream inputStream = url.openStream();
-	        String fileName = UUID.randomUUID().toString(); // Generate a unique file name
-	        String mimeType = URLConnection.guessContentTypeFromStream(inputStream);
-	        String folderId = "1xbZ557bXhtiEG-sPP4TRXf007THuPsns"; // ID của thư mục trên Google Drive để lưu file
 
-	        String fileId = driveService.uploadFile(inputStream, fileName, mimeType, folderId);
-	        inputStream.close();
-	        return fileId;
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR_500, "Error uploading image: " + e.getMessage(), e);
-	    }
-	}
+	
+
+
 
 	@PostMapping("upload")
 	public ResponseEntity<Object> uploadImage(@RequestParam("image") MultipartFile image)
@@ -386,7 +378,6 @@ public class ProductRC {
 	    if (product != null) {
 	        // Update product theo productdtoimpl
 	        product.setName(dto.getName());
-	        product.setPoster(dto.getPoster());
 	        product.setOriginPrice(dto.getOriginPrice());
 	        product.setSalePrice(dto.getSalePrice());
 	        product.setOffer(dto.getOffer());
@@ -400,19 +391,19 @@ public class ProductRC {
 	        product.setType(dto.getType());
 
 	        // Update Category trong Product
-//	        Category category = product.getCategory();
-//	        if (category != null) {
-//	            category.setCategoryId(dto.getCategoryId());
-//	            category.setName(dto.getCategoryName());
-//	            category.setType(dto.getType());
-//	        } else {
-//	            category = new Category();
-//	            category.setCategoryId(dto.getCategoryId());
-//	            category.setName(dto.getCategoryName());
-//	            category.setType(dto.getType());
-//	            product.setCategory(category);
-//	        }
 	        product.getCategory().setCategoryId(dto.getCategoryId());
+
+	        // Kiểm tra nếu người dùng thay đổi thumbnail
+	        if (dto.getThumbnail() != null) {
+	            // Tải ảnh mới lên Google Drive và nhận lại ID của file
+	            try {
+	                String newThumbnailId = uploadImage(dto.getThumbnail());
+	                product.setPoster(newThumbnailId);
+	            } catch (Exception e) {
+	                // Xử lý lỗi khi tải ảnh lên Google Drive
+	                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+	            }
+	        }
 
 	        productService.updateProduct(product);
 
@@ -420,6 +411,12 @@ public class ProductRC {
 	    }
 	    return ResponseEntity.notFound().build();
 	}
+
+	private String uploadImage(String thumbnail) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 	

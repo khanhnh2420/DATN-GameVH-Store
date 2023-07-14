@@ -35,22 +35,22 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
                     data: null,
                     render: function(data, type, row, meta) {
                         // Render giao diện cho cột "#"
-                        return meta.row + 1;
-                        // return row.id;
+                        // return meta.row + 1;
+                        return row.id;
                     }
                 },
                 {
                     data: null, // Cột "Poster"
+                    // render: function(data, type, row) {
+                    //         // Render giao diện cho cột "Poster"
+                    //         return '<h2 class="table-poster"><a href="#" class="poster"><img alt="" src="/assets/img/products/' + row.poster + '" data-zoom-image="/assets/img/products/' + row.poster + '" alt="product image"></a></h2>';
+                    //     }
                     render: function(data, type, row) {
-                            // Render giao diện cho cột "Poster"
-                            return '<h2 class="table-poster"><a href="#" class="poster"><img alt="" src="/assets/img/products/' + row.poster + '" data-zoom-image="/assets/img/products/' + row.poster + '" alt="product image"></a></h2>';
-                        }
-                        // render: function(data, type, row) {
-                        //     // Render giao diện cho cột "Poster"
-                        //     var posterUrl = row.poster ? row.poster : '1xbZ557bXhtiEG-sPP4TRXf007THuPsns';
-                        //     var imageUrl = 'https://drive.google.com/uc?id=' + posterUrl;
-                        //     return '<h2 class="table-poster"><a href="#" class="poster"><img alt="" src="' + imageUrl + '" data-zoom-image="' + imageUrl + '" alt="product image"></a></h2>';
-                        // }
+                        // Render giao diện cho cột "Poster"
+                        var posterUrl = row.poster ? row.poster : '1xbZ557bXhtiEG-sPP4TRXf007THuPsns';
+                        var imageUrl = 'https://drive.google.com/uc?id=' + posterUrl;
+                        return '<h2 class="table-poster"><a href="#" class="poster"><img alt="" src="' + imageUrl + '" data-zoom-image="' + imageUrl + '" alt="product image"></a></h2>';
+                    }
 
                 },
                 {
@@ -96,14 +96,11 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
                             '<i class="material-icons font-weight-bold">⋮</i>' +
                             '</a>' +
                             '<div class="dropdown-menu dropdown-menu-right">' +
-                            '<a class="dropdown-item" href="#" ng-click="editProductClicked(' + row.id + ')" data-toggle="modal" data-target="#edit_Product">' +
+                            '<a class="dropdown-item edit-product" href="#" data-product-id="' + row.id + '" data-toggle="modal" data-target="#edit_Product">' +
                             '<i class="fa fa-pencil m-r-5"></i>Edit' +
                             '</a>' +
-                            '<a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_Product">' +
-                            '<i class="fa fa-trash-o m-r-5"></i>Delete' +
-                            '</a>' +
                             '<a class="dropdown-item" href="#" data-toggle="modal" data-target="#comment_Product">' +
-                            '<i class="fa fa-pencil-square-o m-r-5"></i>Comment' +
+                            '<i class="fa fa-pencil-square-o m-r-5"></i>Feedback' +
                             '</a>' +
                             '</div>' +
                             '</div>';
@@ -111,6 +108,12 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
 
                 }
             ]
+        });
+        // Thêm sự kiện click vào phần tử chỉnh sửa
+        $(document).on('click', '.edit-product', function() {
+            var productId = $(this)[0].dataset.productId;
+            console.log(productId)
+            $scope.editProductClicked(productId);
         });
 
     }

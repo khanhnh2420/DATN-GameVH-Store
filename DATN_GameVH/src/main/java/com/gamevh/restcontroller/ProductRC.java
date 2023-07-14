@@ -51,7 +51,7 @@ import com.gamevh.entities.Category;
 import com.gamevh.entities.Feedback;
 import com.gamevh.entities.OrderDetail;
 import com.gamevh.entities.Product;
-import com.gamevh.reponsitory.OrderDetailRepository;
+import com.gamevh.repository.OrderDetailRepository;
 import com.gamevh.service.CategoryService;
 import com.gamevh.service.FeedbackService;
 import com.gamevh.service.GoogleDriveService;

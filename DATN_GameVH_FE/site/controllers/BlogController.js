@@ -1,10 +1,11 @@
-app.controller("BlogController", function (PageService, BlogService, $scope, $routeParams, $location, $window) {
+app.controller("BlogController", function (PageService, BlogService, TimeService, $scope, $routeParams, $location, $window) {
     $scope.itemsPerPage = 3; // Số lượng phần tử hiển thị trên mỗi trang
     $scope.currentPage = 1; // Trang hiện tại
     $scope.totalPages = 0;
     $scope.displayedItems = [];
     $scope.blogs = [];
     $scope.blogPopular = [];
+    $scope.calculateTimeAgo = TimeService.calculateTimeAgo;
 
     $scope.limitContent = function (content) {
         return content.length > 243 ? content.substring(0, 243) + '...' : content;

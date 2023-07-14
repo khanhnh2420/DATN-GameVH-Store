@@ -10,7 +10,7 @@
             <div class="container">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
-                    <li class="breadcrumb-item"><a href="#">Blog</a></li>
+                    <li class="breadcrumb-item"><a href="#">Bài viết</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Liệt kê</li>
                 </ol>
             </div><!-- End .container -->
@@ -25,8 +25,8 @@
                             <div class="row align-items-center">
                                 <div class="col-md-5">
                                     <figure class="entry-media">
-                                        <a href="single.html">
-                                            <img src="/assets/images/blog/listing/{{item.image}}" alt="image desc">
+                                        <a href="/blog/detail/{{item.id}}">
+                                            <img src="https://drive.google.com/uc?id={{item.image}}" alt="image desc">
                                         </a>
                                     </figure><!-- End .entry-media -->
                                 </div><!-- End .col-md-5 -->
@@ -38,14 +38,15 @@
                                                 <i class="fa-solid fa-user"></i> <a href="#"> {{item.username}}</a>
                                             </span>
                                             <span class="meta-separator">|</span>
-                                            <a href="#"><i class="fa-solid fa-clock"></i> {{ item.createDate | date:'MMM d, y' }}</a>
+                                            <a href="#"><i class="fa-solid fa-clock"></i> {{
+                                                calculateTimeAgo(item.createDate) }}</a>
                                             <span class="meta-separator">|</span>
-                                            <a href="#"><i class="fa-solid fa-comment"></i> {{item.commentCount}} bình
+                                            <a href="/blog/detail/{{item.id}}#comments"><i class="fa-solid fa-comment"></i> {{item.commentCount}} bình
                                                 luận</a>
                                         </div><!-- End .entry-meta -->
 
                                         <h2 class="entry-title">
-                                            <a href="/blog-detail">{{item.tittle}}</a>
+                                            <a href="/blog/detail/{{item.id}}">{{item.tittle}}</a>
                                         </h2><!-- End .entry-title -->
 
                                         <!-- <div class="entry-cats">
@@ -56,7 +57,7 @@
 
                                         <div class="entry-content"
                                             ng-bind-html="limitContent(item.content) | striptags"></div>
-                                        <a href="single.html" class="read-more">Tiếp tục</a>
+                                        <a href="/blog/detail/{{item.id}}" class="read-more">Tiếp tục</a>
 
                                         <!-- End .entry-content -->
                                     </div><!-- End .entry-body -->
@@ -107,12 +108,12 @@
                                     <li ng-repeat="item in blogPopular">
                                         <figure>
                                             <a href="#">
-                                                <img src="/assets/images/blog/listing/{{item.image}}" alt="post">
+                                                <img src="https://drive.google.com/uc?id={{item.image}}" alt="post">
                                             </a>
                                         </figure>
 
                                         <div>
-                                            <span>{{ item.createDate | date:'MMM d, y' }}</span>
+                                            <span>{{ calculateTimeAgo(item.createDate) }}</span>
                                             <h4><a href="#">{{item.tittle}}</a></h4>
                                         </div>
                                     </li>

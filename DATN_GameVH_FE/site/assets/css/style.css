@@ -3122,7 +3122,7 @@ p {
     font-weight: 300;
     font-family: 'Roboto';
     letter-spacing: 0;
-    color: #777
+    color: #4b4a4a
 }
 
 .header-2 {
@@ -14703,7 +14703,7 @@ button:focus {
 }
 
 .comment-date {
-    color: #ccc;
+    color: #9b9999;
     font-weight: 300;
     font-size: 1.3rem;
     line-height: 1
@@ -14727,7 +14727,7 @@ button:focus {
 }
 
 .reply .title-desc {
-    color: #ccc;
+    color: #888686;
     font-size: 1.3rem;
     letter-spacing: -.01em
 }

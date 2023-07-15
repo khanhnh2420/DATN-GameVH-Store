@@ -1,5 +1,7 @@
 // Angular js
-app.controller("CheckoutController", function (AccountService, CouponOwnerService, MomoService, IPService, ZaloPayService, VNPayService, $scope, $window, $http) {
+app.controller("CheckoutController", function (AccountService, OrderService, CouponOwnerService, MomoService, IPService,
+	ZaloPayService, VNPayService, $scope, $window, $http) {
+
 	$scope.cart = [];
 	$scope.TotalPrice = 0;
 	$scope.paymentMethod = "cod";
@@ -160,54 +162,70 @@ app.controller("CheckoutController", function (AccountService, CouponOwnerServic
 				"address": $scope.form.address,
 				"paymentType": $scope.paymentMethod,
 				"shippingFee": 0,
-				"couponCode": "",
+				"couponCode": $scope.coupon ? $scope.coupon.code : null,
 				"email": $scope.form.email,
 				"phone": $scope.form.phone,
 				"orderStatus": "Đang chờ xử lý",
 				"paymentStatus": false,
-				"note": $scope.form.note || "",
+				"note": $scope.form.note ? $scope.form.note : null,
 				"totalPrice": $scope.TotalPrice,
 				"qty": $scope.cart.length,
-
+				"account": $scope.account
 			}
 
-			console.log($scope.data)
+			$scope.dataCart = [];
+			$scope.cart.forEach(function (data) {
+				$scope.dataCart.push({
+					"id": data.id,
+					"qty": data.qty
+				});
+			});
 
-			// if ($scope.paymentMethod === "cod") {
-			// 	// thánh toán khi nhận hàng
+			$scope.requestData = {
+				orderData: $scope.data,
+				listCartDTO: $scope.dataCart
+			};
 
-			// } else if ($scope.paymentMethod === "momo") {
-			// 	// thánh toán qua momo
-			// 	var date = new Date().getTime();
-			// 	var orderId = "HD" + date;
-			// 	var returnUrl = "http://localhost:3000/checkoutResult";
-			// 	var totalPrice = $scope.TotalPrice;
-			// 	var OrerInfo = "Thanh toán đơn hàng " + orderId;
-			// 	$scope.createMomoData(orderId, returnUrl, totalPrice, OrerInfo);
-			// } else if ($scope.paymentMethod === "vnpay") {
-			// 	// thánh toán qua vnpay
-			// 	var totalPrice = $scope.TotalPrice;
-			// 	IPService.getIPAddress()
-			// 		.then(function (ipAddress) {
-			// 			var userIP = ipAddress.data;
-			// 			VNPayService.createOrder(totalPrice, userIP.ip).then(function (resp) {
-			// 				console.log(resp)
-			// 				$scope.zalopay = resp.data;
-			// 				// Hiển thị thông báo khi thanh toán
-			// 				if ($scope.zalopay) {
-			// 					// $window.sessionStorage.setItem("messageCheckout", JSON.stringify(statusCheckout));
-			// 					$window.location.href = $scope.zalopay.url;
-			// 				} 
-			// 			})
-			// 		})
-			// 		.catch(function (error) {
-			// 			console.log('Error:', error);
-			// 		});
+			OrderService.createOrder($scope.requestData).then(function (order) {
+				$scope.order = order.data;
+				if ($scope.order != null) {
+					if ($scope.paymentMethod === "cod") {
+						// thánh toán khi nhận hàng
+						$window.location.href = "/checkoutResult";
+					} else if ($scope.paymentMethod === "momo") {
+						// thánh toán qua momo
+						var orderId = $scope.order.orderId;
+						var returnUrl = "http://localhost:3000/checkoutResult";
+						var totalPrice = $scope.order.totalPrice;
+						var OrerInfo = "Thanh toán đơn hàng " + $scope.order.orderId;
+						$scope.createMomoData(orderId, returnUrl, totalPrice, OrerInfo);
+					} else if ($scope.paymentMethod === "vnpay") {
+						// thánh toán qua vnpay
+						var totalPrice = $scope.order.totalPrice;
+						IPService.getIPAddress()
+							.then(function (ipAddress) {
+								var userIP = ipAddress.data;
+								VNPayService.createOrder(totalPrice, userIP.ip).then(function (resp) {
+									console.log(resp)
+									$scope.zalopay = resp.data;
+									// Hiển thị thông báo khi thanh toán
+									if ($scope.zalopay) {
+										$window.location.href = $scope.zalopay.url;
+									}
+								})
+							})
+							.catch(function (error) {
+								console.log('Error:', error);
+							});
 
-			// } else if ($scope.paymentMethod === "paypal") {
-			// 	// thánh toán qua paypal
+					} else if ($scope.paymentMethod === "paypal") {
+						// thánh toán qua paypal
 
-			// }
+					}
+				}
+			}).catch(function (error) {
+				console.error('Lỗi khi tạo order:', error);
+			});
 		}
 	}
 

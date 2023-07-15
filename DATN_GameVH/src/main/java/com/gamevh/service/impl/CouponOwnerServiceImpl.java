@@ -19,5 +19,10 @@ public class CouponOwnerServiceImpl implements CouponOwnerService{
 	public CouponOwner findCouponByAccount(String username, String couponcode) {
 		return couponOwnerRepository.findCouponByAccount(username, couponcode);
 	}
+
+	@Override
+	public CouponOwner update(CouponOwner couponOwner) {
+		return couponOwnerRepository.save(couponOwner);
+	}
 	
 }

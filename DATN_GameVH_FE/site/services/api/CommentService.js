@@ -5,5 +5,8 @@ app.factory('CommentService', function ($http) {
         getAllCommentByBlogId: function (blogId) {
             return $http.get(baseUrl + '/getComments/' + blogId);
         },
+        sendComment: function (data) {
+            return $http.post(baseUrl + '/sendComment', data);
+        },
     };
 });

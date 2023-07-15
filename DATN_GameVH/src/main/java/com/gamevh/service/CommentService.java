@@ -8,4 +8,6 @@ public interface CommentService {
 
 	List<CommentDTO> findAllByBlogId(Integer blogId);
 
+	void save(CommentDTO dto);
+
 }

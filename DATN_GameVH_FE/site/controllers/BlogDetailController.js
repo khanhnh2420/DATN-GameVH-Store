@@ -1,15 +1,13 @@
-app.controller("BlogDetailController", function (BlogService, CommentService, TimeService, $scope, $routeParams, $window, $timeout) {
+app.controller("BlogDetailController", function (BlogService, CommentService, TimeService, $scope, $routeParams, $window, ToastService) {
     $scope.blog = {}; // Thông tin bài viết sẽ được hiển thị trên trang chi tiết
     $scope.comments = []; // Tất cả các conmment đã được duyệt của bài viết
+    $scope.commentData = {};
     $scope.blogIdPrev; // Bài viết trước đó
     $scope.blogIdNext; // Bài viết sau đó
     $scope.blogPopular = []; // Top 4 bài viết nhiều bình luận nhất
     var blogId = $routeParams.blogId; // ID của bài viết được truyền vào qua URL
 
     $scope.username = $window.localStorage.getItem("username") || $window.sessionStorage.getItem("username");
-    if ($scope.username == null || $scope.username == undefined) {
-        $scope.username = "none";
-    }
     // Lấy bài viết theo ID để hiển thị trên trang chi tiết
     BlogService.getBlogById(blogId).then(function (resp) {
         $scope.blog = resp.data;
@@ -58,12 +56,25 @@ app.controller("BlogDetailController", function (BlogService, CommentService, Ti
 
     $scope.calculateTimeAgo = TimeService.calculateTimeAgo;
 
-    // // Lấy tất cả các feedback đã được duyệt của sản phẩm
-    // FeedbackService.getFeedbackByProduct(productId).then(function (response) {
-    //     $scope.feedbacks = response.data;
-    // }).catch(function (error) {
-    //     console.error('Lỗi khi lấy feedback:', error);
-    // });
+    function getCommentData() {
+        $scope.commentData.username = $scope.username;
+        $scope.commentData.blogId = blogId;
+    }
+
+    $scope.sendComment = function () {
+        getCommentData();
+        CommentService.sendComment($scope.commentData)
+            .then(function (resp) {
+                console.log(resp)
+                if (resp.status === 200) {
+                    ToastService.showSuccessToast('Đã gửi thành công.');
+                }
+            })
+            .catch(function (error) {
+                console.log(error)
+                ToastService.showErrorToast(error);
+            });
+    };
 
 });
 

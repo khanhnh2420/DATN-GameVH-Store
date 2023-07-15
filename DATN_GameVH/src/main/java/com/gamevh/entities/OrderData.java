@@ -21,7 +21,7 @@ import lombok.Data;
 @SuppressWarnings("serial")
 @Data
 @Entity
-@Table(name="order_data", indexes={@Index(name="order_data_order_id_IX", columnList="order_id", unique=true), @Index(name="order_data_payment_code_IX", columnList="payment_code", unique=true)})
+@Table(name="order_data", indexes={@Index(name="order_data_order_id_IX", columnList="order_id", unique=true)})
 public class OrderData  implements Serializable{
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

@@ -53,7 +53,7 @@ app.controller("CheckoutController", function (AccountService, OrderService, Cou
 		$scope.TotalPrice = 0;
 		if ($scope.cart.length > 0) {
 			$scope.cart.forEach(function (data) {
-				$scope.TotalPrice += (data.salePrice - (data.salePrice * data.offer)) * data.Qty;
+				$scope.TotalPrice += (data.salePrice - (data.salePrice * data.offer)) * data.qty;
 			});
 		}
 	}
@@ -88,7 +88,7 @@ app.controller("CheckoutController", function (AccountService, OrderService, Cou
 						$scope.TotalPrice = 0;
 						if ($scope.cart.length > 0) {
 							$scope.cart.forEach(function (data) {
-								$scope.TotalPrice += (data.salePrice - (data.salePrice * data.offer)) * data.Qty;
+								$scope.TotalPrice += (data.salePrice - (data.salePrice * data.offer)) * data.qty;
 							});
 						}
 						// Kiểm tra tổng tiền với đơn giá tối thiểu

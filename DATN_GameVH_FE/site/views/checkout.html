@@ -31,10 +31,23 @@
 								placeholder="Mã giảm giá">
 								<a href="#" class="col ml-4 btn btn-outline-primary-2 btn-order btn-block" >CHỌN MÃ GIẢM GIÁ</a>
 						</form> -->
-						<form class="d-flex row">
-							<input type="text" class="form-control col m-0" id="checkout-discount-input"
-								placeholder="Nhập mã giảm giá...">
-							<a href="#" class="col ml-4 btn btn-outline-primary-2 btn-order btn-block">ÁP DỤNG MÃ</a>
+						<form class="d-flex row ml-1" style="width: 50vw;">
+							<input type="text" class="form-control col-8 m-0" id="checkout-discount-input"
+								placeholder="Nhập mã giảm giá..." ng-model="form.coupon"
+								ng-class="{'is-invalid-no-x': (isValidCoupon || isValidMinSpendCoupon || isValidDateCoupon)}" ng-change="updateStatusCoupon()">
+							<a href="#" class="col ml-4 btn btn-outline-primary-2 btn-order btn-block"
+								ng-click="checkCoupon()">ÁP DỤNG MÃ</a>
+							<div class="mb-1 text-danger font-weight-bold">
+								<div ng-show="isValidCoupon">
+									Mã giảm giá không đúng!
+								</div>
+								<div ng-show="isValidMinSpendCoupon">
+									Mã giảm giá không áp dụng cho đơn hàng này!
+								</div>
+								<div ng-show="isValidDateCoupon">
+									{{DateCouponError}}
+								</div>
+							</div>
 						</form>
 						<!-- <form action="#">
 							<input type="text" class="form-control" required id="checkout-discount-input"
@@ -82,19 +95,59 @@
 								<div class="row">
 									<div class="col-sm-4">
 										<label>Tỉnh/Thành phố *</label>
-										<select class="form-control" name="" id=""></select>
+										<select class="form-control" id="province" ng-model="form.province"
+											ng-change="updateProvince()" name="province"
+											ng-options="option.code as option.name for option in provinces" required
+											ng-class="{'is-invalid-no-x': (orderForm.province.$invalid && orderForm.province.$touched) || (orderForm.$submitted && orderForm.province.$invalid)}">
+											<option value="" selected disabled>Chọn Thành phố</option>
+										</select>
+										<!-- End .form-group -->
+										<div class="mb-1 text-danger font-weight-bold">
+											<div
+												ng-show="(orderForm.province.$error.required && orderForm.province.$touched) || (orderForm.$submitted && orderForm.province.$error.required)">
+												Vui lòng chọn Tỉnh/Thành phố!
+											</div>
+										</div>
+										<!-- End Error address-->
 									</div>
 									<!-- End .col-sm-4 -->
 
 									<div class="col-sm-4">
 										<label>Quận/Huyện *</label>
-										<select class="form-control" name="" id=""></select>
+										<select class="form-control" id="district" ng-model="form.district"
+											ng-options="district.code as district.name for district in districts"
+											name="district" ng-change="updateDistrict()"
+											ng-disabled="selectedDistrict === false" required
+											ng-class="{'is-invalid-no-x': (orderForm.district.$invalid && orderForm.district.$touched) || (orderForm.$submitted && orderForm.district.$invalid)}">
+											<option value="" selected disabled>Chọn Quận/Huyện</option>
+										</select>
+										<!-- End .form-group -->
+										<div class="mb-1 text-danger font-weight-bold">
+											<div
+												ng-show="(orderForm.district.$error.required && orderForm.district.$touched) || (orderForm.$submitted && orderForm.district.$error.required)">
+												Vui lòng chọn Quận/Huyện!
+											</div>
+										</div>
+										<!-- End Error address-->
 									</div>
 									<!-- End .col-sm-4 -->
 
 									<div class="col-sm-4">
 										<label>Phường/Xã *</label>
-										<select class="form-control" name="" id=""></select>
+										<select class="form-control" id="ward" ng-model="form.ward"
+											ng-options="option.code as option.name for option in wards" name="ward"
+											ng-change="updateWard()" ng-disabled="selectedWard === false" required
+											ng-class="{'is-invalid-no-x': (orderForm.ward.$invalid && orderForm.ward.$touched) || (orderForm.$submitted && orderForm.ward.$invalid)}">
+											<option value="" selected disabled>Chọn Xã/Phường</option>
+										</select>
+										<!-- End .form-group -->
+										<div class="mb-1 text-danger font-weight-bold">
+											<div
+												ng-show="(orderForm.ward.$error.required && orderForm.ward.$touched) || (orderForm.$submitted && orderForm.ward.$error.required)">
+												Vui lòng chọn Xã/Phường!
+											</div>
+										</div>
+										<!-- End Error address-->
 									</div>
 									<!-- End .col-sm-4 -->
 
@@ -167,10 +220,10 @@
 												<img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/92b78ced-1b1f-4a14-ad7e-4aa19910e24a/deifbc2-bcc43f88-e0e6-48ab-8478-658fef994cd2.png/v1/fill/w_1280,h_427,q_80,strp/jett_valorant_twitter_header_by_connorjones_deifbc2-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDI3IiwicGF0aCI6IlwvZlwvOTJiNzhjZWQtMWIxZi00YTE0LWFkN2UtNGFhMTk5MTBlMjRhXC9kZWlmYmMyLWJjYzQzZjg4LWUwZTYtNDhhYi04NDc4LTY1OGZlZjk5NGNkMi5wbmciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.Ejp1rc60MbEECnawk9LaIskMwB2gpMOwt5x6CofVIbs"
 													alt="Ticket Image" class="ticket-image img-responsive">
 												<div class="ticket-content">
-													<h2 class="text-white">Ticket Title</h2>
-													<p class="text-white">Additional ticket information goes here.
+													<h5 class="text-white">{{coupon ? coupon.couponName : "Tiêu đề"}}</h5>
+													<p class="text-white">{{coupon ? coupon.description : "Thông tin về mã giảm giá"}} 
 													</p>
-													<button type="button" class="btn close-button"></button>
+													<button type="button" class="btn close-button" ng-click="clearCoupon()"></button>
 												</div>
 											</div>
 										</div>
@@ -222,7 +275,9 @@
 												<tr>
 													<td style="border: none; border-bottom: 0.1rem solid #cccccc;">
 														Khuyến mãi:</td>
-													<td style="border: none; border-bottom: 0.1rem solid #cccccc;">...
+													<!-- <td style="border: none; border-bottom: 0.1rem solid #cccccc;">{{coupon ? coupon.code : ""}}
+													</td> -->
+													<td style="border: none; border-bottom: 0.1rem solid #cccccc;">{{coupon ? "- " + (coupon.value | vndFormat) : "..."}}
 													</td>
 												</tr>
 												<tr class="summary-total">

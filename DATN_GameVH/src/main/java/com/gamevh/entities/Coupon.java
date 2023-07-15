@@ -2,7 +2,7 @@ package com.gamevh.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -58,5 +58,5 @@ public class Coupon implements Serializable{
 
     @JsonIgnore
     @OneToMany(mappedBy="coupon")
-    private Set<CouponOwner> couponOwner;
+    private List<CouponOwner> couponOwner;
 }

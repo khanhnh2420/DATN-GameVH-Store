@@ -39,7 +39,7 @@ app.controller('GoogleSigninController', function ($location, $window, GoogleSer
                         }
                     }
                     // Tạo role cho account 
-                    AuthorityService.creatAuthority(auth).then(function (authority) {
+                    AuthorityService.createAuthority(auth).then(function (authority) {
                     }).catch(function (error) {
                         console.error('Lỗi khi tạo role cho account:', error);
                     });

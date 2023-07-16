@@ -547,7 +547,7 @@ DROP TABLE IF EXISTS `order_data`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `order_data` (
   `Id` bigint NOT NULL AUTO_INCREMENT,
-  `order_id` varchar(14) NOT NULL,
+  `order_id` varchar(20) NOT NULL,
   `account_id` int NOT NULL,
   `Fullname` varchar(50) NOT NULL,
   `create_date` date DEFAULT (curdate()),
@@ -608,7 +608,7 @@ DROP TABLE IF EXISTS `order_detail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `order_detail` (
-  `Id` bigint NOT NULL COMMENT 'Mã chi tiết',
+  `Id` bigint NOT NULL AUTO_INCREMENT COMMENT 'Mã chi tiết',
   `order_data_id` bigint DEFAULT NULL COMMENT 'Mã hóa đơn',
   `product_id` int DEFAULT NULL COMMENT 'Mã hàng hóa',
   `Price` double DEFAULT NULL,

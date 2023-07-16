@@ -28,7 +28,7 @@ public class OrderData  implements Serializable{
     @Column(name="Id", unique=true, nullable=false, precision=19)
     private Long id;
 
-    @Column(name="order_id", unique=true, nullable=false, length=14)
+    @Column(name="order_id", unique=true, nullable=false, length=20)
     private String orderId;
 
     @Column(name="Fullname", nullable=false, length=50)

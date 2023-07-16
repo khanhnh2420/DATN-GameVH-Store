@@ -33,7 +33,7 @@ app.controller("RegisterController", function (AccountService, AuthorityService,
 											"name": "Người Dùng"
 										}
 									}
-									AuthorityService.creatAuthority(auth).then(function (authority) {
+									AuthorityService.createAuthority(auth).then(function (authority) {
 										$scope.messageSuccess = "Đăng ký tài khoản thành công!";
 										// Reset form và biến
 										$scope.RegisterForm.$setPristine();

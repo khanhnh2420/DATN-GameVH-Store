@@ -13,5 +13,7 @@ public interface OrderService {
 
 	OrderData findById(Long id);
 	
-
+	List<OrderData> findByOrderId(String orderId);
+	
+	OrderData add(OrderData orderData);
 }

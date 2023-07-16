@@ -8,7 +8,7 @@ app.controller("CartController", function (ProductService, $scope, $window) {
 		$scope.TotalPrice = 0;
 		if ($scope.cart.length > 0) {
 			$scope.cart.forEach(function (data) {
-				$scope.TotalPrice += (data.salePrice - (data.salePrice * data.offer)) * data.Qty;
+				$scope.TotalPrice += (data.salePrice - (data.salePrice * data.offer)) * data.qty;
 			});
 		}
 	}
@@ -45,10 +45,10 @@ app.controller("CartController", function (ProductService, $scope, $window) {
 		// Nếu tồn tại thì Qty +1, game thì Qty luôn luôn là 1
 		if ($scope.isActiveOnLocalstorage) {
 			ProductService.getProduct(productId).then(function (response) {
-				if (response.data.category.type == "Phụ kiện" && response.data.available && response.data.qty > $scope.productCart.Qty) {
+				if (response.data.category.type == "PK" && response.data.available && response.data.qty > $scope.productCart.qty) {
 					$scope.cart.forEach(function (data) {
 						if (data.id == response.data.id) {
-							data.Qty += 1;
+							data.qty += 1;
 							$window.localStorage.setItem("carts", JSON.stringify($scope.cart));
 						}
 					});
@@ -61,7 +61,7 @@ app.controller("CartController", function (ProductService, $scope, $window) {
 			ProductService.getProductDTO(productId).then(function (response) {
 				ProductService.getProduct(productId).then(function (product) {
 					if (product.data.available && product.data.qty > 0) {
-						response.data["Qty"] = 1;
+						response.data["qty"] = 1;
 						$scope.cart.push(response.data);
 						$window.localStorage.setItem("carts", JSON.stringify($scope.cart));
 					}

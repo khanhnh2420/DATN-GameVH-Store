@@ -16,7 +16,7 @@
 					<h4 style="color: #5de593;">Thanh toán thành công!</h4>
 					<h6>Hệ thống sẽ tự động chuyển về trang chủ sau <span id="countdown"></span> giây. Cảm ơn quý khách
 						đã sử dụng dịch vụ.</h6>
-					<button type="button" class="btn btn btn-outline-primary-2">Quay về trang chủ</button>
+					<button type="button" class="btn btn btn-outline-primary-2" onclick="redirectToHomepageNow()">Quay về trang chủ</button>
 				</div>
 			</div>
 		</div>
@@ -34,6 +34,10 @@
 						window.location.href = "/"; // Thay đổi đường dẫn tới trang chủ của bạn
 					}
 				}, 1000); // 1000ms = 1 giây
+			}
+
+			function redirectToHomepageNow() {
+				window.location.href = "/"; // Thay đổi đường dẫn tới trang chủ của bạn
 			}
 
 			// Gọi hàm để bắt đầu chuyển hướng sau 10 giây và hiển thị số đếm ngược

@@ -47,7 +47,7 @@
             <div class="col-sm-6 col-md-2">
                 <div class="form-group form-focus select-focus">
                     <label class="focus-label">Type Product</label>
-                    <select class="select">
+                    <select class="select" ng-model="product.type">
 						<option>Game</option>
 						<option>Phụ kiện</option>
 					</select>
@@ -56,24 +56,17 @@
             <div class="col-sm-6 col-md-2">
                 <div class="form-group form-focus select-focus">
                     <label class="focus-label">Category Product</label>
-                    <select class="select">
-						<option>Chiến Thuật</option>
-						<option>FPS</option>
-						<option>Hành Động</option>
-						<option>Kinh Dị</option>
-						<option>Lập Trình</option>
-					</select>
+                    <select class="select" ng-model="product.category.id">
+                        <option ng-repeat="category in categories | filter:{type: 'Game'}" value="{{category.id}}">{{category.name}}</option>
+                    </select>
                 </div>
             </div>
             <div class="col-sm-6 col-md-2">
                 <div class="form-group form-focus select-focus">
                     <label class="focus-label">Category Accessory</label>
-                    <select class="select">
-						<option>Ghế</option>
-						<option>Màn Hình</option>
-						<option>Tai nghe</option>
-						<option>Chuột</option>
-					</select>
+                    <select class="select" ng-model="product.category.id">
+                        <option ng-repeat="category in categories | filter:{type: 'PK'}" value="{{category.id}}">{{category.name}}</option>
+                    </select>
                 </div>
             </div>
             <div class="col-sm-6 col-md-2">
@@ -179,31 +172,27 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Type </label>
-                                            <select class="select">
+                                            <select class="select" ng-model="product.type">
 												<option>Game</option>
 												<option>Phụ kiện</option>
 											</select>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Category </label>
-                                            <select class="select">
-												<option>Chiến Thuật</option>
-												<option>FPS</option>
-												<option>Hành Động</option>
-												<option>Kinh Dị</option>
-												<option>Lập Trình</option>
-											</select>
+                                            <label class="col-form-label">Category</label>
+                                            <select class="select" ng-model="product.category.id" ng-options="category.id as category.name for category in categories">
+                                            </select>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
+
+                                    <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Status </label>
-                                            <select class="select">
-												<option>Chưa đăng</option>
-												<option>Đã đăng</option>
-											</select>
+                                            <label class="col-form-label">Status</label>
+                                            <select class="select" ng-model="product.status">
+                                                <option value="true">Còn Hàng</option>
+                                                <option value="false">Hết Hàng</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -225,8 +214,11 @@
                             <h4 class="d-flex justify-content-center">IMAGE POSTER</h4>
                             <div class="card border-0">
                                 <div class="body d-flex justify-content-center">
-                                    <input type="file" class="dropify">
+                                    <input type="file" class="dropify" ng-model="editProduct.poster" accept="image/*">
                                 </div>
+                            </div>
+                            <div class="mt-2">
+                                <img ng-src="{{editProduct.poster}}" alt="Poster Preview" class="img-fluid">
                             </div>
                         </div>
 
@@ -272,60 +264,57 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">ID </label>
-                                            <input class="form-control" type="text" readonly>
+                                            <input class="form-control" type="text" ng-model="editProduct.id" readonly>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Product Name </label>
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" ng-model="editProduct.name">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Origin Price</label>
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" ng-model="editProduct.originPrice">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Sale Price </label>
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" ng-model="editProduct.salePrice">
                                         </div>
                                     </div>
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label class="col-form-label">Link </label>
-                                            <input class="form-control" type="email">
+                                            <input class="form-control" type="email" ng-model="editProduct.link">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Category </label>
-                                            <select class="select">
-												<option>Chiến Thuật</option>
-												<option>FPS</option>
-												<option>Hành Động</option>
-												<option>Kinh Dị</option>
-												<option>Lập Trình</option>
-											</select>
+                                            <label class="col-form-label">Category</label>
+                                            <select class="select" ng-model="editProduct.categoryId" ng-options="category.id as category.name for category in categories">
+                                            </select>
                                         </div>
                                     </div>
+
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Status </label>
-                                            <select class="select">
-												<option>Còn Hàng</option>
-												<option>Hết Hàng</option>
-											</select>
+                                            <label class="col-form-label">Status</label>
+                                            <select class="select" ng-model="editProduct.status">
+                                                <option value="true">Còn Hàng</option>
+                                                <option value="false">Hết Hàng</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label>Description</label>
-                                            <textarea class="form-control" rows="5">Assassin Creed Valhalla 1là phiên bản mới nhất của dòng game hành động nhập vai lịch sử nổi tiếng Assassin Creed. Trong game, người chơi sẽ hóa thân thành Eivor, một vị vua hoặc nữ hoàng của người Viking, và tham gia vào cuộc chiến giữa người Viking và quân đội của người Anh vào thế kỷ thứ 9.</textarea>
+                                            <textarea class="form-control" rows="5" ng-model="editProduct.description"></textarea>
                                         </div>
                                     </div>
+
                                 </div>
                             </form>
                         </div>

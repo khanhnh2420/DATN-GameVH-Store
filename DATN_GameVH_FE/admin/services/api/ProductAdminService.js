@@ -1,5 +1,6 @@
 app.factory('ProductAdminService', function($http) {
     var baseUrl = host + '/api/product';
+    var baseUrlCa = host + '/api/category';
 
     return {
         getProductDTO: function(productId) {
@@ -7,6 +8,9 @@ app.factory('ProductAdminService', function($http) {
         },
         getProduct: function(productId) {
             return $http.get(baseUrl + '/' + productId);
+        },
+        getAllCategories: function() {
+            return $http.get(baseUrlCa + '/getAll');
         },
         getAllProducts: function() {
             return $http.get(baseUrl + '/getAll');

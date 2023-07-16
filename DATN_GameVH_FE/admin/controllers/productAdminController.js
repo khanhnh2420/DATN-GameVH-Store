@@ -5,9 +5,32 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
     $scope.sameProduct = []; // Mảng sản phẩm cùng loại
     $scope.productIdPrev; // Sản phẩm trước đó
     $scope.productIdNext; // Sản phẩm sau đó
-
+    $scope.categories = [];
     $scope.editProduct = {};
 
+
+
+    // Lấy thông tin sản phẩm từ backend
+    ProductAdminService.getProduct(productId)
+        .then(function(response) {
+            $scope.editProduct = response.data;
+            $scope.editProduct.categoryId = $scope.editProduct.category.id; // Gán categoryId
+            // ...
+        })
+        .catch(function(error) {
+            console.error('Lỗi khi lấy thông tin sản phẩm:', error);
+        });
+
+
+    // Lấy danh sách category
+    ProductAdminService.getAllCategories()
+        .then(function(response) {
+            $scope.categories = response.data;
+            $scope.editProduct.categoryId = $scope.editProduct.category.id; // Gán categoryId ban đầu
+        })
+        .catch(function(error) {
+            console.error('Lỗi khi lấy danh sách category:', error);
+        });
 
 
     // Lấy tất cả sản phẩm
@@ -118,16 +141,27 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
 
     }
 
+
+
     // Hàm xử lý khi nhấp vào nút "Edit" trong cột "Action"
     $scope.editProductClicked = function(productId) {
-        ProductAdminService.getProduct(productId).then(function(response) {
-            $scope.editProduct = response.data;
-            // Mở modal chỉnh sửa sản phẩm ở đây
-            $('#edit_Product').modal('show');
-        }).catch(function(error) {
-            console.error('Lỗi khi lấy thông tin sản phẩm:', error);
-        });
+        ProductAdminService.getProduct(productId)
+            .then(function(response) {
+                $scope.editProduct = response.data;
+                $scope.editProduct.categoryId = String($scope.editProduct.category.id); // Gán categoryId của sản phẩm vào biến $scope.editProduct.categoryId
+                $('#edit_Product').modal('show');
+            })
+            .catch(function(error) {
+                console.error('Lỗi khi lấy thông tin sản phẩm:', error);
+            });
     };
+
+    // Gắn kết sự kiện click cho các phần tử chỉnh sửa
+    angular.element(document).on('click', '.edit-product', function() {
+        var productId = angular.element(this).data('product-id');
+        $scope.editProductClicked(productId);
+    });
+
 
 
     // Lấy thông tin sản phẩm theo ID
@@ -140,7 +174,7 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
 
     // Cập nhật sản phẩm
     $scope.updateProduct = function() {
-        ProductAdminService.updateProduct(productId, $scope.product)
+        ProductAdminService.updateProduct(productId, $scope.editProduct)
             .then(function(response) {
                 console.log("Sản phẩm đã được cập nhật");
                 // Thực hiện các hành động sau khi cập nhật thành công

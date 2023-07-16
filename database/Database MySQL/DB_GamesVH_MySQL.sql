@@ -547,7 +547,7 @@ DROP TABLE IF EXISTS `order_data`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `order_data` (
   `Id` bigint NOT NULL AUTO_INCREMENT,
-  `order_id` varchar(14) NOT NULL,
+  `order_id` varchar(20) NOT NULL,
   `account_id` int NOT NULL,
   `Fullname` varchar(50) NOT NULL,
   `create_date` date DEFAULT (curdate()),

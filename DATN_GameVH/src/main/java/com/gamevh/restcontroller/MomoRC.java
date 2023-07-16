@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gamevh.dto.MomoDTO;
-import com.gamevh.dto.MomoResultDTO;
 import com.gamevh.service.MomoService;
 
 @CrossOrigin("*")
@@ -20,7 +19,12 @@ public class MomoRC {
 	MomoService momoService;
 	
 	@PostMapping("create")
-	public ResponseEntity<MomoResultDTO> createMomoOrder(@RequestBody MomoDTO momo) {
+	public ResponseEntity<MomoDTO> createMomoOrder(@RequestBody MomoDTO momo) {
 		return ResponseEntity.ok(momoService.createOrder(momo));
+	}
+	
+	@PostMapping("query")
+	public ResponseEntity<MomoDTO> MomoQueryTrancsaction(@RequestBody MomoDTO momoInput) {
+		return ResponseEntity.ok(momoService.queryTransaction(momoInput));
 	}
 }

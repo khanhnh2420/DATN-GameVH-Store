@@ -7,12 +7,11 @@ import com.gamevh.entities.Blog;
 
 public interface BlogService {
 
-	Blog findById(Integer id);
-
 	List<Blog> findAll();
 
 	List<BlogDTO> findAllByStatus(Boolean status);
 
 	List<BlogDTO> findTop4BlogsByCommentCountAndStatus();
 
+	BlogDTO findById(Integer id);
 }

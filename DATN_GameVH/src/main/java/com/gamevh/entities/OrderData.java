@@ -21,7 +21,7 @@ import lombok.Data;
 @SuppressWarnings("serial")
 @Data
 @Entity
-@Table(name="order_data", indexes={@Index(name="order_data_order_id_IX", columnList="order_id", unique=true), @Index(name="order_data_payment_code_IX", columnList="payment_code", unique=true)})
+@Table(name="order_data", indexes={@Index(name="order_data_order_id_IX", columnList="order_id", unique=true)})
 public class OrderData  implements Serializable{
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -40,15 +40,6 @@ public class OrderData  implements Serializable{
     @Column(name="Address", length=255)
     private String address;
 
-    @Column(name="City", nullable=false, length=100)
-    private String city;
-
-    @Column(name="District", nullable=false, length=100)
-    private String district;
-
-    @Column(name="Ward", nullable=false, length=100)
-    private String ward;
-
     @Column(name="payment_type", nullable=false, length=6)
     private String paymentType;
 
@@ -64,8 +55,11 @@ public class OrderData  implements Serializable{
     @Column(name="Phone", nullable=false, length=10)
     private String phone;
 
-    @Column(name="Status", nullable=false, length=13)
-    private String status;
+    @Column(name="order_status", nullable=false, length=100)
+    private String orderStatus;
+    
+    @Column(name="payment_status", nullable=false, length=1)
+    private Boolean paymentStatus;
 
     @Column(name="Note", length=255)
     private String note;
@@ -75,9 +69,6 @@ public class OrderData  implements Serializable{
 
     @Column(name="Qty", nullable=false, precision=10)
     private Integer qty;
-
-    @Column(name="payment_code", unique=true, length=100)
-    private String paymentCode;
 
     @ManyToOne(optional=false)
     @JoinColumn(name="account_id", nullable=false)

@@ -2,14 +2,12 @@ package com.gamevh.service;
 
 import java.util.List;
 
-import com.gamevh.entities.Comment;
+import com.gamevh.dto.CommentDTO;
 
 public interface CommentService {
-    List<Comment> findAll();
 
-   // List<Comment> findAllByIdBlog(Integer id);
+	List<CommentDTO> findAllByBlogId(Integer blogId);
 
-    //Comment findById(Integer id);
-    List<Comment> findAllCommentAndBlogByIdBlog(Integer blogId);
+	void save(CommentDTO dto);
 
 }

@@ -5,9 +5,32 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
     $scope.sameProduct = []; // Mảng sản phẩm cùng loại
     $scope.productIdPrev; // Sản phẩm trước đó
     $scope.productIdNext; // Sản phẩm sau đó
+    $scope.categories = [];
+    $scope.editProduct = {};
 
 
 
+    // Lấy thông tin sản phẩm từ backend
+    ProductAdminService.getProduct(productId)
+        .then(function(response) {
+            $scope.editProduct = response.data;
+            $scope.editProduct.categoryId = $scope.editProduct.category.id; // Gán categoryId
+            // ...
+        })
+        .catch(function(error) {
+            console.error('Lỗi khi lấy thông tin sản phẩm:', error);
+        });
+
+
+    // Lấy danh sách category
+    ProductAdminService.getAllCategories()
+        .then(function(response) {
+            $scope.categories = response.data;
+            $scope.editProduct.categoryId = $scope.editProduct.category.id; // Gán categoryId ban đầu
+        })
+        .catch(function(error) {
+            console.error('Lỗi khi lấy danh sách category:', error);
+        });
 
 
     // Lấy tất cả sản phẩm
@@ -35,15 +58,23 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
                     data: null,
                     render: function(data, type, row, meta) {
                         // Render giao diện cho cột "#"
-                        return meta.row + 1;
+                        // return meta.row + 1;
+                        return row.id;
                     }
                 },
                 {
                     data: null, // Cột "Poster"
+                    // render: function(data, type, row) {
+                    //         // Render giao diện cho cột "Poster"
+                    //         return '<h2 class="table-poster"><a href="#" class="poster"><img alt="" src="/assets/img/products/' + row.poster + '" data-zoom-image="/assets/img/products/' + row.poster + '" alt="product image"></a></h2>';
+                    //     }
                     render: function(data, type, row) {
                         // Render giao diện cho cột "Poster"
-                        return '<h2 class="table-poster"><a href="#" class="poster"><img alt="" src="/assets/img/products/' + row.poster + '" data-zoom-image="/assets/img/products/' + row.poster + '" alt="product image"></a></h2>';
+                        var posterUrl = row.poster ? row.poster : '1xbZ557bXhtiEG-sPP4TRXf007THuPsns';
+                        var imageUrl = 'https://drive.google.com/uc?id=' + posterUrl;
+                        return '<h2 class="table-poster"><a href="#" class="poster"><img alt="" src="' + imageUrl + '" data-zoom-image="' + imageUrl + '" alt="product image"></a></h2>';
                     }
+
                 },
                 {
                     data: null, // Cột "Name"
@@ -68,20 +99,91 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
                     data: 'status', // Cột "Status"
                     render: function(data) {
                         // Render giao diện cho cột "Status"
-                        return '<span class="badge bg-inverse-' + (data == 'Đã đăng' ? 'success' : 'danger') + '">' + data + '</span>';
+                        var statusText = (data === true) ? 'Còn hàng' : 'Hết hàng';
+                        var badgeClass = (data === true) ? 'success' : 'danger';
+                        return '<span class="badge bg-inverse-' + badgeClass + '">' + statusText + '</span>';
                     }
+
                 },
                 {
                     data: null, // Cột "Action"
+                    // render: function(data, type, row) {
+                    //     // Render giao diện cho cột "Action"
+                    //     return '<div class="dropdown dropdown-action"><a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a><div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#" ng-click="editProductClicked(' + row.id + ')" data-toggle="modal" data-target="#edit_Product"><i class="fa fa-pencil m-r-5"></i>Edit</a><a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_Product"><i class="fa fa-trash-o m-r-5"></i>Delete</a><a class="dropdown-item" href="#" data-toggle="modal" data-target="#comment_Product"><i class="fa fa-pencil-square-o m-r-5"></i>Comment</a></div></div>';
+                    // }
+
                     render: function(data, type, row) {
                         // Render giao diện cho cột "Action"
-                        return '<div class="dropdown dropdown-action"><a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a><div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_Product"><i class="fa fa-pencil m-r-5"></i>Edit</a><a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_Product"><i class="fa fa-trash-o m-r-5"></i>Delete</a><a class="dropdown-item" href="#" data-toggle="modal" data-target="#comment_Product"><i class="fa fa-pencil-square-o m-r-5"></i>Comment</a></div></div>';
+                        return '<div class="dropdown dropdown-action">' +
+                            '<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">' +
+                            '<i class="material-icons font-weight-bold">⋮</i>' +
+                            '</a>' +
+                            '<div class="dropdown-menu dropdown-menu-right">' +
+                            '<a class="dropdown-item edit-product" href="#" data-product-id="' + row.id + '" data-toggle="modal" data-target="#edit_Product">' +
+                            '<i class="fa fa-pencil m-r-5"></i>Edit' +
+                            '</a>' +
+                            '<a class="dropdown-item" href="#" data-toggle="modal" data-target="#comment_Product">' +
+                            '<i class="fa fa-pencil-square-o m-r-5"></i>Feedback' +
+                            '</a>' +
+                            '</div>' +
+                            '</div>';
                     }
+
                 }
             ]
         });
+        // Thêm sự kiện click vào phần tử chỉnh sửa
+        $(document).on('click', '.edit-product', function() {
+            var productId = $(this)[0].dataset.productId;
+            console.log(productId)
+            $scope.editProductClicked(productId);
+        });
 
     }
+
+
+
+    // Hàm xử lý khi nhấp vào nút "Edit" trong cột "Action"
+    $scope.editProductClicked = function(productId) {
+        ProductAdminService.getProduct(productId)
+            .then(function(response) {
+                $scope.editProduct = response.data;
+                $scope.editProduct.categoryId = String($scope.editProduct.category.id); // Gán categoryId của sản phẩm vào biến $scope.editProduct.categoryId
+                $('#edit_Product').modal('show');
+            })
+            .catch(function(error) {
+                console.error('Lỗi khi lấy thông tin sản phẩm:', error);
+            });
+    };
+
+    // Gắn kết sự kiện click cho các phần tử chỉnh sửa
+    angular.element(document).on('click', '.edit-product', function() {
+        var productId = angular.element(this).data('product-id');
+        $scope.editProductClicked(productId);
+    });
+
+
+
+    // Lấy thông tin sản phẩm theo ID
+    var productId = $routeParams.id;
+    ProductAdminService.getProduct(productId).then(function(response) {
+        $scope.product = response.data;
+    }).catch(function(error) {
+        console.error('Lỗi khi lấy thông tin sản phẩm:', error);
+    });
+
+    // Cập nhật sản phẩm
+    $scope.updateProduct = function() {
+        ProductAdminService.updateProduct(productId, $scope.editProduct)
+            .then(function(response) {
+                console.log("Sản phẩm đã được cập nhật");
+                // Thực hiện các hành động sau khi cập nhật thành công
+            })
+            .catch(function(error) {
+                console.error('Lỗi khi cập nhật sản phẩm:', error);
+                // Xử lý lỗi khi cập nhật sản phẩm
+            });
+    };
 
 
 

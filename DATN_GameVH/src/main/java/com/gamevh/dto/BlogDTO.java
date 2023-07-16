@@ -15,6 +15,6 @@ public class BlogDTO {
     private String content;
     private String image;
     private LocalDate createDate;
-    private String Username;
+    private String username;
     private Integer commentCount;
 }

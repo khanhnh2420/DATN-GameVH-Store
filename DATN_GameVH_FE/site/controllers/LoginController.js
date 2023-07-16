@@ -1,16 +1,38 @@
-app.controller("LoginController", function (AccountService, BcryptService, $scope, $window) {
+app.controller("LoginController", function (AccountService, BcryptService, $scope, $window, $location, $route) {
     $scope.account = {}; // Thông tin người dùng nhập từ form
     $scope.user = {}; // Thông tin người dùng lấy từ Server
     $scope.rememberMe; // Lưu đăng nhập
     $scope.message = ($window.sessionStorage.getItem("messageLogin") != null) ? $window.sessionStorage.getItem("messageLogin") : null;// Trạng thái
     $window.sessionStorage.removeItem("messageLogin");
 
-
     // Trở về trang đăng nhập
     $scope.redirectToLogin = function () {
         $window.localStorage.removeItem("username");
         $window.sessionStorage.removeItem("username");
         $window.location.href = 'login.html';
+        // Kiểm tra xem URL cần kiểm tra có trong các link đã được khai báo trong route hay không
+        var isDeclaredRoute = false;
+
+        // Lấy URL cần kiểm tra
+        var urlToCheck = $location.path();
+
+        // Lặp qua các route đã khai báo
+        angular.forEach($route.routes, function (route) {
+            // Kiểm tra xem URL cần kiểm tra có trùng khớp với route hay không
+            if (route.originalPath && route.regexp && route.regexp.test(urlToCheck)) {
+                isDeclaredRoute = true;
+            }
+        });
+
+        // Nếu link trươc khi login không chứa "login" và là link đã khai báo trong route thì sẽ dùng link đó nếu không thì dùng link trang home
+        if (!$window.location.href.includes("login") && isDeclaredRoute) {
+            $window.sessionStorage.setItem("pageBackLoginSuccess", $window.location.href);
+        } else {
+            var pageBackLoginSuccess = ($window.sessionStorage.getItem("pageBackLoginSuccess") != null) ? $window.sessionStorage.getItem("pageBackLoginSuccess") : null;
+            if (!pageBackLoginSuccess || pageBackLoginSuccess.includes("login")) {
+                $window.sessionStorage.setItem("pageBackLoginSuccess", $location.absUrl().split('/')[2]);
+            }
+        }
     };
 
     $scope.login = function () {
@@ -52,7 +74,13 @@ app.controller("LoginController", function (AccountService, BcryptService, $scop
                                 $scope.saveAccountToSessionStorage($scope.userAccount);
 
                                 // Đăng nhập thành công trở về trang chủ
-                                $window.location.href = '/';
+                                $scope.pageBackLoginSuccess = ($window.sessionStorage.getItem("pageBackLoginSuccess") != null) ? $window.sessionStorage.getItem("pageBackLoginSuccess") : null;
+                                if ($scope.pageBackLoginSuccess && !$scope.pageBackLoginSuccess.includes("login") && !$window.document.title.includes("KHÔNG TÌM THẤY TRANG")) {
+                                    $window.location.href = $scope.pageBackLoginSuccess;
+                                } else {
+                                    $window.location.href = "/";
+                                }
+
                             }
                         }).catch(function (error) {
                             console.error('Lỗi khi so sánh password:', error);

@@ -46,14 +46,27 @@ app.controller('GoogleSigninController', function ($location, $window, GoogleSer
 
                     if (account.id != null) {
                         $window.sessionStorage.setItem("username", account.username);
-                        $window.location.href = '/';
+                        // Trở về trang trước đó hoặc trang chủ nếu có lỗi
+                        var pageBackLoginSuccess = ($window.sessionStorage.getItem("pageBackLoginSuccess") != null) ? $window.sessionStorage.getItem("pageBackLoginSuccess") : null;
+                        if (pageBackLoginSuccess && !pageBackLoginSuccess.includes("login")) {
+                            $window.location.href = pageBackLoginSuccess;
+                        } else {
+                            $window.location.href = "/";
+                        }
                     } else {
                         // Kiểm tra nếu đã tồn tại username là email đó thì lấy ra
                         AccountService.getByUsername(account.email).then(function (accountByUsername) {
                             var accountData = accountByUsername.data;
                             if (accountData != null) {
                                 $window.sessionStorage.setItem("username", accountData.username);
-                                $window.location.href = '/';
+                                
+                                // Trở về trang trước đó hoặc trang chủ nếu có lỗi
+                                var pageBackLoginSuccess = ($window.sessionStorage.getItem("pageBackLoginSuccess") != null) ? $window.sessionStorage.getItem("pageBackLoginSuccess") : null;
+                                if (pageBackLoginSuccess && !pageBackLoginSuccess.includes("login")) {
+                                    $window.location.href = pageBackLoginSuccess;
+                                } else {
+                                    $window.location.href = "/";
+                                }
                             }
                         }).catch(function (error) {
                             console.error('Lỗi khi tìm account theo email:', error);

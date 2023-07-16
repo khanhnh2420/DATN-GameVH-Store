@@ -59,7 +59,14 @@ function createAccount(user) {
             createAuthority(auth)
 
             window.sessionStorage.setItem("username", account.username);
-            window.location.href = '/';
+
+            // Trở về trang trước đó hoặc trang chủ nếu có lỗi
+            var pageBackLoginSuccess = (window.sessionStorage.getItem("pageBackLoginSuccess") != null) ? window.sessionStorage.getItem("pageBackLoginSuccess") : null;
+            if (pageBackLoginSuccess && !pageBackLoginSuccess.includes("login")) {
+                window.location.href = pageBackLoginSuccess;
+            } else {
+                window.location.href = "/";
+            }
         } else {
             console.error("Lỗi khi tạo tài khoản:", xhr.statusText);
         }

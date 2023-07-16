@@ -2,7 +2,7 @@ package com.gamevh.dto;
 
 import java.time.LocalDate;
 
-public interface ProductDTO{
+public interface ProductAdminDTO{
 	Integer getId();
 	String getName();
 	String getPoster();
@@ -10,6 +10,11 @@ public interface ProductDTO{
 	Double getSalePrice();
 	Double getOriginPrice(); 
 	Double getOffer();
+	Boolean getAvailable();
+	Boolean getStatus();
+	String getSource();
+	String getLink();
+	Integer getQty();
 	String getDetails();
 	Double getRate();
 	Integer getCountFeedBack();

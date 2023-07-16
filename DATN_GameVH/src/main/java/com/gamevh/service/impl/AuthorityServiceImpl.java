@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gamevh.entities.Authority;
-import com.gamevh.reponsitory.AuthorityRepository;
+import com.gamevh.repository.AuthorityRepository;
 import com.gamevh.service.AuthorityService;
 
 @Service

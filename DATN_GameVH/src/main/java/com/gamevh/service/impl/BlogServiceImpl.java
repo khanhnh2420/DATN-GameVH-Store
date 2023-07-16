@@ -5,12 +5,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gamevh.dto.BlogDTO;
 import com.gamevh.entities.Blog;
-import com.gamevh.reponsitory.BlogRepository;
+import com.gamevh.repository.BlogRepository;
 import com.gamevh.service.BlogService;
 
 @Service
@@ -22,11 +23,6 @@ public class BlogServiceImpl implements BlogService {
 	@Override
 	public List<Blog> findAll() {
 		return blogRepository.findAll();
-	}
-
-	@Override
-	public Blog findById(Integer id) {
-		return blogRepository.findById(id).get();
 	}
 
 	@Override
@@ -75,11 +71,19 @@ public class BlogServiceImpl implements BlogService {
 			blogDTO.setCreateDate(blog.getCreateDate());
 			blogDTO.setUsername(blog.getAccount().getFullname());
 			blogDTO.setCommentCount(blog.getCommentCount());
-			// Sao chép các thuộc tính khác tùy thuộc vào yêu cầu của bạn
 
 			blogDTOs.add(blogDTO);
 		}
 		return blogDTOs;
 	}
 
+	@Override
+	public BlogDTO findById(Integer id) {
+		Blog blog = blogRepository.findByIdAndStatus(id, true).get();
+		BlogDTO blogDTO = new BlogDTO();
+		BeanUtils.copyProperties(blog, blogDTO);
+		blogDTO.setUsername(blog.getAccount().getFullname());
+		return blogDTO;
+	}
+	
 }

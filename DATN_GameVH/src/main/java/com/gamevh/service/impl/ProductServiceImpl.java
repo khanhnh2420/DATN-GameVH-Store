@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gamevh.entities.Product;
-import com.gamevh.reponsitory.ProductRepository;
+import com.gamevh.repository.ProductRepository;
 import com.gamevh.service.ProductService;
 
 @Service

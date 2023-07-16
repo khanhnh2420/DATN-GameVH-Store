@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CommentDTO {
     private Integer id;
+    private Integer blogId;
     private String content;
     private Date createDate;
     private String username;

@@ -107,14 +107,14 @@
                                 <ul class="posts-list">
                                     <li ng-repeat="item in blogPopular">
                                         <figure>
-                                            <a href="#">
+                                            <a href="/blog/detail/{{item.id}}">
                                                 <img src="https://drive.google.com/uc?id={{item.image}}" alt="post">
                                             </a>
                                         </figure>
 
                                         <div>
                                             <span>{{ calculateTimeAgo(item.createDate) }}</span>
-                                            <h4><a href="#">{{item.tittle}}</a></h4>
+                                            <h4><a href="/blog/detail/{{item.id}}">{{item.tittle}}</a></h4>
                                         </div>
                                     </li>
                                 </ul><!-- End .posts-list -->

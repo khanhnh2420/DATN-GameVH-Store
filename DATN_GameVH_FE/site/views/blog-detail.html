@@ -387,23 +387,23 @@
                                 </li>
                             </ul>
                         </div><!-- End .comments -->
-
+                        <div id="toast"></div>
                         <div class="reply">
                             <div class="heading">
                                 <h3 class="title">Để lại một bình luận</h3><!-- End .title -->
                             </div><!-- End .heading -->
-
-                            <form ng-show="username" action="#">
+                            
+                            <form ng-show="username">
                                 <label for="reply-message" class="sr-only">Bình luận</label>
-                                <textarea name="reply-message" id="reply-message" cols="30" rows="4"
+                                <textarea name="reply-message" id="reply-message" cols="30" rows="4" ng-model="commentData.content"
                                     class="form-control" required placeholder="Nhập nội dung bình luận *"></textarea>
-                                <button type="submit" class="btn btn-outline-primary-2">
+                                <button type="submit" class="btn btn-outline-primary-2" ng-click="sendComment()">
                                     <span style="font-weight: bold;">Gửi bình luận</span>
                                     <i class="fa-solid fa-paper-plane"></i>
                                 </button>
                             </form>
                             <div ng-hide="username">
-                                <a type="button" href="#signin-modal" data-toggle="modal"
+                                <a type="button" ng-href="#signin-modal" data-toggle="modal"
                                     class="btn btn-outline-primary-2">
                                     <span style="font-weight: bold;">Đăng nhập để sử dụng chức năng này</span>
                                     <i class="fa-solid fa-user-lock"></i>
@@ -421,14 +421,14 @@
                                 <ul class="posts-list">
                                     <li ng-repeat="item in blogPopular">
                                         <figure>
-                                            <a href="#">
+                                            <a href="/blog/detail/{{item.id}}">
                                                 <img src="https://drive.google.com/uc?id={{item.image}}" alt="post">
                                             </a>
                                         </figure>
 
                                         <div>
                                             <span>{{ calculateTimeAgo(item.createDate) }}</span>
-                                            <h4><a href="#">{{item.tittle}}</a></h4>
+                                            <h4><a href="/blog/detail/{{item.id}}">{{item.tittle}}</a></h4>
                                         </div>
                                     </li>
                                 </ul><!-- End .posts-list -->

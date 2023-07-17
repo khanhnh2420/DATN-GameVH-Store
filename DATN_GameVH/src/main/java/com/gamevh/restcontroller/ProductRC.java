@@ -1,39 +1,60 @@
 package com.gamevh.restcontroller;
 
+
+
+
+
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
+
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+
+
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
-import org.springframework.validation.annotation.Validated;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
+
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.validation.annotation.Validated;
+
+
+
+
+
+
+
+import org.springframework.http.MediaType;
+
+import org.eclipse.jetty.http.HttpStatus;
+
+import com.gamevh.dto.ProductAdminDTO;
 import com.gamevh.dto.ProductDTO;
+import com.gamevh.dto.impl.ProductAdminDTOImpl;
 import com.gamevh.dto.impl.ProductDTOImpl;
 import com.gamevh.entities.Category;
 import com.gamevh.entities.Feedback;
 import com.gamevh.entities.OrderDetail;
 import com.gamevh.entities.Product;
 import com.gamevh.repository.OrderDetailRepository;
+import com.gamevh.service.CategoryService;
 import com.gamevh.service.FeedbackService;
+import com.gamevh.service.GoogleDriveService;
 import com.gamevh.service.ProductService;
 
 @CrossOrigin("*")
@@ -42,12 +63,18 @@ import com.gamevh.service.ProductService;
 public class ProductRC {
 	@Autowired
 	ProductService productService;
+	
+	@Autowired
+	CategoryService categoryService;
 
 	@Autowired
 	OrderDetailRepository orderDetailsDAO;
 
 	@Autowired
 	FeedbackService feedBackService;
+	
+	@Autowired
+	private GoogleDriveService driveService;
 	
 	@GetMapping("/getAll")
     public ResponseEntity<List<Product>> getAllProducts() {
@@ -213,8 +240,7 @@ public class ProductRC {
 				}
 
 				ProductDTO productDTO = new ProductDTOImpl(product.getId(), product.getName(), product.getPoster(), 
-						product.getThumbnail(),product.getOriginPrice(), product.getSalePrice(), product.getOffer(),product.getAvailable(),
-						product.getLink(), product.getSource(), product.getQty(), product.getStatus(), product.getDetails(),
+						product.getThumbnail(),product.getOriginPrice(), product.getSalePrice(), product.getOffer(), product.getDetails(),
 						avgStar, countFeedBack, product.getCategory().getName(), product.getCategory().getCategoryId(),
 						product.getType(), product.getCreateDate());
 				return productDTO;
@@ -223,13 +249,61 @@ public class ProductRC {
 		return null;
 	}
 	
+	
+	
+	@SuppressWarnings("unused")
+	private ProductAdminDTO convertProductToProductAdminDTO(Product product) {
+	    if (product != null) {
+	        if (product.getAvailable()) {
+	            List<Feedback> listFeedBackByProduct = feedBackService.findByProductId(product.getId());
+	            Double sum = 0.0;
+	            Double avgStar = 0.0;
+	            Integer countFeedBack = 0;
+
+	            if (!listFeedBackByProduct.isEmpty()) {
+	                for (Feedback f : listFeedBackByProduct) {
+	                    sum += f.getStar();
+	                }
+	                avgStar = sum / listFeedBackByProduct.size();
+	                countFeedBack = listFeedBackByProduct.size();
+	            }
+
+	            ProductAdminDTO productAdminDTO = new ProductAdminDTOImpl(
+	                    product.getId(), 
+	                    product.getName(), 
+	                    product.getPoster(), 
+	                    product.getThumbnail(),
+	                    product.getOriginPrice(), 
+	                    product.getSalePrice(), 
+	                    product.getOffer(),
+	                    product.getAvailable(),
+	                    product.getSource(),  
+	                    product.getLink(), 
+	                    product.getQty(), 
+	                    product.getStatus(), 
+	                    product.getDetails(),
+	                    avgStar, 
+	                    countFeedBack, 
+	                    product.getCategory().getName(), 
+	                    product.getCategory().getCategoryId(),
+	                    product.getType(), 
+	                    product.getCreateDate()
+	            );
+	            return productAdminDTO;
+	        }
+	    }
+	    return null;
+	}
+
+	
 	@PostMapping("createProduct")
-	public ResponseEntity<HttpStatus> createProduct(@Validated @RequestBody ProductDTO dto) {
+	public ResponseEntity<HttpStatus> createProduct(@Validated @ModelAttribute ProductAdminDTOImpl dto,
+	                                                @RequestParam("posters") List<MultipartFile> posters,
+	                                                @RequestParam("thumbnails") List<MultipartFile> thumbnails) {
 	    if (dto != null) {
 	        // Tạo mới sản phẩm và lưu vào cơ sở dữ liệu
 	        Product product = new Product();
 	        product.setName(dto.getName());
-	        product.setPoster(dto.getPoster());
 	        product.setOriginPrice(dto.getOriginPrice());
 	        product.setSalePrice(dto.getSalePrice());
 	        product.setOffer(dto.getOffer());
@@ -243,134 +317,134 @@ public class ProductRC {
 	        product.setType(dto.getType());
 
 	        Category category = new Category();
-	        category.setId(dto.getId());
-	        category.setCategoryId(dto.getCategoryId());
-	        category.setName(dto.getCategoryName());;
-	        category.setType(dto.getType());
-
-	        product.setCategory(category);
-
-	        Product createdProduct = productService.createProduct(product);
-
-	        // Lưu 3 hình ảnh thumbnail
-	        String[] thumbnails = dto.getThumbnail().split("-\\*-");
-	        for (int i = 0; i < thumbnails.length; i++) {
-	            String thumbnail = thumbnails[i];
-	            String fileName = saveThumbnailImage(thumbnail);
-	            // Lưu đường dẫn thumbnail vào sản phẩm
-	            addThumbnail(createdProduct, fileName);
-	        }
-
-	        // Cập nhật thông tin sản phẩm sau khi đã lưu đường dẫn thumbnail
-	        productService.updateProduct(createdProduct);
-
-	        return ResponseEntity.ok().build();
-	    }
-	    return ResponseEntity.badRequest().build();
-	}
-	
-	private void addThumbnail(Product product, String fileName) {
-	    String thumbnails = product.getThumbnail();
-	    if (thumbnails == null || thumbnails.isEmpty()) {
-	        thumbnails = fileName;
-	    } else {
-	        thumbnails += "-*-";
-	        thumbnails += fileName;
-	    }
-	    product.setThumbnail(thumbnails);
-	}
-	
-	@PostMapping("upload")
-	public ResponseEntity<String> uploadFile(@RequestParam("productImage") MultipartFile file) throws IOException {
-	    String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-
-	    try {
-	        // Lấy loại media của file
-	        String contentType = file.getContentType();
-
-	        // Tạo đường dẫn đến thư mục trong dự án
-	        Path targetLocation = Path.of("").toAbsolutePath()
-	                .normalize();
-
-	        // Tạo thư mục nếu chưa tồn tại
-	        Files.createDirectories(targetLocation);
-
-	        // Tạo đường dẫn tới file trong thư mục đích với đuôi phần mở rộng phù hợp
-	        String fileExtension = "." + contentType.substring(contentType.lastIndexOf("/") + 1);
-	        String newFileName = fileName + fileExtension;
-	        Path targetFile = targetLocation.resolve(newFileName);
-
-	        // Lưu file vào thư mục đích
-	        Files.copy(file.getInputStream(), targetFile, StandardCopyOption.REPLACE_EXISTING);
-
-	        // Lưu đường dẫn file mới vào biến responseData
-	        String responseData = "{\"fileName\": \"" + newFileName + "\"}";
-
-	      
-	        return ResponseEntity.ok(responseData);
-	    } catch (IOException ex) {
-	        ex.printStackTrace();
-	        // Xử lý lỗi nếu cần thiết
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-	    }
-	}
-
-	private String saveThumbnailImage(String thumbnail) {
-	    try {
-	        // Lấy đường dẫn thư mục lưu trữ hình ảnh thumbnail
-	        Path targetLocation = Path.of("").toAbsolutePath()
-	                .normalize();
-	        Files.createDirectories(targetLocation);
-
-	        // Tạo đường dẫn tới file thumbnail trong thư mục đích với đuôi phần mở rộng phù hợp
-	        String fileName = thumbnail;
-	        Path targetFile = targetLocation.resolve(fileName);
-
-	        // Lưu file thumbnail vào thư mục đích
-	        String filePath = saveThumbnail(targetFile);
-
-	        // Trả về đường dẫn file sau khi lưu thành công
-	        return filePath;
-	    } catch (IOException ex) {
-	        ex.printStackTrace();
-	        // Xử lý lỗi nếu cần thiết
-	        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error saving thumbnail image");
-	    }
-	}
-
-	private String saveThumbnail(Path targetFile) throws IOException {
-	    // Code xử lý lưu file thumbnail vào thư mục và trả về đường dẫn file sau khi lưu thành công
-	    // Thực hiện logic lưu file tại đây
-	    // Trả về đường dẫn file sau khi lưu thành công
-	    return targetFile.toString();
-	}
-
-	@PostMapping("updateProduct/{id}")
-	public ResponseEntity<HttpStatus> updateProduct(@PathVariable Integer id, @Validated @RequestBody ProductDTO dto) {
-	    Product product = productService.findById(id);
-	    if (product != null) {
-	        // Update the fields with new values from DTO
-	        product.setName(dto.getName());
-	        product.setPoster(dto.getPoster());
-	        product.setOriginPrice(dto.getOriginPrice());
-	        product.setSalePrice(dto.getSalePrice());
-	        product.setOffer(dto.getOffer());
-	        product.setCreateDate(dto.getCreateDate());
-	        product.setAvailable(dto.getAvailable());
-	        product.setSource(dto.getSource());
-	        product.setLink(dto.getLink());
-	        product.setDetails(dto.getDetails());
-	        product.setQty(dto.getQty());
-	        product.setStatus(dto.getStatus());
-	        product.setType(dto.getType());
-
-	        Category category = new Category();
-	        category.setId(dto.getId());
 	        category.setCategoryId(dto.getCategoryId());
 	        category.setName(dto.getCategoryName());
 	        category.setType(dto.getType());
 
 	        product.setCategory(category);
+
+	        try {
+	            if (!posters.isEmpty()) {
+	                MultipartFile poster = posters.get(0); // Get the first poster from the list
+	                ResponseEntity<Object> response = uploadImage(poster);
+	                if (String.valueOf(response.getStatusCode()).equals("200")) {
+	                    String posterFileId = (String) response.getBody();
+	                    product.setPoster(posterFileId);
+	                } else {
+	                    // Xử lý lỗi khi tải ảnh poster lên Google Drive
+	                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+	                }
+	            }
+	            if (!thumbnails.isEmpty()) {
+	                List<String> thumbnailFileIds = new ArrayList<>();
+	                for (MultipartFile thumbnail : thumbnails) {
+	                    ResponseEntity<Object> response = uploadImage(thumbnail);
+	                    if (String.valueOf(response.getStatusCode()).equals("200")) {
+	                        String thumbnailFileId = (String) response.getBody();
+	                        if (thumbnailFileId != null) {
+	                            thumbnailFileIds.add(thumbnailFileId);
+	                        }
+	                    } else {
+	                        // Xử lý lỗi khi tải ảnh thumbnail lên Google Drive
+	                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+	                    }
+	                }
+	                String thumbnailKeys = String.join("***", thumbnailFileIds);
+	                product.setThumbnail(thumbnailKeys);
+	            }
+	        } catch (GeneralSecurityException e) {
+	            // Xử lý lỗi khi tải ảnh lên Google Drive
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+	        }
+
+	        productService.createProduct(product);
+
+	        return ResponseEntity.ok().build();
+	    }
+	    return ResponseEntity.badRequest().build();
+	}
+
+
+
+
+
+	@PostMapping("upload")
+	public ResponseEntity<Object> uploadImage(@RequestParam("image") MultipartFile image)
+	        throws GeneralSecurityException {
+	    try {
+	        if (!image.isEmpty()) {
+	        	
+	            String fileName = image.getOriginalFilename();
+	            String mimeType = image.getContentType();
+	            String folderId = "1mMOXDZOQvQVs2MvJJF77UUpACbkfp5sv"; // ID của thư mục trên Google Drive để lưu file
+	            // URL example:
+	            // https://drive.google.com/drive/folders/10VLW7dddQHqi4-f4ddSTqxjN9YmLFZWi
+	            String fileId = driveService.uploadFile(image, fileName, mimeType, folderId);
+//	            System.out.println(fileId);
+	            // Xử lý thành công
+	            String responseData = "{\"fileId\": \"" + fileId + "\"}";
+				return ResponseEntity.ok(responseData);
+	        }
+	    } catch (IOException e) {
+	    	e.printStackTrace();
+	        // Xử lý lỗi
+	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST_400).contentType(MediaType.APPLICATION_JSON).body("Lỗi upload hình: " + e.getMessage());
+	    }
+
+	    return ResponseEntity.status(HttpStatus.BAD_REQUEST_400).contentType(MediaType.APPLICATION_JSON).body("Lỗi upload hình");
+	    
+	}
+
+	@PostMapping("updateProduct/{id}")
+	public ResponseEntity<HttpStatus> updateProduct(@PathVariable Integer id, @Validated @RequestBody ProductAdminDTOImpl dto, @RequestParam(required = false) MultipartFile poster, @RequestParam(required = false) List<MultipartFile> thumbnails) {
+	    Product product = productService.findById(id);
+	    if (product != null) {
+	        // Cập nhật các thuộc tính của sản phẩm dựa trên ProductAdminDTOImpl
+	        product.setName(dto.getName());
+	        product.setOriginPrice(dto.getOriginPrice());
+	        product.setSalePrice(dto.getSalePrice());
+	        product.setOffer(dto.getOffer());
+	        product.setCreateDate(dto.getCreateDate());
+	        product.setAvailable(dto.getAvailable());
+	        product.setSource(dto.getSource());
+	        product.setLink(dto.getLink());
+	        product.setDetails(dto.getDetails());
+	        product.setQty(dto.getQty());
+	        product.setStatus(dto.getStatus());
+	        product.setType(dto.getType());
+
+	        // Cập nhật Category trong Product
+	        product.getCategory().setCategoryId(dto.getCategoryId());
+
+	        // Kiểm tra nếu người dùng thay đổi ảnh poster
+	        if (poster != null) {
+	            // Tải ảnh mới lên Google Drive và nhận lại ID của file
+	            try {
+	                String newPosterId = uploadImagedrive(poster);
+	                product.setPoster(newPosterId);
+	            } catch (Exception e) {
+	                // Xử lý lỗi khi tải ảnh lên Google Drive
+	                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+	            }
+	        }
+
+	        // Kiểm tra nếu người dùng thay đổi ảnh thumbnail
+	        if (thumbnails != null && !thumbnails.isEmpty()) {
+	            List<String> thumbnailIds = new ArrayList<>();
+	            for (MultipartFile thumbnail : thumbnails) {
+	                // Tải từng ảnh thumbnail lên Google Drive và nhận lại ID của file
+	                try {
+	                    String newThumbnailId = uploadImagedrive(thumbnail);
+	                    thumbnailIds.add(newThumbnailId);
+	                } catch (Exception e) {
+	                    // Xử lý lỗi khi tải ảnh lên Google Drive
+	                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+	                }
+	            }
+	            String thumbnailIdsString = String.join("***", thumbnailIds);
+	            product.setThumbnail(thumbnailIdsString);
+	        }
+
 
 	        productService.updateProduct(product);
 
@@ -379,16 +453,13 @@ public class ProductRC {
 	    return ResponseEntity.notFound().build();
 	}
 
+	@SuppressWarnings("unused")
+	private String uploadImagedrive(MultipartFile image) throws Exception {
+	    String fileName = image.getOriginalFilename();
+	    String mimeType = image.getContentType();
+	    String folderId = "1xbZ557bXhtiEG-sPP4TRXf007THuPsns"; // ID của thư mục trên Google Drive để lưu file
 
-	@DeleteMapping("deleteProduct/{id}")
-	public ResponseEntity<HttpStatus> deleteProduct(@PathVariable Integer id) {
-	    Product product = productService.findById(id);
-	    if (product != null) {
-	        productService.deleteProduct(product);
-	        return ResponseEntity.ok().build();
-	    }
-	    return ResponseEntity.notFound().build();
+	    return driveService.uploadFile(image, fileName, mimeType, folderId);
 	}
-
-
+	
 }

@@ -1,42 +1,62 @@
 // Angular js
-app.controller("CheckoutController", function (AccountService, MomoService, IPService, ZaloPayService, VNPayService, $scope, $window) {
+app.controller("CheckoutController", function (AccountService, OrderService, CouponOwnerService, MomoService, IPService,
+	PaypalService, ZaloPayService, VNPayService, $scope, $window, $http) {
+
 	$scope.cart = [];
 	$scope.TotalPrice = 0;
-	$scope.paymentMethod = "cod";
+	$scope.paymentMethod = "cod"; // mặc định chọn COD
 	$scope.form = {};
+	$scope.baseUrlHere = "http://localhost:3000";
+
+	// Validate coupon
+	$scope.isValidCoupon = false; // báo lỗi chung
+	$scope.isValidMinSpendCoupon = false; // báo lỗi đơn hàng tối thiểu
+	$scope.isValidDateCoupon = false; // báo lỗi ngày của giảm giá
+	$scope.DateCouponError = "";
+
+	// Location
+	const hostLocation = "https://provinces.open-api.vn/api/";
+	$scope.selectedDistrict = false;
+	$scope.selectedWard = false;
+	$scope.provinces = [];
+	$scope.districts = [];
+	$scope.wards = [];
+	var provinceId;
+	var wardId;
+	var districtId;
 
 	$scope.account = {}; // Biến lưu thông tin account 
-    $scope.username = null;
+	$scope.username = null;
 
-    // Trở về trang đăng nhập
-    $scope.logout = function () {
-        $window.localStorage.removeItem("username");
-        $window.sessionStorage.removeItem("username");
-        $window.sessionStorage.setItem("messageLogin", "Bạn đã đăng xuất!");
-        $window.location.href = 'login.html';
-    };
+	// Trở về trang đăng nhập
+	$scope.logout = function () {
+		$window.localStorage.removeItem("username");
+		$window.sessionStorage.removeItem("username");
+		$window.sessionStorage.setItem("messageLogin", "Bạn đã đăng xuất!");
+		$window.location.href = 'login.html';
+	};
 
-    AccountService.checkLogin().then(function (account) {
-        // Người dùng đã đăng nhập
-        $scope.account = account;
-    }).catch(function (error) {
-        // Người dùng chưa đăng nhập hoặc có lỗi
-        console.error('Lỗi đăng nhập hoặc chưa đăng nhập:', error);
-        if (error === "Người dùng chưa đăng nhập") {
-            // Xử lý logic khi người dùng chưa đăng nhập
-            $window.localStorage.removeItem("username");
-            $window.sessionStorage.removeItem("username");
-            $window.sessionStorage.setItem("messageLogin", "Vui lòng đăng nhập!");
-            $window.location.href = 'login.html';
-        }
-    });
+	AccountService.checkLogin().then(function (account) {
+		// Người dùng đã đăng nhập
+		$scope.account = account;
+	}).catch(function (error) {
+		// Người dùng chưa đăng nhập hoặc có lỗi
+		console.error('Lỗi đăng nhập hoặc chưa đăng nhập:', error);
+		if (error === "Người dùng chưa đăng nhập") {
+			// Xử lý logic khi người dùng chưa đăng nhập
+			$window.localStorage.removeItem("username");
+			$window.sessionStorage.removeItem("username");
+			$window.sessionStorage.setItem("messageLogin", "Vui lòng đăng nhập!");
+			$window.location.href = 'login.html';
+		}
+	});
 
 	function getCartData() {
 		$scope.cart = ($window.localStorage.getItem("carts") != null) ? JSON.parse($window.localStorage.getItem("carts")) : [];
 		$scope.TotalPrice = 0;
 		if ($scope.cart.length > 0) {
 			$scope.cart.forEach(function (data) {
-				$scope.TotalPrice += (data.salePrice - (data.salePrice * data.offer)) * data.Qty;
+				$scope.TotalPrice += (data.salePrice - (data.salePrice * data.offer)) * data.qty;
 			});
 		}
 	}
@@ -46,43 +66,208 @@ app.controller("CheckoutController", function (AccountService, MomoService, IPSe
 
 	$scope.load_all();
 
+	// Check nhập mã giảm giá
+	$scope.checkCoupon = function () {
+		$scope.updateStatusCoupon();
+		if ($scope.form.coupon && $scope.account) {
+			CouponOwnerService.getCoupon($scope.account.username, $scope.form.coupon).then(function (coupon) {
+				$scope.coupon = coupon.data;
+				if ($scope.coupon) {
+					var today = new Date();
+					// Kiểm tra xem coupon còn hạn hay không ?
+					if (today < new Date($scope.coupon.mfgDate)) {
+						$scope.DateCouponError = "Mã giảm giá chưa đến ngày áp dụng!";
+						$scope.isValidDateCoupon = true;
+						$scope.coupon = null;
+						getCartData();
+					} else if (today > new Date($scope.coupon.expDate)) {
+						$scope.DateCouponError = "Mã giảm giá đã hết hạn!";
+						$scope.isValidDateCoupon = true;
+						$scope.coupon = null;
+						getCartData();
+					} else {
+						// Lấy tổng tiền
+						$scope.cart = ($window.localStorage.getItem("carts") != null) ? JSON.parse($window.localStorage.getItem("carts")) : [];
+						$scope.TotalPrice = 0;
+						if ($scope.cart.length > 0) {
+							$scope.cart.forEach(function (data) {
+								$scope.TotalPrice += (data.salePrice - (data.salePrice * data.offer)) * data.qty;
+							});
+						}
+						// Kiểm tra tổng tiền với đơn giá tối thiểu
+						if ($scope.TotalPrice >= $scope.coupon.minSpend) {
+							// Tính lại tổng tiền
+							if ($scope.TotalPrice > $scope.coupon.value) {
+								$scope.TotalPrice -= $scope.coupon.value;
+							} else {
+								$scope.TotalPrice = 0;
+							}
+						} else {
+							$scope.isValidMinSpendCoupon = true;
+							$scope.coupon = null;
+							getCartData();
+						}
+					}
+				} else {
+					$scope.isValidCoupon = true;
+					$scope.coupon = null;
+					getCartData();
+				}
+			}).catch(function (error) {
+				console.error('Lỗi khi lấy thông tin mã giảm giá:', error);
+			});
+		} else {
+			$scope.isValidCoupon = true;
+			$scope.coupon = null;
+			getCartData();
+		}
+	}
+
+	$scope.updateStatusCoupon = function () {
+		$scope.isValidCoupon = false;
+		$scope.isValidMinSpendCoupon = false;
+		$scope.isValidDateCoupon = false;
+		$scope.DateCouponError = "";
+	};
+
+	$scope.clearCoupon = function () {
+		$scope.updateStatusCoupon();
+
+		$scope.coupon = null;
+		getCartData();
+	};
+
+	// Xử lý event thanh toán
 	$scope.checkout = function () {
-		console.log($scope.form)
-		// if ($scope.paymentMethod === "cod") {
-		// 	// thánh toán khi nhận hàng
+		if ($scope.orderForm.$valid) {
+			// Xử lý logic khi form đã được điền đúng
 
-		// } else if ($scope.paymentMethod === "momo") {
-		// 	// thánh toán qua momo
-		// 	var date = new Date().getTime();
-		// 	var orderId = "HD" + date;
-		// 	var returnUrl = "http://localhost:3000/checkoutResult";
-		// 	var totalPrice = $scope.TotalPrice;
-		// 	var OrerInfo = "Thanh toán đơn hàng " + orderId;
-		// 	$scope.createMomoData(orderId, returnUrl, totalPrice, OrerInfo);
-		// } else if ($scope.paymentMethod === "vnpay") {
-		// 	// thánh toán qua vnpay
-		// 	var totalPrice = $scope.TotalPrice;
-		// 	IPService.getIPAddress()
-		// 		.then(function (ipAddress) {
-		// 			var userIP = ipAddress.data;
-		// 			VNPayService.createOrder(totalPrice, userIP.ip).then(function (resp) {
-		// 				console.log(resp)
-		// 				$scope.zalopay = resp.data;
-		// 				// Hiển thị thông báo khi thanh toán
-		// 				if ($scope.zalopay) {
-		// 					// $window.sessionStorage.setItem("messageCheckout", JSON.stringify(statusCheckout));
-		// 					$window.location.href = $scope.zalopay.url;
-		// 				} 
-		// 			})
-		// 		})
-		// 		.catch(function (error) {
-		// 			console.log('Error:', error);
-		// 		});
+			// Tạo một đối tượng ngày hiện tại
+			var today = new Date();
 
-		// } else if ($scope.paymentMethod === "paypal") {
-		// 	// thánh toán qua paypal
+			if ($scope.paymentMethod === "cod") {
+				// thánh toán khi nhận hàng
+				// Tạo mã đơn hàng
+				var OrderId = today.getTime() + Math.floor(Math.random() * 1000);
+				var OrderIdLimited = OrderId.toString().substring(0, 17);
 
-		// }
+				// Call hàm tạo cod order
+				var returnUrl = $scope.baseUrlHere + "/checkoutResult";
+				$scope.createOrderOnDB(OrderIdLimited, returnUrl);
+			} else if ($scope.paymentMethod === "momo") {
+				// thánh toán qua momo
+				// Tạo mã đơn hàng
+				var OrderId = today.getTime() + Math.floor(Math.random() * 1000);
+				var OrderIdLimited = OrderId.toString().substring(0, 17);
+
+				// Tạo data và call hàm tạo momo order
+				var returnUrl = $scope.baseUrlHere + "/checkoutResult";
+				var totalPrice = $scope.TotalPrice;
+				var OrerInfo = "Thanh toán đơn hàng " + OrderIdLimited;
+				$scope.createMomoData(OrderIdLimited, returnUrl, totalPrice, OrerInfo);
+			} else if ($scope.paymentMethod === "vnpay") {
+				// thánh toán qua vnpay
+				var totalPrice = $scope.TotalPrice;
+				IPService.getIPAddress()
+					.then(function (ipAddress) {
+						var userIP = ipAddress.data;
+						VNPayService.createOrder(totalPrice, userIP.ip).then(function (resp) {
+							$scope.vnpay = resp.data;
+							// Tìm vị trí của vnp_TxnRef trong chuỗi (Mã hóa đơn)
+							var startIndex = $scope.vnpay.url.indexOf("vnp_TxnRef=");
+
+							if (startIndex !== -1) {
+								// Cắt chuỗi từ vị trí của vnp_TxnRef
+								var substring = $scope.vnpay.url.substring(startIndex);
+
+								// Tìm vị trí của ký tự '&' tiếp theo sau vnp_TxnRef
+								var endIndex = substring.indexOf("&");
+
+								if (endIndex !== -1) {
+									// Cắt chuỗi từ vị trí của vnp_TxnRef đến vị trí của ký tự '&'
+									var vnp_TxnRef = substring.substring(0, endIndex);
+
+									// Lấy giá trị của vnp_TxnRef bằng cách loại bỏ phần prefix "vnp_TxnRef="
+									vnp_TxnRef = vnp_TxnRef.replace("vnp_TxnRef=", "");
+
+									// Tạo order trên database
+									$scope.createOrderOnDB(vnp_TxnRef, $scope.vnpay.url);
+								}
+							}
+						})
+					})
+					.catch(function (error) {
+						console.log('Error:', error);
+					});
+
+			} else if ($scope.paymentMethod === "paypal") {
+				// thánh toán qua paypal
+				$scope.createPaypalOrder($scope.cart);
+			}
+		}
+	}
+
+	/*Hàm tạo order trên database
+		orderId :  String - Mã đơn hàng theo phương thức thanh toán
+		returnUrl : String - Link trả về sau khi thanh toán thành công (cổng thanh toán trừ COD)
+	*/
+	$scope.createOrderOnDB = function (orderId, returnUrl) {
+		// Ghép chuỗi địa chỉ nhận hàng
+		$scope.form.address = $scope.form.address + ", " + $scope.selectedLocation;
+
+		// Tạo một đối tượng ngày hiện tại
+		var today = new Date();
+
+		// Lấy thông tin ngày, tháng, năm
+		var year = today.getFullYear();
+		var month = (today.getMonth() + 1).toString().padStart(2, '0'); // Tháng trong JavaScript bắt đầu từ 0
+		var day = today.getDate().toString().padStart(2, '0');
+
+		// Kết hợp thông tin ngày, tháng, năm thành chuỗi định dạng yêu cầu
+		var formattedDate = year + '-' + month + '-' + day;
+
+		// Tạo data cho bảng orderData để gửi về server
+		$scope.data = {
+			"orderId": orderId,
+			"fullname": $scope.form.fullname,
+			"createDate": formattedDate,
+			"address": $scope.form.address,
+			"paymentType": $scope.paymentMethod,
+			"shippingFee": 0,
+			"couponCode": $scope.coupon ? $scope.coupon.code : null,
+			"email": $scope.form.email,
+			"phone": $scope.form.phone,
+			"orderStatus": "Đang chờ xử lý",
+			"paymentStatus": false,
+			"note": $scope.form.note ? $scope.form.note : null,
+			"totalPrice": $scope.TotalPrice,
+			"qty": $scope.cart.length,
+			"account": $scope.account
+		}
+
+		// Tạo data cho bảng orderDetail để gửi về server
+		$scope.dataCart = [];
+		$scope.cart.forEach(function (data) {
+			$scope.dataCart.push({
+				"id": data.id,
+				"qty": data.qty
+			});
+		});
+
+		$scope.requestData = {
+			orderData: $scope.data,
+			listCartDTO: $scope.dataCart
+		};
+
+		// Gọi service để tạo order
+		OrderService.createOrder($scope.requestData).then(function (order) {
+			$scope.order = order.data;
+			if ($scope.order != null) {
+				$window.location.href = returnUrl;
+			}
+		}).catch(function (error) {
+			console.error('Lỗi khi tạo order:', error);
+		});
 	}
 
 	// $scope.zaloPayData = {
@@ -168,9 +353,152 @@ app.controller("CheckoutController", function (AccountService, MomoService, IPSe
 		// Call API Momo
 		MomoService.createOrder(data).then(function (response) {
 			$scope.momo = response.data;
-			$window.location.href = $scope.momo.payUrl;
+			$scope.createOrderOnDB(inpOrderId, $scope.momo.payUrl);
 		}).catch(function (error) {
 			console.error('Lỗi khi tạo order Momo:', error);
 		});
+	}
+
+	// Tạo data cho Paypal
+	$scope.createPaypalOrder = function (cart) {
+		$scope.item = [];
+		$scope.totalPricePaypal = 0;
+
+		// Tạo list sản phẩm
+		if (cart.length > 0) {
+			cart.forEach(function (data) {
+				$scope.item.push({
+					"name": data.name,
+					"description": "",
+					"quantity": data.qty,
+					"unit_amount": {
+						"currency_code": "USD",
+						"value": $scope.formatNumberPaypal($scope.vndToUsd((data.salePrice - (data.salePrice * data.offer))))
+					}
+				});
+				$scope.totalPricePaypal += $scope.vndToUsd((data.salePrice - (data.salePrice * data.offer))) * data.qty;
+			});
+		}
+
+		// Tạo data để gửi cho paypal
+		$scope.dataPaypal = {
+			"intent": "CAPTURE",
+			"purchase_units": [
+				{
+					"payee": {
+						"email_address": "GamesVH@gmail.com",
+						"merchant_id": "RX4J9SUKTAE6A"
+					},
+					"items": $scope.item,
+					"amount": {
+						"currency_code": "USD",
+						"value": $scope.coupon ? $scope.formatNumberPaypal($scope.totalPricePaypal) - $scope.vndToUsd($scope.coupon.value) : $scope.formatNumberPaypal($scope.totalPricePaypal),
+						"breakdown": {
+							"item_total": {
+								"currency_code": "USD",
+								"value": $scope.formatNumberPaypal($scope.totalPricePaypal)
+							}, "discount": {
+								"currency_code": "USD",
+								"value": $scope.coupon ? $scope.vndToUsd($scope.coupon.value) : 0
+							}
+						}
+					}
+				}
+			],
+			"application_context": {
+				"return_url": $scope.baseUrlHere + "/checkoutResult",
+				"cancel_url": $scope.baseUrlHere
+			}
+		}
+
+		// Call API Paypal
+		PaypalService.createPaypalOrder($scope.dataPaypal).then(function (paypal) {
+			$scope.paypal = paypal.data;
+			
+			// Tạo order trên DB
+			$scope.createOrderOnDB($scope.paypal.id, $scope.paypal.links[1].href);
+		}).catch(function (error) {
+			console.error('Lỗi khi tạo order paypal:', error);
+		});
+	}
+
+	// Hàm chuyển đổi tiền tệ VND --> USD
+	$scope.vndToUsd = function (amountVnd) {
+		// Tỷ giá VND sang USD
+		var exchangeRate = 0.000042; // Ví dụ: 1 VND = 0.000042 USD
+
+		// Chuyển đổi
+		var amountUsd = amountVnd * exchangeRate;
+
+		// Làm tròn đến 2 chữ số thập phân
+		amountUsd = amountUsd.toFixed(2);
+
+		return amountUsd;
+	};
+
+	// Hàm format Number Decimal
+	$scope.formatNumberPaypal = function (number) {
+		return Math.round(number * 100) / 100;
+	}
+
+
+	// API Location
+	$scope.getLocation = function (api, scopeVariable) {
+		$http.get(api)
+			.then(function (response) {
+				angular.copy(response.data, scopeVariable);
+			})
+	};
+
+	$scope.callApiGetAll = function (api) {
+		$http.get(api)
+			.then(function (response) {
+				$scope.provinces = response.data;
+			}).catch(function (error) { });
+	};
+
+	$scope.callApiGetAll(hostLocation + "?depth=1");
+
+	$scope.callApiDistrict = function (api) {
+		$http.get(api)
+			.then(function (response) {
+				$scope.districts = response.data.districts;
+			}).catch(function (error) { });;
+	};
+
+	$scope.callApiWard = function (api) {
+		$http.get(api)
+			.then(function (response) {
+				$scope.wards = response.data.wards;
+			}).catch(function (error) { });;
+	};
+
+	$scope.updateProvince = function () {
+		provinceId = $scope.form.province;
+		// Gọi hàm để lấy dữ liệu quận/huyện của thành phố đã chọn
+		$scope.callApiDistrict(hostLocation + "p/" + provinceId + "?depth=2");
+		printResult();
+		$scope.selectedDistrict = true;
+		$scope.selectedWard = false;
+	};
+
+	$scope.updateDistrict = function () {
+		districtId = $scope.form.district
+		// Gọi hàm để lấy dữ liệu Xã/Phường của quận/huyện đã chọn
+		$scope.callApiWard(hostLocation + "d/" + districtId + "?depth=2");
+		printResult();
+		$scope.selectedWard = true;
+	};
+
+	$scope.updateWard = function () {
+		wardId = $scope.form.ward
+		printResult();
+	};
+
+	var printResult = () => {
+		if (provinceId != "" && districtId != "" && wardId != "") {
+			let result = $("#ward option:selected").text() + ", " + $("#district option:selected").text() + ", " + $("#province option:selected").text();
+			$scope.selectedLocation = result;
+		}
 	}
 });

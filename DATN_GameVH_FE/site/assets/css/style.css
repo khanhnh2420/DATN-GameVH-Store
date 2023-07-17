@@ -20376,3 +20376,12 @@ button:focus {
     color: rgba(0, 0, 0, 0.3);
     cursor: pointer;
   }
+
+
+/*-----------------
+	65. CSS ERROR
+-----------------------*/
+
+  .is-invalid-no-x {
+    border: 1px solid red !important;
+}

@@ -9,9 +9,12 @@ import com.gamevh.entities.OrderData;
 import com.gamevh.repository.OrderDataRepository;
 import com.gamevh.service.OrderService;
 
+import jakarta.transaction.Transactional;
+
 
 @Service
-public abstract class OrderServiceImpl implements OrderService {
+@Transactional
+public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	OrderDataRepository orderDataRepository;
@@ -24,6 +27,16 @@ public abstract class OrderServiceImpl implements OrderService {
 	@Override
 	public OrderData findById(Long id) {
 		return orderDataRepository.findById(id).get();
+	}
+
+	@Override
+	public OrderData add(OrderData orderData) {
+		return orderDataRepository.save(orderData);
+	}
+
+	@Override
+	public List<OrderData> findByOrderId(String orderId) {
+		return orderDataRepository.findByOrderId(orderId);
 	}
 	
 }

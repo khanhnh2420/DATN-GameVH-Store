@@ -1,10 +1,12 @@
-app.controller("HomeController", function (ProductService, $scope, $timeout, $rootScope) {
+app.controller("HomeController", function (ProductService, BlogService, TimeService, $scope, $timeout, $rootScope) {
     $scope.activeTab = 'products-trending-tab';
     $scope.topSellings = [];
     $scope.topNewReleases = [];
     $scope.topRates = [];
     $scope.listGames = [];
     $scope.listAccessories = [];
+    $scope.listBlogs = [];
+    $scope.calculateTimeAgo = TimeService.calculateTimeAgo;
 
     $scope.loadData = function () {
         ProductService.getTop6Selling().then(function (response) {
@@ -38,6 +40,13 @@ app.controller("HomeController", function (ProductService, $scope, $timeout, $ro
         ProductService.getListAccessory().then(function (response) {
             $scope.listAccessories = response.data;
             $scope.randomizeArray($scope.listAccessories);
+            $scope.checkCarouselInitialization();
+        }).catch(function (error) {
+            console.error('Lỗi khi lấy danh sách phụ kiện:', error);
+        });
+
+        BlogService.getAllBlog().then(function (response) {
+            $scope.listBlogs = response.data;
             $scope.checkCarouselInitialization();
         }).catch(function (error) {
             console.error('Lỗi khi lấy danh sách phụ kiện:', error);
@@ -85,17 +94,17 @@ app.controller("HomeController", function (ProductService, $scope, $timeout, $ro
                     }
                 }
             });
-    
+
             $('.owl-carousel-2-items').owlCarousel({
-                "nav": false, 
+                "nav": false,
                 "dots": true,
                 "margin": 0,
                 "loop": false,
-                "items":1
+                "items": 1
             });
         }, 0);
     };
-    
+
 
 
     $scope.changeTab = function (tabId) {

@@ -532,7 +532,7 @@
                 <!-- End .heading-left -->
 
                 <div class="heading-right">
-                    <a th:href="@{|/category|}" class="title-link" style="cursor: pointer;">Xem thêm sản phẩm<i
+                    <a href="/shop/game" class="title-link" style="cursor: pointer;">Xem thêm sản phẩm<i
 							class="icon-long-arrow-right"></i>
 					</a>
                 </div>
@@ -693,7 +693,7 @@
                 <!-- End .heading-left -->
 
                 <div class="heading-right">
-                    <a href="/accessory" class="title-link">Xem thêm sản phẩm <i class="icon-long-arrow-right"></i>
+                    <a href="/shop/PK" class="title-link">Xem thêm sản phẩm <i class="icon-long-arrow-right"></i>
 					</a>
                 </div>
                 <!-- End .heading-right -->
@@ -799,7 +799,7 @@
                     <!-- End .heading-left -->
 
                     <div class="heading-right">
-                        <a href="/accessory" class="title-link">Xem thêm bài viết <i class="icon-long-arrow-right"></i>
+                        <a href="/blog" class="title-link">Xem thêm bài viết <i class="icon-long-arrow-right"></i>
 						</a>
                     </div>
                     <!-- End .heading-right -->
@@ -831,23 +831,23 @@
 									}
 								}'>
                         <div class="owl-stage mb-1">
-                            <div class="owl-item" ng-repeat="p in listAccessories | limitTo: 6">
+                            <div class="owl-item" ng-repeat="p in listBlogs">
                                 <article class="entry">
                                     <figure class="entry-media">
-                                        <a href="single.html"> <img src="/assets/images/demos/demo-19/blog/post-1.jpg" alt="image desc">
+                                        <a href="single.html"> <img src="https://drive.google.com/uc?id={{p.image}}" alt="image desc">
                                         </a>
                                     </figure>
                                     <!-- End .entry-media -->
 
                                     <div class="entry-body">
                                         <div class="entry-meta">
-                                            <a href="#">Nov 22, 2018</a>, 0 Comments
+                                            <a href="#">{{ calculateTimeAgo(p.createDate) }}</a>, {{p.commentCount}} bình
+                                            luận
                                         </div>
                                         <!-- End .entry-meta -->
 
                                         <h3 class="entry-title">
-                                            <a href="single.html">Morbi in sem quis dui placerat mauris
-												sit ornare.</a>
+                                            <a href="/blog/detail/{{item.id}}">{{p.tittle}}</a>
                                         </h3>
                                         <!-- End .entry-title -->
                                     </div>

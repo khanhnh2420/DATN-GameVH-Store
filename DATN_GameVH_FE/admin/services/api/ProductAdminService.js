@@ -4,7 +4,7 @@ app.factory('ProductAdminService', function($http) {
 
     return {
         getProductDTO: function(productId) {
-            return $http.get(baseUrl + '/getProductDTO/' + productId);
+            return $http.get(baseUrl + '/getProductAdminDTO/' + productId);
         },
         getProduct: function(productId) {
             return $http.get(baseUrl + '/' + productId);
@@ -14,6 +14,15 @@ app.factory('ProductAdminService', function($http) {
         },
         getAllProducts: function() {
             return $http.get(baseUrl + '/getAll');
+        },
+        uploadImage: function(image) {
+            var formData = new FormData();
+            formData.append('image', image);
+
+            return $http.post(baseUrl + '/upload', formData, {
+                transformRequest: angular.identity,
+                headers: { 'Content-Type': undefined }
+            });
         },
         createProduct: function(productData) {
             return $http.post(baseUrl, productData);

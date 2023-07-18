@@ -147,35 +147,35 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">ID </label>
-                                            <input class="form-control" type="text" readonly>
+                                            <label class="col-form-label">ID</label>
+                                            <input class="form-control" type="text" ng-model="product.id">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Product Name </label>
-                                            <input class="form-control" type="text">
+                                            <label class="col-form-label">Product Name</label>
+                                            <input class="form-control" type="text" ng-model="product.name">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Origin Price</label>
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="text" ng-model="product.originPrice">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Sale Price </label>
-                                            <input class="form-control" type="text">
+                                            <label class="col-form-label">Sale Price</label>
+                                            <input class="form-control" type="text" ng-model="product.salePrice">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Type </label>
+                                            <label class="col-form-label">Type</label>
                                             <select class="select" ng-model="product.type">
-												<option>Game</option>
-												<option>Phụ kiện</option>
-											</select>
+                                                <option value="Game">Game</option>
+                                                <option value="Phụ kiện">Phụ kiện</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -197,16 +197,30 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Quantity </label>
-                                            <input class="form-control" type="number">
+                                            <label class="col-form-label">Quantity</label>
+                                            <input class="form-control" type="number" ng-model="product.qty">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Source</label>
+                                            <input class="form-control" type="text" ng-model="product.source">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Link</label>
+                                            <input class="form-control" type="text" ng-model="product.link">
                                         </div>
                                     </div>
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label>Description</label>
-                                            <textarea class="form-control" rows="5">Assassin Creed Valhalla 1là phiên bản mới nhất của dòng game hành động nhập vai lịch sử nổi tiếng Assassin Creed. Trong game, người chơi sẽ hóa thân thành Eivor, một vị vua hoặc nữ hoàng của người Viking, và tham gia vào cuộc chiến giữa người Viking và quân đội của người Anh vào thế kỷ thứ 9.</textarea>
+                                            <textarea class="form-control" rows="5" ng-model="product.details"></textarea>
                                         </div>
                                     </div>
+
                                 </div>
                             </form>
                         </div>
@@ -214,31 +228,32 @@
                             <h4 class="d-flex justify-content-center">IMAGE POSTER</h4>
                             <div class="card border-0">
                                 <div class="body d-flex justify-content-center">
-                                    <input type="file" class="dropify" ng-model="editProduct.poster" accept="image/*">
+                                    <input type="file" class="dropify" ng-model="product.poster" accept="image/*">
                                 </div>
                             </div>
-                            <div class="mt-2">
-                                <img ng-src="{{editProduct.poster}}" alt="Poster Preview" class="img-fluid">
-                            </div>
+                            <!-- <div class="mt-2">
+                                <img ng-src="{{product.poster}}" alt="Poster Preview" class="img-fluid">
+                            </div> -->
                         </div>
+
 
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="row  d-flex justify-content-center">
-                                        <h4 class=" ">IMAGE THUMBNAIL</h4>
+                                    <div class="row d-flex justify-content-center">
+                                        <h4 class="">IMAGE THUMBNAIL</h4>
                                         <h5 class="text-danger fs-3 mt-1 ml-2">*Only 3 Photos*</h5>
                                     </div>
 
-                                    <form action="#" class="dropzone d-flex justify-content-center flex-wrap" id="dropzone_remove"></form>
+                                    <form action="#" class="dropzone d-flex justify-content-center flex-wrap" id="thumbnailDropzone"></form>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn">ADD</button>
+                        <button class="btn btn-primary submit-btn" ng-click="addProduct()">ADD</button>
                     </div>
                 </div>
             </div>
@@ -264,37 +279,37 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">ID </label>
-                                            <input class="form-control" type="text" ng-model="editProduct.id" readonly>
+                                            <input class="form-control" type="text" ng-model="product.id" readonly>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Product Name </label>
-                                            <input class="form-control" type="text" ng-model="editProduct.name">
+                                            <input class="form-control" type="text" ng-model="product.name">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Origin Price</label>
-                                            <input class="form-control" type="text" ng-model="editProduct.originPrice">
+                                            <input class="form-control" type="text" ng-model="product.originPrice">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Sale Price </label>
-                                            <input class="form-control" type="text" ng-model="editProduct.salePrice">
+                                            <input class="form-control" type="text" ng-model="product.salePrice">
                                         </div>
                                     </div>
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label class="col-form-label">Link </label>
-                                            <input class="form-control" type="email" ng-model="editProduct.link">
+                                            <input class="form-control" type="email" ng-model="product.link">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Category</label>
-                                            <select class="select" ng-model="editProduct.categoryId" ng-options="category.id as category.name for category in categories">
+                                            <select class="select" ng-model="product.category.id" ng-options="category.id as category.name for category in categories">
                                             </select>
                                         </div>
                                     </div>
@@ -302,16 +317,27 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Status</label>
-                                            <select class="select" ng-model="editProduct.status">
-                                                <option value="true">Còn Hàng</option>
-                                                <option value="false">Hết Hàng</option>
+                                            <select class="select" ng-model="product.status">
+                                                <option value="true" ng-selected="product.status === true">Còn Hàng</option>
+                                                <option value="false" ng-selected="product.status === false">Hết Hàng</option>
                                             </select>
+                                        </div>
+                                        <!-- <div class="form-group">
+                                            <label class="col-form-label">Status</label>
+                                            <input type="text" class="form-control" value="{{ product.status ? 'Còn Hàng' : 'Hết Hàng' }}">
+                                        </div> -->
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Source</label>
+                                            <input class="form-control" type="text" ng-model="product.source">
                                         </div>
                                     </div>
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label>Description</label>
-                                            <textarea class="form-control" rows="5" ng-model="editProduct.description"></textarea>
+                                            <textarea class="form-control" rows="5" ng-model="product.details"></textarea>
                                         </div>
                                     </div>
 
@@ -321,14 +347,14 @@
                         <div class="col-sm-12 col-md-4 theme-blush">
                             <h4 class="d-flex justify-content-center">IMAGE POSTER</h4>
                             <div class="card border-0">
-                                <div class="body d-flex justify-content-center">
-                                    <input type="file" class="dropify">
+                                <div class="body d-flex flex-column align-items-center">
+                                    <!-- <input type="file" class="dropify" ng-model="product.poster" accept="image/*"> -->
+                                    <img src="https://drive.google.com/uc?id={{product.poster}}" style="width: 300px; height: 533px;">
                                 </div>
                             </div>
                         </div>
-
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
@@ -341,7 +367,42 @@
                                 </div>
                             </div>
                         </div>
+                    </div> -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row d-flex justify-content-center">
+                                        <h4 class="">IMAGE THUMBNAIL</h4>
+                                        <h5 class="text-danger fs-3 mt-1 ml-2">*Only 3 Photos*</h5>
+                                    </div>
+
+                                    <form action="#" class="dropzone d-flex justify-content-center flex-wrap" id="dropzone_remove">
+                                        <!-- Thumbnail images will be populated here -->
+                                    </form>
+
+                                    <script>
+                                        window.addEventListener('load', function() {
+                                            const productThumbnail = 'https://drive.google.com/uc?id={{product.thumbnail}}';
+                                            const thumbnailURLs = productThumbnail
+                                                .substring(productThumbnail.indexOf('?id=') + 4)
+                                                .split('***');
+
+                                            thumbnailURLs.slice(0, 3).forEach((thumbnail) => {
+                                                const image = document.createElement('img');
+                                                image.src = thumbnail;
+                                                image.alt = 'Thumbnail';
+                                                image.classList.add('thumbnail');
+                                                document.getElementById('dropzone_remove').appendChild(image);
+                                            });
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" ng-click="updateProduct()">Submit</button>
                     </div>
@@ -349,6 +410,7 @@
             </div>
         </div>
     </div>
+
     <!-- /Edit Product Modal -->
 
 

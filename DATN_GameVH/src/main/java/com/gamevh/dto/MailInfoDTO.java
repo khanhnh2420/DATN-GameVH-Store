@@ -1,4 +1,4 @@
-package com.gamevh.entities;
+package com.gamevh.dto;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MailInfo {
+public class MailInfoDTO {
 	String from = "SevenBee";
 	String to;
 	String[] cc;
@@ -21,7 +21,7 @@ public class MailInfo {
 	String source;
 	List<File> files = new ArrayList<>();
 
-	public MailInfo(String to, String subject, String body) {
+	public MailInfoDTO(String to, String subject, String body) {
 		this.to = to;
 		this.subject = subject;
 		this.body = body;

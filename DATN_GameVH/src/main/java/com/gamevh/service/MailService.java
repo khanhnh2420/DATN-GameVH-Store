@@ -2,18 +2,18 @@ package com.gamevh.service;
 
 import org.springframework.stereotype.Service;
 
-import com.gamevh.entities.MailInfo;
+import com.gamevh.dto.MailInfoDTO;
 
 import jakarta.mail.MessagingException;
 
 
 @Service
 public interface MailService {
-	void send(MailInfo mail) throws MessagingException;
+	void send(MailInfoDTO mail) throws MessagingException;
 
 	void send(String to, String subject, String body) throws MessagingException;
 	
-	void queue(MailInfo mail);
+	void queue(MailInfoDTO mail);
 	void queue(String to, String subject, String body);
 
 }

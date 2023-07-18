@@ -1,5 +1,7 @@
 package com.gamevh.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,11 @@ public class OrderDetailServiceImpl implements OrderDetailService{
 	@Override
 	public OrderDetail add(OrderDetail orderDetailData) {
 		return orderDetailRepository.save(orderDetailData);
+	}
+
+	@Override
+	public List<OrderDetail> findByOrderId(Long orderId) {
+		return orderDetailRepository.findByOrderDataId(orderId);
 	}
 	
 }

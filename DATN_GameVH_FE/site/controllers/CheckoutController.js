@@ -1,6 +1,6 @@
 // Angular js
 app.controller("CheckoutController", function (AccountService, OrderService, CouponOwnerService, MomoService, IPService,
-	PaypalService, ZaloPayService, VNPayService, $scope, $window, $http) {
+	PaypalService, ZaloPayService, VNPayService, SendMailService, $scope, $window, $http) {
 
 	$scope.cart = [];
 	$scope.TotalPrice = 0;
@@ -263,7 +263,16 @@ app.controller("CheckoutController", function (AccountService, OrderService, Cou
 		OrderService.createOrder($scope.requestData).then(function (order) {
 			$scope.order = order.data;
 			if ($scope.order != null) {
-				$window.location.href = returnUrl;
+				var MailInfo = {
+					"to": $scope.order.email,
+					"subject": "Thông báo xác nhận đơn hàng " + $scope.order.orderId
+				}
+				SendMailService.sendMailCheckout($scope.order.orderId, MailInfo).then(function (mailStatus) {
+					$window.localStorage.removeItem("carts");
+					$window.location.href = returnUrl;
+				}).catch(function (error) {
+					console.error('Lỗi khi gửi mail:', error);
+				});
 			}
 		}).catch(function (error) {
 			console.error('Lỗi khi tạo order:', error);

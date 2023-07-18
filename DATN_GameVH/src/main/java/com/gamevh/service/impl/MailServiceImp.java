@@ -10,7 +10,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.gamevh.entities.MailInfo;
+import com.gamevh.dto.MailInfoDTO;
 import com.gamevh.service.MailService;
 
 import jakarta.mail.MessagingException;
@@ -18,19 +18,19 @@ import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class MailServiceImp implements MailService {
-	List<MailInfo> list = new ArrayList<>();
+	List<MailInfoDTO> list = new ArrayList<>();
 	@Autowired
 	JavaMailSender sender;
 
 	@Override
-	public void send(MailInfo mail) throws MessagingException {
+	public void send(MailInfoDTO mail) throws MessagingException {
 		MimeMessage message = sender.createMimeMessage();
 		// Sử dụng Helper để thiết lập các thông tin cần thiết cho message
 		MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
 		helper.setFrom(mail.getFrom());
 		helper.setTo(mail.getTo());
 		helper.setSubject(mail.getSubject());
-		helper.setText(mail.getBody(), true);
+		helper.setText(mail.getBody() != null ? mail.getBody() : "", true);
 		helper.setReplyTo(mail.getFrom());
 
 		String[] cc = mail.getCc();
@@ -57,23 +57,23 @@ public class MailServiceImp implements MailService {
 
 	@Override
 	public void send(String to, String subject, String body) throws MessagingException {
-		this.send(new MailInfo(to, subject, body));
+		this.send(new MailInfoDTO(to, subject, body));
 	}
 
 	@Override
-	public void queue(MailInfo mail) {
+	public void queue(MailInfoDTO mail) {
 		list.add(mail);
 	}
 
 	@Override
 	public void queue(String to, String subject, String body) {
-		queue(new MailInfo(to, subject, body));
+		queue(new MailInfoDTO(to, subject, body));
 	}
 
 	@Scheduled(fixedDelay = 5000)
 	public void run() {
 		while (!list.isEmpty()) {
-			MailInfo mail = list.remove(0);
+			MailInfoDTO mail = list.remove(0);
 			try {
 				this.send(mail);
 			} catch (Exception e) {

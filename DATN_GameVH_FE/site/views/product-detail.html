@@ -30,7 +30,7 @@
 						<div class="col-md-6">
 							<div class="product-gallery">
 								<figure class="product-main-image">
-									<img id="product-zoom" class="zoom-image-custom"
+									<img id="product-zoom" class="product-gallery-item"
 										src="https://drive.google.com/uc?id={{product.poster ? product.poster : '1k7mZ306aaQltWZVJBe-zbXizg2NmAogx'}}"
 										data-zoom-image="https://drive.google.com/uc?id={{product.poster}}"
 										alt="product image">
@@ -38,21 +38,43 @@
 										<i class="icon-arrows"></i>
 									</a>
 								</figure>
-								<!-- End .product-main-image -->
-
-								<div id="product-zoom-gallery" class="product-image-gallery product-gallery-masonry">
-									<a class="product-gallery-item" href="#" ng-repeat="i in thumbnails" ng-if="$index == 0">
-										<img class="zoom-image-custom" src="https://drive.google.com/uc?id={{i ? i : '1k7mZ306aaQltWZVJBe-zbXizg2NmAogx'}}"
+								<div id="product-zoom-gallery" class="product-gallery-masonry">
+									<a href="#" ng-repeat="i in thumbnails">
+										<img class="product-gallery-item"
+											src="https://drive.google.com/uc?id={{i ? i : '1k7mZ306aaQltWZVJBe-zbXizg2NmAogx'}}"
 											alt="product cross">
 									</a>
-									<a class="product-gallery-item" href="#">
-										<img class="zoom-image-custom" src="https://drive.google.com/uc?id={{i ? i : '1k7mZ306aaQltWZVJBe-zbXizg2NmAogx'}}"
-											alt="product cross" ng-repeat="i in thumbnails" ng-if="$index != 0">
-									</a>
 								</div>
-								
-								<!-- End .product-image-gallery -->
 							</div>
+							<script>
+								$(document).ready(function () {
+									$('#btn-product-gallery').on('click', function (e) {
+										e.preventDefault();
+										var $galleryItems = $('.product-gallery-item');
+										var galleryImages = [];
+
+										$galleryItems.each(function () {
+											var src = $(this).attr('src');
+											galleryImages.push({
+												src: src
+											});
+										});
+
+										$.magnificPopup.open({
+											items: galleryImages,
+											gallery: {
+												enabled: true
+											},
+											type: 'image'
+										});
+									});
+								});
+							</script>
+							<style>
+								.mfp-zoom-out-cur {
+									height: auto;
+								}
+							</style>
 							<!-- End .product-gallery -->
 						</div>
 						<!-- End .col-md-6 -->
@@ -108,7 +130,8 @@
 
 								<div class="product-details-footer">
 									<div class="product-cat">
-										<span>Thể loại:</span> <a href="/shop/{{product.type}}/{{product.categoryId}}">{{product.categoryName}}</a>
+										<span>Thể loại:</span> <a
+											href="/shop/{{product.type}}/{{product.categoryId}}">{{product.categoryName}}</a>
 									</div>
 									<!-- End .product-cat -->
 
@@ -245,8 +268,8 @@
 										<span class="product-label label-top" ng-show="p.offer > 0">SALE
 											{{p.offer * 100 | number:0}}%</span>
 										<a href="/product/detail/{{p.id}}"> <img
-												src="https://drive.google.com/uc?id={{p.poster ? p.poster : '1k7mZ306aaQltWZVJBe-zbXizg2NmAogx'}}" alt="Product image"
-												class="product-image">
+												src="https://drive.google.com/uc?id={{p.poster ? p.poster : '1k7mZ306aaQltWZVJBe-zbXizg2NmAogx'}}"
+												alt="Product image" class="product-image">
 										</a>
 
 										<div class="product-action-vertical">
@@ -266,7 +289,8 @@
 
 									<div class="product-body">
 										<div class="product-cat">
-											<a href="/shop/{{product.type}}/{{product.categoryId}}">{{p.categoryName}}</a>
+											<a
+												href="/shop/{{product.type}}/{{product.categoryId}}">{{p.categoryName}}</a>
 										</div>
 										<!-- End .product-cat -->
 										<h3 class="product-title">

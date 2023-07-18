@@ -12547,7 +12547,6 @@ button:focus {
     display: block;
     flex: 25%;
     max-width: 25%;
-    padding: 0 4px;
 }
 
 .max-col-6 .product-gallery-item {
@@ -12612,15 +12611,29 @@ button:focus {
 }
 
 .product-gallery-masonry {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    padding: 0 4px;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 49% 49%;
 }
 
-.product-gallery-masonry .product-gallery-item {
-    max-width: 50%;
-    width: 50%
+.product-gallery-masonry .product-gallery-item:nth-child(1) {
+    max-width: 100%;
+    width: 100%;
+    grid-column: 2 / span 1;
+}
+
+.product-gallery-masonry .product-gallery-item:nth-child(2) {
+    max-width: 100%;
+    width: 100%;
+    grid-column: 1 / span 1;
+    grid-row: 1 / span 2;
+}
+
+.product-gallery-masonry .product-gallery-item:nth-child(3) {
+    max-width: 100%;
+    width: 100%;
+    grid-column: 2 / span 1;
+
 }
 
 .product-gallery-carousel.owl-carousel {
@@ -20065,7 +20078,8 @@ button:focus {
     bottom: 0;
     width: 10px;
     background-color: #000000;
-    z-index: 0; /* Đặt z-index nhỏ hơn để pseudo-elements nằm phía sau ảnh */
+    z-index: 0;
+    /* Đặt z-index nhỏ hơn để pseudo-elements nằm phía sau ảnh */
 }
 
 .ticket-frame::before {
@@ -20084,8 +20098,10 @@ button:focus {
     height: 99px;
     clip-path: polygon(0 10px, 10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%,
             10px 100%, 0 calc(100% - 10px));
-    position: relative; /* Thêm thuộc tính position: relative; */
-    z-index: 1; /* Đặt z-index cao hơn để ảnh nằm phía trước pseudo-elements */
+    position: relative;
+    /* Thêm thuộc tính position: relative; */
+    z-index: 1;
+    /* Đặt z-index cao hơn để ảnh nằm phía trước pseudo-elements */
 }
 
 .ticket-content {
@@ -20154,117 +20170,126 @@ button:focus {
 }
 
 .main-container {
-	width: 100%;
-	height: 65vh;
-	display: flex;
-	flex-flow: column;
-	align-items: center;
+    width: 100%;
+    height: 65vh;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
 }
 
 .check-container {
-	width: 20.25rem;
-	height: 23.5rem;
+    width: 20.25rem;
+    height: 23.5rem;
     position: relative;
     top: 5em;
-	display: flex;
-	flex-flow: column;
-	align-items: center;
-	justify-content: space-between;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: space-between;
 
-	.check-background {
-		width: 100%;
-		height: calc(100% - 1.25rem);
-		background: linear-gradient(to bottom right, #5de593, #41d67c);
-		box-shadow: 0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset,
-			0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset;
-		transform: scale(0.84);
-		border-radius: 50%;
-		animation: animateContainer 0.75s ease-out forwards 0.75s;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		opacity: 0;
+    .check-background {
+        width: 100%;
+        height: calc(100% - 1.25rem);
+        background: linear-gradient(to bottom right, #5de593, #41d67c);
+        box-shadow: 0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset,
+            0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset;
+        transform: scale(0.84);
+        border-radius: 50%;
+        animation: animateContainer 0.75s ease-out forwards 0.75s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
 
-		svg {
-			width: 65%;
-			transform: translateY(0.25rem);
-			stroke-dasharray: 80;
-			stroke-dashoffset: 80;
-			animation: animateCheck 0.35s forwards 1.25s ease-out;
-		}
-	}
+        svg {
+            width: 65%;
+            transform: translateY(0.25rem);
+            stroke-dasharray: 80;
+            stroke-dashoffset: 80;
+            animation: animateCheck 0.35s forwards 1.25s ease-out;
+        }
+    }
 
-	.check-shadow {
-		bottom: calc(-15% - 5px);
-		left: 0;
-		border-radius: 50%;
-		background: radial-gradient(closest-side, rgba(73, 218, 131, 1), transparent);
-		animation: animateShadow 0.75s ease-out forwards 0.75s;
-	}
+    .check-shadow {
+        bottom: calc(-15% - 5px);
+        left: 0;
+        border-radius: 50%;
+        background: radial-gradient(closest-side, rgba(73, 218, 131, 1), transparent);
+        animation: animateShadow 0.75s ease-out forwards 0.75s;
+    }
 }
 
 @keyframes animateContainer {
-	0% {
-		opacity: 0;
-		transform: scale(0);
-		box-shadow: 0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset,
-			0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset;
-	}
-	25% {
-		opacity: 1;
-		transform: scale(0.9);
-		box-shadow: 0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset,
-			0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset;
-	}
-	43.75% {
-		transform: scale(1.15);
-		box-shadow: 0px 0px 0px 43.334px rgba(255, 255, 255, 0.25) inset,
-			0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset;
-	}
-	62.5% {
-		transform: scale(1);
-		box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0.25) inset,
-			0px 0px 0px 21.667px rgba(255, 255, 255, 0.25) inset;
-	}
-	81.25% {
-		box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0.25) inset,
-			0px 0px 0px 0px rgba(255, 255, 255, 0.25) inset;
-	}
-	100% {
-		opacity: 1;
-		box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0.25) inset,
-			0px 0px 0px 0px rgba(255, 255, 255, 0.25) inset;
-	}
+    0% {
+        opacity: 0;
+        transform: scale(0);
+        box-shadow: 0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset,
+            0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset;
+    }
+
+    25% {
+        opacity: 1;
+        transform: scale(0.9);
+        box-shadow: 0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset,
+            0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset;
+    }
+
+    43.75% {
+        transform: scale(1.15);
+        box-shadow: 0px 0px 0px 43.334px rgba(255, 255, 255, 0.25) inset,
+            0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset;
+    }
+
+    62.5% {
+        transform: scale(1);
+        box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0.25) inset,
+            0px 0px 0px 21.667px rgba(255, 255, 255, 0.25) inset;
+    }
+
+    81.25% {
+        box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0.25) inset,
+            0px 0px 0px 0px rgba(255, 255, 255, 0.25) inset;
+    }
+
+    100% {
+        opacity: 1;
+        box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0.25) inset,
+            0px 0px 0px 0px rgba(255, 255, 255, 0.25) inset;
+    }
 }
 
 @keyframes animateCheck {
-	from {
-		stroke-dashoffset: 80;
-	}
-	to {
-		stroke-dashoffset: 0;
-	}
+    from {
+        stroke-dashoffset: 80;
+    }
+
+    to {
+        stroke-dashoffset: 0;
+    }
 }
 
 @keyframes animateShadow {
-	0% {
-		opacity: 0;
-		width: 100%;
-		height: 15%;
-	}
-	25% {
-		opacity: 0.25;
-	}
-	43.75% {
-		width: 40%;
-		height: 7%;
-		opacity: 0.35;
-	}
-	100% {
-		width: 85%;
-		height: 15%;
-		opacity: 0.25;
-	}
+    0% {
+        opacity: 0;
+        width: 100%;
+        height: 15%;
+    }
+
+    25% {
+        opacity: 0.25;
+    }
+
+    43.75% {
+        width: 40%;
+        height: 7%;
+        opacity: 0.35;
+    }
+
+    100% {
+        width: 85%;
+        height: 15%;
+        opacity: 0.25;
+    }
 }
 
 
@@ -20277,9 +20302,9 @@ button:focus {
     top: 32px;
     right: 32px;
     z-index: 999999;
-  }
-  
-  .toastDesign {
+}
+
+.toastDesign {
     display: flex;
     align-items: center;
     background-color: #fff;
@@ -20290,98 +20315,99 @@ button:focus {
     border-left: 4px solid;
     box-shadow: 0 5px 8px rgba(0, 0, 0, 0.08);
     transition: all linear 0.3s;
-  }
-  
-  @keyframes slideInLeft {
+}
+
+@keyframes slideInLeft {
     from {
-      opacity: 0;
-      transform: translateX(calc(100% + 32px));
+        opacity: 0;
+        transform: translateX(calc(100% + 32px));
     }
+
     to {
-      opacity: 1;
-      transform: translateX(0);
+        opacity: 1;
+        transform: translateX(0);
     }
-  }
-  
-  @keyframes fadeOut {
+}
+
+@keyframes fadeOut {
     to {
-      opacity: 0;
+        opacity: 0;
     }
-  }
-  
-  .toast--success {
+}
+
+.toast--success {
     border-color: #47d864;
-  }
-  
-  .toast--success .toast__icon {
+}
+
+.toast--success .toast__icon {
     color: #47d864;
-  }
-  
-  .toast--info {
+}
+
+.toast--info {
     border-color: #2f86eb;
-  }
-  
-  .toast--info .toast__icon {
+}
+
+.toast--info .toast__icon {
     color: #2f86eb;
-  }
-  
-  .toast--warning {
+}
+
+.toast--warning {
     border-color: #ffc021;
-  }
-  
-  .toast--warning .toast__icon {
+}
+
+.toast--warning .toast__icon {
     color: #ffc021;
-  }
-  
-  .toast--error {
+}
+
+.toast--error {
     border-color: #f10e1d;
-  }
-  
-  .toast--error .toast__icon {
+}
+
+.toast--error .toast__icon {
     color: #f10e1d;
-  }
-  
-  .toastDesign + .toastDesign {
+}
+
+.toastDesign+.toastDesign {
     margin-top: 24px;
-  }
-  
-  .toast__icon {
+}
+
+.toast__icon {
     font-size: 24px;
-  }
-  
-  .toast__icon,
-  .toast__close {
+}
+
+.toast__icon,
+.toast__close {
     padding: 0 16px;
-  }
-  
-  .toast__body {
+}
+
+.toast__body {
     flex-grow: 1;
-  }
-  
-  .toast__title {
+}
+
+.toast__title {
     font-size: 16px;
     font-weight: 600;
     color: #333;
-  }
-  
-  .toast__msg {
+}
+
+.toast__msg {
     font-size: 14px;
     color: #888;
     margin-top: 6px;
     line-height: 1.5;
-  }
-  
-  .toast__close {
+}
+
+.toast__close {
     font-size: 20px;
     color: rgba(0, 0, 0, 0.3);
     cursor: pointer;
-  }
+}
 
 
 /*-----------------
 	65. CSS ERROR
 -----------------------*/
 
-  .is-invalid-no-x {
+.is-invalid-no-x {
     border: 1px solid red !important;
 }

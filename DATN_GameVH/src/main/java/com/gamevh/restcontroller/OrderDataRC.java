@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gamevh.dto.CartDTO;
+import com.gamevh.dto.MailInfoDTO;
 import com.gamevh.dto.OrderRequestDTO;
 import com.gamevh.entities.Category;
 import com.gamevh.entities.CouponOwner;
-import com.gamevh.entities.MailInfo;
 import com.gamevh.entities.OrderData;
 import com.gamevh.entities.OrderDetail;
 import com.gamevh.entities.Product;
@@ -95,8 +95,8 @@ public class OrderDataRC {
 	}
 
 	@PostMapping("/sendEmail")
-	public ResponseEntity<MailInfo> sendMail(@RequestBody MailInfo mailInfo) throws MessagingException {
-		MailInfo mail = new MailInfo();
+	public ResponseEntity<MailInfoDTO> sendMail(@RequestBody MailInfoDTO mailInfo) throws MessagingException {
+		MailInfoDTO mail = new MailInfoDTO();
 		mail.setTo(mailInfo.getTo());
 		mail.setSubject("Thông Báo Tạo Tài Khoản Thành Công");
 		mail.setBody(mailBody.mail_order(mailInfo.getTo(), mailInfo.getSource()));

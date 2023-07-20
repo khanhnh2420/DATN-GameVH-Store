@@ -1,5 +1,5 @@
 // Angular js
-app.controller("RegisterController", function (AccountService, AuthorityService, $scope, $http, $location) {
+app.controller("RegisterController", function (AccountService, SendMailService, AuthorityService, $scope) {
 	$scope.form = {};
 	$scope.passwordMatchError = false;
 	$scope.messageSuccess = "";
@@ -17,7 +17,7 @@ app.controller("RegisterController", function (AccountService, AuthorityService,
 				'password': $scope.form.password,
 				'fullname': $scope.form.fullname,
 				'email': $scope.form.email,
-				'photo': "user.png",
+				'photo': "19dn5AWG9uCVzTpVWBFCOVvzPRv-ZXJlc",
 				'status': true
 			}
 			AccountService.getByUsername($scope.account.username).then(function (userByUsername) {
@@ -34,6 +34,17 @@ app.controller("RegisterController", function (AccountService, AuthorityService,
 										}
 									}
 									AuthorityService.createAuthority(auth).then(function (authority) {
+										// Gửi email
+										var mailInfo = {
+											"to": user.data.email,
+											"subject": "Tài khoản GamesVH của bạn đã được tạo thành công!",
+											"body": ""
+										}
+										SendMailService.sendMailRegister(user.data.username, $scope.form.password, mailInfo).then(function (mail) {
+										}).catch(function (error) {
+											console.error('Lỗi khi Gửi email!', error);
+										});
+
 										$scope.messageSuccess = "Đăng ký tài khoản thành công!";
 										// Reset form và biến
 										$scope.RegisterForm.$setPristine();

@@ -1,4 +1,4 @@
-app.controller('GoogleSigninController', function ($location, $window, GoogleService, AccountService, AuthorityService) {
+app.controller('GoogleSigninController', function ($location, $window, GoogleService, AccountService, AuthorityService, SendMailService) {
     var currentUrl = $location.url();
 
     // Xử lý URL hiện tại với các tham số query
@@ -19,12 +19,13 @@ app.controller('GoogleSigninController', function ($location, $window, GoogleSer
             GoogleService.getUserInfo(accessToken).then(function (userInfo) {
                 var user = userInfo.data;
                 // Tạo account với thông tin từ email của người dùng và pass mặc định là 123
+                var pasword = generateRandomPassword(8);
                 var account = {
                     "username": user.email,
-                    "password": "123",
+                    "password": pasword,
                     "fullname": user.name,
                     "email": user.email,
-                    "photo": "user.png",
+                    "photo": "19dn5AWG9uCVzTpVWBFCOVvzPRv-ZXJlc",
                     "status": true
                 }
 
@@ -59,7 +60,7 @@ app.controller('GoogleSigninController', function ($location, $window, GoogleSer
                             var accountData = accountByUsername.data;
                             if (accountData != null) {
                                 $window.sessionStorage.setItem("username", accountData.username);
-                                
+
                                 // Trở về trang trước đó hoặc trang chủ nếu có lỗi
                                 var pageBackLoginSuccess = ($window.sessionStorage.getItem("pageBackLoginSuccess") != null) ? $window.sessionStorage.getItem("pageBackLoginSuccess") : null;
                                 if (pageBackLoginSuccess && !pageBackLoginSuccess.includes("login")) {
@@ -96,4 +97,17 @@ app.controller('GoogleSigninController', function ($location, $window, GoogleSer
             console.log('Không tìm thấy access token trong URL');
         }
     }
+
+    function generateRandomPassword(length) {
+        const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        let password = "";
+      
+        for (let i = 0; i < length; i++) {
+          const randomIndex = Math.floor(Math.random() * charset.length);
+          password += charset[randomIndex];
+        }
+      
+        return password;
+      }
+      
 });

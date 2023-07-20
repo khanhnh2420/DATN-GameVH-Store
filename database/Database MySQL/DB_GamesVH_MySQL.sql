@@ -28,14 +28,13 @@ CREATE TABLE `account` (
   `Password` varchar(255) DEFAULT NULL COMMENT 'Mật khẩu đăng nhập',
   `Fullname` varchar(255) DEFAULT NULL COMMENT 'Họ và tên',
   `Email` varchar(255) DEFAULT NULL COMMENT 'Email',
-  `Photo` varchar(255) DEFAULT 'Photo.gif',
+  `Photo` varchar(255) DEFAULT '19dn5AWG9uCVzTpVWBFCOVvzPRv-ZXJlc',
   `Status` tinyint(1) NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Username` (`Username`),
   UNIQUE KEY `account_Username_IX` (`Username`),
   UNIQUE KEY `Email` (`Email`),
-  UNIQUE KEY `account_Email_IX` (`Email`),
-  UNIQUE KEY `account_Photo_IX` (`Photo`)
+  UNIQUE KEY `account_Email_IX` (`Email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

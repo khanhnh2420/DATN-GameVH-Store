@@ -1,9 +1,33 @@
 app.controller("WishlistController", function($scope, WishlistService, $http) {
     $scope.favorite = []
     $scope.favoriteLength;
+    $scope.account = {}; // Biến lưu thông tin account 
+    $scope.username = null;
+
+    $scope.logout = function() {
+        $window.localStorage.removeItem("username");
+        $window.sessionStorage.removeItem("username");
+        $window.sessionStorage.setItem("messageLogin", "Bạn đã đăng xuất!");
+        $window.location.href = 'login.html';
+    };
+
+    AccountService.checkLogin().then(function(account) {
+        // Người dùng đã đăng nhập
+        $scope.account = account;
+    }).catch(function(error) {
+        // Người dùng chưa đăng nhập hoặc có lỗi
+        console.error('Lỗi đăng nhập hoặc chưa đăng nhập:', error);
+        if (error === "Người dùng chưa đăng nhập") {
+            // Xử lý logic khi người dùng chưa đăng nhập
+            $window.localStorage.removeItem("username");
+            $window.sessionStorage.removeItem("username");
+            $window.sessionStorage.setItem("messageLogin", "Vui lòng đăng nhập!");
+            $window.location.href = 'login.html';
+        }
+    });
 
 
-    WishlistService.getWishlist(1).then(function(response) {
+    WishlistService.getWishlist(accountId).then(function(response) {
         $scope.favorite = response.data;
     }).catch(function(error) {
         console.error('Lỗi khi lấy danh sách yêu thích:', error);

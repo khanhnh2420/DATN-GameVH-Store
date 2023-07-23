@@ -1,5 +1,5 @@
 app.factory('WishlistService', function($http) {
-    var baseUrl = host + '/api/restWishlist';
+    var baseUrl = host + '/api/favorite';
 
     return {
         getWishlist: function(accountid) {

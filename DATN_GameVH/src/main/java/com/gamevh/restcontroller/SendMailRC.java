@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gamevh.dto.MailInfoDTO;
+import com.gamevh.entities.Account;
 import com.gamevh.entities.OrderData;
 import com.gamevh.entities.OrderDetail;
+import com.gamevh.service.AccountService;
+import com.gamevh.service.EncryptionService;
 import com.gamevh.service.MailService;
 import com.gamevh.service.OrderDetailService;
 import com.gamevh.service.OrderService;
@@ -35,6 +38,12 @@ public class SendMailRC {
 	@Autowired
 	OrderDetailService orderDetailService;
 
+	@Autowired
+	AccountService accountService;
+	
+	@Autowired
+	EncryptionService encryptionService;
+
 	@PostMapping("send/checkout/{orderId}")
 	public ResponseEntity<String> sendMailOrderSuccess(@PathVariable("orderId") String orderId,
 			@RequestBody MailInfoDTO mailInfo) throws MessagingException {
@@ -43,9 +52,25 @@ public class SendMailRC {
 				OrderData orderData = orderService.findByOrderId(orderId).get(0);
 				if (orderData != null) {
 					List<OrderDetail> orderDetail = orderDetailService.findByOrderId(orderData.getId());
-					mailService.send(mailInfo.getTo(), mailInfo.getSubject(), mail_CONSTANT.mail_Order_Success(orderData, orderDetail));
+					mailService.send(mailInfo.getTo(), mailInfo.getSubject(),
+							mail_CONSTANT.mail_Order_Success(orderData, orderDetail));
 					return ResponseEntity.ok().build();
 				}
+			}
+		}
+
+		return ResponseEntity.badRequest().build();
+	}
+
+	@PostMapping("send/register/{username}/{password}")
+	public ResponseEntity<String> sendMailRegister(@PathVariable("username") String username, @PathVariable("password") String password,
+			@RequestBody MailInfoDTO mailInfo) throws MessagingException {
+		if (mailInfo != null) {
+			Account account = accountService.findByUsername(username).get(0);
+			if (account != null) {
+				mailService.send(mailInfo.getTo(), mailInfo.getSubject(), mail_CONSTANT
+						.mail_Welcome(account.getFullname(), account.getUsername(), password));
+				return ResponseEntity.ok().build();
 			}
 		}
 

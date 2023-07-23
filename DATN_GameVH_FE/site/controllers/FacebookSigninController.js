@@ -27,12 +27,13 @@ window.fbAsyncInit = function () {
 function testAPI() {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
     FB.api('/me', function (response) {
         // Sử dụng createAccount()
+        var password = generateRandomPassword(8);
         var account = {
             "username": response.id,
-            "password": "123",
+            "password": password,
             "fullname": response.name,
             "email": null,
-            "photo": "user.png",
+            "photo": "19dn5AWG9uCVzTpVWBFCOVvzPRv-ZXJlc",
             "status": true
         }
 
@@ -97,4 +98,16 @@ function createAuthority(auth) {
     };
 
     xhr.send(JSON.stringify(auth));
+}
+
+function generateRandomPassword(length) {
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let password = "";
+
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        password += charset[randomIndex];
+    }
+
+    return password;
 }

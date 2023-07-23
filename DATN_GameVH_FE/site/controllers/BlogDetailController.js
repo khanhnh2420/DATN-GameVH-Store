@@ -1,4 +1,4 @@
-app.controller("BlogDetailController", function (BlogService, CommentService, TimeService, $scope, $routeParams, $window, ToastService) {
+app.controller("BlogDetailController", function (BlogService, CommentService, TimeService, $scope, $routeParams, $window, $location, $route, ToastService) {
     $scope.blog = {}; // Thông tin bài viết sẽ được hiển thị trên trang chi tiết
     $scope.comments = []; // Tất cả các conmment đã được duyệt của bài viết
     $scope.commentData = {};
@@ -33,6 +33,32 @@ app.controller("BlogDetailController", function (BlogService, CommentService, Ti
     }).catch(function (error) {
         console.error('Lỗi khi lấy bài viết :', error);
     });
+
+    $scope.setBaseUrl = function(){
+        // Kiểm tra xem URL cần kiểm tra có trong các link đã được khai báo trong route hay không
+        var isDeclaredRoute = false;
+
+        // Lấy URL cần kiểm tra
+        var urlToCheck = $location.path();
+
+        // Lặp qua các route đã khai báo
+        angular.forEach($route.routes, function (route) {
+            // Kiểm tra xem URL cần kiểm tra có trùng khớp với route hay không
+            if (route.originalPath && route.regexp && route.regexp.test(urlToCheck)) {
+                isDeclaredRoute = true;
+            }
+        });
+
+        // Nếu link trươc khi login không chứa "login" và là link đã khai báo trong route thì sẽ dùng link đó nếu không thì dùng link trang home
+        if (!$window.location.href.includes("login") && isDeclaredRoute) {
+            $window.sessionStorage.setItem("pageBackLoginSuccess", $window.location.href);
+        } else {
+            var pageBackLoginSuccess = ($window.sessionStorage.getItem("pageBackLoginSuccess") != null) ? $window.sessionStorage.getItem("pageBackLoginSuccess") : null;
+            if (!pageBackLoginSuccess || pageBackLoginSuccess.includes("login")) {
+                $window.sessionStorage.setItem("pageBackLoginSuccess", $location.absUrl().split('/')[2]);
+            }
+        }
+    }
 
     // Lấy bài viết trước và sau của bài viết (previous and next)
     $scope.checkPrevAndNextBlog = function (listBLog) {

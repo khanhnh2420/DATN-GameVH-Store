@@ -26,7 +26,7 @@ public class Location implements Serializable {
     private String address;
 
     @Column(name="City", nullable=false, length=100)
-    private String city;
+    private String province;
 
     @Column(name="District", nullable=false, length=100)
     private String district;

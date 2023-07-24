@@ -26,6 +26,7 @@ app.controller('GoogleSigninController', function ($location, $window, GoogleSer
                     "fullname": user.name,
                     "email": user.email,
                     "photo": "19dn5AWG9uCVzTpVWBFCOVvzPRv-ZXJlc",
+                    "type": "google",
                     "status": true
                 }
 

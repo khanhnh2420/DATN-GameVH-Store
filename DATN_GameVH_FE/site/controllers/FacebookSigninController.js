@@ -34,6 +34,7 @@ function testAPI() {                      // Testing Graph API after login.  See
             "fullname": response.name,
             "email": null,
             "photo": "19dn5AWG9uCVzTpVWBFCOVvzPRv-ZXJlc",
+            "type": "facebook",
             "status": true
         }
 

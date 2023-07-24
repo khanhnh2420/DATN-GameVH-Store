@@ -496,7 +496,7 @@ DROP TABLE IF EXISTS `location`;
 CREATE TABLE `location` (
   `Id` int NOT NULL AUTO_INCREMENT,
   `Address` varchar(100) NOT NULL,
-  `City` varchar(100) NOT NULL,
+  `Province` varchar(100) NOT NULL,
   `District` varchar(100) NOT NULL,
   `Ward` varchar(100) NOT NULL,
   `Phone` varchar(10) NOT NULL,

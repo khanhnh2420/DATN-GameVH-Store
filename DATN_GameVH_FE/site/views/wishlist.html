@@ -1,5 +1,5 @@
 <div class="wrap-container" ng-controller="WishlistController">
-    <main class="main" style="background-color: #fff" ng-controller="Favorite-ctrl">
+    <main class="main" style="background-color: #fff">
         <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
             <div class="container">
                 <h1 class="page-title">
@@ -26,20 +26,21 @@
                 <table class="table table-wishlist table-mobile">
                     <thead>
                         <tr>
-                            <th>Tên sản phẩm</th>
-                            <th>Đơn giá</th>
-                            <th>Trạng thái sản phẩm</th>
-                            <th></th>
-                            <th></th>
+                            <th>Tên sản phẩm</th>
+                            <th>Đơn giá</th>
+                            <th>Trạng thái sản phẩm</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
 
-                    <tbody>
+                    <tbody ng-controller="CartController">
+                        <!-- Ng-repeat để lặp qua các sản phẩm yêu thích -->
                         <tr ng-repeat="item in favorite">
                             <td class="product-col" ng-show="item.product != null">
                                 <div class="product">
                                     <figure class="product-media">
-                                        <a href="/product/detail/{{item.product.id}}"> <img src="assets/images/products/{{item.product.poster}}" class="border border-1" alt="Product image">
+                                        <a href="/product/detail/{{item.product.id}}">
+                                            <img src="https://drive.google.com/uc?id={{item.product.poster ? item.product.poster : '1k7mZ306aaQltWZVJBe-zbXizg2NmAogx'}}" class="border border-1" alt="Product image">
                                         </a>
                                     </figure>
 
@@ -51,27 +52,23 @@
                                 <!-- End .product -->
                             </td>
                             <td class="price-col">{{ item.product.salePrice | vndFormat}}</td>
-                            <td class="stock-col"><span class="in-stock" ng-show="item.product.status === true">Còn hàng</span> <span class="out-of-stock" ng-show="item.product.status === false">Hết hàng
-									</span></td>
+                            <td class="stock-col">
+                                <span class="in-stock" ng-show="item.product.status === true">Còn hàng</span>
+                                <span class="out-of-stock" ng-show="item.product.status === false">Hết hàng</span>
+                            </td>
                             <td class="action-col">
                                 <div class="dropdown">
-                                    <button class="btn btn-block btn-outline-primary-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<i class="icon-list-alt"></i>Select Options
-									</button>
-
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#">First option</a> <a class="dropdown-item" href="#">Another option</a> <a class="dropdown-item" href="#">The best option</a>
-                                    </div>
+                                    <button class="btn btn-block btn-outline-primary-2" data-product-id="{{item.product.id}}" ng-click="addCart($event)">
+                                        <i class="icon-list-alt"></i> Chuyển tới giỏ hàng
+                                    </button>
+                                    <!-- <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">First option</a>
+                                        <a class="dropdown-item" href="#">Another option</a>
+                                        <a class="dropdown-item" href="#">The best option</a>
+                                    </div> -->
                                 </div>
                             </td>
-                            <td class="remove-col" ng-show="item.product != null">
-                                <button class="btn-remove" data-cart-id="{{item.product.id}}" ng-click="removeWishlist($event)">
-									<i class="icon-close"></i>
-								</button>
-                            </td>
                         </tr>
-
-
                     </tbody>
                 </table>
                 <!-- End .table table-wishlist -->

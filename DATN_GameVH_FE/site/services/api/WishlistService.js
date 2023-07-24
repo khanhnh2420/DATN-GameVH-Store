@@ -2,8 +2,8 @@ app.factory('WishlistService', function($http) {
     var baseUrl = host + '/api/favorite';
 
     return {
-        getWishlist: function(accountid) {
-            return $http.get(baseUrl + '/getAll/' + accountid);
+        getWishlist: function(accountId) {
+            return $http.get(baseUrl + '/getAll/' + accountId);
         },
 
         addWishlist: function() {

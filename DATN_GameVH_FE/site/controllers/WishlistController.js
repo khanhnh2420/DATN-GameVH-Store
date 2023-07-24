@@ -1,4 +1,4 @@
-app.controller("WishlistController", function($scope, WishlistService, $http) {
+app.controller("WishlistController", function($scope, AccountService, WishlistService, $http) {
     $scope.favorite = []
     $scope.favoriteLength;
     $scope.account = {}; // Biến lưu thông tin account 
@@ -14,6 +14,7 @@ app.controller("WishlistController", function($scope, WishlistService, $http) {
     AccountService.checkLogin().then(function(account) {
         // Người dùng đã đăng nhập
         $scope.account = account;
+        fetchWishlistItems()
     }).catch(function(error) {
         // Người dùng chưa đăng nhập hoặc có lỗi
         console.error('Lỗi đăng nhập hoặc chưa đăng nhập:', error);
@@ -26,52 +27,68 @@ app.controller("WishlistController", function($scope, WishlistService, $http) {
         }
     });
 
+    // Hàm để lấy danh sách yêu thích sử dụng accountId
+    function fetchWishlistItems() {
+        if ($scope.account && $scope.account.id) {
+            var accountId = $scope.account.id;
+            // Gọi WishlistService để lấy danh sách yêu thích
+            WishlistService.getWishlist(accountId)
+                .then(function(response) {
+                    // Gán dữ liệu danh sách yêu thích vào biến $scope.favorite
+                    $scope.favorite = response.data;
+                    console.log($scope.favorite)
 
-    WishlistService.getWishlist(accountId).then(function(response) {
-        $scope.favorite = response.data;
-    }).catch(function(error) {
-        console.error('Lỗi khi lấy danh sách yêu thích:', error);
-    });
+                })
+                .catch(function(error) {
+                    console.error('Lỗi khi lấy danh sách yêu thích:', error);
+                });
+        }
+    }
 
 
 
+    // Hàm để chuyển đổi trạng thái yêu thích
+    $scope.toggleFavorite = function(productId) {
+        // Kiểm tra xem người dùng đã đăng nhập chưa
+        if (!$scope.account || !$scope.account.id) {
+            // Hiển thị thông báo hoặc chuyển hướng đến trang đăng nhập nếu cần
+            console.log('Bạn cần đăng nhập để thực hiện chức năng này.');
+            return;
+        }
 
-    $scope.loadFavoritesByAccount = function(accountId) {
-        var url = `${host}/api/restWishlist/getAll/${accountId}`;
-        $http.get(url).then(resp => {
-            $scope.favorite = resp.data;
-        }).catch(error => {
-            console.log("Error", error);
-        });
-    };
+        // Lấy accountId từ $scope.account
+        var accountId = $scope.account.id;
 
-    $scope.addWishlist = function() {
-        var favorite = {
+        // Tạo đối tượng favorite để thêm vào danh sách yêu thích
+        var favoriteData = {
             account: {
-                id: 1
+                id: accountId
+            },
+            product: {
+                id: productId
             }
         };
 
-        $http.post('/addWishlist', favorite)
-        console.log(favorite)
+        // Gọi hàm addWishlist từ WishlistService để thêm hoặc xóa sản phẩm vào danh sách yêu thích
+        WishlistService.addWishlist(favoriteData)
             .then(function(response) {
-                // Xử lý khi yêu thích được thêm thành công
+                // Xử lý phản hồi từ máy chủ nếu cần
                 var updatedFavorite = response.data;
-                // Cập nhật trạng thái yêu thích trong danh sách hiện tại hoặc thêm mới vào danh sách
+
+                // Giả sử 'favorite' là một mảng các mục yêu thích trong phạm vi frontend
+                // Cập nhật mảng 'favorite' dựa trên dữ liệu updatedFavorite
                 var existingFavoriteIndex = $scope.findFavoriteIndex(updatedFavorite);
                 if (existingFavoriteIndex !== -1) {
-                    $scope.favorites[existingFavoriteIndex] = updatedFavorite;
+                    $scope.favorite[existingFavoriteIndex] = updatedFavorite;
                 } else {
-                    $scope.favorites.push(updatedFavorite);
+                    $scope.favorite.push(updatedFavorite);
                 }
             })
             .catch(function(error) {
-                // Xử lý khi có lỗi xảy ra
-                console.log('Error adding wishlist:', error);
+                // Xử lý bất kỳ lỗi nào xảy ra trong quá trình yêu cầu POST
+                console.error('Lỗi thêm/xóa sản phẩm yêu thích:', error);
             });
     };
-
-    $scope.addWishlist();
 
 
 

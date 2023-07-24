@@ -18,6 +18,7 @@ app.controller("RegisterController", function (AccountService, SendMailService, 
 				'fullname': $scope.form.fullname,
 				'email': $scope.form.email,
 				'photo': "19dn5AWG9uCVzTpVWBFCOVvzPRv-ZXJlc",
+				"type": null,
 				'status': true
 			}
 			AccountService.getByUsername($scope.account.username).then(function (userByUsername) {

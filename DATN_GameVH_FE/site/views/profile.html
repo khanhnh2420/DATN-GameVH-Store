@@ -46,7 +46,8 @@
 									<form>
 										<div class="text-center mb-4">
 											<div class="avatar-wrapper">
-												<img class="profile-pic" src="/assets/images/users/{{form.photo}}"
+												<img class="profile-pic"
+													src="https://drive.google.com/uc?id={{account.photo ? account.photo : '1k7mZ306aaQltWZVJBe-zbXizg2NmAogx'}}"
 													alt="Avatar" />
 												<div class="upload-button">
 													<i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
@@ -56,58 +57,83 @@
 											</div>
 
 											<h5 style="margin-bottom: 1rem; font-weight: 900; font-size: 2.9rem;">
-												<strong id="AccountID">[[${#authentication.name}]]</strong>
+												<strong id="AccountID">{{account.username}}</strong>
 											</h5>
 											<p class="text-muted" style="font-size: 1.8rem;">
-												<i>#[[${#authorization.expression('hasRole(''CUST'')')
-													? 'CUST' : ''}]]</i>
+												<i>#{{account.role}}</i>
 											</p>
 										</div>
+
+										<h4>THÔNG TIN TÀI KHOẢN</h4>
+
 										<div class="row">
 											<div class="col-sm-6">
-												<label>FullName *</label> <input type="text" ng-model="form.fullname"
-													class="form-control" required>
+												<label>Họ và tên *</label> <input type="text"
+													ng-model="account.fullname" class="form-control" required>
 											</div>
 											<!-- End .col-sm-6 -->
 
 											<div class="col-sm-6">
-												<label>Email address *</label> <input type="email" ng-model="form.email"
+												<label>Email *</label> <input type="email" ng-model="account.email"
 													class="form-control" required>
 											</div>
 											<!-- End .col-sm-6 -->
 										</div>
 										<!-- End .row -->
+										<div class="row" ng-repeat="(key, location) in locations">
+											<div class="col-sm-8">
+												<label>Địa chỉ {{location.type}} * {{location.addressDefault ? "(Địa chỉ
+													nhận hàng)" : ""}}</label> <input type="text"
+													ng-model="location.address" class="form-control" required readonly>
+											</div>
+											<div class="col-sm-3">
+												<label>Số điện thoại nhận hàng {{key + 1}}</label> <input type="text"
+													ng-model="location.phone" class="form-control" required readonly>
+											</div>
+											<div class="col-sm-1 d-flex flex-column justify-content-center text-center">
+												<i class="fas fa-edit" style="font-size: 1.7em; padding-top: 0.8em; cursor: pointer;"></i>
+											</div>
 
-										<label>Address *</label> <input type="text" ng-model="form.address"
-											class="form-control" required>
+										</div>
+
+										<div class="d-flex mt-2 flex-row-reverse">
+											<button type="button" class="btn btn-outline-primary-2">
+												<span>LƯU THAY ĐỔI</span> <i class="icon-long-arrow-right"></i>
+											</button>
+										</div>
+									</form>
+
+									<h4 class="mt-2 mb-2">ĐỔI MẬT KHẨU</h4>
+									<form>
 										<div class="row">
-											<div class="col-sm-6">
-												<label>Current password</label> <input type="password" readonly
+											<div class="col">
+												<label>Mật khẩu hiện tại *</label> <input type="password" readonly
 													ng-model="form.password" class="form-control">
 											</div>
 											<!-- End .col-sm-6 -->
-
+										</div>
+										<div class="row">
 											<div class="col-sm-6">
-												<label>Confirm Current password *</label> <input type="password"
-													ng-model="confirmPass" required class="form-control">
+												<label>Mật khẩu mới *</label> <input type="password" ng-model="newPass"
+													class="form-control">
+											</div>
+											<!-- End .col-sm-6 -->
+											<div class="col-sm-6">
+												<label>Xác nhận mật khẩu mới *</label> <input type="password"
+													ng-model="confirmNewPass" class="form-control mb-2">
 											</div>
 											<!-- End .col-sm-6 -->
 										</div>
-										<label>New password * (leave blank to leave
-											unchanged)</label> <input type="password" ng-model="newPass"
-											class="form-control"> <label>Confirm new
-											password *</label> <input type="password" ng-model="confirmNewPass"
-											class="form-control mb-2">
-										<div class="d-flex">
+
+										<div class="d-flex flex-row-reverse">
 											<button type="submit"
 												th:attr="ng-click='update(\''+${#authentication.name}+'\')'"
 												class="btn btn-outline-primary-2">
-												<span>SAVE CHANGES</span> <i class="icon-long-arrow-right"></i>
+												<span>LƯU THAY ĐỔI</span> <i class="icon-long-arrow-right"></i>
 											</button>
 											<h4 class="text-success ml-5 mt-1">{{messageSuccess}}</h4>
 											<h4 class="text-danger ml-5 mt-1">{{messageFailed}}</h4>
 										</div>
-
 									</form>
 								</div>
 								<!-- .End .tab-pane -->

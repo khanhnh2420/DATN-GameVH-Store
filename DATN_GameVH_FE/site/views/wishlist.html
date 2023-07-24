@@ -3,7 +3,7 @@
         <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
             <div class="container">
                 <h1 class="page-title">
-                    DANH SÁCH YÊU THÍCH
+                    Danh sách yêu thích<span>Của tôi</span>
                 </h1>
             </div>
             <!-- End .container -->
@@ -59,7 +59,7 @@
                             <td class="action-col">
                                 <div class="dropdown">
                                     <button class="btn btn-block btn-outline-primary-2" data-product-id="{{item.product.id}}" ng-click="addCart($event)">
-                                        <i class="icon-list-alt"></i> Chuyển tới giỏ hàng
+                                        <i class="btn-product btn-cart"></i> Thêm vào giỏ hàng
                                     </button>
                                     <!-- <div class="dropdown-menu">
                                         <a class="dropdown-item" href="#">First option</a>
@@ -67,6 +67,11 @@
                                         <a class="dropdown-item" href="#">The best option</a>
                                     </div> -->
                                 </div>
+                            </td>
+                            <td class="remove-col" ng-show="{{item.product != null}}">
+                                <button class="btn-remove" data-cart-id="{{item.product.id}}" ng-click="removeCart($event)">
+                                    <i class="icon-close"></i>
+                                </button>
                             </td>
                         </tr>
                     </tbody>

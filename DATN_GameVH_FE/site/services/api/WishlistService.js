@@ -7,7 +7,11 @@ app.factory('WishlistService', function($http) {
         },
 
         addWishlist: function() {
-            return $http.post(baseUrl + '/addWishlist/');
-        }
+            return $http.post(baseUrl + '/addWishlist/', favoriteData);
+        },
+
+        updatedFavorite: function() {
+            return $http.post(baseUrl + '/addWishlist/?isUpdate=true', favoriteData);;
+        },
     };
 });

@@ -42,7 +42,7 @@ public class FavoriteRC {
 	}
 
 
-	@PostMapping("/addWishlist")
+	@PostMapping("/addWishlist/")
 	public ResponseEntity<Favorite> addWishlist(@RequestBody Favorite favorite) {
 	    if (favorite.getAccount() != null && favorite.getProduct() != null) {
 	        List<Favorite> existingFavorites = fService.findByProductIdAndAccountId(favorite.getAccount().getId(), favorite.getProduct().getId());

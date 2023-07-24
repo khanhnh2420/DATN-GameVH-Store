@@ -4,6 +4,9 @@ app.controller("WishlistController", function($scope, AccountService, WishlistSe
     $scope.account = {}; // Biến lưu thông tin account 
     $scope.username = null;
 
+
+
+
     $scope.logout = function() {
         $window.localStorage.removeItem("username");
         $window.sessionStorage.removeItem("username");
@@ -36,7 +39,6 @@ app.controller("WishlistController", function($scope, AccountService, WishlistSe
                 .then(function(response) {
                     // Gán dữ liệu danh sách yêu thích vào biến $scope.favorite
                     $scope.favorite = response.data;
-                    console.log($scope.favorite)
 
                 })
                 .catch(function(error) {
@@ -47,8 +49,9 @@ app.controller("WishlistController", function($scope, AccountService, WishlistSe
 
 
 
-    // Hàm để chuyển đổi trạng thái yêu thích
     $scope.toggleFavorite = function(productId) {
+        console.log('Toggle favorite function called with productId:', productId);
+
         // Kiểm tra xem người dùng đã đăng nhập chưa
         if (!$scope.account || !$scope.account.id) {
             // Hiển thị thông báo hoặc chuyển hướng đến trang đăng nhập nếu cần
@@ -69,38 +72,39 @@ app.controller("WishlistController", function($scope, AccountService, WishlistSe
             }
         };
 
-        // Gọi hàm addWishlist từ WishlistService để thêm hoặc xóa sản phẩm vào danh sách yêu thích
+        // Gọi hàm addWishlist từ WishlistService để thêm hoặc cập nhật sản phẩm vào danh sách yêu thích
         WishlistService.addWishlist(favoriteData)
             .then(function(response) {
                 // Xử lý phản hồi từ máy chủ nếu cần
                 var updatedFavorite = response.data;
-
-                // Giả sử 'favorite' là một mảng các mục yêu thích trong phạm vi frontend
-                // Cập nhật mảng 'favorite' dựa trên dữ liệu updatedFavorite
+                console.log()
+                    // Tìm vị trí của sản phẩm trong danh sách yêu thích frontend dựa trên dữ liệu updatedFavorite
                 var existingFavoriteIndex = $scope.findFavoriteIndex(updatedFavorite);
                 if (existingFavoriteIndex !== -1) {
+                    // Nếu sản phẩm đã tồn tại trong danh sách yêu thích, cập nhật trạng thái
                     $scope.favorite[existingFavoriteIndex] = updatedFavorite;
                 } else {
+                    // Nếu sản phẩm chưa tồn tại trong danh sách yêu thích, thêm sản phẩm mới vào danh sách
                     $scope.favorite.push(updatedFavorite);
                 }
             })
             .catch(function(error) {
                 // Xử lý bất kỳ lỗi nào xảy ra trong quá trình yêu cầu POST
-                console.error('Lỗi thêm/xóa sản phẩm yêu thích:', error);
+                console.error('Lỗi thêm/cập nhật sản phẩm yêu thích:', error);
             });
     };
 
 
 
-    // Tìm vị trí của favorite trong danh sách favorites
     $scope.findFavoriteIndex = function(favorite) {
-        for (var i = 0; i < $scope.favorites.length; i++) {
-            if ($scope.favorites[i].account.id === favorite.account.id && $scope.favorites[i].product.id === favorite.product.id) {
+        for (var i = 0; i < $scope.favorite.length; i++) { // Sửa thành $scope.favorite
+            if ($scope.favorite[i].account.id === favorite.account.id && $scope.favorite[i].product.id === favorite.product.id) {
                 return i;
             }
         }
         return -1;
     };
+
 
 
 

@@ -1,5 +1,7 @@
 package com.gamevh.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,11 @@ public class CouponOwnerServiceImpl implements CouponOwnerService{
 	@Override
 	public CouponOwner update(CouponOwner couponOwner) {
 		return couponOwnerRepository.save(couponOwner);
+	}
+
+	@Override
+	public List<CouponOwner> findCouponByUsername(String username) {
+		return couponOwnerRepository.findByAccountUsernameContaining(username);
 	}
 	
 }

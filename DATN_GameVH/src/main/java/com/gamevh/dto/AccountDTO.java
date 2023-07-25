@@ -25,4 +25,6 @@ public class AccountDTO {
 	private Boolean status;
 
 	private String role;
+	
+	private String type;
 }

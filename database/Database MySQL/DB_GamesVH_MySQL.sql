@@ -151,15 +151,15 @@ DROP TABLE IF EXISTS `blog`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `blog` (
   `Id` int NOT NULL AUTO_INCREMENT,
-  `Tittle` varchar(255) NOT NULL,
+  `Title` varchar(255) NOT NULL,
   `Content` longtext NOT NULL,
   `account_id` int NOT NULL,
   `create_date` date NOT NULL,
   `Status` tinyint(1) NOT NULL,
   `Image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`Id`),
-  UNIQUE KEY `Tittle` (`Tittle`),
-  UNIQUE KEY `blog_Tittle_IX` (`Tittle`),
+  UNIQUE KEY `Title` (`Title`),
+  UNIQUE KEY `blog_Title_IX` (`Title`),
   KEY `FK_Account_Blog` (`account_id`),
   CONSTRAINT `FK_Account_Blog` FOREIGN KEY (`account_id`) REFERENCES `account` (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

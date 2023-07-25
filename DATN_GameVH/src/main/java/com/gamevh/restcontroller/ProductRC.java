@@ -86,6 +86,11 @@ public class ProductRC {
 	public ResponseEntity<ProductDTO> getProductDTOById(@PathVariable("productId") Integer productId) {
 		return ResponseEntity.ok(convertProductToProductDTO(productService.findById(productId)));
 	}
+	
+	@GetMapping("getProductAdminDTO/{productId}")
+	public ResponseEntity<ProductAdminDTO> getProductAdminDTOById(@PathVariable("productId") Integer productId) {
+		return ResponseEntity.ok(convertProductToProductAdminDTO(productService.findById(productId)));
+	}
 
 	@GetMapping("getAllProductDTO")
 	public ResponseEntity<List<ProductDTO>> getAllProductDTO() {

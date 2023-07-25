@@ -16,6 +16,8 @@ public interface FavoriteService {
 	Favorite save(Favorite favorite);
 
 	List<Favorite> findAllByAccountId(Integer accountId);
+	
+	List<Favorite> findByProductId(Integer productid);
 
 	List<Favorite> findByProductIdAndAccountId( Integer  accountid, Integer productid);
 	

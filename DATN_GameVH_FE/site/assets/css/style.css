@@ -3293,7 +3293,8 @@ p {
 
 .header-3 .wishlist .wishlist-count,
 .header-3 .cart-count {
-    color: #333
+    color: #fff;
+    background-color: #ee7d0c;
 }
 
 .header-3 .header-bottom {

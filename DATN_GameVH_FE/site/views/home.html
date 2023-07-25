@@ -695,7 +695,7 @@
     <!-- End .cta -->
 </div>
 <!-- End .container -->
-<div class="container">
+<div class="container" ng-controller="WishlistController">
     <div class="heading heading-flex" style="height: 3em; align-items: unset;">
         <div class="heading-left">
             <h2 class="title mb-5">Phụ kiện</h2>
@@ -746,7 +746,7 @@
                             </a>
 
                             <div class="product-action-vertical">
-                                <a href="#" class="btn-product-icon btn-wishlist" title="Thêm vào yêu thích"><span>Thêm vào yêu
+                                <a href="#" class="btn-product-icon btn-wishlist" title="Thêm vào yêu thích" data-product-id="{{ p.id }}" ng-click="toggleFavorite($event)"><span>Thêm vào yêu
                                                 thích</span></a>
                             </div>
                             <!-- End .product-action-vertical -->

@@ -5,6 +5,7 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
 
 
     $scope.categories = [];
+    $scope.feedback = [];
 
     $scope.posters = [];
     $scope.thumbnails = [];
@@ -31,6 +32,75 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
         .catch(function(error) {
             console.error('Lỗi khi lấy danh sách category:', error);
         });
+
+
+    $scope.getFeedbackForProduct = function(productId) {
+        ProductAdminService.getFeedbackProduct(productId)
+            .then(function(response) {
+                $scope.feedback = response.data;
+                // Gọi hàm loadProductFeedback để hiển thị dữ liệu phản hồi lên form
+                $scope.loadProductFeedback();
+            })
+            .catch(function(error) {
+                console.error('Lỗi khi lấy danh sách phản hồi:', error);
+            });
+    };
+
+    $scope.loadProductFeedback = function() {
+        var feedbackTableBody = $('#feedbackTableBody');
+        feedbackTableBody.empty();
+
+        $scope.feedback.forEach(function(feedback) {
+            var starIcons = '';
+            for (var i = 1; i <= 5; i++) {
+                starIcons += '<span class="fa fa-star' + (feedback.rating >= i ? ' checked' : '') + '"></span>';
+            }
+
+            var feedbackRow = '<tr>' +
+                '<td>' + feedback.id + '</td>' +
+                '<td>' + feedback.account.name + '</td>' +
+                '<td class="d-flex text-wrap">' + feedback.content + '</td>' +
+                '<td>' + starIcons + '</td>' +
+                '<td>' + feedback.createDate + '</td>' +
+                '<td>' +
+                '<div class="dropdown action-label">' +
+                '<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">' +
+                '<i class="fa fa-dot-circle-o text-' + (feedback.status ? 'success' : 'danger') + '"></i> ' +
+                (feedback.status ? 'Đã Duyệt' : 'Chưa Duyệt') +
+                '</a>' +
+                '<div class="dropdown-menu">' +
+                '<a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i>Đã Duyệt</a>' +
+                '<a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i>Chưa Duyệt</a>' +
+                '</div>' +
+                '</div>' +
+                '</td>' +
+                '<td class="text-right">' +
+                '<div class=" text-right">' +
+                '<button href="#" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Delete</button>' +
+                '</div>' +
+                '</td>' +
+                '</tr>';
+
+            feedbackTableBody.append(feedbackRow);
+        });
+    };
+
+
+    // Hàm để lấy dữ liệu feedback cho sản phẩm và hiển thị modal
+    $scope.getFeedbackForProduct = function(productId) {
+        ProductAdminService.getFeedbackProduct(productId)
+            .then(function(response) {
+                $scope.feedback = response.data;
+                // Gọi hàm để điền dữ liệu vào bảng và hiển thị modal
+                $scope.loadProductFeedback();
+                // Cuối cùng, mở modal
+                $('#comment_Product').modal('show');
+            })
+            .catch(function(error) {
+                console.error('Lỗi khi lấy dữ liệu feedback:', error);
+            });
+    };
+
 
 
     // Lấy tất cả sản phẩm
@@ -64,41 +134,12 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
                 },
                 {
                     data: null, // Cột "Poster"
-                    // render: function(data, type, row) {
-                    //         // Render giao diện cho cột "Poster"
-                    //         return '<h2 class="table-poster"><a href="#" class="poster"><img alt="" src="/assets/img/products/' + row.poster + '" data-zoom-image="/assets/img/products/' + row.poster + '" alt="product image"></a></h2>';
-                    //     }
                     render: function(data, type, row) {
-                            // Render giao diện cho cột "Poster"
-                            var posterUrl = row.poster ? row.poster : '1xbZ557bXhtiEG-sPP4TRXf007THuPsns';
-                            var imageUrl = 'https://drive.google.com/uc?id=' + posterUrl;
-                            return '<h2 class="table-poster"><a href="#" class="poster"><img alt="" src="' + imageUrl + '" data-zoom-image="' + imageUrl + '" alt="product image"></a></h2>';
-                        }
-                        // render: function(data, type, row) {
-                        //     // Render giao diện cho cột "Poster"
-                        //     var posterUrl = row.poster ? row.poster : '1xbZ557bXhtiEG-sPP4TRXf007THuPsns';
-                        //     var imageUrl = 'https://drive.google.com/uc?id=' + posterUrl;
-
-                    //     // Kiểm tra xem có giá trị posterUrl không
-                    //     if (posterUrl) {
-                    //         // Đặt hình ảnh vào phần hiển thị trong form edit
-                    //         $('#posterPreview').show(); // Hiển thị phần hiển thị hình ảnh
-                    //         $('#posterImage').attr('src', imageUrl); // Đặt đường dẫn hình ảnh
-                    //         console.log(imageUrl)
-                    //         $('#posterInput').val(posterUrl); // Đặt giá trị của hình ảnh vào input hidden
-
-                    //     } else {
-                    //         // Ẩn phần hiển thị hình ảnh nếu không có giá trị posterUrl
-                    //         $('#posterPreview').hide();
-                    //         $('#posterImage').attr('src', ''); // Đặt đường dẫn rỗng
-                    //         $('#posterInput').val(''); // Đặt giá trị rỗng cho input hidden
-
-                    //     }
-
-                    //     return '<h2 class="table-poster"><a href="#" class="poster"><img alt="" src="' + imageUrl + '" data-zoom-image="' + imageUrl + '" alt="product image"></a></h2>';
-                    // }
-
-
+                        // Render giao diện cho cột "Poster"
+                        var posterUrl = row.poster ? row.poster : '1xbZ557bXhtiEG-sPP4TRXf007THuPsns';
+                        var imageUrl = 'https://drive.google.com/uc?id=' + posterUrl;
+                        return '<h2 class="table-poster"><a href="#" class="poster"><img alt="" src="' + imageUrl + '" data-zoom-image="' + imageUrl + '" alt="product image"></a></h2>';
+                    }
 
                 },
                 {
@@ -147,7 +188,8 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
                             '<a class="dropdown-item edit-product" href="#" data-product-id="' + row.id + '" data-toggle="modal" data-target="#edit_Product">' +
                             '<i class="fa fa-pencil m-r-5"></i>Edit' +
                             '</a>' +
-                            '<a class="dropdown-item" href="#" data-toggle="modal" data-target="#comment_Product">' +
+                            // Call the loadProductFeedback function with the product ID
+                            '<a class="dropdown-item view-feedback" href="#" ng-click="loadProductFeedback(' + row.id + ')" data-toggle="modal" data-target="#comment_Product">' +
                             '<i class="fa fa-pencil-square-o m-r-5"></i>Feedback' +
                             '</a>' +
                             '</div>' +
@@ -162,6 +204,11 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
             var productId = $(this)[0].dataset.productId;
             console.log(productId)
             $scope.editProductClicked(productId);
+        });
+
+        $(document).on('click', '.view-feedback', function() {
+            var productId = $(this).data('product-id');
+            $scope.getFeedbackForProduct(productId);
         });
 
     }
@@ -298,29 +345,25 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
         };
     };
 
-    // $scope.product.name = null;
-    // $scope.product.type = null;
-    // $scope.categoryName = "0";
+    $scope.searchProducts = function() {
+        var productName = $scope.searchProductName;
+        var productType = $scope.searchProductType;
+        var categoryName = $scope.searchCategoryName;
 
-    // $scope.searchProduct = function() {
-    //     if ($scope.productName == null || $scope.productName == undefined) {
-    //         $scope.productName = "";
-    //     }
-    //     if ($scope.productType == null || $scope.productType == undefined) {
-    //         $scope.productType = "";
-    //     }
+        // Gọi phương thức getListProductSearch từ service để thực hiện tìm kiếm sản phẩm
+        ProductAdminService.getListProductSearch(productName, productType, categoryName)
+            .then(function(response) {
+                // Lấy danh sách sản phẩm tìm kiếm được từ phản hồi của API
+                var searchResults = response.data;
 
-    //     ProductService.getListProductSearch($scope.productName, $scope.productType, $scope.categoryName)
-    //         .then(function(response) {
-    //             $scope.products = response.data;
-    //             $(document).ready(function() {
-    //                 $scope.loadDataTableProduct($scope.products);
-    //             });
-    //         })
-    //         .catch(function(error) {
-    //             console.error('Lỗi khi tìm kiếm sản phẩm:', error);
-    //         });
-    // };
+                // Gán danh sách sản phẩm tìm kiếm được vào biến $scope.products
+                $scope.products = searchResults;
+            })
+            .catch(function(error) {
+                console.error('Lỗi khi tìm kiếm sản phẩm:', error);
+            });
+    };
+
 
 
 

@@ -34,7 +34,7 @@
         <div class="row filter-row">
             <div class="col-sm-6 col-md-2">
                 <div class="form-group form-focus">
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" ng-model="product.name">
                     <label class="focus-label">Name</label>
                 </div>
             </div>
@@ -443,12 +443,12 @@
                                             <th class="text-right no-sort">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</a>
+                                    <tbody id="feedbackTableBody">
+                                        <!-- <tr ng-repeat="Feedback in Feedbacks">
+                                            <td>{{Feedback.id}}</a>
                                             </td>
-                                            <td>Lê Đăng Dương</td>
-                                            <td class="d-flex text-wrap">Giật lagggg game tệ Giật lagggg game tệ Giật lagggg game tệ Giật lagggg game tệ Giật lagggg game tệ</td>
+                                            <td>{{Feedback.account.name}}</td>
+                                            <td class="d-flex text-wrap">{{Feedback.content}}</td>
                                             <td>
                                                 <span class="fa fa-star checked"></span>
                                                 <span class="fa fa-star checked"></span>
@@ -456,7 +456,7 @@
                                                 <span class="fa fa-star"></span>
                                                 <span class="fa fa-star"></span>
                                             </td>
-                                            <td>12:24:42 <br> 01/02/2023 </td>
+                                            <td>{{Feedback.createDate}} </td>
 
                                             <td>
                                                 <div class="dropdown action-label">
@@ -478,7 +478,7 @@
                                                     <button href="#" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Delete</button>
                                                 </div>
                                             </td>
-                                        </tr>
+                                        </tr> -->
 
                                     </tbody>
                                 </table>

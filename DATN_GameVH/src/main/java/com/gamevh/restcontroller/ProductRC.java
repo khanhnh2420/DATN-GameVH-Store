@@ -82,6 +82,21 @@ public class ProductRC {
         List<Product> products = productService.findAll();
         return ResponseEntity.ok(products);
     }
+	
+	@GetMapping("/getAllFeedback")
+    public ResponseEntity<List<Feedback>> getAllfeedback() {
+        List<Feedback> feedback = feedBackService.findAll();
+        return ResponseEntity.ok(feedback);
+    }
+	
+	@GetMapping("/getProduct/{productId}")
+	public ResponseEntity<List<Feedback>> getAllFeedBackByProductId(@PathVariable("productId") Integer productId) {
+		List<Feedback> listFeedBacks = feedBackService.findByProductId(productId);
+		// Order By Z-A CreateDate
+		Comparator<Feedback> dateComparator = Comparator.comparing(Feedback::getCreateDate);
+		Collections.sort(listFeedBacks, dateComparator.reversed());
+		return ResponseEntity.ok(listFeedBacks);
+	}
 
 	@GetMapping("getProductDTO/{productId}")
 	public ResponseEntity<ProductDTO> getProductDTOById(@PathVariable("productId") Integer productId) {

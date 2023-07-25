@@ -15,6 +15,12 @@ app.factory('ProductAdminService', function($http) {
         getAllProducts: function() {
             return $http.get(baseUrl + '/getAll');
         },
+        getAllFeedback: function() {
+            return $http.get(baseUrl + '/getAllFeedback');
+        },
+        getFeedbackProduct: function() {
+            return $http.get(baseUrl + '/getProduct/' + productId);
+        },
         uploadImage: function(image) {
             var formData = new FormData();
             formData.append('image', image);

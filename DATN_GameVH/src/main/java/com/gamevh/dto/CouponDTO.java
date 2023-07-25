@@ -30,6 +30,8 @@ public class CouponDTO {
 	
 	private Boolean status;
 	
+	private Boolean isUsed;
+	
 	private String image;
 	
 	private String description;

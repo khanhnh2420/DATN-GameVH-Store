@@ -19939,3 +19939,20 @@ button:focus {
 .is-invalid-no-x {
     border: 1px solid red !important;
 }
+
+.star {
+    font-size: 24px;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .star.active,
+  .star:hover {
+    color: #ffcd00;
+  }
+
+  .rating-info {
+    margin-top: 10px;
+    font-size: 18px;
+  }

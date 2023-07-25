@@ -27,22 +27,32 @@
 					<div class="row">
 						<aside class="col-md-4 col-lg-3">
 							<ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
-								<li class="nav-item"><a class="nav-link active" id="tab-dashboard-link"
-										data-toggle="tab" href="#tab-dashboard" role="tab" aria-controls="tab-dashboard"
-										aria-selected="true">Thông tin của tôi</a></li>
-								<li class="nav-item"><a class="nav-link" id="tab-orders-link" data-toggle="tab"
-										href="#tab-orders" role="tab" aria-controls="tab-orders"
-										aria-selected="false">Đơn hàng</a>
+								<li class="nav-item">
+									<a class="nav-link" ng-class="{active: selectedTab === 'tab-dashboard'}"
+										ng-click="changeTabRedirect('tab-dashboard')" style="cursor: pointer;">Thông tin
+										của tôi</a>
 								</li>
-								<li class="nav-item"><a class="nav-link" href="#" ng-click="logout()">Đăng xuất</a></li>
+								<li class="nav-item">
+									<a class="nav-link" ng-class="{active: selectedTab === 'tab-orders'}"
+										ng-click="changeTabRedirect('tab-orders')" style="cursor: pointer;">Đơn hàng</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" ng-class="{active: selectedTab === 'tab-coupons'}"
+										ng-click="changeTabRedirect('tab-coupons')" style="cursor: pointer;">Mã giảm
+										giá</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="#" ng-click="logout()">Đăng xuất</a>
+								</li>
 							</ul>
 						</aside>
 						<!-- End .col-lg-3 -->
 
 						<div class="col-md-8 col-lg-9">
 							<div class="tab-content">
-								<div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel"
-									aria-labelledby="tab-dashboard-link">
+								<div class="tab-pane fade"
+									ng-class="{show: selectedTab === 'tab-dashboard', active: selectedTab === 'tab-dashboard'}"
+									id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
 									<form>
 										<div class="text-center mb-4">
 											<div class="avatar-wrapper">
@@ -91,18 +101,16 @@
 													ng-model="location.phone" class="form-control" required readonly>
 											</div>
 											<div class="col-sm-1 d-flex flex-column justify-content-center text-center">
-												<a type="button" ng-click="fillDataModal($event, 'edit')"
-													ng-href="#address-modal" data-toggle="modal">
-													<i class="fas fa-edit" data-location-id="{{location.id}}"
+												<a type="button" ng-click="fillDataModal(location.id, 'edit')">
+													<i class="fas fa-edit"
 														style="font-size: 1.7em; padding-top: 0.8em; cursor: pointer;"></i>
 												</a>
 											</div>
 
 										</div>
 										<div class="d-flex mt-1" ng-if="locations.length < 2">
-											<a type="button" class="btn btn-outline-primary-2" ng-href="#address-modal"
-												ng-click="fillDataModal($event, 'add')" data-toggle="modal"
-												style="height: 40px;">
+											<a type="button" class="btn btn-outline-primary-2"
+												ng-click="fillDataModal($event, 'add')" style="height: 40px;">
 												<span>THÊM ĐỊA CHỈ</span> <i
 													class="fa-sharp fa-light fa-plus fa-xl"></i>
 											</a>
@@ -150,8 +158,9 @@
 								</div>
 								<!-- .End .tab-pane -->
 
-								<div class="tab-pane fade" id="tab-orders" role="tabpanel"
-									aria-labelledby="tab-orders-link">
+								<div class="tab-pane fade"
+									ng-class="{show: selectedTab === 'tab-orders', active: selectedTab === 'tab-orders'}"
+									id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
 									<div ng-if="orders === null || orders === undefine || orders.length == 0">
 										<p>Chưa có đơn đặt hàng nào được thực hiện.</p>
 										<a href="/shop" class="btn btn-outline-primary-2"><span>ĐẾN TRANG CỬA
@@ -182,14 +191,15 @@
 												<td>{{order.paymentType}}</td>
 												<td>{{order.orderStatus}}</td>
 												<td><a class="btn btn-outline-primary-2" type="button"
-														ng-click="openModalOrder($event)" data-order-id="{{order.id}}"
+														ng-click="openModalOrder(order.id)"
 														style="min-width: 30px; border-radius: 10%; cursor: pointer; padding: 0.55rem 1rem;">Chi
 														tiết</a>
 												</td>
 											</tr>
 										</tbody>
 									</table>
-									<nav aria-label="Page navigation">
+									<nav aria-label="Page navigation"
+										ng-if="orders != null && orders != undefine && orders.length > 0">
 										<ul class="pagination d-flex justify-content-center">
 											<li class="page-item" ng-class="{ disabled: currentPage === 1 }">
 												<button class="page-link page-link-prev" aria-label="Previous"
@@ -218,6 +228,71 @@
 								</div>
 								<!-- .End .tab-pane -->
 
+								<div class="tab-pane fade"
+									ng-class="{show: selectedTab === 'tab-coupons', active: selectedTab === 'tab-coupons'}"
+									id="tab-coupons" role="tabpanel" aria-labelledby="tab-coupons-link">
+									<div ng-if="coupons === null || coupons === undefine || coupons.length == 0">
+										<p>Bạn không sở hữu một mã giảm giá nào!.</p>
+									</div>
+									<table class="table table-bordered text-center"
+										ng-if="coupons != null && coupons != undefine && coupons.length > 0">
+										<caption
+											style="caption-side: top; text-align: center; font-size: 3rem; font-weight: 800;">
+											MÃ GIẢM GIÁ CỦA TÔI</caption>
+										<thead>
+											<tr>
+												<th scope="col">Mã giảm giá</th>
+												<th scope="col">Tên giảm giá</th>
+												<th scope="col">Giá giảm</th>
+												<th scope="col">đơn hàng tối thiểu</th>
+												<th scope="col">Ngày bắt đầu</th>
+												<th scope="col">Ngày kết thúc</th>
+												<th scope="col">Trạng thái</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="coupon in displayedItemCoupons">
+												<td>{{coupon.code}}</td>
+												<td style="width: 23%; padding: 0.5em;">{{coupon.couponName}}</td>
+												<td>{{coupon.value | vndFormat}}</td>
+												<td>{{coupon.minSpend ? coupon.minSpend : "0" | vndFormat}}</td>
+												<td>{{coupon.mfgDate | dateFormat}}</td>
+												<td>{{coupon.expDate | dateFormat}}</td>
+												<td>{{coupon.isUsed ? "Đã sử dụng" : "Chưa sử dụng"}}</td>
+											</tr>
+										</tbody>
+									</table>
+									<nav aria-label="Page navigation"
+										ng-if="coupons != null && coupons != undefine && coupons.length > 0">
+										<ul class="pagination d-flex justify-content-center">
+											<li class="page-item" ng-class="{ disabled: currentPageCoupon === 1 }">
+												<button class="page-link page-link-prev" aria-label="Previous"
+													ng-click="previousPageCoupon()" tabindex="-1"
+													aria-disabled="{{currentPageCoupon === 1}}">
+													<span aria-hidden="true"><i
+															class="icon-long-arrow-left"></i></span>Trước
+												</button>
+											</li>
+											<li class="page-item"
+												ng-repeat="pNum in getPageRangeCoupon(totalPageCoupons) track by $index"
+												ng-class="{ active: ($index + 1) === currentPageCoupon }">
+												<button class="page-link"
+													ng-click="get_ByPageCoupon($index + 1)">{{$index +
+													1}}</button>
+											</li>
+											<li class="page-item-total">của {{totalPageCoupons}}</li>
+											<li class="page-item"
+												ng-class="{ disabled: currentPageCoupon === totalPageCoupons }">
+												<button class="page-link page-link-next" aria-label="Next"
+													ng-click="nextPageCoupon()">Sau
+													<span aria-hidden="true"><i
+															class="icon-long-arrow-right"></i></span>
+												</button>
+											</li>
+										</ul>
+									</nav>
+								</div>
+								<!-- .End .tab-pane -->
 							</div>
 						</div>
 						<!-- End .col-lg-9 -->
@@ -323,7 +398,7 @@
 							</table>
 						</div>
 
-						<div ng-show="activeTab === 'order-detail'">
+						<div ng-show="activeTab === 'order-detail'" class="p-4">
 							<h4
 								style="caption-side: top; text-align: center; font-size: 3rem; font-weight: 800; margin-top: 1em;">
 								CHI TIẾT ĐƠN HÀNG</h4>
@@ -339,13 +414,16 @@
 								</thead>
 								<tbody>
 									<tr ng-repeat="product in orderDetails">
-										<td class="d-flex justify-content-center"><img src="https://drive.google.com/uc?id={{product.productPoster ? product.productPoster : '1k7mZ306aaQltWZVJBe-zbXizg2NmAogx'}}"
-												alt="Product image" class="product-image" style="width: auto; height: 160px;"></td>
+										<td class="d-flex justify-content-center"><img
+												src="https://drive.google.com/uc?id={{product.productPoster ? product.productPoster : '1k7mZ306aaQltWZVJBe-zbXizg2NmAogx'}}"
+												alt="Product image" class="product-image"
+												style="width: auto; height: 160px;"></td>
 										<td>{{product.productName}}</td>
 										<td>{{product.qty}}</td>
 										<td>{{product.price | vndFormat}}</td>
 										<td><a class="btn btn-outline-primary-2" type="button"
-												ng-click="openTabFeedBack($event)" data-product-id="{{product.productId}}"
+												ng-click="openTabFeedBack($event)"
+												data-product-id="{{product.productId}}"
 												style="min-width: 30px; border-radius: 10%; cursor: pointer; padding: 0.55rem 1rem;">Đánh
 												giá</a>
 										</td>
@@ -355,7 +433,16 @@
 						</div>
 
 						<div ng-show="activeTab === 'feedback'">
-							<h2>Feedback</h2>
+							<h4
+								style="caption-side: top; text-align: center; font-size: 3rem; font-weight: 800; margin-top: 1em;">
+								ĐÁNH GIÁ SẢN PHẨM</h4>
+							<div class="row d-flex justify-content-center mb-4 mt-4">
+								<div ng-repeat="star in stars" ng-click="setRating(star)"
+									style="display: inline-block;">
+									<i class="star fa-solid fa-star"
+										ng-class="{'active': star.filled, 'far': !star.filled, 'hovered': star.hovered}"></i>
+								</div>
+							</div>
 						</div>
 					</div>
 					<!-- End .modal-body -->

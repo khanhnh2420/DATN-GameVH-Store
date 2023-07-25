@@ -1,14 +1,9 @@
-app.controller("ProfileController", function (AccountService, LocationService, OrderService, OrderDetailService, PageService, $scope, $window, $http) {
+app.controller("ProfileController", function (AccountService, LocationService, OrderService, OrderDetailService, CouponOwnerService, PageService, $scope, $window, $http) {
     $scope.account = {}; // Biến lưu thông tin account 
     $scope.username = null;
     $scope.orders = [];
     $scope.order = {};
-
-    // Page
-    $scope.itemsPerPage = 6; // Số lượng phần tử hiển thị trên mỗi trang
-    $scope.currentPage = 1; // Trang hiện tại
-    $scope.totalPages = 0;
-    $scope.displayedItems = [];
+    $scope.coupons = [];
 
     // Location
     const hostLocation = "https://provinces.open-api.vn/api/";
@@ -23,7 +18,7 @@ app.controller("ProfileController", function (AccountService, LocationService, O
     $scope.location = {};
 
 
-
+    /*----CHECK LOGIN----*/
     // Trở về trang đăng nhập
     $scope.logout = function () {
         $window.localStorage.removeItem("username");
@@ -54,6 +49,13 @@ app.controller("ProfileController", function (AccountService, LocationService, O
             }).catch(function (error) {
                 console.error('Lỗi khi lấy danh sách order:', error);
             });
+
+            CouponOwnerService.getCouponByUsername($scope.account.username).then(function (coupon) {
+                $scope.coupons = coupon.data;
+                $scope.getListCouponOnPage();
+            }).catch(function (error) {
+                console.error('Lỗi khi lấy list coupon:', error);
+            });
         }
     }).catch(function (error) {
         // Người dùng chưa đăng nhập hoặc có lỗi
@@ -67,7 +69,76 @@ app.controller("ProfileController", function (AccountService, LocationService, O
         }
     });
 
-    $scope.fillDataModal = function (event, type) {
+    /*----END CHECK LOGIN----*/
+
+    /*----RATING----*/
+    $scope.stars = [
+        { filled: false },
+        { filled: false },
+        { filled: false },
+        { filled: false },
+        { filled: false }
+    ];
+
+    $scope.currentRating = 3;
+
+    // Cập nhật trạng thái các ngôi sao dựa vào giá trị currentRating
+    for (var i = 0; i < $scope.currentRating; i++) {
+        $scope.stars[i].filled = true;
+    }
+
+    $scope.setRating = function (star) {
+        // Đánh giá sao khi người dùng nhấp vào
+        var index = $scope.stars.indexOf(star);
+        for (var i = 0; i < $scope.stars.length; i++) {
+            $scope.stars[i].filled = i <= index;
+        }
+
+        // Cập nhật thông tin đánh giá hiện tại
+        $scope.currentRating = index + 1;
+    };
+
+    $scope.hoverStar = function (star) {
+        // Đánh giá sao khi người dùng di chuột qua
+        var index = $scope.stars.indexOf(star);
+        for (var i = 0; i <= index; i++) {
+            $scope.stars[i].hovered = true;
+        }
+        for (var i = index + 1; i < $scope.stars.length; i++) {
+            $scope.stars[i].hovered = false;
+        }
+    };
+
+    $scope.resetHover = function () {
+        // Reset trạng thái khi di chuột ra khỏi đánh giá
+        for (var i = 0; i < $scope.stars.length; i++) {
+            $scope.stars[i].hovered = false;
+        }
+    };
+    /*----END RATING----*/
+
+    /*----CHANGE TAB----*/
+    // Change tab điều hướng
+    $scope.selectedTab = 'tab-dashboard';
+
+    $scope.changeTabRedirect = function (tab) {
+        // Cập nhật tab đang được chọn khi người dùng nhấn vào tab
+        $scope.selectedTab = tab;
+    };
+
+    // Change tab Modal
+    $scope.activeTab = 'order'; // Đặt tab mặc định là "Thông tin đơn hàng"
+
+    $scope.changeTab = function (event, tabName) {
+        event.preventDefault(); // Ngăn chặn sự kiện mặc định khi click vào tab
+        $scope.activeTab = tabName; // Cập nhật tab đang được chọn
+    };
+    /*----END CHANGE TAB----*/
+
+
+    /*----MODAL----*/
+    $scope.fillDataModal = function (locationId, type) {
+        $('#address-modal').modal('show');
         if (type == "add") {
             $scope.title = "THÊM ĐỊA CHỈ MỚI";
             $scope.button = "THÊM";
@@ -76,7 +147,7 @@ app.controller("ProfileController", function (AccountService, LocationService, O
             $scope.title = "CHỈNH SỬA ĐỊA CHỈ";
             $scope.button = "LƯU THAY ĐỔI";
 
-            LocationService.getById(event.target.dataset.locationId).then(function (location) {
+            LocationService.getById(locationId).then(function (location) {
                 $scope.locationForm = location.data;
 
                 $scope.locationForm.province = parseInt($scope.locationForm.province);
@@ -98,30 +169,32 @@ app.controller("ProfileController", function (AccountService, LocationService, O
         $scope.locationForm = {};
     }
 
-    $scope.openModalOrder = function (event) {
+    $scope.openModalOrder = function (orderId) {
         $('#order-modal').modal('show');
-
-        OrderService.getById(event.target.dataset.orderId).then(function (order) {
-            $scope.order = order.data;
-            if($scope.order) {
-                OrderDetailService.getByOrderDataId($scope.order.id).then(function (orderDetail) {
-                    $scope.orderDetails = orderDetail.data;
-                }).catch(function (error) {
-                    console.error('Lỗi khi lấy orderDetail:', error);
-                });
-            }
-        }).catch(function (error) {
-            console.error('Lỗi khi lấy order:', error);
-        });
+        if (orderId) {
+            OrderService.getById(orderId).then(function (order) {
+                $scope.order = order.data;
+                if ($scope.order) {
+                    OrderDetailService.getByOrderDataId($scope.order.id).then(function (orderDetail) {
+                        $scope.orderDetails = orderDetail.data;
+                    }).catch(function (error) {
+                        console.error('Lỗi khi lấy orderDetail:', error);
+                    });
+                }
+            }).catch(function (error) {
+                console.error('Lỗi khi lấy order:', error);
+            });
+        }
     };
 
-    $scope.activeTab = 'order'; // Đặt tab mặc định là "Thông tin đơn hàng"
+    /*----END MODAL----*/
 
-    $scope.changeTab = function (event, tabName) {
-        event.preventDefault(); // Ngăn chặn sự kiện mặc định khi click vào tab
-        $scope.activeTab = tabName; // Cập nhật tab đang được chọn
-    };
-
+    /*----CHIA TRANG----*/
+    // Page Order
+    $scope.itemsPerPage = 6; // Số lượng phần tử hiển thị trên mỗi trang
+    $scope.currentPage = 1; // Trang hiện tại
+    $scope.totalPages = 0;
+    $scope.displayedItems = [];
     $scope.getListOrderOnPage = function () {
         // Tổng số trang
         $scope.totalPages = PageService.calctotalPage($scope.itemsPerPage, $scope.orders);
@@ -182,6 +255,74 @@ app.controller("ProfileController", function (AccountService, LocationService, O
         $scope.getListOrderOnPage();
     };
 
+    // Page coupon
+    $scope.itemsPerPageCoupon = 6; // Số lượng phần tử hiển thị trên mỗi trang
+    $scope.currentPageCoupon = 1; // Trang hiện tại
+    $scope.totalPageCoupons = 0;
+    $scope.displayedItemCoupons = [];
+    $scope.getListCouponOnPage = function () {
+        // Tổng số trang
+        $scope.totalPageCoupons = PageService.calctotalPage($scope.itemsPerPageCoupon, $scope.coupons);
+
+        // Lấy danh sách sản phẩm cho trang hiện tại
+        $scope.displayedItemCoupons = PageService.getDisplayedItems($scope.itemsPerPageCoupon, $scope.currentPageCoupon, $scope.coupons);
+
+        // Danh sách số trang hiển thị
+        $scope.getPageRangeCoupon = function (totalPages) {
+            const maxPages = 10; // Số trang tối đa hiển thị liên tiếp
+            const currentPage = $scope.currentPageCoupon;
+
+            if (totalPages <= maxPages) {
+                return Array(totalPages).fill().map((_, index) => index + 1);
+            } else {
+                let pageRange = [];
+                if (currentPage <= 3) {
+                    pageRange = Array(5).fill().map((_, index) => index + 1);
+                    pageRange.push('...');
+                    pageRange.push(totalPages);
+                } else if (currentPage >= totalPages - 2) {
+                    pageRange.push(1);
+                    pageRange.push('...');
+                    pageRange = pageRange.concat(Array(5).fill().map((_, index) => totalPages - 4 + index));
+                } else {
+                    pageRange.push(1);
+                    pageRange.push('...');
+                    pageRange = pageRange.concat(Array(3).fill().map((_, index) => currentPage - 1 + index));
+                    pageRange.push('...');
+                    pageRange.push(totalPages);
+                }
+                return pageRange;
+            }
+        };
+
+    };
+
+    $scope.previousPageCoupon = function () {
+        if ($scope.currentPageCoupon > 1) {
+            $scope.currentPageCoupon--;
+        } else {
+            $scope.currentPageCoupon = $scope.totalPageCoupons;
+        }
+        $scope.getListCouponOnPage();
+    };
+
+    $scope.nextPageCoupon = function () {
+        if ($scope.currentPageCoupon < $scope.totalPageCoupons) {
+            $scope.currentPageCoupon++;
+        } else {
+            $scope.currentPageCoupon = 1;
+        }
+        $scope.getListCouponOnPage();
+    };
+
+    $scope.get_ByPageCoupon = function (page) {
+        $scope.currentPageCoupon = page;
+        $scope.getListCouponOnPage();
+    };
+
+    /*----END CHIA TRANG----*/
+
+    /*----API LOCATION---*/
     // API Location
     $scope.getLocation = function (api, scopeVariable) {
         $http.get(api)
@@ -255,6 +396,8 @@ app.controller("ProfileController", function (AccountService, LocationService, O
             $scope.selectedLocation = result;
         }
     }
+    /*----END API LOCATION---*/
+
 }).filter('vndFormat', function () {
     // Filter định dạng tiền tệ
     return function (input) {

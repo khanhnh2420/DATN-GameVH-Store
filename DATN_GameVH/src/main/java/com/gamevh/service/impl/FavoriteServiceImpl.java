@@ -41,6 +41,12 @@ public class FavoriteServiceImpl implements FavoriteService {
 		return favoriteRepository.findByProductIdAndAccountId(accountid, productid);
 	}
 
+	@Override
+	public List<Favorite> findByProductId(Integer productid) {
+		// TODO Auto-generated method stub
+		return favoriteRepository.findByProductId(productid);
+	}
+
 	
 
 	

@@ -10,6 +10,8 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Integer>{
 	
 		List<Favorite> findByAccountId(Integer AccountId);
 		
+		List<Favorite> findByProductId(Integer productid);
+		
 		 @Query("SELECT f FROM Favorite f WHERE f.account.id = ?1 and f.product.id = ?2")
 		 	List<Favorite> findByProductIdAndAccountId( Integer  accountid, Integer productid);
 }

@@ -101,10 +101,11 @@
                         </div>
                         <!-- End .compare-dropdown -->
 
-                        <div class="wishlist">
+                        <div class="wishlist" ng-controller="WishlistController">
                             <a href="/wishlist" title="Yêu thích">
                                 <div class="icon">
-                                    <i class="icon-heart-o"></i> <span class="wishlist-count badge">3</span>
+                                    <i class="icon-heart-o"></i>
+                                    <span class="wishlist-count" ng-hide="favorite.length === 0">{{ favoriteLength }}</span>
                                 </div>
                                 <p>Yêu thích</p>
                             </a>

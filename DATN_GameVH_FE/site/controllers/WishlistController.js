@@ -111,45 +111,99 @@ app.controller("WishlistController", function($scope, AccountService, ProductSer
         }
     };
 
+
     $scope.removeFromFavorite = function(event) {
         var productId = event.currentTarget.getAttribute('data-product-id');
-        var existingFavoriteIndex = $scope.favorite.findIndex(function(item) {
-            return item.product.id === productId;
+        var existingFavoriteIndex = false;
+        $scope.favorite.forEach(function(item) {
+            if (item.product.id === parseInt(productId)) {
+                existingFavoriteIndex = true;
+            }
         });
-
-        if (existingFavoriteIndex !== -1) {
+        if (existingFavoriteIndex) {
             // Xoá sản phẩm khỏi danh sách yêu thích
-            $scope.favorite.splice(existingFavoriteIndex, 1);
+
 
             WishlistService.removeFromWishlist(productId)
-                .then(function() { // Use underscore to indicate that 'response' is intentionally not used
+                .then(function() {
                     // Xử lý phản hồi từ máy chủ nếu cần
                     console.log('Xoá sản phẩm khỏi danh sách yêu thích thành công.');
 
-                    // In thông báo thành công
-                    alert('Xoá sản phẩm khỏi danh sách yêu thích thành công.');
+                    // Hiển thị thông báo thành công
+                    showSuccessToast("Sản phẩm đã xóa thành công");
 
                     // Cập nhật số lượng yêu thích sau khi xoá sản phẩm
                     $scope.favoriteLength = $scope.favorite.filter(function(item) {
                         return item.status === true;
                     }).length;
+
+                    // Lấy danh sách yêu thích mới sau khi đã xoá thành công
+                    fetchWishlistItems();
                 })
                 .catch(function(error) {
                     console.error('Lỗi khi xoá sản phẩm khỏi danh sách yêu thích:', error);
                 });
+
         }
     };
 
+    // Thông báo Toast Success
+    function showSuccessToast(message) {
+        var toastMessage = message || "Sản phẩm đã được xóa thành công.";
+        toast({
+            title: "Thành công!",
+            message: toastMessage,
+            type: "success",
+            duration: 5000
+        });
+    }
 
+    // Toast function
+    function toast({ title = "", message = "", type = "info", duration = 3000 }) {
+        const main = document.getElementById("toast");
+        if (main) {
+            const toast = document.createElement("div");
 
+            // Auto remove toast
+            const autoRemoveId = setTimeout(function() {
+                main.removeChild(toast);
+            }, duration + 1000);
 
+            // Remove toast when clicked
+            toast.onclick = function(e) {
+                if (e.target.closest(".toast__close")) {
+                    main.removeChild(toast);
+                    clearTimeout(autoRemoveId);
+                }
+            };
 
+            const icons = {
+                success: "fas fa-check-circle",
+                info: "fas fa-info-circle",
+                warning: "fas fa-exclamation-circle",
+                error: "fas fa-exclamation-circle"
+            };
+            const icon = icons[type];
+            const delay = (duration / 1000).toFixed(2);
 
+            toast.classList.add("toastDesign", `toast--${type}`);
+            toast.style.animation = `slideInLeft ease .3s, fadeOut linear 1s ${delay}s forwards`;
 
-
-
-
-
+            toast.innerHTML = `
+                      <div class="toast__icon">
+                          <i class="${icon}"></i>
+                      </div>
+                      <div class="toast__body">
+                          <h3 class="toast__title">${title}</h3>
+                          <p class="toast__msg">${message}</p>
+                      </div>
+                      <div class="toast__close">
+                          <i class="fas fa-times"></i>
+                      </div>
+                  `;
+            main.appendChild(toast);
+        }
+    };
 
 }).filter('vndFormat', function() {
     return function(input) {

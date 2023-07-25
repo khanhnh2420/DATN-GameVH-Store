@@ -6,6 +6,7 @@ package com.gamevh.restcontroller;
 
 import java.io.IOException;
 
+
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -466,5 +467,17 @@ public class ProductRC {
 
 	    return driveService.uploadFile(image, fileName, mimeType, folderId);
 	}
+	
+	@GetMapping("/search")
+	public ResponseEntity<List<Product>> searchProducts(
+	        @RequestParam(value = "productName", required = false) String productName,
+	        @RequestParam(value = "productType", required = false) String productType,
+	        @RequestParam(value = "categoryName", required = false) String categoryName) {
+
+	    List<Product> searchResults = productService.searchProducts(productName, productType, categoryName);
+
+	    return ResponseEntity.ok(searchResults);
+	}
+
 	
 }

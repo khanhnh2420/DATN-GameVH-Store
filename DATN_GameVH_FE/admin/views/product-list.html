@@ -38,12 +38,12 @@
                     <label class="focus-label">Name</label>
                 </div>
             </div>
-            <div class="col-sm-6 col-md-2">
+            <!-- <div class="col-sm-6 col-md-2">
                 <div class="form-group form-focus select-focus">
                     <label class="focus-label">Created Date</label>
                     <input class="form-control" type="date">
                 </div>
-            </div>
+            </div> -->
             <div class="col-sm-6 col-md-2">
                 <div class="form-group form-focus select-focus">
                     <label class="focus-label">Type Product</label>
@@ -70,7 +70,10 @@
                 </div>
             </div>
             <div class="col-sm-6 col-md-2">
-                <a href="#" class="btn btn-success btn-block"> Search </a>
+                <a href="#" class="btn btn-success btn-block" ng-click="searchProduct()"> Search </a>
+            </div>
+            <div class="col-sm-6 col-md-2">
+                <a href="#" class="btn btn-success btn-block"> Report Product </a>
             </div>
         </div>
         <!-- /Search Filter -->
@@ -348,7 +351,7 @@
                             <h4 class="d-flex justify-content-center">IMAGE POSTER</h4>
                             <div class="card border-0">
                                 <div class="body d-flex flex-column align-items-center">
-                                    <input type="file" class="dropify" ng-model="product.poster" accept="image/*">
+                                    <!-- <input type="file" class="dropify" ng-model="product.poster" accept="image/*"> -->
                                     <img src="https://drive.google.com/uc?id={{product.poster}}" style="width: 300px; height: 533px;">
                                 </div>
                             </div>

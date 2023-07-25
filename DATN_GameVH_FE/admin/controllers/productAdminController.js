@@ -298,6 +298,29 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
         };
     };
 
+    // $scope.product.name = null;
+    // $scope.product.type = null;
+    // $scope.categoryName = "0";
+
+    // $scope.searchProduct = function() {
+    //     if ($scope.productName == null || $scope.productName == undefined) {
+    //         $scope.productName = "";
+    //     }
+    //     if ($scope.productType == null || $scope.productType == undefined) {
+    //         $scope.productType = "";
+    //     }
+
+    //     ProductService.getListProductSearch($scope.productName, $scope.productType, $scope.categoryName)
+    //         .then(function(response) {
+    //             $scope.products = response.data;
+    //             $(document).ready(function() {
+    //                 $scope.loadDataTableProduct($scope.products);
+    //             });
+    //         })
+    //         .catch(function(error) {
+    //             console.error('Lỗi khi tìm kiếm sản phẩm:', error);
+    //         });
+    // };
 
 
 

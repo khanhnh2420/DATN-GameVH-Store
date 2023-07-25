@@ -22,7 +22,7 @@ import lombok.Data;
 @SuppressWarnings("serial")
 @Data
 @Entity
-@Table(name="blog", indexes={@Index(name="blog_Tittle_IX", columnList="Title", unique=true)})
+@Table(name="blog", indexes={@Index(name="blog_Title_IX", columnList="Title", unique=true)})
 public class Blog implements Serializable{
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

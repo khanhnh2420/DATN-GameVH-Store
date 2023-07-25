@@ -20,4 +20,9 @@ public class LocationServiceImpl implements LocationService{
 		return locationRepository.findByAccountUsername(username);
 	}
 
+	@Override
+	public Location findById(Integer locationId) {
+		return locationRepository.findById(locationId).get();
+	}
+
 }

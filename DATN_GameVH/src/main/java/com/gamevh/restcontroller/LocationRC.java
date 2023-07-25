@@ -28,7 +28,7 @@ public class LocationRC {
 	LocationMapper locationMapper;
 	
 	@GetMapping("username/{username}")
-	public ResponseEntity<List<LocationDTO>> getAccountLogin(@PathVariable("username") Optional<String> username) {
+	public ResponseEntity<List<LocationDTO>> getLocationByAccountUsername(@PathVariable("username") Optional<String> username) {
 		Optional<String> optionalUsername = username;
 
 		if (optionalUsername.isPresent() && !optionalUsername.get().trim().equals("")) {
@@ -40,6 +40,20 @@ public class LocationRC {
 				}
 				
 				return ResponseEntity.ok(listLocationDTO);
+			}
+		}
+
+		return null;
+	}
+	
+	@GetMapping("id/{locationId}")
+	public ResponseEntity<LocationDTO> getLocationById(@PathVariable("locationId") Optional<Integer> locationId) {
+		Optional<Integer> optionalId = locationId;
+
+		if (optionalId.isPresent()) {
+			LocationDTO locationDTO = locationMapper.modelToDto(locationService.findById(optionalId.get()));
+			if (locationDTO != null) {
+				return ResponseEntity.ok(locationDTO);
 			}
 		}
 

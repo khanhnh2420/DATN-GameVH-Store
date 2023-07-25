@@ -22,9 +22,16 @@ public class BlogRC {
 	BlogService blogService;
 	
 	@GetMapping("getAllBlog")
-	public ResponseEntity<List<BlogDTO>> getAllProductDTO() {
+	public ResponseEntity<List<BlogDTO>> getAllBlogDTOByStatus() {
 		// Lấy danh sách blog có status = true
 		List<BlogDTO> lstBlog = blogService.findAllByStatus(true);
+		return ResponseEntity.ok(lstBlog);
+	}
+	
+	@GetMapping("getAll")
+	public ResponseEntity<List<BlogDTO>> getAllBlogDTO() {
+		// Lấy toàn bộ danh sách blog
+		List<BlogDTO> lstBlog = blogService.findAll();
 		return ResponseEntity.ok(lstBlog);
 	}
 	
@@ -36,7 +43,7 @@ public class BlogRC {
 	}
 	
 	@GetMapping("getBlogDetail/{blogId}")
-	public ResponseEntity<BlogDTO> getProductDTOById(@PathVariable("blogId") Integer blogId) {
+	public ResponseEntity<BlogDTO> getBlogDTOById(@PathVariable("blogId") Integer blogId) {
 		return ResponseEntity.ok(blogService.findById(blogId));
 	}
 }

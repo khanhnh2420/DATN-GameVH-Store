@@ -8,7 +8,7 @@
 
 
 <!-- Page Wrapper -->
-<div class="page-wrapper">
+<div class="page-wrapper" ng-controller="BlogController">
 
 	<!-- Page Content -->
 	<div class="content container-fluid">
@@ -24,7 +24,7 @@
 					</ul>
 				</div>
 				<div class="col-auto float-right ml-auto">
-					<a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_Blog"><i
+					<a href="#" class="btn add-btn" ng-click="newBlog()" data-toggle="modal" data-target="#add_Blog"><i
 							class="fa fa-plus"></i> Add Blog List</a>
 
 				</div>
@@ -61,10 +61,10 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="table-responsive">
-					<table class="table table-striped custom-table datatable">
+					<table class="table table-striped custom-table datatable" id="tableBlog">
 						<thead>
 							<tr>
-								<th>ID</th>
+								<th>#</th>
 								<th>Title</th>
 								<th>User Created</th>
 								<th>Created Date</th>
@@ -73,176 +73,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>1</td>
-								<td>FIFA 22 sửa lỗi cho thủ môn và trọng tài</td>
-								<td>lethithuy</td>
-								<td>27/02/2023</td>
-								<td><span class="badge bg-inverse-warning">Mới đăng</span></td>
-								<td class="text-right">
-									<div class="dropdown dropdown-action">
-										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-											aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#edit_Blog"><i class="fa fa-pencil m-r-5"></i>
-												Edit</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#delete_Blog"><i class="fa fa-trash-o m-r-5"></i>
-												Delete</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#comment_Product"><i
-													class="fa fa-pencil-square-o m-r-5"></i> Comment</a>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>Hướng dẫn tạo và sử dụng bản đồ - Map trong Minecraft</td>
-								<td>lethithuy</td>
-								<td>27/02/2023</td>
-								<td><span class="badge bg-inverse-success">Đã duyệt</span></td>
-								<td class="text-right">
-									<div class="dropdown dropdown-action">
-										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-											aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#edit_Blog"><i class="fa fa-pencil m-r-5"></i>
-												Edit</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#delete_Blog"><i class="fa fa-trash-o m-r-5"></i>
-												Delete</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#comment_Product"><i
-													class="fa fa-pencil-square-o m-r-5"></i> Comment</a>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>Genshin Impact là gì? Bách khoa toàn thư về Genshin Impact dành cho người
-									mới</td>
-								<td>lethithuy</td>
-								<td>27/02/2023</td>
-								<td><span class="badge bg-inverse-danger">Đã dừng</span></td>
-								<td class="text-right">
-									<div class="dropdown dropdown-action">
-										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-											aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#edit_Blog"><i class="fa fa-pencil m-r-5"></i>
-												Edit</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#delete_Blog"><i class="fa fa-trash-o m-r-5"></i>
-												Delete</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#comment_Product"><i
-													class="fa fa-pencil-square-o m-r-5"></i> Comment</a>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>4</td>
-								<td>Dota 2 Update 7.32e Vietsub Phần 1: Các tính năng mới, Gameplay update và
-									Item updates</td>
-								<td>lethithuy</td>
-								<td>27/02/2023</td>
-								<td><span class="badge bg-inverse-success">Đã đăng</span></td>
-								<td class="text-right">
-									<div class="dropdown dropdown-action">
-										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-											aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#edit_Blog"><i class="fa fa-pencil m-r-5"></i>
-												Edit</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#delete_Blog"><i class="fa fa-trash-o m-r-5"></i>
-												Delete</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#comment_Product"><i
-													class="fa fa-pencil-square-o m-r-5"></i> Comment</a>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>Assassin’s Creed Valhalla – Đánh Giá Game</td>
-								<td>lethithuy</td>
-								<td>27/02/2023</td>
-								<td><span class="badge bg-inverse-success">Đã đăng</span></td>
-								<td class="text-right">
-									<div class="dropdown dropdown-action">
-										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-											aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#edit_Blog"><i class="fa fa-pencil m-r-5"></i>
-												Edit</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#delete_Blog"><i class="fa fa-trash-o m-r-5"></i>
-												Delete</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#comment_Product"><i
-													class="fa fa-pencil-square-o m-r-5"></i> Comment</a>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>6</td>
-								<td>FIFA 22 sửa lỗi cho thủ môn và trọng tài</td>
-								<td>lethithuy</td>
-								<td>27/02/2023</td>
-								<td><span class="badge bg-inverse-success">Đã đăng</span></td>
-								<td class="text-right">
-									<div class="dropdown dropdown-action">
-										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-											aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#edit_Blog"><i class="fa fa-pencil m-r-5"></i>
-												Edit</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#delete_Blog"><i class="fa fa-trash-o m-r-5"></i>
-												Delete</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#comment_Product"><i
-													class="fa fa-pencil-square-o m-r-5"></i> Comment</a>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>7</td>
-								<td>FIFA 22 sửa lỗi cho thủ môn và trọng tài</td>
-								<td>lethithuy</td>
-								<td>27/02/2023</td>
-								<td><span class="badge bg-inverse-success">Đã đăng</span></td>
-								<td class="text-right">
-									<div class="dropdown dropdown-action">
-										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-											aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#edit_Blog"><i class="fa fa-pencil m-r-5"></i>
-												Edit</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#delete_Blog"><i class="fa fa-trash-o m-r-5"></i>
-												Delete</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#comment_Product"><i
-													class="fa fa-pencil-square-o m-r-5"></i> Comment</a>
-										</div>
-									</div>
-								</td>
-							</tr>
+
 						</tbody>
 					</table>
 				</div>
@@ -268,80 +99,27 @@
 							<div class="col-sm-12">
 								<div class="form-group">
 									<label class="col-form-label">Title <span class="text-danger">*</span></label>
-									<input class="form-control" type="text">
+									<input class="form-control" ng-model="blogData.title" type="text">
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label class="col-form-label">Created Date <span
 											class="text-danger">*</span></label>
-									<input class="form-control" type="date" readonly>
+									<input class="form-control" type="text" ng-model="blogData.createDate | date:'dd/MM/yyyy'" readonly>
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label class="col-form-label">Status </label>
 									<select class="select">
-										<option>Mới Đăng</option>
-										<option>Đã Đăng</option>
-										<option>Đã Dừng</option>
+										<option>Public</option>
+										<option>Private</option>
 									</select>
 								</div>
 							</div>
 							<div class="col-sm-12">
-								<div class="card">
-									<div class="card-body">
-										<div class="summernote">
-											<h2>Apollo 11</h2>
-											<div class="float-right" style="margin-left: 20px;"><img
-													alt="Saturn V carrying Apollo 11" class="right"
-													src="http://c.cksource.com/a/1/img/sample.jpg"></div>
-
-											<p><strong>Apollo 11</strong> was the spaceflight that landed the
-												first humans, Americans <a href="#">Neil Armstrong</a> and <a
-													href="#">Buzz Aldrin</a>, on the Moon on July 20, 1969, at
-												20:18 UTC. Armstrong became the first to step onto the lunar
-												surface 6 hours later on July 21 at 02:56 UTC.</p>
-
-											<p class="mb-3">Armstrong spent about <s>three and a half</s> two
-												and a half hours outside the spacecraft, Aldrin slightly less;
-												and together they collected 47.5 pounds (21.5&nbsp;kg) of lunar
-												material for return to Earth. A third member of the mission, <a
-													href="#">Michael Collins</a>, piloted the <a href="#">command</a>
-												spacecraft alone in lunar orbit until
-												Armstrong and Aldrin returned to it for the trip back to Earth.
-											</p>
-
-											<h5 class="font-weight-semibold">Technical details</h5>
-											<p>Launched by a <strong>Saturn V</strong> rocket from <a href="#">Kennedy
-													Space Center</a> in Merritt Island, Florida
-												on July 16, Apollo 11 was the fifth manned mission of <a
-													href="#">NASA</a>'s Apollo program. The Apollo spacecraft
-												had three parts:</p>
-											<ol>
-												<li><strong>Command Module</strong> with a cabin for the three
-													astronauts which was the only part which landed back on
-													Earth</li>
-												<li><strong>Service Module</strong> which supported the Command
-													Module with propulsion, electrical power, oxygen and water
-												</li>
-												<li><strong>Lunar Module</strong> for landing on the Moon.</li>
-											</ol>
-											<p class="mb-3">After being sent to the Moon by the Saturn V's upper
-												stage, the astronauts separated the spacecraft from it and
-												travelled for three days until they entered into lunar orbit.
-												Armstrong and Aldrin then moved into the Lunar Module and landed
-												in the <a href="#">Sea of Tranquility</a>. They stayed a total
-												of about 21 and a half hours on the lunar surface. After lifting
-												off in the upper part of the Lunar Module and rejoining Collins
-												in the Command Module, they returned to Earth and landed in the
-												<a href="#">Pacific Ocean</a> on July 24.
-											</p>
-
-											Source: <a href="http://en.wikipedia.org/wiki/Apollo_11">Wikipedia.org</a>
-										</div>
-									</div>
-								</div>
+								<div class="summernote"></div>
 							</div>
 						</div>
 						<div class="submit-section">

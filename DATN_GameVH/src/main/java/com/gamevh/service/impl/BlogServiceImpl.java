@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,24 @@ public class BlogServiceImpl implements BlogService {
 	BlogRepository blogRepository;
 
 	@Override
-	public List<Blog> findAll() {
-		return blogRepository.findAll();
+	public List<BlogDTO> findAll() {
+		// Lấy danh sách các đối tượng Blog từ repository
+		List<Blog> blogEntities = blogRepository.findAll();
+
+		// Sắp xếp danh sách các đối tượng Blog theo ngày đăng mới nhất (giảm dần)
+		blogEntities.sort(Comparator.comparing(Blog::getCreateDate, Comparator.nullsLast(Comparator.reverseOrder())));
+
+		// Chuyển đổi danh sách các đối tượng Blog sang danh sách các đối tượng BlogDTO
+		List<BlogDTO> blogDTOs = blogEntities.stream().map(blogEntity -> {
+			BlogDTO dto = new BlogDTO();
+			BeanUtils.copyProperties(blogEntity, dto);
+			dto.setUsername(blogEntity.getAccount().getUsername());
+			return dto;
+		}).collect(Collectors.toList());
+
+		// Trả về danh sách blogDTOs chứa các đối tượng BlogDTO đã sao chép và sắp xếp
+		// theo ngày đăng mới nhất
+		return blogDTOs;
 	}
 
 	@Override
@@ -35,7 +52,7 @@ public class BlogServiceImpl implements BlogService {
 			BlogDTO blogDTO = new BlogDTO();
 			// Thực hiện sao chép các thuộc tính từ đối tượng Blog sang đối tượng BlogDTO
 			blogDTO.setId(blog.getId());
-			blogDTO.setTittle(blog.getTittle());
+			blogDTO.setTitle(blog.getTitle());
 			blogDTO.setContent(blog.getContent());
 			blogDTO.setImage(blog.getImage());
 			blogDTO.setCreateDate(blog.getCreateDate());
@@ -65,7 +82,7 @@ public class BlogServiceImpl implements BlogService {
 			BlogDTO blogDTO = new BlogDTO();
 			// Thực hiện sao chép các thuộc tính từ đối tượng Blog sang đối tượng BlogDTO
 			blogDTO.setId(blog.getId());
-			blogDTO.setTittle(blog.getTittle());
+			blogDTO.setTitle(blog.getTitle());
 			blogDTO.setContent(blog.getContent());
 			blogDTO.setImage(blog.getImage());
 			blogDTO.setCreateDate(blog.getCreateDate());
@@ -85,5 +102,5 @@ public class BlogServiceImpl implements BlogService {
 		blogDTO.setUsername(blog.getAccount().getFullname());
 		return blogDTO;
 	}
-	
+
 }

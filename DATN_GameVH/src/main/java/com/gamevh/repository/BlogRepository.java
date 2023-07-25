@@ -10,8 +10,8 @@ import com.gamevh.entities.Blog;
 
 public interface BlogRepository extends JpaRepository<Blog, Integer> {
 
-	@Query("SELECT p FROM Blog p WHERE p.tittle LIKE ?1")
-	Blog getBlogbyTittleSearch(String tittleSearch);	
+	@Query("SELECT p FROM Blog p WHERE p.title LIKE ?1")
+	Blog getBlogbyTittleSearch(String titleSearch);	
 
 	@Query(value = "SELECT TOP(10) b FROM Blog b INNER JOIN FETCH b.comment c GROUP BY b ORDER BY COUNT(c) DESC", nativeQuery = true)
 	List<Blog> getListHighestComments();

@@ -33,6 +33,10 @@ app.factory('ProductAdminService', function($http) {
 
         deleteProduct: function(productId) {
             return $http.delete(baseUrl + '/delete' + productId);
-        }
+        },
+        getListProductSearch: function(productName, productType, categoryName) {
+            return $http.get(baseUrl + '/products/search?productName=' + productName + '&productType=' + productType + '&categoryName=' + categoryName);
+        },
+
     };
 });

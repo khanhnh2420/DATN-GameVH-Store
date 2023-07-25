@@ -6,12 +6,16 @@ app.factory('WishlistService', function($http) {
             return $http.get(baseUrl + '/getAll/' + accountId);
         },
 
-        addWishlist: function() {
+        addWishlist: function(favoriteData) {
             return $http.post(baseUrl + '/addWishlist/', favoriteData);
         },
 
-        updatedFavorite: function() {
-            return $http.post(baseUrl + '/addWishlist/?isUpdate=true', favoriteData);;
+        updateFavorite: function(favoriteData) {
+            return $http.put(baseUrl + '/updateWishlist/', favoriteData); // Sửa lại đường dẫn thành /updateWishlist/
+        },
+
+        removeFromWishlist: function(productId) {
+            return $http.delete(baseUrl + '/removeWishlist/' + productId);
         },
     };
 });

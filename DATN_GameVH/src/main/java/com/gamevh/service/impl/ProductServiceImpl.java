@@ -44,5 +44,11 @@ public class ProductServiceImpl implements ProductService {
 		 productRepository.delete(product);
 	}
 
+	@Override
+	public List<Product> searchProducts(String productName, String productType, String categoryName) {
+		// TODO Auto-generated method stub
+		return productRepository.searchProducts(productName, productType, categoryName);
+	}
+
 	
 }

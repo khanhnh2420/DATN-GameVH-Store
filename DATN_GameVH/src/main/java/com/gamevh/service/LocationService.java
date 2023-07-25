@@ -6,4 +6,6 @@ import com.gamevh.entities.Location;
 
 public interface LocationService {
 	List<Location> findByAccountUsername(String username);
+	
+	Location findById(Integer locationId);
 }

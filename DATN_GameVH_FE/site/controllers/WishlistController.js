@@ -1,4 +1,4 @@
-app.controller("WishlistController", function($scope, AccountService, WishlistService, $http) {
+app.controller("WishlistController", function($scope, AccountService, ProductService, WishlistService, $http) {
     $scope.favorite = []
     $scope.favoriteLength;
     $scope.account = {}; // Biến lưu thông tin account 
@@ -30,7 +30,6 @@ app.controller("WishlistController", function($scope, AccountService, WishlistSe
         }
     });
 
-    // Hàm để lấy danh sách yêu thích sử dụng accountId
     function fetchWishlistItems() {
         if ($scope.account && $scope.account.id) {
             var accountId = $scope.account.id;
@@ -40,6 +39,8 @@ app.controller("WishlistController", function($scope, AccountService, WishlistSe
                     // Gán dữ liệu danh sách yêu thích vào biến $scope.favorite
                     $scope.favorite = response.data;
 
+                    // Cập nhật số lượng sản phẩm yêu thích vào phần tử có class "wishlist-count"
+                    $scope.favoriteLength = $scope.favorite.length;
                 })
                 .catch(function(error) {
                     console.error('Lỗi khi lấy danh sách yêu thích:', error);
@@ -48,79 +49,161 @@ app.controller("WishlistController", function($scope, AccountService, WishlistSe
     }
 
 
+    $scope.toggleFavorite = function(event) {
+        var productId = event.currentTarget.getAttribute('data-product-id');
+        var existingFavorite = $scope.favorite.find(function(item) {
+            return item.product.id === productId;
+        });
 
-    $scope.toggleFavorite = function(productId) {
-        console.log('Toggle favorite function called with productId:', productId);
+        if (existingFavorite) {
+            // Sản phẩm đã tồn tại trong danh sách yêu thích
+            existingFavorite.status = !existingFavorite.status; // Đảo ngược trạng thái yêu thích
 
-        // Kiểm tra xem người dùng đã đăng nhập chưa
-        if (!$scope.account || !$scope.account.id) {
-            // Hiển thị thông báo hoặc chuyển hướng đến trang đăng nhập nếu cần
-            console.log('Bạn cần đăng nhập để thực hiện chức năng này.');
-            return;
+            WishlistService.updateFavorite(existingFavorite)
+                .then(function(response) {
+                    // Xử lý phản hồi từ máy chủ nếu cần
+                    console.log('Cập nhật trạng thái sản phẩm thành công.');
+
+                    // Cập nhật số lượng yêu thích sau khi thay đổi trạng thái
+                    $scope.favoriteLength = $scope.favorite.filter(function(item) {
+                        return item.status === true;
+                    }).length;
+                })
+                .catch(function(error) {
+                    console.error('Lỗi khi cập nhật sản phẩm yêu thích:', error);
+                });
+        } else {
+            // Sản phẩm chưa tồn tại trong danh sách yêu thích, thêm mới vào
+            ProductService.getProduct(productId)
+                .then(function(response) {
+                    var product = response.data;
+                    if (product.available && product.qty > 0) {
+                        var favoriteData = {
+                            account: {
+                                id: $scope.account.id
+                            },
+                            product: {
+                                id: productId
+                            },
+                            status: true // Trạng thái mặc định là true khi thêm mới vào danh sách yêu thích
+                        };
+
+                        WishlistService.addWishlist(favoriteData)
+                            .then(function(response) {
+                                // Xử lý phản hồi từ máy chủ nếu cần
+                                console.log('Thêm sản phẩm vào danh sách yêu thích thành công.');
+                                // Thêm sản phẩm mới vào danh sách yêu thích hiển thị
+                                $scope.favorite.push(response.data);
+
+                                // Cập nhật số lượng yêu thích sau khi thêm sản phẩm
+                                $scope.favoriteLength = $scope.favorite.filter(function(item) {
+                                    return item.status === true;
+                                }).length;
+                            })
+                            .catch(function(error) {
+                                console.error('Lỗi khi thêm sản phẩm vào danh sách yêu thích:', error);
+                            });
+                    }
+                })
+                .catch(function(error) {
+                    console.error('Lỗi khi lấy sản phẩm theo Id:', error);
+                });
         }
+    };
 
-        // Lấy accountId từ $scope.account
-        var accountId = $scope.account.id;
 
-        // Tạo đối tượng favorite để thêm vào danh sách yêu thích
-        var favoriteData = {
-            account: {
-                id: accountId
-            },
-            product: {
-                id: productId
+    $scope.removeFromFavorite = function(event) {
+        var productId = event.currentTarget.getAttribute('data-product-id');
+        var existingFavoriteIndex = false;
+        $scope.favorite.forEach(function(item) {
+            if (item.product.id === parseInt(productId)) {
+                existingFavoriteIndex = true;
             }
-        };
+        });
+        if (existingFavoriteIndex) {
+            // Xoá sản phẩm khỏi danh sách yêu thích
 
-        // Gọi hàm addWishlist từ WishlistService để thêm hoặc cập nhật sản phẩm vào danh sách yêu thích
-        WishlistService.addWishlist(favoriteData)
-            .then(function(response) {
-                // Xử lý phản hồi từ máy chủ nếu cần
-                var updatedFavorite = response.data;
-                console.log()
-                    // Tìm vị trí của sản phẩm trong danh sách yêu thích frontend dựa trên dữ liệu updatedFavorite
-                var existingFavoriteIndex = $scope.findFavoriteIndex(updatedFavorite);
-                if (existingFavoriteIndex !== -1) {
-                    // Nếu sản phẩm đã tồn tại trong danh sách yêu thích, cập nhật trạng thái
-                    $scope.favorite[existingFavoriteIndex] = updatedFavorite;
-                } else {
-                    // Nếu sản phẩm chưa tồn tại trong danh sách yêu thích, thêm sản phẩm mới vào danh sách
-                    $scope.favorite.push(updatedFavorite);
+
+            WishlistService.removeFromWishlist(productId)
+                .then(function() {
+                    // Xử lý phản hồi từ máy chủ nếu cần
+                    console.log('Xoá sản phẩm khỏi danh sách yêu thích thành công.');
+
+                    // Hiển thị thông báo thành công
+                    showSuccessToast("Sản phẩm đã xóa thành công");
+
+                    // Cập nhật số lượng yêu thích sau khi xoá sản phẩm
+                    $scope.favoriteLength = $scope.favorite.filter(function(item) {
+                        return item.status === true;
+                    }).length;
+
+                    // Lấy danh sách yêu thích mới sau khi đã xoá thành công
+                    fetchWishlistItems();
+                })
+                .catch(function(error) {
+                    console.error('Lỗi khi xoá sản phẩm khỏi danh sách yêu thích:', error);
+                });
+
+        }
+    };
+
+    // Thông báo Toast Success
+    function showSuccessToast(message) {
+        var toastMessage = message || "Sản phẩm đã được xóa thành công.";
+        toast({
+            title: "Thành công!",
+            message: toastMessage,
+            type: "success",
+            duration: 5000
+        });
+    }
+
+    // Toast function
+    function toast({ title = "", message = "", type = "info", duration = 3000 }) {
+        const main = document.getElementById("toast");
+        if (main) {
+            const toast = document.createElement("div");
+
+            // Auto remove toast
+            const autoRemoveId = setTimeout(function() {
+                main.removeChild(toast);
+            }, duration + 1000);
+
+            // Remove toast when clicked
+            toast.onclick = function(e) {
+                if (e.target.closest(".toast__close")) {
+                    main.removeChild(toast);
+                    clearTimeout(autoRemoveId);
                 }
-            })
-            .catch(function(error) {
-                // Xử lý bất kỳ lỗi nào xảy ra trong quá trình yêu cầu POST
-                console.error('Lỗi thêm/cập nhật sản phẩm yêu thích:', error);
-            });
-    };
+            };
 
+            const icons = {
+                success: "fas fa-check-circle",
+                info: "fas fa-info-circle",
+                warning: "fas fa-exclamation-circle",
+                error: "fas fa-exclamation-circle"
+            };
+            const icon = icons[type];
+            const delay = (duration / 1000).toFixed(2);
 
+            toast.classList.add("toastDesign", `toast--${type}`);
+            toast.style.animation = `slideInLeft ease .3s, fadeOut linear 1s ${delay}s forwards`;
 
-    $scope.findFavoriteIndex = function(favorite) {
-        for (var i = 0; i < $scope.favorite.length; i++) { // Sửa thành $scope.favorite
-            if ($scope.favorite[i].account.id === favorite.account.id && $scope.favorite[i].product.id === favorite.product.id) {
-                return i;
-            }
+            toast.innerHTML = `
+                      <div class="toast__icon">
+                          <i class="${icon}"></i>
+                      </div>
+                      <div class="toast__body">
+                          <h3 class="toast__title">${title}</h3>
+                          <p class="toast__msg">${message}</p>
+                      </div>
+                      <div class="toast__close">
+                          <i class="fas fa-times"></i>
+                      </div>
+                  `;
+            main.appendChild(toast);
         }
-        return -1;
     };
-
-
-
-
-    $scope.clear_all = function() {
-        var url = `${host}/clearCart`;
-        $http.post(url).then(resp => {
-            $scope.favorite = resp.data;
-            $scope.load_all();
-        }).catch(error => {
-            console.log("Error", error)
-        })
-    }
-
-    $scope.resetCategory = function() {
-        localStorage.removeItem("getAllBySize");
-    }
 
 }).filter('vndFormat', function() {
     return function(input) {

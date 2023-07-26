@@ -1,6 +1,6 @@
-app.controller("WishlistController", function($scope, AccountService, ProductService, WishlistService, $http) {
+app.controller("WishlistController", function($scope, ToastService, AccountService, ProductService, WishlistService, $http) {
     $scope.favorite = []
-    $scope.favoriteLength;
+
     $scope.account = {}; // Biến lưu thông tin account 
     $scope.username = null;
 
@@ -17,7 +17,7 @@ app.controller("WishlistController", function($scope, AccountService, ProductSer
     AccountService.checkLogin().then(function(account) {
         // Người dùng đã đăng nhập
         $scope.account = account;
-        fetchWishlistItems()
+        $scope.fetchWishlistItems();
     }).catch(function(error) {
         // Người dùng chưa đăng nhập hoặc có lỗi
         console.error('Lỗi đăng nhập hoặc chưa đăng nhập:', error);
@@ -30,7 +30,9 @@ app.controller("WishlistController", function($scope, AccountService, ProductSer
         }
     });
 
-    function fetchWishlistItems() {
+    $scope.totalFavorite = 0;
+    $scope.fetchWishlistItems = function() {
+        $scope.totalFavorite = 0;
         if ($scope.account && $scope.account.id) {
             var accountId = $scope.account.id;
             // Gọi WishlistService để lấy danh sách yêu thích
@@ -38,9 +40,12 @@ app.controller("WishlistController", function($scope, AccountService, ProductSer
                 .then(function(response) {
                     // Gán dữ liệu danh sách yêu thích vào biến $scope.favorite
                     $scope.favorite = response.data;
-
-                    // Cập nhật số lượng sản phẩm yêu thích vào phần tử có class "wishlist-count"
-                    $scope.favoriteLength = $scope.favorite.length;
+                    $scope.favorite.forEach(function(item) {
+                        if (item.status) {
+                            $scope.totalFavorite++;
+                        }
+                    })
+                    document.getElementById("favoriteLength").innerText = $scope.totalFavorite;
                 })
                 .catch(function(error) {
                     console.error('Lỗi khi lấy danh sách yêu thích:', error);
@@ -51,9 +56,16 @@ app.controller("WishlistController", function($scope, AccountService, ProductSer
 
     $scope.toggleFavorite = function(event) {
         var productId = event.currentTarget.getAttribute('data-product-id');
-        var existingFavorite = $scope.favorite.find(function(item) {
-            return item.product.id === productId;
-        });
+        var existingFavorite = null;
+
+        // Tìm kiếm sản phẩm trong danh sách yêu thích
+        for (var i = 0; i < $scope.favorite.length; i++) {
+            var item = $scope.favorite[i];
+            if (item.product.id === parseInt(productId)) {
+                existingFavorite = item;
+                break;
+            }
+        }
 
         if (existingFavorite) {
             // Sản phẩm đã tồn tại trong danh sách yêu thích
@@ -64,10 +76,12 @@ app.controller("WishlistController", function($scope, AccountService, ProductSer
                     // Xử lý phản hồi từ máy chủ nếu cần
                     console.log('Cập nhật trạng thái sản phẩm thành công.');
 
-                    // Cập nhật số lượng yêu thích sau khi thay đổi trạng thái
-                    $scope.favoriteLength = $scope.favorite.filter(function(item) {
-                        return item.status === true;
-                    }).length;
+                    // Thông báo sản phẩm thành công khi cập nhật từ true sang false
+                    if (existingFavorite.status === true) {
+                        showSuccessToast("Sản phẩm đã thêm vào danh sách thành công");
+                    } else {
+                        showErrorToast("Sản phẩm đã tồn tại");
+                    }
                 })
                 .catch(function(error) {
                     console.error('Lỗi khi cập nhật sản phẩm yêu thích:', error);
@@ -94,11 +108,9 @@ app.controller("WishlistController", function($scope, AccountService, ProductSer
                                 console.log('Thêm sản phẩm vào danh sách yêu thích thành công.');
                                 // Thêm sản phẩm mới vào danh sách yêu thích hiển thị
                                 $scope.favorite.push(response.data);
+                                showSuccessToast("Sản phẩm đã thêm vào danh sách thành công");
 
-                                // Cập nhật số lượng yêu thích sau khi thêm sản phẩm
-                                $scope.favoriteLength = $scope.favorite.filter(function(item) {
-                                    return item.status === true;
-                                }).length;
+                                $scope.fetchWishlistItems();
                             })
                             .catch(function(error) {
                                 console.error('Lỗi khi thêm sản phẩm vào danh sách yêu thích:', error);
@@ -110,6 +122,9 @@ app.controller("WishlistController", function($scope, AccountService, ProductSer
                 });
         }
     };
+
+
+
 
 
     $scope.removeFromFavorite = function(event) {
@@ -132,13 +147,8 @@ app.controller("WishlistController", function($scope, AccountService, ProductSer
                     // Hiển thị thông báo thành công
                     showSuccessToast("Sản phẩm đã xóa thành công");
 
-                    // Cập nhật số lượng yêu thích sau khi xoá sản phẩm
-                    $scope.favoriteLength = $scope.favorite.filter(function(item) {
-                        return item.status === true;
-                    }).length;
-
                     // Lấy danh sách yêu thích mới sau khi đã xoá thành công
-                    fetchWishlistItems();
+                    $scope.fetchWishlistItems();
                 })
                 .catch(function(error) {
                     console.error('Lỗi khi xoá sản phẩm khỏi danh sách yêu thích:', error);
@@ -154,6 +164,16 @@ app.controller("WishlistController", function($scope, AccountService, ProductSer
             title: "Thành công!",
             message: toastMessage,
             type: "success",
+            duration: 5000
+        });
+    }
+
+    function showErrorToast(message) {
+        var toastMessage = message || "Thất bại.";
+        toast({
+            title: "Thất bại!",
+            message: toastMessage,
+            type: "error",
             duration: 5000
         });
     }

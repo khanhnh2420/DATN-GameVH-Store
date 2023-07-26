@@ -103,7 +103,7 @@ public class FavoriteRC {
 	}
 
 
-	@PutMapping("/updateWishlist/")
+	@PutMapping("/updateWishlist")
 	public ResponseEntity<Favorite> updateFavorite(@RequestBody Favorite favorite) {
 	    if (favorite.getAccount() != null && favorite.getProduct() != null) {
 	        List<Favorite> existingFavorites = fService.findByProductIdAndAccountId(favorite.getAccount().getId(), favorite.getProduct().getId());

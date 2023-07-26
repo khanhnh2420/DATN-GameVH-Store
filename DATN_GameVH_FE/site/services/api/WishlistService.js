@@ -11,7 +11,7 @@ app.factory('WishlistService', function($http) {
         },
 
         updateFavorite: function(favoriteData) {
-            return $http.put(baseUrl + '/updateWishlist/', favoriteData); // Sửa lại đường dẫn thành /updateWishlist/
+            return $http.put(baseUrl + '/updateWishlist', favoriteData); // Sửa lại đường dẫn thành /updateWishlist/
         },
 
         removeFromWishlist: function(productId) {

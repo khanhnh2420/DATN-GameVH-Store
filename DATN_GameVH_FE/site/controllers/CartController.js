@@ -1,4 +1,4 @@
-app.controller("CartController", function (ProductService, $scope, $window) {
+app.controller("CartController", function (ProductService, ToastService, $scope, $window) {
 
 	$scope.cart = [];
 	$scope.TotalPrice = 0;
@@ -49,9 +49,12 @@ app.controller("CartController", function (ProductService, $scope, $window) {
 					$scope.cart.forEach(function (data) {
 						if (data.id == response.data.id) {
 							data.qty += 1;
+							ToastService.showSuccessToast('Thêm vào giỏ hàng thành công!');
 							$window.localStorage.setItem("carts", JSON.stringify($scope.cart));
 						}
 					});
+				} else {
+					ToastService.showErrorToast('Sản phẩm đã tồn tại trong giỏ hàng!');
 				}
 			}).catch(function (error) {
 				console.error('Lỗi khi lấy sản phẩm theo Id:', error);
@@ -63,6 +66,7 @@ app.controller("CartController", function (ProductService, $scope, $window) {
 					if (product.data.available && product.data.qty > 0) {
 						response.data["qty"] = 1;
 						$scope.cart.push(response.data);
+						ToastService.showSuccessToast('Thêm vào giỏ hàng thành công!');
 						$window.localStorage.setItem("carts", JSON.stringify($scope.cart));
 					}
 				}).catch(function (error) {
@@ -83,6 +87,7 @@ app.controller("CartController", function (ProductService, $scope, $window) {
 		$scope.cart.forEach(function (data, index) {
 			if (data.id == productId) {
 				$scope.cart.splice(index, 1);
+				ToastService.showSuccessToast('Sản phẩm đã được xóa!');
 				$window.localStorage.setItem("carts", JSON.stringify($scope.cart));
 			}
 		});

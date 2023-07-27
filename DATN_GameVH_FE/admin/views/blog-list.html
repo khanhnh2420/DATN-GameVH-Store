@@ -37,7 +37,7 @@
 			<div class="col-sm-6 col-md-3">
 				<div class="form-group form-focus">
 					<input type="text" class="form-control floating">
-					<label class="focus-label">Blog ID</label>
+					<label class="focus-label">Title</label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-3">
@@ -46,14 +46,17 @@
 					<label class="focus-label">User Name</label>
 				</div>
 			</div>
-			<div class="col-sm-6 col-md-3 ">
+			<div class="col-sm-6 col-md-2">
 				<div class="form-group form-focus cal-icon">
 					<input type="text" class="form-control floating datetimepicker  ">
 					<label class="focus-label">Created Date</label>
 				</div>
 			</div>
-			<div class="col-sm-6 col-md-3">
+			<div class="col-sm-6 col-md-2">
 				<a href="#" class="btn btn-success btn-block"> Search </a>
+			</div>
+			<div class="col-sm-6 col-md-2">
+				<a href="#" ng-click="getDataBlog()" class="btn btn-success btn-block"> Refresh </a>
 			</div>
 		</div>
 		<!-- /Search Filter -->
@@ -88,42 +91,103 @@
 		<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Add Blog</h5>
+					<h5 class="modal-title">{{submitButtonText}} Blog</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
-					<form>
+					<form name="BlogForm" novalidate ng-submit="addOrUpdate()">
 						<div class="row">
 							<div class="col-sm-12">
 								<div class="form-group">
 									<label class="col-form-label">Title <span class="text-danger">*</span></label>
-									<input class="form-control" ng-model="blogData.title" type="text">
+									<input class="form-control" name="blogTitle" ng-model="blogData.title" type="text"
+										required>
 								</div>
-							</div>
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label class="col-form-label">Created Date <span
-											class="text-danger">*</span></label>
-									<input class="form-control" type="text" ng-model="blogData.createDate | date:'dd/MM/yyyy'" readonly>
+								<div class="mb-1 text-danger font-weight-bold">
+									<div
+										ng-show="(BlogForm.blogTitle.$error.required && BlogForm.blogTitle.$touched) || (BlogForm.$submitted && BlogForm.blogTitle.$invalid)">
+										Tiêu đề không được để trống!
+									</div>
 								</div>
-							</div>
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label class="col-form-label">Status </label>
-									<select class="select">
-										<option>Public</option>
-										<option>Private</option>
-									</select>
-								</div>
-							</div>
-							<div class="col-sm-12">
-								<div class="summernote"></div>
+								<!-- End Error Username-->
 							</div>
 						</div>
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Status <span class="text-danger">*</span></label>
+									<select class="form-control" id="blogData-status" ng-model="blogData.status"
+										name="blogStatus" required>
+										<option value="" disabled>Chọn trạng thái</option>
+										<option value="1" ng-selected="blogData.status === 1">Public</option>
+										<option value="0" ng-selected="blogData.status === 0">Private</option>
+									</select>
+								</div>
+								<div class="mb-1 text-danger font-weight-bold">
+									<div
+										ng-show="(BlogForm.blogStatus.$error.required && BlogForm.blogStatus.$touched) || (BlogForm.$submitted && BlogForm.blogStatus.$invalid)">
+										Vui lòng chọn trạng thái!
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-form-label">Created Date</label>
+									<input class="form-control" type="text" ng-model="formattedDate" readonly>
+								</div>
+								<div class="form-group">
+									<label class="col-form-label">User Created</label>
+									<input class="form-control" type="text" ng-model="blogData.username" readonly>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<h4 class="text-center">IMAGE POSTER</h4>
+								<div class="d-flex justify-content-center">
+									<div class="blogIMG" ng-hide="editImg">
+										<input type="file" class="dropify" id="BlogIMG" accept="image/*"
+											ng-model="blogData.image" data-default-file="">
+									</div>
+									<div class="imageView" ng-show="editImg" ng-mouseenter="showEditImage()"
+										ng-mouseleave="hideEditImage()">
+										<div class="image-container" style="position: relative; display: inline-block;">
+											<img id="imageView" class="rounded img-thumbnail"
+												src="https://drive.google.com/uc?id={{blogData.image}}" alt="Image"
+												style="max-width: 400px; max-height: 245px;">
+											<button ng-click="editImage()" class="btn btn-primary mt-3 submit-btn"
+												ng-show="isHovered"
+												style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">Thay
+												đổi</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<script>
+								$(document).ready(function () {
+									// Cấu hình ngôn ngữ mặc định cho Dropify
+									$('#BlogIMG').dropify({
+										messages: {
+											'default': 'Tải lên hình ảnh có kich thước 1280x720',
+											'replace': 'Thay thế ảnh',
+											'remove': 'Xóa ảnh',
+											'error': 'Đã xảy ra lỗi khi tải lên.'
+										}
+									});
+								});
+							</script>
+						</div>
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="summernote" id="blogContent" ng-blur="checkAndSetBlogContent()"
+									ng-model="blogData.content"></div>
+								<div class="mb-1 text-danger font-weight-bold" ng-show="showBlogContentError">
+									Vui lòng nhập nội dung blog!
+								</div>
+							</div>
+						</div>
+
 						<div class="submit-section">
-							<button class="btn btn-primary submit-btn">Submit</button>
+							<button class="btn btn-primary submit-btn">{{submitButtonText}}</button>
 						</div>
 					</form>
 				</div>
@@ -131,109 +195,9 @@
 		</div>
 	</div>
 	<!-- /Add Blog Modal -->
-
-	<!-- Edit Blog Modal -->
-	<div id="edit_Blog" class="modal custom-modal fade" role="dialog">
-		<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">Edit Blog</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<form>
-						<div class="row">
-							<div class="col-sm-12">
-								<div class="form-group">
-									<label class="col-form-label">Title <span class="text-danger">*</span></label>
-									<input class="form-control" type="text">
-								</div>
-							</div>
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label class="col-form-label">Created Date <span
-											class="text-danger">*</span></label>
-									<input class="form-control" type="date" readonly>
-								</div>
-							</div>
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label class="col-form-label">Status </label>
-									<select class="select">
-										<option>Mới Đăng</option>
-										<option>Đã Đăng</option>
-										<option>Đã Dừng</option>
-									</select>
-								</div>
-							</div>
-							<div class="col-sm-12">
-								<div class="card">
-									<div class="card-body">
-										<div class="summernote">
-											<h2>Apollo 11</h2>
-											<div class="float-right" style="margin-left: 20px;"><img
-													alt="Saturn V carrying Apollo 11" class="right"
-													src="http://c.cksource.com/a/1/img/sample.jpg"></div>
-
-											<p><strong>Apollo 11</strong> was the spaceflight that landed the
-												first humans, Americans <a href="#">Neil Armstrong</a> and <a
-													href="#">Buzz Aldrin</a>, on the Moon on July 20, 1969, at
-												20:18 UTC. Armstrong became the first to step onto the lunar
-												surface 6 hours later on July 21 at 02:56 UTC.</p>
-
-											<p class="mb-3">Armstrong spent about <s>three and a half</s> two
-												and a half hours outside the spacecraft, Aldrin slightly less;
-												and together they collected 47.5 pounds (21.5&nbsp;kg) of lunar
-												material for return to Earth. A third member of the mission, <a
-													href="#">Michael Collins</a>, piloted the <a href="#">command</a>
-												spacecraft alone in lunar orbit until
-												Armstrong and Aldrin returned to it for the trip back to Earth.
-											</p>
-
-											<h5 class="font-weight-semibold">Technical details</h5>
-											<p>Launched by a <strong>Saturn V</strong> rocket from <a href="#">Kennedy
-													Space Center</a> in Merritt Island, Florida
-												on July 16, Apollo 11 was the fifth manned mission of <a
-													href="#">NASA</a>'s Apollo program. The Apollo spacecraft
-												had three parts:</p>
-											<ol>
-												<li><strong>Command Module</strong> with a cabin for the three
-													astronauts which was the only part which landed back on
-													Earth</li>
-												<li><strong>Service Module</strong> which supported the Command
-													Module with propulsion, electrical power, oxygen and water
-												</li>
-												<li><strong>Lunar Module</strong> for landing on the Moon.</li>
-											</ol>
-											<p class="mb-3">After being sent to the Moon by the Saturn V's upper
-												stage, the astronauts separated the spacecraft from it and
-												travelled for three days until they entered into lunar orbit.
-												Armstrong and Aldrin then moved into the Lunar Module and landed
-												in the <a href="#">Sea of Tranquility</a>. They stayed a total
-												of about 21 and a half hours on the lunar surface. After lifting
-												off in the upper part of the Lunar Module and rejoining Collins
-												in the Command Module, they returned to Earth and landed in the
-												<a href="#">Pacific Ocean</a> on July 24.
-											</p>
-
-											Source: <a href="http://en.wikipedia.org/wiki/Apollo_11">Wikipedia.org</a>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="submit-section">
-							<button class="btn btn-primary submit-btn">Submit</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- /Edit Blog Modal -->
-
+	<!-- Toast message -->
+	<div id="toast"></div>
+	<!-- Toast message -->
 	<!-- Comment Product Modal -->
 	<div id="comment_Product" class="modal custom-modal fade" role="dialog">
 		<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
@@ -640,17 +604,18 @@
 			<div class="modal-content">
 				<div class="modal-body">
 					<div class="form-header">
-						<h3>Delete Blog</h3>
-						<p>Are you sure want to delete?</p>
+						<h3>Xóa bài viết</h3>
+						<p>Bạn có chắc chắn muốn xóa?</p>
 					</div>
 					<div class="modal-btn delete-action">
 						<div class="row">
 							<div class="col-6">
-								<a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
+								<a href="javascript:void(0);" ng-click="deleteBlog()"
+									class="btn btn-primary continue-btn">Xóa</a>
 							</div>
 							<div class="col-6">
 								<a href="javascript:void(0);" data-dismiss="modal"
-									class="btn btn-primary cancel-btn">Cancel</a>
+									class="btn btn-primary cancel-btn">Hủy</a>
 							</div>
 						</div>
 					</div>

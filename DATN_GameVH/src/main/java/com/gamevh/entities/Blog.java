@@ -36,13 +36,13 @@ public class Blog implements Serializable{
     private String content;
     
     @Column(name="Image", nullable=true)
-    private String Image;
+    private String image;
 
     @Column(name="create_date", nullable=false)
     private LocalDate createDate;
 
     @Column(name="Status", nullable=false, length=1)
-    private Boolean status;
+    private Integer status;
     
     @Transient
     private int commentCount;

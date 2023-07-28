@@ -20,6 +20,9 @@ public interface ProductService {
 	
 	void deleteProduct(Product product);
 	
-	List<Product> searchProducts(String productName, String productType, String categoryName);
-	
+
+	List<Object[]> getReportProduct();
+
+	List<Product> findTop5();
+
 }

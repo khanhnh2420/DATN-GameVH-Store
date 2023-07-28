@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.gamevh.handle.CustomException;
+import com.gamevh.request.CouponOwnerAddRequest;
+import com.gamevh.request.CouponOwnerSearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.gamevh.dto.CouponDTO;
 import com.gamevh.entities.CouponOwner;
@@ -67,5 +66,20 @@ public class CouponOwnerRC {
 		}
 
 		return null;
+	}
+
+	@PostMapping("/getAllBySearch")
+	public ResponseEntity<?> getAllCoupon(@RequestBody CouponOwnerSearchRequest couponOwnerSearchRequest) {
+		return ResponseEntity.ok(couponOwnerService.getAllBySearch(couponOwnerSearchRequest));
+	}
+
+	@PostMapping("/addCouponOwner")
+	public ResponseEntity<?> addCouponOwner(@RequestBody CouponOwnerAddRequest couponOwnerAddRequest) {
+		return ResponseEntity.ok(couponOwnerService.addCouponOwner(couponOwnerAddRequest));
+	}
+
+	@DeleteMapping("/{couponOwnerId}")
+	public void deleteCategory(@PathVariable("couponOwnerId") Integer couponOwnerId) throws CustomException {
+		couponOwnerService.deleteCouponOwner(couponOwnerId);
 	}
 }

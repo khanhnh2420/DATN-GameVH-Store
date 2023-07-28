@@ -18,7 +18,7 @@ app.factory('ProductAdminService', function($http) {
         getAllFeedback: function() {
             return $http.get(baseUrl + '/getAllFeedback');
         },
-        getFeedbackProduct: function() {
+        getFeedbackProduct: function(productId) {
             return $http.get(baseUrl + '/getProduct/' + productId);
         },
         uploadImage: function(image) {

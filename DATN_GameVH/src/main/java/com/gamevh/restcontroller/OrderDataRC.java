@@ -140,4 +140,9 @@ public class OrderDataRC {
 
 		return null;
 	}
+
+	@GetMapping("/getTop5")
+	public ResponseEntity<List<OrderData>> getTop5() {
+		return ResponseEntity.ok(orderDetailsDAO.getTop5OrderDataOrderCreatedDate());
+	}
 }

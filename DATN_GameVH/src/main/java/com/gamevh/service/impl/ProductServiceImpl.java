@@ -44,11 +44,15 @@ public class ProductServiceImpl implements ProductService {
 		 productRepository.delete(product);
 	}
 
+	
+
 	@Override
-	public List<Product> searchProducts(String productName, String productType, String categoryName) {
-		// TODO Auto-generated method stub
-		return productRepository.searchProducts(productName, productType, categoryName);
+	public List<Object[]> getReportProduct() {
+		return productRepository.reportProduct();
 	}
 
-	
+	@Override
+	public List<Product> findTop5() {
+		return productRepository.getTop5();
+	}
 }

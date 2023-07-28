@@ -7,7 +7,7 @@
 <!-- /Sidebar -->
 
 <!-- Page Wrapper -->
-<div class="page-wrapper">
+<div class="page-wrapper" ng-controller="DashboardController">
 
 	<!-- Page Content -->
 	<div class="content container-fluid">
@@ -16,7 +16,7 @@
 		<div class="page-header">
 			<div class="row">
 				<div class="col-sm-12">
-					<h3 class="page-title">Welcome Admin!</h3>
+					<h3 class="page-title">Welcome {{userName}}!</h3>
 					<ul class="breadcrumb">
 						<li class="breadcrumb-item active">Dashboard</li>
 					</ul>
@@ -31,7 +31,7 @@
 					<div class="card-body">
 						<span class="dash-widget-icon"><i class="fa fa-gamepad"></i></span>
 						<div class="dash-widget-info">
-							<h3>112</h3>
+							<h3>{{recordTotal.totalProduct}}</h3>
 							<span>Products</span>
 						</div>
 					</div>
@@ -42,7 +42,7 @@
 					<div class="card-body">
 						<span class="dash-widget-icon"><i class="fa fa-book"></i></span>
 						<div class="dash-widget-info">
-							<h3>44</h3>
+							<h3>{{recordTotal.totalBlog}}</h3>
 							<span>Blogs</span>
 						</div>
 					</div>
@@ -53,7 +53,7 @@
 					<div class="card-body">
 						<span class="dash-widget-icon"><i class="fa fa-user"></i></span>
 						<div class="dash-widget-info">
-							<h3>37</h3>
+							<h3>{{recordTotal.totalCustomer}}</h3>
 							<span>Customers</span>
 						</div>
 					</div>
@@ -64,7 +64,7 @@
 					<div class="card-body">
 						<span class="dash-widget-icon"><i class="fa fa-credit-card-alt"></i></span>
 						<div class="dash-widget-info">
-							<h3>218</h3>
+							<h3>{{recordTotal.totalOrder}}</h3>
 							<span>Orders</span>
 						</div>
 					</div>
@@ -78,69 +78,17 @@
 					<div class="col-md-6 text-center">
 						<div class="card">
 							<div class="card-body">
-								<h3 class="card-title">Total Revenue</h3>
-								<div id="bar-charts"></div>
+								<h3 class="card-title">Total Product In Year</h3>
+								<div id="bar-charts1"></div>
 							</div>
 						</div>
 					</div>
 					<div class="col-md-6 text-center">
 						<div class="card">
 							<div class="card-body">
-								<h3 class="card-title">Sales Overview</h3>
-								<div id="line-charts"></div>
+								<h3 class="card-title">Total Order In Year</h3>
+								<div id="line-charts1"></div>
 							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-md-12">
-				<div class="card-group m-b-30">
-					<div class="card">
-						<div class="card-body">
-							<div class="d-flex justify-content-between mb-3">
-								<div>
-									<span class="d-block">New Customer</span>
-								</div>
-							</div>
-							<h3 class="mb-3">10</h3>
-							<div class="progress mb-2" style="height: 5px;">
-								<div class="progress-bar bg-primary" role="progressbar" style="width: 70%;"
-									aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-							</div>
-							<p class="mb-0">Overall Employees 218 </p>
-						</div>
-					</div>
-					<div class="card">
-						<div class="card-body">
-							<div class="d-flex justify-content-between mb-3">
-								<div>
-									<span class="d-block">Orders</span>
-								</div>
-							</div>
-							<h3 class="mb-3">500</h3>
-							<div class="progress mb-2" style="height: 5px;">
-								<div class="progress-bar bg-primary" role="progressbar" style="width: 70%;"
-									aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-							</div>
-							<p class="mb-0">Previous Month <span class="text-muted">660</span></p>
-						</div>
-					</div>
-					<div class="card">
-						<div class="card-body">
-							<div class="d-flex justify-content-between mb-3">
-								<div>
-									<span class="d-block">Earnings</span>
-								</div>
-							</div>
-							<h3 class="mb-3">21.544.212</h3>
-							<div class="progress mb-2" style="height: 5px;">
-								<div class="progress-bar bg-primary" role="progressbar" style="width: 70%;"
-									aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-							</div>
-							<p class="mb-0">Previous Month <span class="text-muted">17.214.521</span></p>
 						</div>
 					</div>
 				</div>
@@ -151,7 +99,7 @@
 			<div class="col-md-6 d-flex">
 				<div class="card card-table flex-fill">
 					<div class="card-header">
-						<h3 class="card-title mb-0">Products</h3>
+						<h3 class="card-title mb-0">Latest 5 Records Products </h3>
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -166,50 +114,14 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td>1</td>
+									<tr ng-repeat="product in products">
+										<td>{{$index+1}}</td>
 										<td>
-											<h2><a href="#">Assassin Creed Valhalla</a></h2>
+											<h2><a href="#">{{product.name}}</a></h2>
 										</td>
-										<td>10/01/2023</td>
-										<td>Ubisoft</td>
-										<td>24</td>
-									</tr>
-									<tr>
-										<td>2</td>
-										<td>
-											<h2><a href="#">Grand Theft Auto V</a></h2>
-										</td>
-										<td>21/12/2023</td>
-										<td>Garena</td>
-										<td>21</td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>
-											<h2><a href="#">Resident Evil Village</a></h2>
-										</td>
-										<td>10/01/2023</td>
-										<td>Sony</td>
-										<td>14</td>
-									</tr>
-									<tr>
-										<td>4</td>
-										<td>
-											<h2><a href="#">FIFA 22</a></h2>
-										</td>
-										<td>10/01/2023</td>
-										<td>Garena</td>
-										<td>12</td>
-									</tr>
-									<tr>
-										<td>5</td>
-										<td>
-											<h2><a href="#">The Witcher 3: Wild Hunt</a></h2>
-										</td>
-										<td>10/01/2023</td>
-										<td>Ubisolf</td>
-										<td>5</td>
+										<td>{{product.createDate |date:'dd/MM/yyyy'}}</td>
+										<td>{{product.source}}</td>
+										<td>{{product.qty}}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -220,7 +132,7 @@
 			<div class="col-md-6 d-flex">
 				<div class="card card-table flex-fill">
 					<div class="card-header">
-						<h3 class="card-title mb-0">Payments</h3>
+						<h3 class="card-title mb-0">Latest 5 Records Payments</h3>
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -235,50 +147,14 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td>H4K9E1L7D2R8P5</td>
+									<tr ng-repeat="order in orders">
+										<td>{{order.orderId}}</td>
 										<td>
-											<h2><a href="#">Nguyễn Văn A</a></h2>
+											<h2><a href="#">{{order.fullname}}</a></h2>
 										</td>
-										<td>Paypal</td>
-										<td>11/03/2019</td>
-										<td>34.000.144</td>
-									</tr>
-									<tr>
-										<td>X3G6T2Y1J9Q0S7</td>
-										<td>
-											<h2><a href="#">Trần Văn B</a></h2>
-										</td>
-										<td>Momo</td>
-										<td>11/03/2019</td>
-										<td>24.522.110</td>
-									</tr>
-									<tr>
-										<td>A5B2C7D1E9F4G6</td>
-										<td>
-											<h2><a href="#">Phạm Thức</a></h2>
-										</td>
-										<td>CoD</td>
-										<td>11/03/2019</td>
-										<td>20.500.000</td>
-									</tr>
-									<tr>
-										<td>N0M6B7V2C5X3Z1</td>
-										<td>
-											<h2><a href="#">Lê Thu Hiền</a></h2>
-										</td>
-										<td>Paypal</td>
-										<td>11/03/2019</td>
-										<td>14.000.000</td>
-									</tr>
-									<tr>
-										<td>F8H5J4K6L2P0Q9</td>
-										<td>
-											<h2><a href="#">Đặng Kim Chi</a></h2>
-										</td>
-										<td>Paypal</td>
-										<td>11/03/2019</td>
-										<td>5.000.000</td>
+										<td>{{order.paymentType}}</td>
+										<td>{{order.createDate |date:'dd/MM/yyyy'}}</td>
+										<td>{{order.totalPrice | currency}}</td>
 									</tr>
 								</tbody>
 							</table>

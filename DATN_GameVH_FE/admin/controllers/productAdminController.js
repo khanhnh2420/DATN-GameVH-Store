@@ -14,6 +14,8 @@ app.controller("ProductController", function(ProductAdminService, $http, $scope,
 
     var productId;
 
+
+
     // Lấy thông tin sản phẩm theo ID
     ProductAdminService.getProductDTO(productId)
         .then(function(response) {
@@ -337,6 +339,9 @@ app.controller("ProductController", function(ProductAdminService, $http, $scope,
             thumbnailDropzone.processQueue();
         };
     };
+
+
+
 
     $scope.searchProducts = function() {
         var productName = $scope.searchProductName;

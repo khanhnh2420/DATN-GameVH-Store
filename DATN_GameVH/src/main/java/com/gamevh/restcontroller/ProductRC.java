@@ -572,10 +572,10 @@ public class ProductRC {
 
 				String link = String.valueOf(ProductData[10]);
 				String details = String.valueOf(ProductData[11]);
-				String type = String.valueOf(ProductData[14]);
+				String type = String.valueOf(ProductData[15]);
 				
 				
-				boolean status = (boolean) ProductData[8];
+				boolean status = (boolean) ProductData[14];
 				String statusString = status ? "Còn hàng" : "Hết hàng";
 
 
@@ -586,11 +586,11 @@ public class ProductRC {
 
 			long totalEmployees = productList.size();
 			long totalProductsAvailable = productList.stream()
-				    .filter(ProductData -> Boolean.parseBoolean(String.valueOf(ProductData[8]))) // Lọc các sản phẩm có trạng thái true (còn hàng)
+				    .filter(ProductData -> Boolean.parseBoolean(String.valueOf(ProductData[14]))) // Lọc các sản phẩm có trạng thái true (còn hàng)
 				    .count();
 
 				long totalProductsOutOfStock = productList.stream()
-				    .filter(ProductData -> !Boolean.parseBoolean(String.valueOf(ProductData[8]))) // Lọc các sản phẩm có trạng thái false (hết hàng)
+				    .filter(ProductData -> !Boolean.parseBoolean(String.valueOf(ProductData[14]))) // Lọc các sản phẩm có trạng thái false (hết hàng)
 				    .count();
 
 			int lastDataRowIndex = dataRowIndex - 1;

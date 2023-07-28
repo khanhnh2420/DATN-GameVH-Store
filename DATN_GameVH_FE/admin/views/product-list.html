@@ -385,29 +385,32 @@
                                     </div>
 
                                     <form action="#" class="dropzone d-flex justify-content-center flex-wrap" id="dropzone_remove">
-                                        <!-- Thumbnail images will be populated here -->
+
                                     </form>
 
                                     <script>
-                                        window.addEventListener('load', function() {
-                                            const productThumbnail = 'https://drive.google.com/uc?id={{product.thumbnail}}';
-                                            const thumbnailURLs = productThumbnail
-                                                .substring(productThumbnail.indexOf('?id=') + 4)
-                                                .split('***');
+                                        // The value of product.thumbnail should be a valid URL after AngularJS rendering
+                                        const productThumbnail = "https://drive.google.com/uc?id={{product.thumbnail}}";
+                                        const thumbnailKeys = productThumbnail.split("***");
+                                        const firstThreeThumbnailKeys = thumbnailKeys.slice(0, 3);
 
-                                            thumbnailURLs.slice(0, 3).forEach((thumbnail) => {
-                                                const image = document.createElement('img');
-                                                image.src = thumbnail;
-                                                image.alt = 'Thumbnail';
-                                                image.classList.add('thumbnail');
-                                                document.getElementById('dropzone_remove').appendChild(image);
-                                            });
+                                        const dropzone = document.getElementById("dropzone_remove");
+                                        dropzone.innerHTML = "";
+
+                                        firstThreeThumbnailKeys.forEach((thumbnailKey) => {
+                                            const imageUrl = "https://drive.google.com/uc?id=" + thumbnailKey;
+                                            const image = document.createElement("img");
+                                            image.src = imageUrl;
+                                            image.alt = "Thumbnail";
+                                            image.classList.add("thumbnail");
+                                            dropzone.appendChild(image);
                                         });
                                     </script>
                                 </div>
                             </div>
                         </div>
                     </div>
+
 
 
                     <div class="submit-section">

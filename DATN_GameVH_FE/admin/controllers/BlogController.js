@@ -98,9 +98,17 @@ app.controller('BlogController', function ($scope, $filter, $document, BlogServi
         $scope.blogData = {
             createDate: new Date(),
             username: "lethithuy",
-            image: null
+            image: null,
+            content: ''
         };
+        // Làm trống trình soạn thảo Summernote
+        $('#blogContent').summernote('code', $scope.blogData.content);
+
+        // Làm trống Dropify bằng cách gán giá trị cho input
+        $('.dropify-clear').trigger('click');
+
         $scope.formattedDate = $filter('date')($scope.blogData.createDate, 'dd/MM/yyyy');
+        $scope.editImg = true;
         $scope.showBlogContentError = false;
         $scope.BlogForm.$setPristine();
         $scope.BlogForm.$setUntouched();
@@ -135,18 +143,6 @@ app.controller('BlogController', function ($scope, $filter, $document, BlogServi
         }
     };
 
-    
-
-    $scope.addOrUpdate = function () {
-        if ($scope.submitButtonText === "Edit") {
-            // Gọi hàm xử lý cập nhật nhân viên
-            updateBlog();
-        } else {
-            // Gọi hàm xử lý thêm mới nhân viên
-            addBlog();
-        }
-    };
-
     var BlogIMG;
     // Hàm xử lý khi người dùng chọn file
     $document.find('#BlogIMG').on('change', function (event) {
@@ -157,36 +153,97 @@ app.controller('BlogController', function ($scope, $filter, $document, BlogServi
         $scope.$apply();
     });
 
-    function addBlog() {
+    $scope.addOrUpdate = function () {
         $scope.checkAndSetBlogContent();
-        if (BlogIMG) {
-            BlogService.uploadImage(BlogIMG)
-                .then(function (resp) {
-                    $scope.blogData.image = resp.data.fileId
-                    // Cập nhật dữ liệu ảnh và tiến hành thêm  data vào DB
-                    if ($scope.blogData.image != null) {
-                        BlogService.createBlog($scope.blogData)
-                            .then(function (resp) {
-                                // Xử lý thành công, hiển thị thông báo thành công
-                                ToastService.showSuccessToast("Tạo bài viết thành công")
-                                $scope.getDataBlog();
-                                setTimeout(function () {
-                                    $('#add_Blog').modal('hide');
-                                }, 1000);
-                            })
-                            .catch(function (error) {
-                                ToastService.showErrorToast("Xảy ra lỗi khi tạo bài viết")
-                            });
-                    }
-                })
-                .catch(function (error) {
-                    ToastService.showErrorToast("Xảy ra lỗi khi đăng tải ảnh")
-                });
+        if ($scope.editImg === true) { // Tầng kiểm tra có sự thay đổi về hình ảnh
+            if ($scope.BlogForm.$valid) { // Tầng kiểm tra form hợp lệ
+                if (BlogIMG) { // Tầng kiểm tra có hình ảnh để upload ảnh lên cloud
+                    ToastService.showInfoToast("Đang xử lí", "Vui lòng đợi trong giây lát")
+                    BlogService.uploadImage(BlogIMG)
+                        .then(function (resp) {
+                            $scope.blogData.image = resp.data.fileId
+                            // Cập nhật dữ liệu ảnh và tiến hành thêm  data vào DB
+                            if ($scope.blogData.image != null) {// Tầng kiểm tra sau khi ảnh đã upload và tiến hành thêm  data vào DB
+                                BlogService.createBlog($scope.blogData)
+                                    .then(function (resp) {
+                                        // Xử lý thành công, hiển thị thông báo thành công
+                                        if ($scope.editImg = true) {// Tầng kiểm tra thao tác để hiển thị thông báo
+                                            ToastService.showSuccessToast("Cập nhật bài viết thành công")
+                                        } else {
+                                            ToastService.showSuccessToast("Tạo bài viết thành công")
+                                        }
+                                        $scope.getDataBlog();
+                                        setTimeout(function () {
+                                            $('#add_Blog').modal('hide');
+                                        }, 1000);
+                                    })
+                                    .catch(function (error) {
+                                        ToastService.showErrorToast("Xảy ra lỗi khi tạo bài viết")
+                                    });
+                            }
+                        })
+                        .catch(function (error) {
+                            ToastService.showErrorToast("Xảy ra lỗi khi đăng tải ảnh")
+                        });
+                } else {
+                    ToastService.showWarningToast("Vui lòng tải lên ảnh bìa")// Log thông báo lỗi từ service
+                }
+            } else {
+                ToastService.showErrorToast("Vui lòng điền đầy đủ thông tin bài viết");
+            }
         } else {
-            // If there is no image to upload, return an error message
-            ToastService.showWarningToast("Vui lòng tải lên ảnh bìa")// Log thông báo lỗi từ service
+            if ($scope.BlogForm.$valid) { // Tầng kiểm tra form hợp lệ
+                BlogService.createBlog($scope.blogData)
+                    .then(function (resp) {
+                        // Xử lý thành công, hiển thị thông báo thành công
+                        ToastService.showSuccessToast("Cập nhật bài viết thành công")
+                        $scope.getDataBlog();
+                        setTimeout(function () {
+                            $('#add_Blog').modal('hide');
+                        }, 1000);
+                    })
+                    .catch(function (error) {
+                        ToastService.showErrorToast("Xảy ra lỗi khi cập nhật bài viết")
+                    });
+            } else {
+                ToastService.showErrorToast("Vui lòng điền đầy đủ thông tin bài viết");
+            }
         }
     }
+
+    $scope.editImg = false;
+    $scope.isHovered = false;
+
+    $scope.showEditImage = function () {
+        $scope.isHovered = true;
+    };
+
+    $scope.hideEditImage = function () {
+        $scope.isHovered = false;
+    };
+    $scope.editImage = function () {
+        $scope.editImg = true;
+    }
+
+    $scope.getBlogById = function (blogId) {
+        BlogService.getBlogById(blogId)
+            .then(function (response) {
+                // Xử lý thành công, lấy dữ liệu blog từ response.data
+                $scope.submitButtonText = "Edit";
+                $scope.blogData = response.data;
+                $scope.formattedDate = $filter('date')($scope.blogData.createDate, 'dd/MM/yyyy');
+                $scope.editImg = false;
+                $scope.showBlogContentError = false;
+                // Đặt nội dung vào Summernote
+                $('#blogContent').summernote('code', $scope.blogData.content);
+                // Hiển thị modal để chỉnh sửa blog
+                $('#add_Blog').modal('show');
+            })
+            .catch(function (error) {
+                // Xử lý lỗi, hiển thị thông báo lỗi từ response.data
+                ToastService.showErrorToast(error.data);
+            });
+    };
 
     // Khởi tạo biến để lưu trữ blogId mà bạn muốn xóa
     $scope.blogIdToDelete = null;
@@ -215,43 +272,4 @@ app.controller('BlogController', function ($scope, $filter, $document, BlogServi
             ToastService.showWarningToast('Vui lòng chọn blog để xóa.')
         }
     };
-
-    $scope.editImg = false;
-    $scope.isHovered = false;
-
-    $scope.showEditImage = function() {
-        $scope.isHovered = true;
-    };
-    
-    $scope.hideEditImage = function() {
-        $scope.isHovered = false;
-    };
-    $scope.editImage = function () {
-        $scope.editImg = false;
-    }
-
-    $scope.getBlogById = function (blogId) {
-        BlogService.getBlogById(blogId)
-            .then(function (response) {
-                // Xử lý thành công, lấy dữ liệu blog từ response.data
-                $scope.submitButtonText = "Edit";
-                $scope.blogData = response.data;
-                $scope.formattedDate = $filter('date')($scope.blogData.createDate, 'dd/MM/yyyy');
-                $scope.editImg = true;
-                // Đặt nội dung vào Summernote
-                $('#blogContent').summernote('code', $scope.blogData.content);
-                // Hiển thị modal để chỉnh sửa blog
-                $('#add_Blog').modal('show');
-            })
-            .catch(function (error) {
-                // Xử lý lỗi, hiển thị thông báo lỗi từ response.data
-                console.error(error);
-                ToastService.showErrorToast(error.data);
-            });
-    };
-
-    function updateBlog() {
-
-    }
-    
 })

@@ -143,20 +143,20 @@
 							<div class="col-sm-6">
 								<h4 class="text-center">IMAGE POSTER</h4>
 								<div class="d-flex justify-content-center">
-									<div class="blogIMG" ng-hide="editImg">
+									<div class="blogIMG"  ng-show="editImg">
 										<input type="file" class="dropify" id="BlogIMG" accept="image/*"
 											ng-model="blogData.image" data-default-file="">
 									</div>
-									<div class="imageView" ng-show="editImg" ng-mouseenter="showEditImage()"
+									<div class="imageView" ng-hide="editImg" ng-mouseenter="showEditImage()"
 										ng-mouseleave="hideEditImage()">
 										<div class="image-container" style="position: relative; display: inline-block;">
 											<img id="imageView" class="rounded img-thumbnail"
 												src="https://drive.google.com/uc?id={{blogData.image}}" alt="Image"
 												style="max-width: 400px; max-height: 245px;">
-											<button ng-click="editImage()" class="btn btn-primary mt-3 submit-btn"
+											<a ng-click="editImage()" class="btn btn-primary mt-3 submit-btn text-white"
 												ng-show="isHovered"
 												style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">Thay
-												đổi</button>
+												đổi</a>
 										</div>
 									</div>
 								</div>

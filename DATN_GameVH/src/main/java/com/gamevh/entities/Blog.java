@@ -22,14 +22,14 @@ import lombok.Data;
 @SuppressWarnings("serial")
 @Data
 @Entity
-@Table(name="blog", indexes={@Index(name="blog_Title_IX", columnList="Title", unique=true)})
+@Table(name="blog", indexes={@Index(name="blog_Title_IX", columnList="Title", unique=false)})
 public class Blog implements Serializable{
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="Id", unique=true, nullable=false, precision=10)
     private Integer id;
 
-    @Column(name="Title", unique=true, nullable=false, length=255)
+    @Column(name="Title", unique=false, nullable=false, length=255)
     private String title;
 
     @Column(name="Content", nullable=false, columnDefinition = "LONGTEXT")

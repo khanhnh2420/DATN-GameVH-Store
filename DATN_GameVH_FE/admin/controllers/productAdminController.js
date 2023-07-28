@@ -1,4 +1,4 @@
-app.controller("ProductController", function(ProductAdminService, $scope, $routeParams, $timeout, $rootScope, $filter) {
+app.controller("ProductController", function(ProductAdminService, $http, $scope, $routeParams, $timeout, $rootScope, $filter) {
 
     $scope.product = {}; // Thông tin sản phẩm sẽ được hiển thị trên trang chi tiết
     $scope.thumbnails = []; // Mảng hình ảnh thumbnail của sản phẩm
@@ -40,6 +40,7 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
         ProductAdminService.getFeedbackProduct(productId)
             .then(function(response) {
                 $scope.feedback = response.data;
+                $('#comment_Product').modal('show');
                 // Gọi hàm loadProductFeedback để hiển thị dữ liệu phản hồi lên form
                 $scope.loadProductFeedback();
             })
@@ -55,12 +56,12 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
         $scope.feedback.forEach(function(feedback) {
             var starIcons = '';
             for (var i = 1; i <= 5; i++) {
-                starIcons += '<span class="fa fa-star' + (feedback.rating >= i ? ' checked' : '') + '"></span>';
+                starIcons += '<span class="fa fa-star' + (feedback.star >= i ? ' checked' : '') + '"></span>';
             }
 
             var feedbackRow = '<tr>' +
                 '<td>' + feedback.id + '</td>' +
-                '<td>' + feedback.account.name + '</td>' +
+                '<td>' + feedback.account.username + '</td>' +
                 '<td class="d-flex text-wrap">' + feedback.content + '</td>' +
                 '<td>' + starIcons + '</td>' +
                 '<td>' + feedback.createDate + '</td>' +
@@ -71,16 +72,16 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
                 (feedback.status ? 'Đã Duyệt' : 'Chưa Duyệt') +
                 '</a>' +
                 '<div class="dropdown-menu">' +
-                '<a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i>Đã Duyệt</a>' +
+                '<a class="dropdown-item" href="#" ><i class="fa fa-dot-circle-o text-success"></i>Đã Duyệt</a>' +
                 '<a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i>Chưa Duyệt</a>' +
                 '</div>' +
                 '</div>' +
                 '</td>' +
-                '<td class="text-right">' +
-                '<div class=" text-right">' +
-                '<button href="#" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Delete</button>' +
-                '</div>' +
-                '</td>' +
+                // '<td class="text-right">' +
+                // '<div class=" text-right">' +
+                // '<button href="#" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Delete</button>' +
+                // '</div>' +
+                // '</td>' +
                 '</tr>';
 
             feedbackTableBody.append(feedbackRow);
@@ -88,20 +89,7 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
     };
 
 
-    // Hàm để lấy dữ liệu feedback cho sản phẩm và hiển thị modal
-    $scope.getFeedbackForProduct = function(productId) {
-        ProductAdminService.getFeedbackProduct(productId)
-            .then(function(response) {
-                $scope.feedback = response.data;
-                // Gọi hàm để điền dữ liệu vào bảng và hiển thị modal
-                $scope.loadProductFeedback();
-                // Cuối cùng, mở modal
-                $('#comment_Product').modal('show');
-            })
-            .catch(function(error) {
-                console.error('Lỗi khi lấy dữ liệu feedback:', error);
-            });
-    };
+
 
 
 
@@ -191,7 +179,7 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
                             '<i class="fa fa-pencil m-r-5"></i>Edit' +
                             '</a>' +
                             // Call the loadProductFeedback function with the product ID
-                            '<a class="dropdown-item view-feedback" href="#" ng-click="loadProductFeedback(' + row.id + ')" data-toggle="modal" data-target="#comment_Product">' +
+                            '<a class="dropdown-item view-feedback" href="#" data-product-id="' + row.id + '" data-toggle="modal" data-target="#comment_Product">' +
                             '<i class="fa fa-pencil-square-o m-r-5"></i>Feedback' +
                             '</a>' +
                             '</div>' +
@@ -207,14 +195,13 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
             console.log(productId)
             $scope.editProductClicked(productId);
         });
-
         $(document).on('click', '.view-feedback', function() {
-            var productId = $(this).data('product-id');
+            var productId = $(this)[0].dataset.productId;
+            console.log(productId)
             $scope.getFeedbackForProduct(productId);
         });
 
     }
-
 
 
 
@@ -370,7 +357,28 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
             });
     };
 
+    //Excel
+    $scope.downloadExcel = function() {
+        $http({
+            url: 'http://localhost:8080/api/product/downloadExcel', // Địa chỉ API endpoint của Spring Boot backend
+            method: 'GET',
+            responseType: 'arraybuffer'
+        }).then(function(response) {
+            var blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            // Lấy ngày hiện tại và định dạng
+            var currentDate = new Date();
+            var formattedDate = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate();
 
+            a.download = 'ReportSanpham_' + formattedDate + '.xlsx';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }, function(error) {
+            console.error('Lỗi khi tải xuống tệp Excel:', error);
+        });
+    };
 
 
 

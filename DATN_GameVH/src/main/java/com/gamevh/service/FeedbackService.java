@@ -10,4 +10,7 @@ public interface FeedbackService {
 	Feedback findById(Integer id);
 	
 	List<Feedback> findByProductId(Integer productId);
+	List<Feedback> findByAllProductId(Integer productId);
+	
+	
 }

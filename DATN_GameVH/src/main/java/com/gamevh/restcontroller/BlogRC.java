@@ -27,8 +27,11 @@ import com.gamevh.service.BlogService;
 import com.gamevh.service.CommentService;
 import com.gamevh.service.GoogleDriveService;
 
+import jakarta.transaction.Transactional;
+
 @CrossOrigin("*")
 @RestController
+@Transactional
 @RequestMapping("/api/blog")
 public class BlogRC {
 
@@ -124,8 +127,6 @@ public class BlogRC {
 
 	@PutMapping("/updateCommentStatus/{commentId}")
 	public ResponseEntity<Object> updateCommentStatus(@PathVariable Long commentId, @RequestParam Integer status) {
-		System.out.println(commentId);
-		System.out.println(status);
 		return commentService.updateCommentStatus(commentId, status);
 	}
 

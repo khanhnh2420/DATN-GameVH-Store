@@ -373,17 +373,18 @@ app.controller('BlogController', function ($scope, $filter, $document, BlogServi
                     render: function (data, type, row) {
                         // Render giao diện cho cột "Action" và truyền dữ liệu id vào
                         return `
-                            <div class="text-right">
-                                <a id="delete-comment" data-comment-id="${row.id}" data-blog-id="${row.blogId}" class="btn btn-danger text-white">
-                                    <i class="fa fa-trash" aria-hidden="true"></i> Xóa
-                                </a>
-                            </div>
+                        <div class="text-right">
+                            <a class="btn btn-danger text-white delete-comment-btn" data-comment-id="${row.id}" data-blog-id="${row.blogId}">
+                                <i class="fa fa-trash" aria-hidden="true"></i> Xóa
+                            </a>
+                        </div>
                         `;
                     }
                 },
             ]
         });
-        $(document).on('click', '#delete-comment', function () {
+        $(document).on('click', '.delete-comment-btn', function () {
+            console.log("check delete");
             var commentId = $(this).data('comment-id');
             var blogId = $(this).data('blog-id');
             $scope.deleteComment(commentId, blogId);
@@ -391,31 +392,28 @@ app.controller('BlogController', function ($scope, $filter, $document, BlogServi
     };
 
     $scope.deleteComment = function (commentId, blogId) {
-        if (commentId) {
-            BlogService.deleteCommentById(commentId)
-                .then(function (resp) {
-                    // Xử lý thành công, data chứa dữ liệu thành công từ service
-                    ToastService.showSuccessToast("Xóa bình luận thành công"); // Hiển thị thông báo thành công
+
+        BlogService.deleteCommentById(commentId)
+            .then(function (resp) {
+                // Xử lý thành công, data chứa dữ liệu thành công từ service
+                ToastService.showSuccessToast("Xóa bình luận thành công"); // Hiển thị thông báo thành công
+                $(document).ready(function () {
                     $scope.getCommentByBlogId(blogId);
-                })
-                .catch(function (error) {
-                    // Xử lý lỗi, error chứa dữ liệu lỗi từ service
-                    ToastService.showErrorToast("Lỗi khi xóa bình luận")// Log thông báo lỗi từ service
                 });
-        } else {
-            ToastService.showWarningToast('Vui lòng chọn bình luận để xóa.')
-        }
+            })
+            .catch(function (error) {
+                // Xử lý lỗi, error chứa dữ liệu lỗi từ service
+                ToastService.showErrorToast("Lỗi khi xóa bình luận")// Log thông báo lỗi từ service
+            });
     };
 
     $scope.changeCommentStatus = function (commentId, blogId, newStatus) {
-        console.log(commentId)
         // Call CommentService để gọi API endpoint và cập nhật trạng thái của comment
         BlogService.updateCommentStatus(commentId, newStatus)
             .then(function (response) {
                 // Xử lý khi cập nhật thành công, nếu cần
                 ToastService.showSuccessToast("Cập nhật trạng thái bình luận thành công");
                 // Tùy chỉnh cập nhật lại dữ liệu trong DataTables (nếu cần).
-                console.log(blogId)
                 $scope.getCommentByBlogId(blogId);
             })
             .catch(function (error) {

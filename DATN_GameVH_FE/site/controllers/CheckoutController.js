@@ -1,12 +1,13 @@
 // Angular js
 app.controller("CheckoutController", function (AccountService, OrderService, CouponOwnerService, MomoService, IPService,
-	PaypalService, ZaloPayService, VNPayService, SendMailService, $scope, $window, $http) {
+	PaypalService, ZaloPayService, VNPayService, SendMailService, LocationService, $scope, $window, $http) {
 
 	$scope.cart = [];
 	$scope.TotalPrice = 0;
 	$scope.paymentMethod = "cod"; // mặc định chọn COD
 	$scope.form = {};
 	$scope.baseUrlHere = "http://localhost:3000";
+	$scope.locations = [];
 
 	// Validate coupon
 	$scope.isValidCoupon = false; // báo lỗi chung
@@ -39,6 +40,32 @@ app.controller("CheckoutController", function (AccountService, OrderService, Cou
 	AccountService.checkLogin().then(function (account) {
 		// Người dùng đã đăng nhập
 		$scope.account = account;
+		if ($scope.account) {
+			if ($scope.account.fullname) {
+				$scope.form.fullname = $scope.account.fullname;
+			}
+			if ($scope.account.email) {
+				$scope.form.email = $scope.account.email;
+			}
+
+			LocationService.getByUsername($scope.account.username).then(function (location) {
+				$scope.locations = location.data;
+				if ($scope.locations.length > 0) {
+					$scope.locations.forEach(function (item) {
+						if (item.addressDefault) {
+							$scope.form.address = cutStringToRetainAddress(item.address);
+							$scope.form.phone = item.phone;
+							$scope.form.province = parseInt(item.province);
+                            $scope.form.district = parseInt(item.district);
+                            $scope.form.ward = parseInt(item.ward);
+                            $scope.updateLocation();
+						}
+					});
+				}
+			}).catch(function (error) {
+				console.error('Lỗi khi lấy location:', error);
+			});
+		}
 	}).catch(function (error) {
 		// Người dùng chưa đăng nhập hoặc có lỗi
 		console.error('Lỗi đăng nhập hoặc chưa đăng nhập:', error);
@@ -50,6 +77,30 @@ app.controller("CheckoutController", function (AccountService, OrderService, Cou
 			$window.location.href = 'login.html';
 		}
 	});
+
+	function cutStringToRetainAddress(inputString) {
+		// Tìm vị trí của dấu phẩy thứ 4 tính từ cuối
+		var lastIndex = inputString.lastIndexOf(',');
+
+		if (lastIndex !== -1) {
+			// Tìm vị trí của dấu phẩy thứ 3 tính từ cuối
+			var thirdLastIndex = inputString.lastIndexOf(',', lastIndex - 1);
+
+			if (thirdLastIndex !== -1) {
+				// Tìm vị trí của dấu phẩy thứ 2 tính từ cuối
+				var secondLastIndex = inputString.lastIndexOf(',', thirdLastIndex - 1);
+
+				if (secondLastIndex !== -1) {
+					// Cắt chuỗi từ đầu đến vị trí của dấu phẩy thứ 2
+					var result = inputString.substring(0, secondLastIndex);
+					return result;
+				}
+			}
+		}
+
+		// Trả về chuỗi gốc nếu không tìm thấy đủ 4 dấu phẩy
+		return inputString;
+	}
 
 	function getCartData() {
 		$scope.cart = ($window.localStorage.getItem("carts") != null) ? JSON.parse($window.localStorage.getItem("carts")) : [];
@@ -213,6 +264,7 @@ app.controller("CheckoutController", function (AccountService, OrderService, Cou
 	*/
 	$scope.createOrderOnDB = function (orderId, returnUrl) {
 		// Ghép chuỗi địa chỉ nhận hàng
+		printResult();
 		$scope.form.address = $scope.form.address + ", " + $scope.selectedLocation;
 
 		// Tạo một đối tượng ngày hiện tại
@@ -423,7 +475,7 @@ app.controller("CheckoutController", function (AccountService, OrderService, Cou
 		// Call API Paypal
 		PaypalService.createPaypalOrder($scope.dataPaypal).then(function (paypal) {
 			$scope.paypal = paypal.data;
-			
+
 			// Tạo order trên DB
 			$scope.createOrderOnDB($scope.paypal.id, $scope.paypal.links[1].href);
 		}).catch(function (error) {
@@ -489,6 +541,8 @@ app.controller("CheckoutController", function (AccountService, OrderService, Cou
 		printResult();
 		$scope.selectedDistrict = true;
 		$scope.selectedWard = false;
+		$scope.form.district = null;
+		$scope.form.ward = null;
 	};
 
 	$scope.updateDistrict = function () {
@@ -503,6 +557,18 @@ app.controller("CheckoutController", function (AccountService, OrderService, Cou
 		wardId = $scope.form.ward
 		printResult();
 	};
+
+	$scope.updateLocation = function () {
+		$scope.selectedDistrict = true;
+		$scope.selectedWard = true;
+
+		// Gọi API để lấy danh sách tỉnh/thành phố
+		$scope.callApiGetAll(hostLocation);
+		// Gọi API để lấy danh sách quận/huyện
+		$scope.getLocation(hostLocation + "d/", $scope.districts);
+		// Gọi API để lấy danh sách xã/phường
+		$scope.getLocation(hostLocation + "w/", $scope.wards);
+	}
 
 	var printResult = () => {
 		if (provinceId != "" && districtId != "" && wardId != "") {

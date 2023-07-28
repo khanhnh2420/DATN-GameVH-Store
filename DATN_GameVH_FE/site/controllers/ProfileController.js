@@ -192,7 +192,7 @@ app.controller("ProfileController", function (AccountService, LocationService, O
                             $scope.user = userInfo.data;
                             if ($scope.user) {
                                 LocationService.createOrUpdate($scope.locations).then(function (locations) {
-
+                                    ToastService.showSuccessToast("Cập nhật thông tin thành công!");
                                 }).catch(function (error) {
                                     console.error('Lỗi khi update location:', error);
                                 });
@@ -204,25 +204,21 @@ app.controller("ProfileController", function (AccountService, LocationService, O
                 }).catch(function (error) {
                     console.error('Lỗi khi up avatar lên drive:', error);
                 });
+            } else {
+                AccountService.updateAccount($scope.account).then(function (userInfo) {
+                    $scope.user = userInfo.data;
+                    if ($scope.user) {
+                        LocationService.createOrUpdate($scope.locations).then(function (locations) {
+                            ToastService.showSuccessToast("Cập nhật thông tin thành công!");
+                        }).catch(function (error) {
+                            console.error('Lỗi khi update location:', error);
+                        });
+                    }
+                }).catch(function (error) {
+                    console.error('Lỗi khi update account:', error);
+                });
             }
-        } else {
-            $scope.locations.forEach(location => {
-                location.account = $scope.account;
-            });
-
-            AccountService.updateAccount($scope.account).then(function (userInfo) {
-                $scope.user = userInfo.data;
-                if ($scope.user) {
-                    LocationService.createOrUpdate($scope.locations).then(function (locations) {
-
-                    }).catch(function (error) {
-                        console.error('Lỗi khi update location:', error);
-                    });
-                }
-            }).catch(function (error) {
-                console.error('Lỗi khi update account:', error);
-            });
-        }
+        } 
     }
 
     /*----END SUBMIT FORM ACCOUNT----*/
@@ -251,7 +247,7 @@ app.controller("ProfileController", function (AccountService, LocationService, O
                     $scope.locationForm.address = document.getElementById("inputAddress").value;
                     $scope.locationForm.address += ", " + $scope.selectedLocation;
                     $scope.locationForm.addressDefault = document.getElementById("addressDefaultModal").checked;
-                    console.log(document.getElementById("addressDefaultModal").checked)
+                    
                     if ($scope.locations.length <= 0) {
                         $scope.locations = [];
                     } else {
@@ -330,6 +326,9 @@ app.controller("ProfileController", function (AccountService, LocationService, O
                 if (locationIndex >= 0) {
                     for (let i = 0; i < $scope.locations.length; i++) {
                         if (i == locationIndex) {
+                            if($scope.locations[i].id) {
+                                $scope.locationForm.id = $scope.locations[i].id;
+                            }
                             $scope.locationForm.addressDefault = $scope.locations[i].addressDefault;
                             $scope.locationForm.address = $scope.locations[i].address;
                             $scope.locationForm.type = $scope.locations[i].type;
@@ -429,7 +428,6 @@ app.controller("ProfileController", function (AccountService, LocationService, O
             document.getElementById("tabTitleFeedback").removeAttribute("hidden");
             document.getElementById("tabFeedback").removeAttribute("hidden");
             $scope.changeTab(event, "feedback");
-            console.log(productId)
         }
     }
 

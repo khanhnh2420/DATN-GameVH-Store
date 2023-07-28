@@ -533,25 +533,25 @@ CREATE TABLE `location` (
 LOCK TABLES `location` WRITE;
 /*!40000 ALTER TABLE `location` DISABLE KEYS */;
 INSERT INTO `location` VALUES 
-(1,'thôn 6, Phường Nhân Hòa, Thị xã Quế Võ, Tỉnh Bắc Ninh','27','259','9259','1234567890','Văn Phòng', 0, 1),
-(2,'thôn 5, Xã Bộc Bố, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1864','9876543210','Nhà Riêng', 1, 2),
-(3,'thôn 5, Thị trấn Mường Khương, Huyện Mường Khương, Tỉnh Lào Cai','10','83','2761','1112223333','Văn Phòng', 1, 3),
-(4,'Thôn 4, Xã Nhạn Môn, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1861','5556667777','Nhà Riêng', 0, 4),
-(5,'thôn 4, Xã Leng Su Sìn, Huyện Mường Nhé, Tỉnh Điện Biên','11','96','3158','9998887777','Văn Phòng', 0, 5),
-(6,'thôn 1, Xã Lý Bôn, Huyện Bảo Lâm, Tỉnh Cao Bằng','4','42','1294','2223334444','Nhà Riêng', 0, 6),
-(7,'thôn 6, Phường Nhân Hòa, Thị xã Quế Võ, Tỉnh Bắc Ninh','27','259','9259','7778889999','Văn Phòng', 1, 7),
-(8,'thôn 5, Xã Bộc Bố, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1864','4445556666','Nhà Riêng', 1, 8),
-(9,'Thôn 4, Xã Nhạn Môn, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1861','8889990000','Văn Phòng', 0, 9),
-(10,'thôn 4, Xã Leng Su Sìn, Huyện Mường Nhé, Tỉnh Điện Biên','11','96','3158','6667778888','Nhà Riêng', 0, 10),
-(11,'thôn 1, Xã Lý Bôn, Huyện Bảo Lâm, Tỉnh Cao Bằng','4','42','1294','2221110000','Văn Phòng', 1, 11),
-(12,'thôn 6, Phường Nhân Hòa, Thị xã Quế Võ, Tỉnh Bắc Ninh','27','259','9259','5554443333','Nhà Riêng', 1, 12),
-(13,'thôn 5, Xã Bộc Bố, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1864','1110009999','Văn Phòng', 1, 13),
-(14,'thôn 5, Thị trấn Mường Khương, Huyện Mường Khương, Tỉnh Lào Cai','10','83','2761','4443332222','Nhà Riêng', 1, 1),
-(15,'Thôn 4, Xã Nhạn Môn, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1861','9990001111','Văn Phòng', 0, 2),
-(16,'thôn 4, Xã Leng Su Sìn, Huyện Mường Nhé, Tỉnh Điện Biên','11','96','3158','2223334444','Nhà Riêng', 0, 3),
-(17,'thôn 1, Xã Lý Bôn, Huyện Bảo Lâm, Tỉnh Cao Bằng','4','42','1294','7777777777','Văn Phòng', 1, 4),
-(18,'thôn 6, Phường Nhân Hòa, Thị xã Quế Võ, Tỉnh Bắc Ninh','27','259','9259','5555555555','Nhà Riêng', 1, 5),
-(19,'thôn 5, Xã Bộc Bố, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1864','9999999999','Văn Phòng', 1, 6);
+(1,'thôn 6, Phường Nhân Hòa, Thị xã Quế Võ, Tỉnh Bắc Ninh','27','259','9259','0898870044','Văn Phòng', 0, 1),
+(2,'thôn 5, Xã Bộc Bố, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1864','0394495986','Nhà Riêng', 1, 2),
+(3,'thôn 5, Thị trấn Mường Khương, Huyện Mường Khương, Tỉnh Lào Cai','10','83','2761','0862844774','Văn Phòng', 1, 3),
+(4,'Thôn 4, Xã Nhạn Môn, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1861','0867377117','Nhà Riêng', 0, 4),
+(5,'thôn 4, Xã Leng Su Sìn, Huyện Mường Nhé, Tỉnh Điện Biên','11','96','3158','0792667733','Văn Phòng', 0, 5),
+(6,'thôn 1, Xã Lý Bôn, Huyện Bảo Lâm, Tỉnh Cao Bằng','4','42','1294','0869562185','Nhà Riêng', 0, 6),
+(7,'thôn 6, Phường Nhân Hòa, Thị xã Quế Võ, Tỉnh Bắc Ninh','27','259','9259','0867724554','Văn Phòng', 1, 7),
+(8,'thôn 5, Xã Bộc Bố, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1864','0347470039','Nhà Riêng', 1, 8),
+(9,'Thôn 4, Xã Nhạn Môn, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1861','0971178822','Văn Phòng', 0, 9),
+(10,'thôn 4, Xã Leng Su Sìn, Huyện Mường Nhé, Tỉnh Điện Biên','11','96','3158','0869212130','Nhà Riêng', 0, 10),
+(11,'thôn 1, Xã Lý Bôn, Huyện Bảo Lâm, Tỉnh Cao Bằng','4','42','1294','0867330108','Văn Phòng', 1, 11),
+(12,'thôn 6, Phường Nhân Hòa, Thị xã Quế Võ, Tỉnh Bắc Ninh','27','259','9259','0783535500','Nhà Riêng', 1, 12),
+(13,'thôn 5, Xã Bộc Bố, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1864','0353837068','Văn Phòng', 1, 13),
+(14,'thôn 5, Thị trấn Mường Khương, Huyện Mường Khương, Tỉnh Lào Cai','10','83','2761','0989794411','Nhà Riêng', 1, 1),
+(15,'Thôn 4, Xã Nhạn Môn, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1861','0366473573','Văn Phòng', 0, 2),
+(16,'thôn 4, Xã Leng Su Sìn, Huyện Mường Nhé, Tỉnh Điện Biên','11','96','3158','0345443039','Nhà Riêng', 0, 3),
+(17,'thôn 1, Xã Lý Bôn, Huyện Bảo Lâm, Tỉnh Cao Bằng','4','42','1294','0908335020','Văn Phòng', 1, 4),
+(18,'thôn 6, Phường Nhân Hòa, Thị xã Quế Võ, Tỉnh Bắc Ninh','27','259','9259','0708317575','Nhà Riêng', 1, 5),
+(19,'thôn 5, Xã Bộc Bố, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1864','0783536677','Văn Phòng', 1, 6);
 /*!40000 ALTER TABLE `location` ENABLE KEYS */;
 UNLOCK TABLES;
 

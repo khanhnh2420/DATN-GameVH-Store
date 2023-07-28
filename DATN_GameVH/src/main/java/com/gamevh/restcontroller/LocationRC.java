@@ -9,10 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gamevh.dto.LocationDTO;
+import com.gamevh.entities.Account;
 import com.gamevh.entities.Location;
 import com.gamevh.mapper.LocationMapper;
 import com.gamevh.service.LocationService;
@@ -58,5 +61,15 @@ public class LocationRC {
 		}
 
 		return null;
+	}
+	
+	@PostMapping("createorupdate")
+	public ResponseEntity<List<Location>> createOrUpdateListLocation(@RequestBody List<Location> listLocation) {
+		if(!listLocation.isEmpty()) {
+			for (Location location : listLocation) {
+				locationService.createOrUpdateLocation(location);
+			}
+		}
+		return ResponseEntity.ok(listLocation);
 	}
 }

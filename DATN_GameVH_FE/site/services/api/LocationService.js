@@ -7,6 +7,9 @@ app.factory('LocationService', function ($http) {
         },
         getById: function (locationId) {
             return $http.get(baseUrl + '/id/' + locationId);
+        },
+        createOrUpdate: function (locationData) {
+            return $http.post(baseUrl + '/createorupdate', locationData);
         }
     };
 });

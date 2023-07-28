@@ -8,4 +8,6 @@ public interface LocationService {
 	List<Location> findByAccountUsername(String username);
 	
 	Location findById(Integer locationId);
+	
+	Location createOrUpdateLocation(Location location);
 }

@@ -53,16 +53,14 @@
 								<div class="tab-pane fade"
 									ng-class="{show: selectedTab === 'tab-dashboard', active: selectedTab === 'tab-dashboard'}"
 									id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
-									<form>
+									<form name="accountInfo" novalidate ng-submit="accountInfoSubmit()">
 										<div class="text-center mb-4">
 											<div class="avatar-wrapper">
-												<img class="profile-pic"
-													src="https://drive.google.com/uc?id={{account.photo ? account.photo : '1k7mZ306aaQltWZVJBe-zbXizg2NmAogx'}}"
-													alt="Avatar" />
-												<div class="upload-button">
+												<img class="profile-pic" ng-src="{{currentPhotoUrl}}" alt="Avatar" />
+												<div class="upload-button" ng-click="handleUploadClick()">
 													<i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
 												</div>
-												<input class="file-upload" type="file" multiple id="fileInput"
+												<input class="file-upload" type="file" id="fileInput" 
 													accept="image/*" />
 											</div>
 
@@ -79,7 +77,21 @@
 										<div class="row">
 											<div class="col-sm-6">
 												<label>Họ và tên *</label> <input type="text"
-													ng-model="account.fullname" class="form-control" required>
+													ng-model="account.fullname" class="form-control"
+													ng-class="{'is-invalid': (accountInfo.fullname.$invalid && accountInfo.fullname.$touched) || (accountInfo.$submitted && accountInfo.fullname.$invalid) || (accountInfo.$submitted && isValidFullname)}"
+													name="fullname" required
+													ng-pattern="/^(([a-zA-Z\sÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*)([a-zA-Z\s\'ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*)([a-zA-Z\sÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]))*$/">
+												<div class="mb-1 text-danger font-weight-bold">
+													<div
+														ng-show="(accountInfo.fullname.$error.required && accountInfo.fullname.$touched) || (accountInfo.$submitted && accountInfo.fullname.$error.required)">
+														Họ và tên không được để trống!
+													</div>
+													<div
+														ng-show="(accountInfo.fullname.$error.pattern && accountInfo.fullname.$touched) || (accountInfo.$submitted && accountInfo.fullname.$error.pattern)">
+														Họ và tên không được chứa số và kí tự đặc biệt!
+													</div>
+												</div>
+												<!-- End Error Fullname-->
 											</div>
 											<!-- End .col-sm-6 -->
 
@@ -101,7 +113,7 @@
 													ng-model="location.phone" class="form-control" required readonly>
 											</div>
 											<div class="col-sm-1 d-flex flex-column justify-content-center text-center">
-												<a type="button" ng-click="fillDataModal(location.id, 'edit')">
+												<a type="button" ng-click="fillDataModal(key, 'edit')">
 													<i class="fas fa-edit"
 														style="font-size: 1.7em; padding-top: 0.8em; cursor: pointer;"></i>
 												</a>
@@ -116,7 +128,7 @@
 											</a>
 										</div>
 										<div class="d-flex mt-2 flex-row-reverse">
-											<button type="button" class="btn btn-outline-primary-2">
+											<button type="submit" class="btn btn-outline-primary-2">
 												<span>LƯU THAY ĐỔI</span> <i class="icon-long-arrow-right"></i>
 											</button>
 										</div>
@@ -146,13 +158,9 @@
 										</div>
 
 										<div class="d-flex flex-row-reverse">
-											<button type="submit"
-												th:attr="ng-click='update(\''+${#authentication.name}+'\')'"
-												class="btn btn-outline-primary-2">
+											<button type="submit" class="btn btn-outline-primary-2">
 												<span>LƯU THAY ĐỔI</span> <i class="icon-long-arrow-right"></i>
 											</button>
-											<h4 class="text-success ml-5 mt-1">{{messageSuccess}}</h4>
-											<h4 class="text-danger ml-5 mt-1">{{messageFailed}}</h4>
 										</div>
 									</form>
 								</div>
@@ -191,7 +199,7 @@
 												<td>{{order.paymentType}}</td>
 												<td>{{order.orderStatus}}</td>
 												<td><a class="btn btn-outline-primary-2" type="button"
-														ng-click="openModalOrder(order.id)"
+														ng-click="openModalOrder($event, order.id)"
 														style="min-width: 30px; border-radius: 10%; cursor: pointer; padding: 0.55rem 1rem;">Chi
 														tiết</a>
 												</td>
@@ -318,7 +326,7 @@
 							<li class="nav-item"><a class="nav-link" id="order-detail-tab"
 									ng-click="changeTab($event, 'order-detail')" role="tab" aria-controls="order-detail"
 									ng-class="{active: activeTab === 'order-detail'}">Chi tiết đơn hàng</a></li>
-							<li class="nav-item"><a class="nav-link" id="feedback-tab"
+							<li class="nav-item" id="tabTitleFeedback"><a class="nav-link" id="feedback-tab"
 									ng-click="changeTab($event, 'feedback')" role="tab" aria-controls="feedback"
 									ng-class="{active: activeTab === 'feedback'}">Đánh giá sản phẩm</a></li>
 						</ul>
@@ -400,7 +408,7 @@
 
 						<div ng-show="activeTab === 'order-detail'" class="p-4">
 							<h4
-								style="caption-side: top; text-align: center; font-size: 3rem; font-weight: 800; margin-top: 1em;">
+								style="caption-side: top; text-align: center; font-size: 3rem; font-weight: 800; margin-top: 1em; margin-bottom: 1em;">
 								CHI TIẾT ĐƠN HÀNG</h4>
 							<table class="table table-bordered text-center">
 								<thead>
@@ -409,7 +417,7 @@
 										<th scope="col">Tên sản phẩm</th>
 										<th scope="col">Số lượng</th>
 										<th scope="col">Đơn giá</th>
-										<th scope="col"></th>
+										<th scope="col" ng-if="order.orderStatus === 'Đã hoàn thành'"></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -421,9 +429,9 @@
 										<td>{{product.productName}}</td>
 										<td>{{product.qty}}</td>
 										<td>{{product.price | vndFormat}}</td>
-										<td><a class="btn btn-outline-primary-2" type="button"
-												ng-click="openTabFeedBack($event)"
-												data-product-id="{{product.productId}}"
+										<td ng-if="order.orderStatus === 'Đã hoàn thành'"><a
+												class="btn btn-outline-primary-2" type="button"
+												ng-click="openTabFeedBack($event, product.productId)"
 												style="min-width: 30px; border-radius: 10%; cursor: pointer; padding: 0.55rem 1rem;">Đánh
 												giá</a>
 										</td>
@@ -432,7 +440,7 @@
 							</table>
 						</div>
 
-						<div ng-show="activeTab === 'feedback'">
+						<div ng-show="activeTab === 'feedback'" id="tabFeedback">
 							<h4
 								style="caption-side: top; text-align: center; font-size: 3rem; font-weight: 800; margin-top: 1em;">
 								ĐÁNH GIÁ SẢN PHẨM</h4>
@@ -461,11 +469,11 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<form class="p-4">
+						<form class="p-4" name="addressForm" id="addressForm" novalidate>
 							<div class="row ml-1">
 								<div class="col-4-sm">
 									<label>Loại địa chỉ *</label>
-									<select class="form-control" ng-model="locationForm.type">
+									<select class="form-control" ng-model="locationForm.type" id="typeAddressModal">
 										<option value="Nhà Riêng" selected>Nhà riêng</option>
 										<option value="Văn Phòng">Văn phòng</option>
 									</select>
@@ -474,6 +482,7 @@
 									<div class="form-check-inline">
 										<label class="form-check-label">
 											<input type="checkbox" class="form-check-input mr-3" value=""
+												id="addressDefaultModal" ng-model="locationForm.addressDefault"
 												ng-checked="locationForm.addressDefault">Chọn làm địa chỉ giao hàng mặc
 											định
 										</label>
@@ -481,28 +490,49 @@
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-sm-8">
+								<div class="col-sm-7">
 									<label>Địa chỉ *</label> <input type="text" ng-model="locationForm.address"
-										class="form-control" required>
+										ng-class="{'is-invalid': (addressForm.address.$invalid && addressForm.address.$touched) || (addressForm.$submitted && addressForm.address.$invalid)}"
+										name="address" class="form-control mb-1" required id="inputAddress">
+									<div class="mb-1 text-danger font-weight-bold">
+										<div
+											ng-show="(addressForm.address.$error.required && addressForm.address.$touched) || (addressForm.$submitted && addressForm.address.$error.required)">
+											Địa chỉ không được để trống!
+										</div>
+									</div>
+									<!-- End Error address-->
 								</div>
-								<div class="col-sm-4">
+								<div class="col-sm-5">
 									<label>Số điện thoại nhận hàng *</label> <input type="text"
-										ng-model="locationForm.phone" class="form-control" required>
+										ng-model="locationForm.phone" class="form-control mb-1"
+										ng-class="{'is-invalid': (addressForm.phone.$invalid && addressForm.phone.$touched) || (addressForm.$submitted && addressForm.phone.$invalid)}"
+										name="phone" required
+										ng-pattern="/^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/">
+									<div class="mb-1 text-danger font-weight-bold">
+										<div
+											ng-show="(addressForm.phone.$error.required && addressForm.phone.$touched) || (addressForm.$submitted && addressForm.phone.$error.required)">
+											Số điện thoại không được để trống!
+										</div>
+										<div
+											ng-show="(addressForm.phone.$error.pattern && addressForm.phone.$touched) || (addressForm.$submitted && addressForm.phone.$error.pattern)">
+											Số điện thoại không đúng định dạng!
+										</div>
+									</div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-sm-4">
 									<label>Tỉnh/Thành phố *</label>
-									<select class="form-control" id="province" ng-model="locationForm.province"
+									<select class="form-control mb-1" id="province" ng-model="locationForm.province"
 										ng-change="updateProvince()" name="province"
 										ng-options="option.code as option.name for option in provinces" required
-										ng-class="{'is-invalid-no-x': (orderForm.province.$invalid && orderForm.province.$touched) || (orderForm.$submitted && orderForm.province.$invalid)}">
+										ng-class="{'is-invalid-no-x': (addressForm.province.$invalid && addressForm.province.$touched) || (addressForm.$submitted && addressForm.province.$invalid)}">
 										<option value="" selected disabled>Chọn Thành phố</option>
 									</select>
 									<!-- End .form-group -->
 									<div class="mb-1 text-danger font-weight-bold">
 										<div
-											ng-show="(orderForm.province.$error.required && orderForm.province.$touched) || (orderForm.$submitted && orderForm.province.$error.required)">
+											ng-show="(addressForm.province.$error.required && addressForm.province.$touched) || (addressForm.$submitted && addressForm.province.$error.required)">
 											Vui lòng chọn Tỉnh/Thành phố!
 										</div>
 									</div>
@@ -512,17 +542,17 @@
 
 								<div class="col-sm-4">
 									<label>Quận/Huyện *</label>
-									<select class="form-control" id="district" ng-model="locationForm.district"
+									<select class="form-control mb-1" id="district" ng-model="locationForm.district"
 										ng-options="district.code as district.name for district in districts"
 										name="district" ng-change="updateDistrict()"
 										ng-disabled="selectedDistrict === false" required
-										ng-class="{'is-invalid-no-x': (orderForm.district.$invalid && orderForm.district.$touched) || (orderForm.$submitted && orderForm.district.$invalid)}">
+										ng-class="{'is-invalid-no-x': (addressForm.district.$invalid && addressForm.district.$touched) || (addressForm.$submitted && addressForm.district.$invalid)}">
 										<option value="" selected disabled>Chọn Quận/Huyện</option>
 									</select>
 									<!-- End .form-group -->
 									<div class="mb-1 text-danger font-weight-bold">
 										<div
-											ng-show="(orderForm.district.$error.required && orderForm.district.$touched) || (orderForm.$submitted && orderForm.district.$error.required)">
+											ng-show="(addressForm.district.$error.required && addressForm.district.$touched) || (addressForm.$submitted && addressForm.district.$error.required)">
 											Vui lòng chọn Quận/Huyện!
 										</div>
 									</div>
@@ -532,16 +562,16 @@
 
 								<div class="col-sm-4">
 									<label>Phường/Xã *</label>
-									<select class="form-control" id="ward" ng-model="locationForm.ward"
+									<select class="form-control mb-1" id="ward" ng-model="locationForm.ward"
 										ng-options="option.code as option.name for option in wards" name="ward"
 										ng-change="updateWard()" ng-disabled="selectedWard === false" required
-										ng-class="{'is-invalid-no-x': (orderForm.ward.$invalid && orderForm.ward.$touched) || (orderForm.$submitted && orderForm.ward.$invalid)}">
+										ng-class="{'is-invalid-no-x': (addressForm.ward.$invalid && addressForm.ward.$touched) || (addressForm.$submitted && addressForm.ward.$invalid)}">
 										<option value="" selected disabled>Chọn Xã/Phường</option>
 									</select>
 									<!-- End .form-group -->
 									<div class="mb-1 text-danger font-weight-bold">
 										<div
-											ng-show="(orderForm.ward.$error.required && orderForm.ward.$touched) || (orderForm.$submitted && orderForm.ward.$error.required)">
+											ng-show="(addressForm.ward.$error.required && addressForm.ward.$touched) || (addressForm.$submitted && addressForm.ward.$error.required)">
 											Vui lòng chọn Xã/Phường!
 										</div>
 									</div>
@@ -553,12 +583,13 @@
 						</form>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary">{{button}}</button>
+						<button type="button" class="btn btn-primary" id="changeAddress">{{button}}</button>
 					</div>
 					<!-- End .modal-body -->
 				</div><!-- End .modal-content -->
 			</div><!-- End .modal-dialog -->
 		</div><!-- End .modal -->
+		<div id="toast"></div>
 	</main>
 
 </div>

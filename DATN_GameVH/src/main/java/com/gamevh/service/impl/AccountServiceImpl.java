@@ -1,8 +1,12 @@
 package com.gamevh.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.gamevh.entities.Account;
@@ -19,6 +23,15 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public List<Account> findAll() {
 		return accountRepository.findAll();
+	}
+
+	@Override
+	public Page<Account> findAll(Optional<Integer> pageNo, Optional<Integer> pageSize, String username, String name, String roleId) {
+		Pageable pageable = PageRequest.of(pageNo.orElse(0), pageSize.orElse(6));
+
+		// Áp dụng filter họ tên và roleId của account
+		Page<Account> accounts = accountRepository.filterAccountByUsernameAndNameAndRoleId(pageable, username, name, roleId);
+		return accounts;
 	}
 
 	@Override

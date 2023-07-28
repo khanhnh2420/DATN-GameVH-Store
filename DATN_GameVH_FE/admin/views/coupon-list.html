@@ -7,7 +7,7 @@
 <!-- /Sidebar -->
 
 <!-- Page Wrapper -->
-<div class="page-wrapper">
+<div class="page-wrapper" ng-controller="CouponController">
 
 	<!-- Page Content -->
 	<div class="content container-fluid">
@@ -23,7 +23,9 @@
 					</ul>
 				</div>
 				<div class="col-auto float-right ml-auto">
-					<a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_Coupon"><i
+					<a href="#" class="btn add-btn" 
+					ng-click="openAddModal()"
+					data-toggle="modal" data-target="#add_Coupon"><i
 							class="fa fa-plus"></i> Add Coupon List</a>
 
 				</div>
@@ -35,18 +37,18 @@
 		<div class="row filter-row">
 			<div class="col-sm-6 col-md-4">
 				<div class="form-group form-focus">
-					<input type="text" class="form-control floating">
+					<input type="text" class="form-control floating" ng-model="couponIdFilter">
 					<label class="focus-label">Coupon ID</label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-4">
 				<div class="form-group form-focus">
-					<input type="text" class="form-control floating">
+					<input type="text" class="form-control floating" ng-model="couponNameFilter">
 					<label class="focus-label">Coupon Name</label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-4">
-				<a href="#" class="btn btn-success btn-block"> Search </a>
+				<a href="#" class="btn btn-success btn-block" ng-click="getAllBySearch()"> Search </a>
 			</div>
 		</div>
 		<!-- /Search Filter -->
@@ -69,168 +71,29 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
+							<tr ng-repeat="cate in coupons">
 								<td class="text-left"><a class="text-dark" href="#" data-toggle="modal"
-										data-target="#edit_Coupon">Mã giảm giá Mùa hè</a></td>
-								<td>ABDJHGMKET</td>
-								<td>20</td>
-								<td>50000</td>
-								<td>500000</td>
-								<td>2023-06-01 00:00:00 </td>
-								<td>2023-06-30 23:59:59</td>
-								<td><span class="badge bg-inverse-success">Available</span></td>
+										data-target="#edit_Coupon">{{cate.couponName}}</a></td>
+								<td>{{cate.code}}</td>
+								<td>{{cate.amount}}</td>
+								<td>{{cate.value}}</td>
+								<td>{{cate.minSpend}}</td>
+								<td>{{cate.mfgDate | date: 'dd/MM/yyyy'}}</td>
+								<td>{{cate.expDate | date: 'dd/MM/yyyy'}}</td>
+								<td><span class="badge bg-inverse-success">{{cate.status ==1 ? 'Available':''}}</span></td>
 								<td class="text-right">
 									<div class="dropdown dropdown-action">
 										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
 											aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
 										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#edit_Coupon"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#delete_Coupon"><i class="fa fa-trash-o m-r-5"></i>
-												Delete</a>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="text-left"><a class="text-dark" href="#" data-toggle="modal"
-										data-target="#edit_Coupon">Mã giảm giá Mùa hè</a></td>
-								<td>ABDJHGMKET</td>
-								<td>20</td>
-								<td>50000</td>
-								<td>500000</td>
-								<td>2023-06-01 00:00:00 </td>
-								<td>2023-06-30 23:59:59</td>
-								<td><span class="badge bg-inverse-success">Available</span></td>
-								<td class="text-right">
-									<div class="dropdown dropdown-action">
-										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-											aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#edit_Coupon"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#delete_Coupon"><i class="fa fa-trash-o m-r-5"></i>
-												Delete</a>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="text-left"><a class="text-dark" href="#" data-toggle="modal"
-										data-target="#edit_Coupon">Mã giảm giá Mùa hè</a></td>
-								<td>ABDJHGMKET</td>
-								<td>20</td>
-								<td>50000</td>
-								<td>500000</td>
-								<td>2023-06-01 00:00:00 </td>
-								<td>2023-06-30 23:59:59</td>
-								<td><span class="badge bg-inverse-success">Available</span></td>
-								<td class="text-right">
-									<div class="dropdown dropdown-action">
-										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-											aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#edit_Coupon"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#delete_Coupon"><i class="fa fa-trash-o m-r-5"></i>
-												Delete</a>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="text-left"><a class="text-dark" href="#" data-toggle="modal"
-										data-target="#edit_Coupon">Mã giảm giá Mùa hè</a></td>
-								<td>ABDJHGMKET</td>
-								<td>20</td>
-								<td>50000</td>
-								<td>500000</td>
-								<td>2023-06-01 00:00:00 </td>
-								<td>2023-06-30 23:59:59</td>
-								<td><span class="badge bg-inverse-success">Available</span></td>
-								<td class="text-right">
-									<div class="dropdown dropdown-action">
-										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-											aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#edit_Coupon"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#delete_Coupon"><i class="fa fa-trash-o m-r-5"></i>
-												Delete</a>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="text-left"><a class="text-dark" href="#" data-toggle="modal"
-										data-target="#edit_Coupon">Mã giảm giá Mùa hè</a></td>
-								<td>ABDJHGMKET</td>
-								<td>20</td>
-								<td>50000</td>
-								<td>500000</td>
-								<td>2023-06-01 00:00:00 </td>
-								<td>2023-06-30 23:59:59</td>
-								<td><span class="badge bg-inverse-danger">Unavailable</span></td>
-								<td class="text-right">
-									<div class="dropdown dropdown-action">
-										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-											aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#edit_Coupon"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#delete_Coupon"><i class="fa fa-trash-o m-r-5"></i>
-												Delete</a>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="text-left"><a class="text-dark" href="#" data-toggle="modal"
-										data-target="#edit_Coupon">Mã giảm giá Mùa hè</a></td>
-								<td>ABDJHGMKET</td>
-								<td>20</td>
-								<td>50000</td>
-								<td>500000</td>
-								<td>2023-06-01 00:00:00 </td>
-								<td>2023-06-30 23:59:59</td>
-								<td><span class="badge bg-inverse-danger">Unavailable</span></td>
-								<td class="text-right">
-									<div class="dropdown dropdown-action">
-										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-											aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#edit_Coupon"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#delete_Coupon"><i class="fa fa-trash-o m-r-5"></i>
-												Delete</a>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="text-left"><a class="text-dark" href="#" data-toggle="modal"
-										data-target="#edit_Coupon">Mã giảm giá Mùa hè</a></td>
-								<td>ABDJHGMKET</td>
-								<td>20</td>
-								<td>50000</td>
-								<td>500000</td>
-								<td>2023-06-01 00:00:00 </td>
-								<td>2023-06-30 23:59:59</td>
-								<td><span class="badge bg-inverse-danger">Unavailable</span></td>
-								<td class="text-right">
-									<div class="dropdown dropdown-action">
-										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-											aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#edit_Coupon"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
+											<a
+											ng-click="selectCoupon(cate)"
+											class="dropdown-item"
+											href="#"
+											data-toggle="modal"
+											data-target="#edit_Coupon"
+											><i class="fa fa-pencil m-r-5"></i> Edit</a>
+											<a class="dropdown-item" href="#" data-toggle="modal" ng-click="selectCoupon(cate)"
 												data-target="#delete_Coupon"><i class="fa fa-trash-o m-r-5"></i>
 												Delete</a>
 										</div>
@@ -261,12 +124,15 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="voucher-img-wrap edit-img">
-									<img class="inline-block"
-										src="https://www.shutterstock.com/image-vector/mega-sale-web-banner-55-260nw-700602064.jpg"
-										alt="user">
-									<div class="fileupload btn">
-										<span class="btn-text">edit</span>
-										<input class="upload" type="file">
+									<div ng-repeat="step in stepsModel">
+										<img class="thumb" ng-src="{{step}}" />
+									</div>
+									<div class="fileupload btn" style="opacity: 0.1;">
+										<label for="files" class="btn">Select Image</label>
+										<input type='file' ng-model-instant id="files" ng-model="formImg"
+										style="visibility:hidden;"
+											onchange="angular.element(this).scope().imageUpload(event)"
+											/>
 									</div>
 								</div>
 							</div>
@@ -275,40 +141,40 @@
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label class="col-form-label">Name <span class="text-danger">*</span></label>
-									<input class="form-control" type="text">
+									<input class="form-control" type="text"  ng-model="formName">
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label class="col-form-label">Code <span class="text-danger">*</span></label>
-									<input class="form-control" type="text">
+									<input class="form-control" type="text" ng-model="formCode">
 								</div>
 							</div>
 
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label class="col-form-label">Amount</label>
-									<input class="form-control" type="number">
+									<input class="form-control" type="number" ng-model="formAmount">
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label class="col-form-label">Value</label>
-									<input class="form-control" type="number">
+									<input class="form-control" type="number" ng-model="formValue">
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label class="col-form-label">Min Spend <span class="text-danger">*</span></label>
-									<input class="form-control" type="number">
+									<input class="form-control" type="number" ng-model="formMinSpend">
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label class="col-form-label">Status <span class="text-danger">*</span></label>
-									<select class="select">
-										<option>Turn Off</option>
-										<option selected>Turn On</option>
+									<select class="select" ng-model="formStatus">
+										<option value=1>Turn Off</option>
+										<option selected value=2>Turn On</option>
 									</select>
 								</div>
 							</div>
@@ -317,7 +183,7 @@
 									<label class="col-form-label">Manufacturing Date <span
 											class="text-danger">*</span></label>
 									<div class="cal-icon">
-										<input class="form-control datetimepicker " type="text" value="2019/05/20">
+										<input class="form-control datetimepicker " type="text" ng-model="formManufacturingDate" customzdatetime>
 									</div>
 								</div>
 							</div>
@@ -325,7 +191,7 @@
 								<div class="form-group">
 									<label class="col-form-label">Expiry Date <span class="text-danger">*</span></label>
 									<div class="cal-icon">
-										<input class="form-control datetimepicker " type="text" value="2019/05/20">
+										<input class="form-control datetimepicker " type="text" ng-model="formExpiryDate" customzdatetime>
 									</div>
 								</div>
 							</div>
@@ -334,13 +200,19 @@
 								<div class="form-group">
 									<label class="col-form-label">Description</label>
 									<textarea class="form-control"
-										rows="4">Giảm 50.000 đồng cho đơn hàng trên 500,000 đồng.</textarea>
+									ng-model="formDescription"
+										rows="4"></textarea>
 								</div>
 							</div>
 
 						</div>
 						<div class="submit-section">
-							<button class="btn btn-primary submit-btn">Submit</button>
+							<button
+							ng-click="submitAdd()"
+							class="btn btn-primary submit-btn"
+							>
+							Submit
+							</button>
 						</div>
 					</form>
 				</div>
@@ -364,12 +236,15 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="voucher-img-wrap edit-img">
-									<img class="inline-block"
-										src="https://www.shutterstock.com/image-vector/mega-sale-web-banner-55-260nw-700602064.jpg"
-										alt="user">
-									<div class="fileupload btn">
-										<span class="btn-text">edit</span>
-										<input class="upload" type="file">
+									<div ng-repeat="step in stepsModel">
+										<img class="thumb" ng-src="{{step}}" />
+									</div>
+									<div class="fileupload btn" style="opacity: 0.1;">
+										<label for="files" class="btn">Select Image</label>
+										<input type='file' ng-model-instant id="files" ng-model="formImg"
+										style="visibility:hidden;"
+											onchange="angular.element(this).scope().imageUpload(event)"
+											/>
 									</div>
 								</div>
 							</div>
@@ -378,41 +253,41 @@
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label class="col-form-label">Name <span class="text-danger">*</span></label>
-									<input class="form-control" type="text">
+									<input class="form-control" type="text"  ng-model="formName">
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label class="col-form-label">Code <span class="text-danger">*</span></label>
-									<input class="form-control" type="text">
+									<input class="form-control" type="text" ng-model="formCode">
 								</div>
 							</div>
 
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label class="col-form-label">Amount</label>
-									<input class="form-control" type="number">
+									<input class="form-control" type="number" ng-model="formAmount">
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label class="col-form-label">Value</label>
-									<input class="form-control" type="number">
+									<input class="form-control" type="number" ng-model="formValue">
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label class="col-form-label">Min Spend <span class="text-danger">*</span></label>
-									<input class="form-control" type="number">
+									<input class="form-control" type="number" ng-model="formMinSpend">
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label class="col-form-label">Status <span class="text-danger">*</span></label>
-									<select class="select">
-										<option>Turn Off</option>
-										<option selected>Turn On</option>
-									</select>
+									<select ng-model="formStatus" class="select">
+										<option value="1">Turn On</option>
+										<option value="2">Turn Off</option>
+									  </select>
 								</div>
 							</div>
 							<div class="col-sm-6">
@@ -420,7 +295,7 @@
 									<label class="col-form-label">Manufacturing Date <span
 											class="text-danger">*</span></label>
 									<div class="cal-icon">
-										<input class="form-control datetimepicker " type="text" value="2019/05/20">
+										<input class="form-control datetimepicker " type="text" ng-model="formManufacturingDate">
 									</div>
 								</div>
 							</div>
@@ -428,7 +303,7 @@
 								<div class="form-group">
 									<label class="col-form-label">Expiry Date <span class="text-danger">*</span></label>
 									<div class="cal-icon">
-										<input class="form-control datetimepicker " type="text" value="2019/05/20">
+										<input class="form-control datetimepicker " type="text" ng-model="formExpiryDate">
 									</div>
 								</div>
 							</div>
@@ -437,13 +312,19 @@
 								<div class="form-group">
 									<label class="col-form-label">Description</label>
 									<textarea class="form-control"
-										rows="4">Giảm 50.000 đồng cho đơn hàng trên 500,000 đồng.</textarea>
+									ng-model="formDescription"
+										rows="4"></textarea>
 								</div>
 							</div>
 
 						</div>
 						<div class="submit-section">
-							<button class="btn btn-primary submit-btn">Submit</button>
+							<button
+							ng-click="submitAdd()"
+							class="btn btn-primary submit-btn"
+							>
+							Submit
+							</button>
 						</div>
 					</form>
 				</div>
@@ -464,7 +345,7 @@
 					<div class="modal-btn delete-action">
 						<div class="row">
 							<div class="col-6">
-								<a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
+								<a href="javascript:void(0);" ng-click="delete()" class="btn btn-primary continue-btn">Delete</a>
 							</div>
 							<div class="col-6">
 								<a href="javascript:void(0);" data-dismiss="modal"

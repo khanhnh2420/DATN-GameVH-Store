@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.eclipse.jetty.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -155,4 +156,16 @@ public class AccountRC {
 //		accountsDAO.deleteById(username);
 //		return ResponseEntity.ok().build();
 //	}
+
+	@GetMapping
+	public ResponseEntity<Page<Account>> getAllAccounts(
+			@RequestParam("page") Optional<Integer> page,
+			@RequestParam("size") Optional<Integer> size,
+			@RequestParam(value = "username", defaultValue = "", required = false) String username,
+			@RequestParam(value = "name", defaultValue = "", required = false) String name,
+			@RequestParam(value = "roleId", defaultValue = "", required = false) String roleId
+	) {
+		Page<Account> accounts = accountService.findAll(page, size, username, name, roleId);
+		return ResponseEntity.ok(accounts);
+	}
 }

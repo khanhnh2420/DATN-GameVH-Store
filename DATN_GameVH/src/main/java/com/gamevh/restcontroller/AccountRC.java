@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -88,7 +89,7 @@ public class AccountRC {
 	}
 
 	@PostMapping("create")
-	public ResponseEntity<Account> getAllAccounts(@RequestBody Account account) {
+	public ResponseEntity<Account> createAccount(@RequestBody Account account) {
 		if(accountService.findByUsername(account.getUsername()).isEmpty() && accountService.findByEmail(account.getEmail()).isEmpty()) {
 			account.setPassword(encryptionService.encrypt(account.getPassword()));
 			accountService.add(account);
@@ -96,7 +97,15 @@ public class AccountRC {
 		return ResponseEntity.ok(account);
 	}
 	
-	
+	@PutMapping("update")
+	public ResponseEntity<Account> updateAccount(@RequestBody Account account) {
+		if(account != null) {
+			if (accountService.findById(account.getId()) != null) {
+				accountService.add(account);
+			} 
+		}
+		return ResponseEntity.ok(account);
+	}
 
 	@PostMapping("upload")
 	public ResponseEntity<Object> uploadImage(@RequestParam("image") MultipartFile image)

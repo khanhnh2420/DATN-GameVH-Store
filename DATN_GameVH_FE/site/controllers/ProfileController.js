@@ -1,9 +1,13 @@
-app.controller("ProfileController", function (AccountService, LocationService, OrderService, OrderDetailService, CouponOwnerService, PageService, $scope, $window, $http) {
+app.controller("ProfileController", function (AccountService, LocationService, OrderService, OrderDetailService,
+    CouponOwnerService, ToastService, PageService, $scope, $window, $http, $timeout) {
     $scope.account = {}; // Biến lưu thông tin account 
     $scope.username = null;
     $scope.orders = [];
     $scope.order = {};
     $scope.coupons = [];
+    $scope.driveImage = "https://drive.google.com/uc?id=";
+    $scope.locationForm = {};
+    $scope.locations = [];
 
     // Location
     const hostLocation = "https://provinces.open-api.vn/api/";
@@ -31,6 +35,8 @@ app.controller("ProfileController", function (AccountService, LocationService, O
         // Người dùng đã đăng nhập
         $scope.account = account;
         if ($scope.account) {
+            $scope.currentPhotoUrl = $scope.account.photo ? $scope.driveImage + $scope.account.photo : $scope.driveImage + '1k7mZ306aaQltWZVJBe-zbXizg2NmAogx';
+
             LocationService.getByUsername($scope.account.username).then(function (location) {
                 $scope.locations = location.data;
             }).catch(function (error) {
@@ -70,6 +76,32 @@ app.controller("ProfileController", function (AccountService, LocationService, O
     });
 
     /*----END CHECK LOGIN----*/
+
+    /*----IMAGE----*/
+    // Hàm xử lý sự kiện khi click vào nút "upload-button".
+    $scope.handleUploadClick = function () {
+        // Lấy ra input file-upload thông qua ID.
+        var fileInput = document.getElementById('fileInput');
+        // Khi click vào nút "upload-button", kích hoạt sự kiện click cho input file-upload.
+        fileInput.click();
+    };
+
+    // Đăng ký sự kiện change cho input file-upload để xử lý khi người dùng chọn ảnh và thực hiện upload.
+    document.getElementById('fileInput').addEventListener('change', function () {
+        // Lấy danh sách các file đã chọn từ input file-upload.
+        var selectedFiles = this.files;
+        if (selectedFiles.length > 0) {
+            // Lấy file đầu tiên trong danh sách (vì input file-upload cho phép multiple selection).
+            $scope.selectedFile = selectedFiles[0];
+            // Tạo một đường dẫn tạm thời cho ảnh từ file đã chọn.
+            var tempPhotoUrl = URL.createObjectURL($scope.selectedFile);
+            $scope.$apply(function () {
+                // Cập nhật đường dẫn mới vào biến "currentPhotoUrl" để thay đổi ảnh hiển thị.
+                $scope.currentPhotoUrl = tempPhotoUrl;
+            });
+        }
+    });
+    /*----END IMAGE----*/
 
     /*----RATING----*/
     $scope.stars = [
@@ -130,35 +162,229 @@ app.controller("ProfileController", function (AccountService, LocationService, O
     $scope.activeTab = 'order'; // Đặt tab mặc định là "Thông tin đơn hàng"
 
     $scope.changeTab = function (event, tabName) {
+        if (!(tabName == "feedback")) {
+            document.getElementById("tabTitleFeedback").setAttribute("hidden", true);;
+            document.getElementById("tabFeedback").setAttribute("hidden", true);
+        }
+
         event.preventDefault(); // Ngăn chặn sự kiện mặc định khi click vào tab
         $scope.activeTab = tabName; // Cập nhật tab đang được chọn
     };
     /*----END CHANGE TAB----*/
 
+    /*----SUBMIT FORM ACCOUNT----*/
+    $scope.accountInfoSubmit = function () {
+
+        if (!$scope.accountInfo.$invalid) {
+            $scope.locations.forEach(location => {
+                location.account = $scope.account;
+            });
+
+            if ($scope.selectedFile) {
+                var formData = new FormData();
+                var modifiedFileName = $scope.account.username;
+                formData.append('image', $scope.selectedFile, modifiedFileName);
+                AccountService.uploadImage(formData).then(function (image) {
+                    $scope.image = image.data;
+                    if ($scope.image) {
+                        $scope.account.photo = $scope.image.fileId;
+                        AccountService.updateAccount($scope.account).then(function (userInfo) {
+                            $scope.user = userInfo.data;
+                            if ($scope.user) {
+                                LocationService.createOrUpdate($scope.locations).then(function (locations) {
+
+                                }).catch(function (error) {
+                                    console.error('Lỗi khi update location:', error);
+                                });
+                            }
+                        }).catch(function (error) {
+                            console.error('Lỗi khi update account:', error);
+                        });
+                    }
+                }).catch(function (error) {
+                    console.error('Lỗi khi up avatar lên drive:', error);
+                });
+            }
+        } else {
+            $scope.locations.forEach(location => {
+                location.account = $scope.account;
+            });
+
+            AccountService.updateAccount($scope.account).then(function (userInfo) {
+                $scope.user = userInfo.data;
+                if ($scope.user) {
+                    LocationService.createOrUpdate($scope.locations).then(function (locations) {
+
+                    }).catch(function (error) {
+                        console.error('Lỗi khi update location:', error);
+                    });
+                }
+            }).catch(function (error) {
+                console.error('Lỗi khi update account:', error);
+            });
+        }
+    }
+
+    /*----END SUBMIT FORM ACCOUNT----*/
 
     /*----MODAL----*/
-    $scope.fillDataModal = function (locationId, type) {
+    $scope.fillDataModal = function (locationIndex, type) {
         $('#address-modal').modal('show');
+        $scope.clearModal();
+
+        $scope.addressForm.address.$touched = false;
+        $scope.addressForm.phone.$touched = false;
+        $scope.addressForm.province.$touched = false;
+        $scope.addressForm.district.$touched = false;
+        $scope.addressForm.ward.$touched = false;
+
+        function clickHandlerAdd() {
+            $scope.$apply(function () {
+                if ($scope.addressForm.$invalid) {
+                    $scope.addressForm.address.$touched = true;
+                    $scope.addressForm.phone.$touched = true;
+                    $scope.addressForm.province.$touched = true;
+                    $scope.addressForm.district.$touched = true;
+                    $scope.addressForm.ward.$touched = true;
+                } else {
+                    printResult();
+                    $scope.locationForm.address = document.getElementById("inputAddress").value;
+                    $scope.locationForm.address += ", " + $scope.selectedLocation;
+                    $scope.locationForm.addressDefault = document.getElementById("addressDefaultModal").checked;
+                    console.log(document.getElementById("addressDefaultModal").checked)
+                    if ($scope.locations.length <= 0) {
+                        $scope.locations = [];
+                    } else {
+                        $scope.locations[0].addressDefault = !(document.getElementById("addressDefaultModal").checked);
+                    }
+                    $scope.locations.push($scope.locationForm);
+                    $scope.clearModal();
+                    $('#address-modal').modal('hide');
+                }
+            });
+        }
+
+        function clickHandlerEdit() {
+            $scope.$apply(function () {
+                if ($scope.addressForm.$invalid) {
+                    $scope.addressForm.address.$touched = true;
+                    $scope.addressForm.phone.$touched = true;
+                    $scope.addressForm.province.$touched = true;
+                    $scope.addressForm.district.$touched = true;
+                    $scope.addressForm.ward.$touched = true;
+                } else {
+                    printResult();
+                    $scope.locationForm.address = document.getElementById("inputAddress").value;
+                    $scope.locationForm.address += ", " + $scope.selectedLocation;
+                    if (locationIndex >= 0) {
+                        for (let i = 0; i < $scope.locations.length; i++) {
+                            if (i != locationIndex) {
+                                $scope.locations[i].addressDefault = !$scope.locationForm.addressDefault;
+                                if ($scope.locationForm.type == "Nhà Riêng") {
+                                    $scope.locations[i].type = "Văn Phòng";
+                                } else {
+                                    $scope.locations[i].type = "Nhà Riêng";
+                                }
+                            } else {
+                                $scope.locations[i] = $scope.locationForm;
+                            }
+                        }
+                    }
+
+                    $scope.clearModal();
+                    $('#address-modal').modal('hide');
+                }
+            });
+        }
+
         if (type == "add") {
             $scope.title = "THÊM ĐỊA CHỈ MỚI";
             $scope.button = "THÊM";
             $scope.clearModal();
+            if ($scope.locations.length > 0) {
+                if ($scope.locations[0].type == "Nhà Riêng") {
+                    $scope.locationForm.type = "Văn Phòng";
+                } else {
+                    $scope.locationForm.type = "Nhà Riêng";
+                }
+                document.getElementById("addressDefaultModal").disabled = false;
+            } else {
+                $scope.locationForm.type = "Nhà Riêng";
+                document.getElementById("addressDefaultModal").disabled = true;
+                $scope.locationForm.addressDefault = true;
+            }
+            document.getElementById("typeAddressModal").disabled = true;
+            // Thêm sự kiện click
+            document.getElementById('changeAddress').addEventListener('click', clickHandlerAdd);
         } else {
             $scope.title = "CHỈNH SỬA ĐỊA CHỈ";
-            $scope.button = "LƯU THAY ĐỔI";
+            $scope.button = "THAY ĐỔI";
+            document.getElementById("typeAddressModal").disabled = false;
+            document.getElementById("addressDefaultModal").disabled = false;
+            if ($scope.locations.length > 0) {
+                if ($scope.locations.length > 1) {
+                    document.getElementById("addressDefaultModal").disabled = false;
+                } else {
+                    document.getElementById("addressDefaultModal").disabled = true;
+                }
+                if (locationIndex >= 0) {
+                    for (let i = 0; i < $scope.locations.length; i++) {
+                        if (i == locationIndex) {
+                            $scope.locationForm.addressDefault = $scope.locations[i].addressDefault;
+                            $scope.locationForm.address = $scope.locations[i].address;
+                            $scope.locationForm.type = $scope.locations[i].type;
+                            $scope.locationForm.phone = $scope.locations[i].phone;
+                            $scope.locationForm.province = parseInt($scope.locations[i].province);
+                            $scope.locationForm.district = parseInt($scope.locations[i].district);
+                            $scope.locationForm.ward = parseInt($scope.locations[i].ward);
+                            $scope.updateLocation();
 
-            LocationService.getById(locationId).then(function (location) {
-                $scope.locationForm = location.data;
+                            // Sử dụng $timeout để áp dụng các thay đổi vào giao diện sau khi chu kỳ $digest kết thúc.
+                            $timeout(function () {
+                                document.getElementById("inputAddress").value = cutStringToRetainAddress($scope.locationForm.address);
+                            });
 
-                $scope.locationForm.province = parseInt($scope.locationForm.province);
-                $scope.locationForm.district = parseInt($scope.locationForm.district);
-                $scope.locationForm.ward = parseInt($scope.locationForm.ward);
+                            break;
+                        }
+                    }
+                }
+            } else {
+                document.getElementById("addressDefaultModal").disabled = false;
+            }
 
-                $scope.updateLocation();
-            }).catch(function (error) {
-                console.error('Lỗi lấy location:', error);
-            });
+            // Thêm sự kiện click
+            document.getElementById('changeAddress').addEventListener('click', clickHandlerEdit);
         }
+
+        // Thêm sự kiện "hidden.bs.modal" để xóa sự kiện click khi modal đóng
+        $('#address-modal').on('hidden.bs.modal', function () {
+            document.getElementById('changeAddress').removeEventListener('click', clickHandlerAdd);
+            document.getElementById('changeAddress').removeEventListener('click', clickHandlerEdit);
+        });
+    };
+
+    function cutStringToRetainAddress(inputString) {
+        // Tìm vị trí của dấu phẩy thứ 4 tính từ cuối
+        var lastIndex = inputString.lastIndexOf(',');
+
+        if (lastIndex !== -1) {
+            // Tìm vị trí của dấu phẩy thứ 3 tính từ cuối
+            var thirdLastIndex = inputString.lastIndexOf(',', lastIndex - 1);
+
+            if (thirdLastIndex !== -1) {
+                // Tìm vị trí của dấu phẩy thứ 2 tính từ cuối
+                var secondLastIndex = inputString.lastIndexOf(',', thirdLastIndex - 1);
+
+                if (secondLastIndex !== -1) {
+                    // Cắt chuỗi từ đầu đến vị trí của dấu phẩy thứ 2
+                    var result = inputString.substring(0, secondLastIndex);
+                    return result;
+                }
+            }
+        }
+
+        // Trả về chuỗi gốc nếu không tìm thấy đủ 4 dấu phẩy
+        return inputString;
     }
 
     $scope.clearModal = function () {
@@ -167,9 +393,16 @@ app.controller("ProfileController", function (AccountService, LocationService, O
         $scope.selectedWard = false;
 
         $scope.locationForm = {};
+
+        $scope.locationForm.addressDefault = null;
+        $scope.locationForm.address = null;
+        $scope.locationForm.type = null;
+        $scope.locationForm.phone = null;
     }
 
-    $scope.openModalOrder = function (orderId) {
+    $scope.openModalOrder = function (event, orderId) {
+        $scope.changeTab(event, "order");
+
         $('#order-modal').modal('show');
         if (orderId) {
             OrderService.getById(orderId).then(function (order) {
@@ -188,6 +421,19 @@ app.controller("ProfileController", function (AccountService, LocationService, O
     };
 
     /*----END MODAL----*/
+
+    /*----FEEDBACK----*/
+    // Mở tab feedback
+    $scope.openTabFeedBack = function (event, productId) {
+        if (productId) {
+            document.getElementById("tabTitleFeedback").removeAttribute("hidden");
+            document.getElementById("tabFeedback").removeAttribute("hidden");
+            $scope.changeTab(event, "feedback");
+            console.log(productId)
+        }
+    }
+
+    /*----FEEDBACK----*/
 
     /*----CHIA TRANG----*/
     // Page Order

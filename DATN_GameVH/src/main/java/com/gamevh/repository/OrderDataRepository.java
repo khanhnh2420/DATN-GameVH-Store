@@ -14,4 +14,6 @@ public interface OrderDataRepository extends JpaRepository<OrderData, Long> {
 
 	List<OrderData> findByOrderId(String orderId);
 
+	@Query(value = "SELECT * FROM order_data order by create_date desc LIMIT 5",nativeQuery = true)
+	List<OrderData> getTop5OrderDataOrderCreatedDate();
 }

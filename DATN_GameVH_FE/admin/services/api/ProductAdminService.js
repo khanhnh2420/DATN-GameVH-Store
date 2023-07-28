@@ -18,7 +18,7 @@ app.factory('ProductAdminService', function($http) {
         getAllFeedback: function() {
             return $http.get(baseUrl + '/getAllFeedback');
         },
-        getFeedbackProduct: function() {
+        getFeedbackProduct: function(productId) {
             return $http.get(baseUrl + '/getProduct/' + productId);
         },
         uploadImage: function(image) {
@@ -42,6 +42,14 @@ app.factory('ProductAdminService', function($http) {
         },
         getListProductSearch: function(productName, productType, categoryName) {
             return $http.get(baseUrl + '/products/search?productName=' + productName + '&productType=' + productType + '&categoryName=' + categoryName);
+        },
+        updateFeedbackStatus: function(feedbackId, feedbackStatus) {
+            var feedbackData = {
+                id: feedbackId,
+                status: feedbackStatus
+            };
+
+            return $http.put(baseUrl + '/updateFeedback', feedbackData);
         },
 
     };

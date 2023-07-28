@@ -2,12 +2,15 @@ package com.gamevh.service.impl;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gamevh.entities.Feedback;
 import com.gamevh.repository.FeedbackRepository;
 import com.gamevh.service.FeedbackService;
+
+
 
 @Service
 public class FeedbackServiceImpl implements FeedbackService{
@@ -29,4 +32,12 @@ public class FeedbackServiceImpl implements FeedbackService{
 	public List<Feedback> findByProductId(Integer productId) {
 		return feedbackRepository.findByProductId(productId);
 	}
+
+	@Override
+	public List<Feedback> findByAllProductId(Integer productId) {
+		// TODO Auto-generated method stub
+		return feedbackRepository.findByAllProductId(productId);
+	}
+
+	
 }

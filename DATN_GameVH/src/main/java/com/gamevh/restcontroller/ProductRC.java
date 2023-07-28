@@ -335,13 +335,7 @@ public class ProductRC {
 	    return null;
 	}
 	
-	@PutMapping("/updateFeedback")
-	public ResponseEntity<Feedback> updateFeedbackStatus(@RequestBody Feedback feedback) {
-	    
-	    // Nếu feedback có ID cung cấp không tồn tại, trả về phản hồi không tìm thấy.
-	    return ResponseEntity.notFound().build();
-	}
-
+	
 
 	
 	@PostMapping("createProduct")
@@ -520,6 +514,31 @@ public class ProductRC {
 //
 //	    return ResponseEntity.ok(searchResults);
 //	}
+	
+	@PutMapping("/updateFeedback")
+    public ResponseEntity<Feedback> updateFeedbackStatus(@RequestBody Feedback feedback) {
+        // Kiểm tra xem feedback có ID đã được cung cấp hay không
+        Integer feedbackId = feedback.getId();
+        if (feedbackId == null) {
+            return ResponseEntity.notFound().build(); // Nếu không tìm thấy ID, trả về phản hồi không tìm thấy.
+        }
+
+        // Kiểm tra xem feedback có tồn tại trong database hay không
+        Optional<Feedback> existingFeedbackOptional = feedbackRepository.findById(feedbackId);
+        if (existingFeedbackOptional.isPresent()) {
+            Feedback existingFeedback = existingFeedbackOptional.get();
+            
+            // Cập nhật trạng thái của feedback với dữ liệu từ đối tượng feedback mới
+            existingFeedback.setStatus(feedback.getStatus());
+
+            // Lưu lại feedback đã cập nhật vào database
+            feedbackRepository.save(existingFeedback);
+
+            return ResponseEntity.ok(existingFeedback); // Trả về phản hồi với feedback đã được cập nhật
+        } else {
+            return ResponseEntity.notFound().build(); // Nếu không tìm thấy feedback trong database, trả về phản hồi không tìm thấy.
+        }
+    }
 
 	
 	@GetMapping("/downloadExcel")

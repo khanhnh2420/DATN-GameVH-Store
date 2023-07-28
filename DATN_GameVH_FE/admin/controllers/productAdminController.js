@@ -8,6 +8,7 @@ app.controller("ProductController", function(ProductAdminService, $http, $scope,
     $scope.categories = [];
     $scope.feedback = [];
 
+
     $scope.posters = [];
     $scope.thumbnails = [];
     $scope.editMode = false; // Mặc định là chế độ "Add"
@@ -74,8 +75,8 @@ app.controller("ProductController", function(ProductAdminService, $http, $scope,
                 (feedback.status ? 'Đã Duyệt' : 'Chưa Duyệt') +
                 '</a>' +
                 '<div class="dropdown-menu">' +
-                '<a class="dropdown-item" href="#" ><i class="fa fa-dot-circle-o text-success"></i>Đã Duyệt</a>' +
-                '<a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i>Chưa Duyệt</a>' +
+                '<a class="dropdown-item" href="#" ng-click="updateFeedbackStatus(true, feedback.id)" ><i class="fa fa-dot-circle-o text-success"></i>Đã Duyệt</a>' +
+                '<a class="dropdown-item" href="#" ng-click="updateFeedbackStatus(false, feedback.id)"><i class="fa fa-dot-circle-o text-danger"></i>Chưa Duyệt</a>' +
                 '</div>' +
                 '</div>' +
                 '</td>' +
@@ -91,8 +92,25 @@ app.controller("ProductController", function(ProductAdminService, $http, $scope,
     };
 
 
-
-
+    $scope.updateFeedbackStatus = function(status, feedbackId) {
+        // Gọi phương thức trong Service để cập nhật trạng thái feedback
+        ProductAdminService.updateFeedbackStatus(feedbackId, status)
+            .then(function(response) {
+                console.log("Feedback đã được cập nhật:", response.data);
+                // Cập nhật trạng thái của feedback sau khi nhận phản hồi thành công từ API
+                // Chắc chắn rằng biến feedback chứa danh sách các feedback và feedback có id tương ứng được cập nhật
+                var feedback = $scope.feedback.find(function(item) {
+                    return item.id === feedbackId;
+                });
+                if (feedback) {
+                    feedback.status = status;
+                }
+            })
+            .catch(function(error) {
+                console.error("Lỗi khi cập nhật feedback:", error);
+                // Xử lý lỗi nếu có
+            });
+    };
 
 
     // Lấy tất cả sản phẩm
@@ -178,11 +196,11 @@ app.controller("ProductController", function(ProductAdminService, $http, $scope,
                             '</a>' +
                             '<div class="dropdown-menu dropdown-menu-right">' +
                             '<a class="dropdown-item edit-product" href="#" data-product-id="' + row.id + '" data-toggle="modal" data-target="#edit_Product">' +
-                            '<i class="fa fa-pencil m-r-5"></i>Edit' +
+                            '<i class="fa fa-pencil m-r-5"></i>Chỉnh Sửa' +
                             '</a>' +
                             // Call the loadProductFeedback function with the product ID
                             '<a class="dropdown-item view-feedback" href="#" data-product-id="' + row.id + '" data-toggle="modal" data-target="#comment_Product">' +
-                            '<i class="fa fa-pencil-square-o m-r-5"></i>Feedback' +
+                            '<i class="fa fa-pencil-square-o m-r-5"></i>Đánh Giá' +
                             '</a>' +
                             '</div>' +
                             '</div>';

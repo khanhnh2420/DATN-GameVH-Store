@@ -143,7 +143,7 @@
 							<div class="col-sm-6">
 								<h4 class="text-center">IMAGE POSTER</h4>
 								<div class="d-flex justify-content-center">
-									<div class="blogIMG"  ng-show="editImg">
+									<div class="blogIMG" ng-show="editImg">
 										<input type="file" class="dropify" id="BlogIMG" accept="image/*"
 											ng-model="blogData.image" data-default-file="">
 									</div>
@@ -199,11 +199,11 @@
 	<div id="toast"></div>
 	<!-- Toast message -->
 	<!-- Comment Product Modal -->
-	<div id="comment_Product" class="modal custom-modal fade" role="dialog">
+	<div id="comment_Blog" class="modal custom-modal fade" role="dialog">
 		<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Comments Product</h5>
+					<h5 class="modal-title">Bình luận - {{titleModelComment}}</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -212,19 +212,19 @@
 					<form>
 						<div class="col-md-12">
 							<div class="table-responsive">
-								<table class="table table-striped custom-table datatable">
+								<table id="tableComment" class="table table-striped custom-table datatable">
 									<thead>
 										<tr>
 											<th>ID</th>
 											<th>Username</th>
-											<th style="width: 300px;">Comment</th>
+											<th>Comment</th>
 											<th>Created Date</th>
 											<th>Status</th>
 											<th class="text-right no-sort">Action</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
+										<!-- <tr>
 											<td>1</a></td>
 											<td>Lê Đăng Dương</td>
 											<td class="d-flex text-wrap">Giật lagggg game tệ Giật lagggg
@@ -256,342 +256,13 @@
 														class="border btn-danger">Delete</button>
 												</div>
 											</td>
-										</tr>
-										<tr>
-											<td>2</a></td>
-											<td>Lê Đăng Dương 2</td>
-											<td class="d-flex text-wrap">Giật lagggg game tệ Giật lagggg
-												game tệ Giật lagggg game tệ Giật lagggg game tệ Giật lagggg
-												game tệ Giật lagggg game tệ Giật lagggg game tệ Giật lagggg
-												game tệ Giật lagggg game tệ Giật lagggg game tệ Giật lagggg
-												game tệ</td>
-											<td>2023-06-01</td>
-											<td>
-												<div class="dropdown action-label">
-													<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-														data-toggle="dropdown" aria-expanded="false">
-														<i class="fa fa-dot-circle-o text-danger"></i> Chưa
-														Duyệt
-													</a>
-													<div class="dropdown-menu">
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-success"></i>
-															Đã Duyệt</a>
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-danger"></i>
-															Chưa Duyệt</a>
-													</div>
-												</div>
-											</td>
-											<td class="text-right">
-												<div class=" text-right">
-													<button href="#" data-toggle="modal" data-target="#delete_comment"
-														class="border btn-danger">Delete</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>3</a></td>
-											<td>Lê Đăng Dương 3</td>
-											<td>Giật lagggg game tệ</td>
-											<td>2023-06-01</td>
-											<td>
-												<div class="dropdown action-label">
-													<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-														data-toggle="dropdown" aria-expanded="false">
-														<i class="fa fa-dot-circle-o text-success"></i> Đã
-														Duyệt
-													</a>
-													<div class="dropdown-menu">
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-success"></i>
-															Đã Duyệt</a>
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-danger"></i>
-															Chưa Duyệt</a>
-													</div>
-												</div>
-											</td>
-											<td class="text-right">
-												<div class=" text-right">
-													<button href="#" data-toggle="modal" data-target="#delete_comment"
-														class="border btn-danger">Delete</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>4</a></td>
-											<td>Lê Đăng Dương 4</td>
-											<td>Giật lagggg game tệ</td>
-											<td>2023-06-01</td>
-											<td>
-												<div class="dropdown action-label">
-													<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-														data-toggle="dropdown" aria-expanded="false">
-														<i class="fa fa-dot-circle-o text-success"></i> Đã
-														Duyệt
-													</a>
-													<div class="dropdown-menu">
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-success"></i>
-															Đã Duyệt</a>
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-danger"></i>
-															Chưa Duyệt</a>
-													</div>
-												</div>
-											</td>
-											<td class="text-right">
-												<div class=" text-right">
-													<button href="#" data-toggle="modal" data-target="#delete_comment"
-														class="border btn-danger">Delete</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>5</a></td>
-											<td>Lê Đăng Dương 5</td>
-											<td>Giật lagggg game tệ</td>
-											<td>2023-06-01</td>
-											<td>
-												<div class="dropdown action-label">
-													<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-														data-toggle="dropdown" aria-expanded="false">
-														<i class="fa fa-dot-circle-o text-success"></i> Đã
-														Duyệt
-													</a>
-													<div class="dropdown-menu">
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-success"></i>
-															Đã Duyệt</a>
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-danger"></i>
-															Chưa Duyệt</a>
-													</div>
-												</div>
-											</td>
-											<td class="text-right">
-												<div class=" text-right">
-													<button href="#" data-toggle="modal" data-target="#delete_comment"
-														class="border btn-danger">Delete</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>6</a></td>
-											<td>Lê Đăng Dương 6</td>
-											<td>Giật lagggg game tệ</td>
-											<td>2023-06-01</td>
-											<td>
-												<div class="dropdown action-label">
-													<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-														data-toggle="dropdown" aria-expanded="false">
-														<i class="fa fa-dot-circle-o text-success"></i> Đã
-														Duyệt
-													</a>
-													<div class="dropdown-menu">
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-success"></i>
-															Đã Duyệt</a>
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-danger"></i>
-															Chưa Duyệt</a>
-													</div>
-												</div>
-											</td>
-											<td class="text-right">
-												<div class=" text-right">
-													<button href="#" data-toggle="modal" data-target="#delete_comment"
-														class="border btn-danger">Delete</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>7</a></td>
-											<td>Lê Đăng Dương 7</td>
-											<td>Giật lagggg game tệ</td>
-											<td>2023-06-01</td>
-											<td>
-												<div class="dropdown action-label">
-													<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-														data-toggle="dropdown" aria-expanded="false">
-														<i class="fa fa-dot-circle-o text-success"></i> Đã
-														Duyệt
-													</a>
-													<div class="dropdown-menu">
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-success"></i>
-															Đã Duyệt</a>
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-danger"></i>
-															Chưa Duyệt</a>
-													</div>
-												</div>
-											</td>
-											<td class="text-right">
-												<div class=" text-right">
-													<button href="#" data-toggle="modal" data-target="#delete_comment"
-														class="border btn-danger">Delete</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>7</a></td>
-											<td>Lê Đăng Dương 7</td>
-											<td>Giật lagggg game tệ</td>
-											<td>2023-06-01</td>
-											<td>
-												<div class="dropdown action-label">
-													<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-														data-toggle="dropdown" aria-expanded="false">
-														<i class="fa fa-dot-circle-o text-success"></i> Đã
-														Duyệt
-													</a>
-													<div class="dropdown-menu">
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-success"></i>
-															Đã Duyệt</a>
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-danger"></i>
-															Chưa Duyệt</a>
-													</div>
-												</div>
-											</td>
-											<td class="text-right">
-												<div class=" text-right">
-													<button href="#" data-toggle="modal" data-target="#delete_comment"
-														class="border btn-danger">Delete</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>7</a></td>
-											<td>Lê Đăng Dương 7</td>
-											<td>Giật lagggg game tệ</td>
-											<td>2023-06-01</td>
-											<td>
-												<div class="dropdown action-label">
-													<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-														data-toggle="dropdown" aria-expanded="false">
-														<i class="fa fa-dot-circle-o text-success"></i> Đã
-														Duyệt
-													</a>
-													<div class="dropdown-menu">
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-success"></i>
-															Đã Duyệt</a>
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-danger"></i>
-															Chưa Duyệt</a>
-													</div>
-												</div>
-											</td>
-											<td class="text-right">
-												<div class=" text-right">
-													<button href="#" data-toggle="modal" data-target="#delete_comment"
-														class="border btn-danger">Delete</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>7</a></td>
-											<td>Lê Đăng Dương 7</td>
-											<td>Giật lagggg game tệ</td>
-											<td>2023-06-01</td>
-											<td>
-												<div class="dropdown action-label">
-													<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-														data-toggle="dropdown" aria-expanded="false">
-														<i class="fa fa-dot-circle-o text-success"></i> Đã
-														Duyệt
-													</a>
-													<div class="dropdown-menu">
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-success"></i>
-															Đã Duyệt</a>
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-danger"></i>
-															Chưa Duyệt</a>
-													</div>
-												</div>
-											</td>
-											<td class="text-right">
-												<div class=" text-right">
-													<button href="#" data-toggle="modal" data-target="#delete_comment"
-														class="border btn-danger">Delete</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>7</a></td>
-											<td>Lê Đăng Dương 7</td>
-											<td>Giật lagggg game tệ</td>
-											<td>2023-06-01</td>
-											<td>
-												<div class="dropdown action-label">
-													<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-														data-toggle="dropdown" aria-expanded="false">
-														<i class="fa fa-dot-circle-o text-success"></i> Đã
-														Duyệt
-													</a>
-													<div class="dropdown-menu">
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-success"></i>
-															Đã Duyệt</a>
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-danger"></i>
-															Chưa Duyệt</a>
-													</div>
-												</div>
-											</td>
-											<td class="text-right">
-												<div class=" text-right">
-													<button href="#" data-toggle="modal" data-target="#delete_comment"
-														class="border btn-danger">Delete</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>7</a></td>
-											<td>Lê Đăng Dương 7</td>
-											<td>Giật lagggg game tệ</td>
-											<td>2023-06-01</td>
-											<td>
-												<div class="dropdown action-label">
-													<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-														data-toggle="dropdown" aria-expanded="false">
-														<i class="fa fa-dot-circle-o text-success"></i> Đã
-														Duyệt
-													</a>
-													<div class="dropdown-menu">
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-success"></i>
-															Đã Duyệt</a>
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-danger"></i>
-															Chưa Duyệt</a>
-													</div>
-												</div>
-											</td>
-											<td class="text-right">
-												<div class=" text-right">
-													<button href="#" data-toggle="modal" data-target="#delete_comment"
-														class="border btn-danger">Delete</button>
-												</div>
-											</td>
-										</tr>
+										</tr> -->
+
 									</tbody>
 								</table>
 							</div>
 						</div>
-						<div class="submit-section">
-							<button class="btn btn-primary submit-btn">Submit</button>
-						</div>
 					</form>
-
-				</div>
-				<div class="modal-body">
-
 				</div>
 			</div>
 		</div>
@@ -624,6 +295,5 @@
 		</div>
 	</div>
 	<!-- /Delete Blog Modal -->
-
 </div>
 <!-- /Page Wrapper -->

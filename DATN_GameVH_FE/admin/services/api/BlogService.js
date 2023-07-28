@@ -26,5 +26,17 @@ app.factory('BlogService', function ($http) {
         deleteBlog: function (blogId) {
             return $http.delete(baseUrl + '/' + blogId)
         },
-    };
+        getCommentsByBlogId: function (blogId) {
+            // Gọi API để lấy danh sách bình luận từ server
+            return $http.get(baseUrl + '/getComment/' + blogId);
+        },
+        deleteCommentById: function (commentId) {
+            // Make a DELETE request to the API endpoint with the commentId
+            return $http.delete(baseUrl + '/deleteComment/' + commentId)
+        },
+        updateCommentStatus: function (commentId, newStatus) {
+            // Make a PUT or PATCH request to the API endpoint with commentId and newStatus as query parameters
+            return $http.put(baseUrl + '/updateCommentStatus/' + commentId + '?status=' + newStatus);
+        }
+    }
 });

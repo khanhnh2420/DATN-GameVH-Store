@@ -15,10 +15,13 @@ import org.springframework.stereotype.Service;
 
 import com.gamevh.dto.BlogDTO;
 import com.gamevh.dto.BlogDataDTO;
+import com.gamevh.dto.CommentDTO;
 import com.gamevh.entities.Blog;
+import com.gamevh.entities.Comment;
 import com.gamevh.mapper.BlogMapper;
 import com.gamevh.repository.AccountRepository;
 import com.gamevh.repository.BlogRepository;
+import com.gamevh.repository.CommentRepository;
 import com.gamevh.service.BlogService;
 
 @Service
@@ -29,6 +32,9 @@ public class BlogServiceImpl implements BlogService {
 
 	@Autowired
 	AccountRepository accountRepository;
+
+	@Autowired
+	CommentRepository commentRepository;
 
 	@Override
 	public List<BlogDTO> findAll() {
@@ -163,6 +169,27 @@ public class BlogServiceImpl implements BlogService {
 			// Xử lý lỗi, trả về trạng thái HTTP 500 Internal Server Error và thông báo lỗi
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body("Đã xảy ra lỗi khi xóa blog: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public ResponseEntity<Object> getCommentsByBlogId(Integer blogId) {
+		List<Comment> comments = commentRepository.findByBlogId(blogId);
+		if (comments.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Nếu không có bình luận, trả về HTTP 404 NOT FOUND
+		} else {
+			List<CommentDTO> commentDTOs = comments.stream().map(comment -> {
+				CommentDTO commentDTO = new CommentDTO();
+				BeanUtils.copyProperties(comment, commentDTO);
+				commentDTO.setUsername(comment.getAccount().getUsername());
+				commentDTO.setAvatarUser(comment.getAccount().getPhoto());
+				commentDTO.setBlogId(comment.getBlog().getId());
+
+				return commentDTO;
+			}).collect(Collectors.toList());
+
+			return new ResponseEntity<>(commentDTOs, HttpStatus.OK); // Nếu có bình luận, trả về danh sách CommentDTO và
+																		// HTTP 200 OK
 		}
 	}
 

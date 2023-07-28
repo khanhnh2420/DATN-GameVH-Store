@@ -30,7 +30,7 @@ public class Comment implements Serializable {
     private Date createDate;
 
     @Column(name="Status", nullable=false, length=1)
-    private Boolean status;
+    private Integer status;
 
     @ManyToOne(optional=false)
     @JoinColumn(name="account_id", nullable=false)

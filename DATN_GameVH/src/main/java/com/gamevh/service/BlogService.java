@@ -22,4 +22,6 @@ public interface BlogService {
 	ResponseEntity<Object> getBlogById(Long id);
 
 	ResponseEntity<Object> deleteBlogById(Long blogId);
+
+	ResponseEntity<Object> getCommentsByBlogId(Integer blogId);
 }

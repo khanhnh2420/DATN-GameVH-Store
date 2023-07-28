@@ -12,7 +12,7 @@ app.controller('BlogController', function ($scope, $filter, $document, BlogServi
             .then(function (resp) {
                 $scope.blogs = resp.data;
                 $(document).ready(function () {
-                    $scope.loadDataTableContract($scope.blogs);
+                    $scope.loadDataTableBlog($scope.blogs);
                 });
             })
             .catch(function (error) {
@@ -21,7 +21,7 @@ app.controller('BlogController', function ($scope, $filter, $document, BlogServi
     };
     $scope.getDataBlog();
 
-    $scope.loadDataTableContract = function (blogs) {
+    $scope.loadDataTableBlog = function (blogs) {
         var table = $('#tableBlog');
 
         if ($.fn.DataTable.isDataTable(table)) {
@@ -72,7 +72,7 @@ app.controller('BlogController', function ($scope, $filter, $document, BlogServi
                     data: null, class: 'text-center', // Cột "Action"
                     render: function (data, type, row) {
                         // Render giao diện cho cột "Action"
-                        return '<div class="dropdown dropdown-action"><a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a><div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" id="edit-blog" data-toggle="modal" data-target="#edit_Blog" data-blog-id="' + row.id + '"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a><a class="dropdown-item" id="delete-blog" data-toggle="modal" data-target="#delete_Blog" data-blog-id="' + row.id + '"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a><a class="dropdown-item" id="comment-blog" data-toggle="modal"data-target="#comment_Blog" data-blog-id="' + row.id + '"><i class="fa fa-comments" aria-hidden="true"></i> Comment</a></div></div>';
+                        return '<div class="dropdown dropdown-action"><a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a><div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" id="edit-blog" data-toggle="modal" data-target="#edit_Blog" data-blog-id="' + row.id + '"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a><a class="dropdown-item" id="delete-blog" data-toggle="modal" data-target="#delete_Blog" data-blog-id="' + row.id + '"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a><a class="dropdown-item" id="comment-blog" data-blog-id="' + row.id + '" data-blog-title="' + row.title + '"><i class="fa fa-comments" aria-hidden="true"></i> Comment</a></div></div>';
                     }
                 }
             ]
@@ -88,6 +88,8 @@ app.controller('BlogController', function ($scope, $filter, $document, BlogServi
         });
         $(document).on('click', '#comment-blog', function () {
             var blogId = $(this).data('blog-id');
+            var blogTitle = $(this).data('blog-title');
+            $scope.titleModelComment = blogTitle;
             $scope.getCommentByBlogId(blogId);
         });
     };
@@ -271,5 +273,154 @@ app.controller('BlogController', function ($scope, $filter, $document, BlogServi
         } else {
             ToastService.showWarningToast('Vui lòng chọn blog để xóa.')
         }
+    };
+
+    $scope.getCommentByBlogId = function (blogId) {
+        // Gọi hàm của BlogService để lấy danh sách bình luận dựa vào blogId
+        BlogService.getCommentsByBlogId(blogId)
+            .then(function (resp) {
+                // Xử lý thành công, lấy danh sách bình luận từ response.data (giả sử response.data là mảng các bình luận)
+                $scope.comments = resp.data;
+                // Nếu có dữ liệu bình luận, hiển thị modal
+
+                $(document).ready(function () {
+                    $scope.loadDataTableComment($scope.comments);
+                    $('#comment_Blog').modal('show');
+                });
+            })
+            .catch(function (error) {
+                // Xử lý lỗi (nếu có)
+                if (error.status === 404) {
+                    // Nếu mã trạng thái là 404 (không có dữ liệu), hiển thị thông báo cảnh báo
+                    ToastService.showWarningToast("Bài viết này chưa có bình luận nào");
+                } else {
+                    // Nếu có lỗi khác, hiển thị thông báo lỗi
+                    console.error(error);
+                    ToastService.showErrorToast("Đã xảy ra lỗi khi lấy bình luận");
+                }
+            });
+    };
+
+    $scope.loadDataTableComment = function (comments) {
+        var table = $('#tableComment');
+
+        if ($.fn.DataTable.isDataTable(table)) {
+            table.DataTable().destroy();
+        }
+
+        table.DataTable({
+            searching: false,
+            data: comments, // Dữ liệu được truyền vào DataTables
+            columns: [
+                {   // Cột "#"
+                    data: null,
+                    render: function (data, type, row, meta) {
+                        // Render giao diện cho cột "#"
+                        return meta.row + 1;
+                    }
+                },
+                { data: 'username', class: 'text-center' }, // Cột "username"
+                {
+                    data: 'content',
+                    render: function (data, type, row) {
+                        return '<p class="text-wrap" style="width: 24rem;">' + row.content + '</p>';
+                    }
+                },
+                {   // Cột "createDate"
+                    data: 'createDate', class: 'text-center',
+                    render: function (data, type, row) {
+                        // Sử dụng filter date để định dạng lại giá trị
+                        var fmtCreateDate = $filter('date')(row.createDate, 'dd/MM/yyyy');
+                        return fmtCreateDate;
+                    }
+
+                },
+                {
+                    data: 'status',
+                    class: 'text-center',
+                    render: function (data, type, row) {
+                        var statusLabel;
+                        if (data === 1) {
+                            statusLabel = '<span class="badge text-success"><i class="fa fa-check text-success" aria-hidden="true"></i> Hiện</span>';
+                        } else if (data === 0) {
+                            statusLabel = '<span class="badge text-danger"><i class="fa fa-times text-danger" aria-hidden="true"></i> Ẩn</span>';
+                        } else {
+                            statusLabel = '<span class="badge bg-inverse-warning">Không xác định</span>';
+                        }
+
+                        // Dropdown menu cho cột "Status" với sự kiện onclick gọi hàm changeCommentStatus
+                        return `
+                            <div class="dropdown action-label">
+                                <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
+                                    data-toggle="dropdown" aria-expanded="false">
+                                    ${statusLabel}
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#" onclick="angular.element(this).scope().changeCommentStatus(${row.id}, ${row.blogId}, 1)">
+                                        <span class="badge text-success"><i class="fa fa-check text-success" aria-hidden="true"></i> Hiện</span>
+                                    </a>
+                                    <a class="dropdown-item" href="#" onclick="angular.element(this).scope().changeCommentStatus(${row.id}, ${row.blogId}, 0)">
+                                        <span class="badge text-danger"><i class="fa fa-times text-danger" aria-hidden="true"></i> Ẩn</span>
+                                    </a>
+                                </div>
+                            </div>
+                        `;
+                    }
+                },
+                {   // Cột "Action"
+                    data: null,
+                    class: 'text-right',
+                    render: function (data, type, row) {
+                        // Render giao diện cho cột "Action" và truyền dữ liệu id vào
+                        return `
+                            <div class="text-right">
+                                <a id="delete-comment" data-comment-id="${row.id}" data-blog-id="${row.blogId}" class="btn btn-danger text-white">
+                                    <i class="fa fa-trash" aria-hidden="true"></i> Xóa
+                                </a>
+                            </div>
+                        `;
+                    }
+                },
+            ]
+        });
+        $(document).on('click', '#delete-comment', function () {
+            var commentId = $(this).data('comment-id');
+            var blogId = $(this).data('blog-id');
+            $scope.deleteComment(commentId, blogId);
+        });
+    };
+
+    $scope.deleteComment = function (commentId, blogId) {
+        if (commentId) {
+            BlogService.deleteCommentById(commentId)
+                .then(function (resp) {
+                    // Xử lý thành công, data chứa dữ liệu thành công từ service
+                    ToastService.showSuccessToast("Xóa bình luận thành công"); // Hiển thị thông báo thành công
+                    $scope.getCommentByBlogId(blogId);
+                })
+                .catch(function (error) {
+                    // Xử lý lỗi, error chứa dữ liệu lỗi từ service
+                    ToastService.showErrorToast("Lỗi khi xóa bình luận")// Log thông báo lỗi từ service
+                });
+        } else {
+            ToastService.showWarningToast('Vui lòng chọn bình luận để xóa.')
+        }
+    };
+
+    $scope.changeCommentStatus = function (commentId, blogId, newStatus) {
+        console.log(commentId)
+        // Call CommentService để gọi API endpoint và cập nhật trạng thái của comment
+        BlogService.updateCommentStatus(commentId, newStatus)
+            .then(function (response) {
+                // Xử lý khi cập nhật thành công, nếu cần
+                ToastService.showSuccessToast("Cập nhật trạng thái bình luận thành công");
+                // Tùy chỉnh cập nhật lại dữ liệu trong DataTables (nếu cần).
+                console.log(blogId)
+                $scope.getCommentByBlogId(blogId);
+            })
+            .catch(function (error) {
+                // Xử lý khi có lỗi, nếu cần
+                ToastService.showErrorToast("Lỗi khi cập nhật trạng thái bình luận")
+            });
     };
 })

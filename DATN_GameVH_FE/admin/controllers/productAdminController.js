@@ -4,6 +4,7 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
     $scope.thumbnails = []; // Mảng hình ảnh thumbnail của sản phẩm
 
 
+
     $scope.categories = [];
     $scope.feedback = [];
 
@@ -12,6 +13,7 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
     $scope.editMode = false; // Mặc định là chế độ "Add"
 
     var productId;
+
     // Lấy thông tin sản phẩm theo ID
     ProductAdminService.getProductDTO(productId)
         .then(function(response) {
@@ -222,6 +224,10 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
             .then(function(response) {
                 $scope.product = response.data;
                 $('#edit_Product').modal('show');
+                // var defaultImageURL = 'https://drive.google.com/uc?id=' + $scope.product.poster;
+                // var dropifyWrapper = $('.productIMG .dropify-wrapper');
+                // dropifyWrapper.find('.dropify-render img').attr('src', defaultImageURL);
+                // dropifyWrapper.removeClass('has-preview');
             })
             .catch(function(error) {
                 console.error('Lỗi khi lấy thông tin sản phẩm:', error);
@@ -367,6 +373,7 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
 
 
 
+
 }).filter('vndFormat', function() {
     // Filter định dạng tiền tệ
     return function(input) {
@@ -389,4 +396,6 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
         var formattedDate = day + '/' + month + '/' + year;
         return formattedDate;
     };
+
+
 });

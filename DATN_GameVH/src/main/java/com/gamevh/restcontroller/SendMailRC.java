@@ -40,7 +40,7 @@ public class SendMailRC {
 
 	@Autowired
 	AccountService accountService;
-	
+
 	@Autowired
 	EncryptionService encryptionService;
 
@@ -63,13 +63,27 @@ public class SendMailRC {
 	}
 
 	@PostMapping("send/register/{username}/{password}")
-	public ResponseEntity<String> sendMailRegister(@PathVariable("username") String username, @PathVariable("password") String password,
+	public ResponseEntity<String> sendMailRegister(@PathVariable("username") String username,
+			@PathVariable("password") String password, @RequestBody MailInfoDTO mailInfo) throws MessagingException {
+		if (mailInfo != null) {
+			Account account = accountService.findByUsername(username);
+			if (account != null) {
+				mailService.send(mailInfo.getTo(), mailInfo.getSubject(),
+						mail_CONSTANT.mail_Welcome(account.getFullname(), account.getUsername(), password));
+				return ResponseEntity.ok().build();
+			}
+		}
+
+		return ResponseEntity.badRequest().build();
+	}
+
+	@PostMapping("send/thanks/{username}")
+	public ResponseEntity<String> sendMailRegister(@PathVariable("username") String username,
 			@RequestBody MailInfoDTO mailInfo) throws MessagingException {
 		if (mailInfo != null) {
 			Account account = accountService.findByUsername(username);
 			if (account != null) {
-				mailService.send(mailInfo.getTo(), mailInfo.getSubject(), mail_CONSTANT
-						.mail_Welcome(account.getFullname(), account.getUsername(), password));
+				mailService.send(mailInfo.getTo(), mailInfo.getSubject(), mail_CONSTANT.mail_TY(account.getFullname()));
 				return ResponseEntity.ok().build();
 			}
 		}

@@ -7,6 +7,9 @@ app.factory('SendMailService', function ($http) {
         },
         sendMailRegister: function (username, password, mailInfo) {
             return $http.post(baseUrl + '/send/register/' + username + "/" + password, mailInfo);
+        },
+        sendMailThanks: function (username, mailInfo) {
+            return $http.post(baseUrl + '/send/thanks/' + username, mailInfo);
         }
     };
 });

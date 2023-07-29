@@ -1,4 +1,4 @@
-<div class="wrap-container">
+<div class="wrap-container" ng-controller="FeedbackWebsiteController">
 	<div class="image-bg-body"></div>
 	<main class="main">
 		<nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
@@ -57,7 +57,8 @@
 											<br>11:00-19:00
 										</li>
 										<li><i class="icon-calendar"></i> <span class="text-dark">Chủ Nhật</span>
-											<br>11:00-6:00</li>
+											<br>11:00-6:00
+										</li>
 									</ul>
 									<!-- End .contact-list -->
 								</div>
@@ -74,13 +75,22 @@
 						<p class="mb-2">Sử dụng mẫu dưới đây để liên lạc với
 							đội ngũ bán hàng</p>
 
-						<form action="#" class="contact-form mb-3">
-							<label for="cmessage" class="sr-only">Message</label>
-							<textarea class="form-control" cols="30" rows="8" id="cmessage" required
-								placeholder="Message *"></textarea>
+						<form novalidate name="feedback" ng-submit="feedbackSubmit()" class="contact-form mb-3">
+							<label for="cmessage" class="sr-only">Nội dung</label>
+							<textarea class="form-control" cols="30" rows="6" id="cmessage" placeholder="Nội dung *"
+								ng-model="content"
+								ng-class="{'is-invalid': (feedback.content.$invalid && feedback.content.$touched) || (feedback.$submitted && feedback.content.$invalid) || (feedback.$submitted && isValidContent)}"
+								name="content" ng-required="true"></textarea>
+							<div class="mb-1 text-danger font-weight-bold">
+								<div
+									ng-show="(feedback.content.$error.required && feedback.content.$touched) || (feedback.$submitted && feedback.content.$invalid)">
+									Nội dung không được để trống!
+								</div>
+							</div>
+							<!-- End Error content-->
 
 							<button type="submit" class="btn btn-outline-primary-2 btn-minwidth-sm">
-								<span>SUBMIT</span> <i class="icon-long-arrow-right"></i>
+								<span>GỬI</span> <i class="icon-long-arrow-right"></i>
 							</button>
 						</form>
 						<!-- End .contact-form -->
@@ -186,5 +196,6 @@
 			<!-- End #map -->
 		</div>
 		<!-- End .page-content -->
+		<div id="toast"></div>
 	</main>
 </div>

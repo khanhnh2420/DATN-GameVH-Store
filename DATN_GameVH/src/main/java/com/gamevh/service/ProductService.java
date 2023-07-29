@@ -22,5 +22,7 @@ public interface ProductService {
 	
 
 	List<Object[]> getReportProduct();
+
+	List<Product> findTop5();
 	
 }

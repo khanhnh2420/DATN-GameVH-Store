@@ -282,37 +282,37 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">ID </label>
-                                            <input class="form-control" type="text" ng-model="product.id" readonly>
+                                            <input class="form-control" type="text" ng-model="editProduct.id" readonly>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Tên Sản Phẩm </label>
-                                            <input class="form-control" type="text" ng-model="product.name">
+                                            <input class="form-control" type="text" ng-model="editProduct.name">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Giá Gốc</label>
-                                            <input class="form-control" type="text" ng-model="product.originPrice">
+                                            <input class="form-control" type="text" ng-model="editProduct.originPrice">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Giá Bán </label>
-                                            <input class="form-control" type="text" ng-model="product.salePrice">
+                                            <input class="form-control" type="text" ng-model="editProduct.salePrice">
                                         </div>
                                     </div>
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label class="col-form-label">Đường Dẫn </label>
-                                            <input class="form-control" type="email" ng-model="product.link">
+                                            <input class="form-control" type="email" ng-model="editProduct.link">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Danh Mục</label>
-                                            <select class="select" ng-model="product.category.id" ng-options="category.id as category.name for category in categories">
+                                            <select class="select" ng-model="editProduct.category.id" ng-options="category.id as category.name for category in categories">
                                             </select>
                                         </div>
                                     </div>
@@ -320,9 +320,9 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Trạng Thái</label>
-                                            <select class="select" ng-model="product.status">
-                                                <option value="true" ng-selected="product.status === true">Còn Hàng</option>
-                                                <option value="false" ng-selected="product.status === false">Hết Hàng</option>
+                                            <select class="select" ng-model="editProduct.status">
+                                                <option value="true" ng-selected="editProduct.status === true">Còn Hàng</option>
+                                                <option value="false" ng-selected="editProduct.status === false">Hết Hàng</option>
                                             </select>
                                         </div>
                                         <!-- <div class="form-group">
@@ -334,13 +334,13 @@
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label class="col-form-label">Nhà Phát Hành</label>
-                                            <input class="form-control" type="text" ng-model="product.source">
+                                            <input class="form-control" type="text" ng-model="editProduct.source">
                                         </div>
                                     </div>
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label>Mô Tả Sản Phẩm</label>
-                                            <textarea class="form-control" rows="5" ng-model="product.details"></textarea>
+                                            <textarea class="form-control" rows="5" ng-model="editProduct.details"></textarea>
                                         </div>
                                     </div>
 
@@ -349,16 +349,23 @@
                         </div>
                         <div class="col-sm-12 col-md-4 theme-blush">
                             <h4 class="d-flex justify-content-center">Ảnh Áp Phích</h4>
-                            <div class="card border-0">
+                            <div class="avatar-wrapper">
+                                <img class="profile-pic" ng-src="{{currentPhotoUrl || 'https://drive.google.com/uc?id=' + editProduct.poster}}" alt="Avatar" />
+                                <div class="upload-button" ng-click="handleUploadClick()">
+                                    <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
+                                </div>
+                                <input class="file-upload" type="file" id="fileInput" accept="image/*" />
+                            </div>
+
+                            <!-- <div class="card border-0">
                                 <div class="body d-flex flex-column align-items-center">
 
                                     <img style="width: 300px; height: 533px;" src="https://drive.google.com/uc?id={{product.poster}}">
                                     <input type="file" class="dropify" ng-model="product.poster" accept="image/*">
 
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
-
 
                     </div>
                     <!-- <div class="row">
@@ -383,36 +390,35 @@
                                         <h4 class="">Ảnh Thu Nhỏ</h4>
                                         <h5 class="text-danger fs-3 mt-1 ml-2">*Only 3 Photos*</h5>
                                     </div>
+                                    <div class="dropzone-container d-flex justify-content-center flex-wrap" id="dropzone_remove">
+                                        <div ng-repeat="thumbnailId in thumbnails">
+                                            <img ng-src="https://drive.google.com/uc?id={{thumbnailId.trim()}}" alt="Thumbnail" class="thumbnail">
+                                            <!-- <div class="upload-button" ng-click="handleThumbnailUploadClick()">
+                                                <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
+                                            </div>
+                                            <input class="fileInputthumbnail" type="file" id="fileInputthumbnail" accept="image/*" /> -->
+                                        </div>
+                                    </div>
 
-                                    <form action="#" class="dropzone d-flex justify-content-center flex-wrap" id="dropzone_remove">
 
-                                    </form>
-
-                                    <script>
-                                        // The value of product.thumbnail should be a valid URL after AngularJS rendering
-                                        const productThumbnail = "https://drive.google.com/uc?id={{product.thumbnail}}";
-                                        const thumbnailKeys = productThumbnail.split("***");
-                                        const firstThreeThumbnailKeys = thumbnailKeys.slice(0, 3);
-
-                                        const dropzone = document.getElementById("dropzone_remove");
-                                        dropzone.innerHTML = "";
-
-                                        firstThreeThumbnailKeys.forEach((thumbnailKey) => {
-                                            const imageUrl = "https://drive.google.com/uc?id=" + thumbnailKey;
-                                            const image = document.createElement("img");
-                                            image.src = imageUrl;
-                                            image.alt = "Thumbnail";
-                                            image.classList.add("thumbnail");
-                                            dropzone.appendChild(image);
-                                        });
-                                    </script>
                                 </div>
                             </div>
                         </div>
+                        <style>
+                            .thumbnail {
+                                width: 300px;
+                                height: 500px;
+                                object-fit: cover;
+                                margin: 5px;
+                                border-radius: 5%;
+                                transition: transform 0.3s;
+                            }
+                            
+                            .thumbnail:hover {
+                                transform: scale(1.2);
+                            }
+                        </style>
                     </div>
-
-
-
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" ng-click="updateProduct()">Sửa</button>
                     </div>
@@ -447,7 +453,7 @@
                                             <th>Số Sao</th>
                                             <th>Ngày Đánh Giá</th>
                                             <th>Trạng Thái</th>
-                                            <!-- <th class="text-right no-sort">Action</th> -->
+                                            <th class="text-right no-sort">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody id="feedbackTableBody">

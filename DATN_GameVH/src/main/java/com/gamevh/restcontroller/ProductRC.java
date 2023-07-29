@@ -710,4 +710,9 @@ public class ProductRC {
 		}
 	}
 
+	@GetMapping("/getTop5")
+	public ResponseEntity<List<Product>> getTop5() {
+		List<Product> products = productService.findTop5();
+		return ResponseEntity.ok(products);
+	}
 }

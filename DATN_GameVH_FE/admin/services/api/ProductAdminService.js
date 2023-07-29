@@ -15,13 +15,26 @@ app.factory('ProductAdminService', function($http) {
         getAllProducts: function() {
             return $http.get(baseUrl + '/getAll');
         },
-        uploadImage: function(image) {
-            var formData = new FormData();
-            formData.append('image', image);
+        getAllFeedback: function() {
+            return $http.get(baseUrl + '/getAllFeedback');
+        },
+        getFeedbackProduct: function(productId) {
+            return $http.get(baseUrl + '/getProduct/' + productId);
+        },
+        // uploadImage: function(image) {
+        //     var formData = new FormData();
+        //     formData.append('image', image);
 
-            return $http.post(baseUrl + '/upload', formData, {
-                transformRequest: angular.identity,
-                headers: { 'Content-Type': undefined }
+        //     return $http.post(baseUrl + '/upload', formData, {
+        //         transformRequest: angular.identity,
+        //         headers: { 'Content-Type': undefined }
+        //     });
+        // },
+        uploadImage: function(imageFile) {
+            return $http.post(baseUrl + '/upload', imageFile, {
+                headers: {
+                    'Content-Type': undefined
+                }
             });
         },
         createProduct: function(productData) {
@@ -33,6 +46,18 @@ app.factory('ProductAdminService', function($http) {
 
         deleteProduct: function(productId) {
             return $http.delete(baseUrl + '/delete' + productId);
-        }
+        },
+        getListProductSearch: function(productName, productType, categoryName) {
+            return $http.get(baseUrl + '/products/search?productName=' + productName + '&productType=' + productType + '&categoryName=' + categoryName);
+        },
+        updateFeedbackStatus: function(feedbackId, feedbackStatus) {
+            var feedbackData = {
+                id: feedbackId,
+                status: feedbackStatus
+            };
+
+            return $http.put(baseUrl + '/updateFeedback', feedbackData);
+        },
+
     };
 });

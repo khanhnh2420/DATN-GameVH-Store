@@ -63,6 +63,49 @@ INSERT INTO `account` VALUES
 UNLOCK TABLES;
 
 --
+-- Table structure for table `account`
+--
+
+DROP TABLE IF EXISTS `feedback_website`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `feedback_website` (
+  `Id` int NOT NULL AUTO_INCREMENT,
+  `content` longtext NOT NULL  COMMENT 'Nội dung',
+  `create_date` datetime NOT NULL COMMENT 'Ngày tạo',
+  `account_id` int NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `FK_feedbackWebsite_Users` (`account_id`),
+  CONSTRAINT `FK_feedbackWebsite_Users` FOREIGN KEY (`account_id`) REFERENCES `account` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `feedback_website`
+--
+
+LOCK TABLES `feedback_website` WRITE;
+/*!40000 ALTER TABLE `feedback_website` DISABLE KEYS */;
+INSERT INTO `feedback_website` VALUES 
+(1,'Website hơi lag','2023-07-02 07:30:00.000000',1),
+(2,'Mong web phát triển tính năng so sánh sản phẩm','2023-06-12 07:30:00.000000',1),
+(3,'Mong admin sớm fix chức năng xem comment cho điện thoại','2023-05-22 07:30:00.000000',1),
+(4,'Hiển thị trên điện thoại chưa được mượt lắm','2023-06-17 07:30:00.000000',1),
+(5,'Tốc độ load trang còn hơi chậm','2023-03-14 07:30:00.000000',1),
+(6,'Web trông khá ổn nhưng nên mở rộng thêm chức năng','2023-07-18 07:30:00.000000',1),
+(7,'Mong web sẽ có thêm nhiều sản phẩm hơn','2023-06-05 07:30:00.000000',2),
+(8,'Có vẻ chức năng thêm sản phẩm đang bị lỗi','2023-05-17 07:30:00.000000',2),
+(9,'Hãy fix chức năng thêm sản phẩm đi ad ơi','2023-04-13 07:30:00.000000',2),
+(10,'Chúc web sớm phát triển và thành công','2023-02-17 07:30:00.000000',3),
+(11,'Sevenbee mãi đỉnh','2023-05-21 07:30:00.000000',3),
+(12,'ad hãy fix chức năng xem các sản phẩm tương tự trong trang chi tiết sản phẩm đi','2023-06-24 07:30:00.000000',3),
+(13,'web đang bị lỗi hiển thị trên trình duyệt firefox mong ad sớm fix','2023-07-02 07:30:00.000000',4),
+(14,'web chưa tương thích trên điện thoại','2023-06-25 07:30:00.000000',5),
+(15,'Web rất tuyệt vời nhưng vẫn còn một số lỗi nhỏ trên điện thoại mong ad cải thiện','2023-07-15 07:30:00.000000',6);
+/*!40000 ALTER TABLE `feedback_website` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `authority`
 --
 
@@ -151,15 +194,15 @@ DROP TABLE IF EXISTS `blog`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `blog` (
   `Id` int NOT NULL AUTO_INCREMENT,
-  `Tittle` varchar(255) NOT NULL,
+  `Title` varchar(255) NOT NULL,
   `Content` longtext NOT NULL,
   `account_id` int NOT NULL,
   `create_date` date NOT NULL,
   `Status` tinyint(1) NOT NULL,
   `Image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`Id`),
-  UNIQUE KEY `Tittle` (`Tittle`),
-  UNIQUE KEY `blog_Tittle_IX` (`Tittle`),
+  UNIQUE KEY `Title` (`Title`),
+  UNIQUE KEY `blog_Title_IX` (`Title`),
   KEY `FK_Account_Blog` (`account_id`),
   CONSTRAINT `FK_Account_Blog` FOREIGN KEY (`account_id`) REFERENCES `account` (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -392,10 +435,27 @@ INSERT INTO `coupon_owner` VALUES
 (4,4,3,1),
 (5,5,4,1),
 (6,6,5,1),
-(7,7,6,1),
 (8,8,7,1),
 (9,9,8,1),
-(10,10,9,1);
+(10,10,9,1),
+(11,7,1,0),
+(12,7,2,0),
+(13,7,3,0),
+(14,7,4,0),
+(15,7,5,1),
+(7,7,6,0),
+(16,7,7,1),
+(17,7,8,1),
+(18,1,9,1),
+(19,1,1,0),
+(20,1,11,1),
+(22,1,2,0),
+(23,1,3,0),
+(24,1,4,0),
+(25,1,5,1),
+(26,1,6,0),
+(27,1,7,1),
+(21,1,8,1);
 /*!40000 ALTER TABLE `coupon_owner` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -431,7 +491,6 @@ INSERT INTO `favorite` VALUES
 (2,2,1,'2023-02-02',2),
 (3,3,1,'2023-02-02',3),
 (4,4,1,'2023-02-02',4),
-(5,2,1,'2023-02-02',4),
 (6,5,1,'2023-02-02',4);
 /*!40000 ALTER TABLE `favorite` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -483,7 +542,9 @@ INSERT INTO `feedback` VALUES
 (15,4,'Chất lượng sản phẩm tuyệt vời, giá cả phải chăng.',1,5,'2023-07-12 03:13:28.000000',8),
 (16,4,'Sản phẩm rất tốt, tôi rất hài lòng với chất lượng và hiệu suất của nó.',1,5,'2023-07-12 03:13:28.000000',17),
 (17,5,'Đáng giá mỗi đồng.',1,4,'2023-07-12 03:13:28.000000',19),
-(18,5,'Phụ kiện gaming chất lượng cao, tôi rất hài lòng.',1,5,'2023-07-12 03:13:28.000000',18);
+(18,5,'Phụ kiện gaming chất lượng cao, tôi rất hài lòng.',1,5,'2023-07-12 03:13:28.000000',18),
+(19,1,'Game chỉ ở mức bình thường.',1,3,'2023-05-22 03:13:28.000000',1),
+(20,1,'Tôi rất ứng ý về tựa game này. Tôi đánh giá khá cao về nó, đây là một tựa game đáng để chơi.',1,5,'2022-02-02 03:13:28.000000',8);
 /*!40000 ALTER TABLE `feedback` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -517,25 +578,25 @@ CREATE TABLE `location` (
 LOCK TABLES `location` WRITE;
 /*!40000 ALTER TABLE `location` DISABLE KEYS */;
 INSERT INTO `location` VALUES 
-(1,'thôn 6, Phường Nhân Hòa, Thị xã Quế Võ, Tỉnh Bắc Ninh','27','259','9259','1234567890','Văn Phòng', 0, 1),
-(2,'thôn 5, Xã Bộc Bố, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1864','9876543210','Nhà Riêng', 1, 2),
-(3,'thôn 5, Thị trấn Mường Khương, Huyện Mường Khương, Tỉnh Lào Cai','10','83','2761','1112223333','Văn Phòng', 1, 3),
-(4,'Thôn 4, Xã Nhạn Môn, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1861','5556667777','Nhà Riêng', 0, 4),
-(5,'thôn 4, Xã Leng Su Sìn, Huyện Mường Nhé, Tỉnh Điện Biên','11','96','3158','9998887777','Văn Phòng', 0, 5),
-(6,'thôn 1, Xã Lý Bôn, Huyện Bảo Lâm, Tỉnh Cao Bằng','4','42','1294','2223334444','Nhà Riêng', 0, 6),
-(7,'thôn 6, Phường Nhân Hòa, Thị xã Quế Võ, Tỉnh Bắc Ninh','27','259','9259','7778889999','Văn Phòng', 1, 7),
-(8,'thôn 5, Xã Bộc Bố, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1864','4445556666','Nhà Riêng', 1, 8),
-(9,'Thôn 4, Xã Nhạn Môn, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1861','8889990000','Văn Phòng', 0, 9),
-(10,'thôn 4, Xã Leng Su Sìn, Huyện Mường Nhé, Tỉnh Điện Biên','11','96','3158','6667778888','Nhà Riêng', 0, 10),
-(11,'thôn 1, Xã Lý Bôn, Huyện Bảo Lâm, Tỉnh Cao Bằng','4','42','1294','2221110000','Văn Phòng', 1, 11),
-(12,'thôn 6, Phường Nhân Hòa, Thị xã Quế Võ, Tỉnh Bắc Ninh','27','259','9259','5554443333','Nhà Riêng', 1, 12),
-(13,'thôn 5, Xã Bộc Bố, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1864','1110009999','Văn Phòng', 1, 13),
-(14,'thôn 5, Thị trấn Mường Khương, Huyện Mường Khương, Tỉnh Lào Cai','10','83','2761','4443332222','Nhà Riêng', 1, 1),
-(15,'Thôn 4, Xã Nhạn Môn, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1861','9990001111','Văn Phòng', 0, 2),
-(16,'thôn 4, Xã Leng Su Sìn, Huyện Mường Nhé, Tỉnh Điện Biên','11','96','3158','2223334444','Nhà Riêng', 0, 3),
-(17,'thôn 1, Xã Lý Bôn, Huyện Bảo Lâm, Tỉnh Cao Bằng','4','42','1294','7777777777','Văn Phòng', 1, 4),
-(18,'thôn 6, Phường Nhân Hòa, Thị xã Quế Võ, Tỉnh Bắc Ninh','27','259','9259','5555555555','Nhà Riêng', 1, 5),
-(19,'thôn 5, Xã Bộc Bố, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1864','9999999999','Văn Phòng', 1, 6);
+(1,'thôn 6, Phường Nhân Hòa, Thị xã Quế Võ, Tỉnh Bắc Ninh','27','259','9259','0898870044','Văn Phòng', 0, 1),
+(2,'thôn 5, Xã Bộc Bố, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1864','0394495986','Nhà Riêng', 1, 2),
+(3,'thôn 5, Thị trấn Mường Khương, Huyện Mường Khương, Tỉnh Lào Cai','10','83','2761','0862844774','Văn Phòng', 1, 3),
+(4,'Thôn 4, Xã Nhạn Môn, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1861','0867377117','Nhà Riêng', 0, 4),
+(5,'thôn 4, Xã Leng Su Sìn, Huyện Mường Nhé, Tỉnh Điện Biên','11','96','3158','0792667733','Văn Phòng', 0, 5),
+(6,'thôn 1, Xã Lý Bôn, Huyện Bảo Lâm, Tỉnh Cao Bằng','4','42','1294','0869562185','Nhà Riêng', 0, 6),
+(7,'thôn 6, Phường Nhân Hòa, Thị xã Quế Võ, Tỉnh Bắc Ninh','27','259','9259','0867724554','Văn Phòng', 1, 7),
+(8,'thôn 5, Xã Bộc Bố, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1864','0347470039','Nhà Riêng', 1, 8),
+(9,'Thôn 4, Xã Nhạn Môn, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1861','0971178822','Văn Phòng', 0, 9),
+(10,'thôn 4, Xã Leng Su Sìn, Huyện Mường Nhé, Tỉnh Điện Biên','11','96','3158','0869212130','Nhà Riêng', 0, 10),
+(11,'thôn 1, Xã Lý Bôn, Huyện Bảo Lâm, Tỉnh Cao Bằng','4','42','1294','0867330108','Văn Phòng', 1, 11),
+(12,'thôn 6, Phường Nhân Hòa, Thị xã Quế Võ, Tỉnh Bắc Ninh','27','259','9259','0783535500','Nhà Riêng', 1, 12),
+(13,'thôn 5, Xã Bộc Bố, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1864','0353837068','Văn Phòng', 1, 13),
+(14,'thôn 5, Thị trấn Mường Khương, Huyện Mường Khương, Tỉnh Lào Cai','10','83','2761','0989794411','Nhà Riêng', 1, 1),
+(15,'Thôn 4, Xã Nhạn Môn, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1861','0366473573','Văn Phòng', 0, 2),
+(16,'thôn 4, Xã Leng Su Sìn, Huyện Mường Nhé, Tỉnh Điện Biên','11','96','3158','0345443039','Nhà Riêng', 0, 3),
+(17,'thôn 1, Xã Lý Bôn, Huyện Bảo Lâm, Tỉnh Cao Bằng','4','42','1294','0908335020','Văn Phòng', 1, 4),
+(18,'thôn 6, Phường Nhân Hòa, Thị xã Quế Võ, Tỉnh Bắc Ninh','27','259','9259','0708317575','Nhà Riêng', 1, 5),
+(19,'thôn 5, Xã Bộc Bố, Huyện Pác Nặm, Tỉnh Bắc Kạn','6','60','1864','0783536677','Văn Phòng', 1, 6);
 /*!40000 ALTER TABLE `location` ENABLE KEYS */;
 UNLOCK TABLES;
 

@@ -11,10 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BlogDTO {
     private Integer id;
-    private String tittle;
+    private String title;
     private String content;
     private String image;
     private LocalDate createDate;
     private String username;
     private Integer commentCount;
+    private Integer status;
 }

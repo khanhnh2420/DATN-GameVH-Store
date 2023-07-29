@@ -6,7 +6,7 @@
 <div ng-include="'/templates/sidebar.html'"></div>
 <!-- /Sidebar -->
 <!-- Page Wrapper -->
-<div class="page-wrapper">
+<div class="page-wrapper" ng-controller="CouponOwnerController">
 
 	<!-- Page Content -->
 	<div class="content container-fluid">
@@ -22,7 +22,7 @@
 					</ul>
 				</div>
 				<div class="col-auto float-right ml-auto">
-					<a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_Coupon"><i
+					<a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_Coupon" ng-click="openAddModal()"><i
 							class="fa fa-plus"></i> Add Coupon Owner</a>
 
 				</div>
@@ -34,30 +34,30 @@
 		<div class="row filter-row">
 			<div class="col-sm-3 col-md-2">
 				<div class="form-group form-focus">
-					<input type="text" class="form-control floating">
+					<input type="text" class="form-control floating" ng-model="couponNameFilter">
 					<label class="focus-label">Coupon Name</label>
 				</div>
 			</div>
 			<div class="col-sm-3 col-md-2">
 				<div class="form-group form-focus">
-					<input type="text" class="form-control floating">
+					<input type="text" class="form-control floating" ng-model="customerNameFilter">
 					<label class="focus-label">Customer Name</label>
 				</div>
 			</div>
 			<div class="col-sm-3 col-md-2">
 				<div class="form-group form-focus">
-					<input type="text" class="form-control floating">
+					<input type="text" class="form-control floating" ng-model="totalMoneyFilter">
 					<label class="focus-label">Total Money Spent</label>
 				</div>
 			</div>
 			<div class="col-sm-3 col-md-4">
 				<div class="form-group form-focus">
-					<input type="text" class="form-control floating">
+					<input type="text" class="form-control floating" ng-model="locationFilter">
 					<label class="focus-label">Location</label>
 				</div>
 			</div>
 			<div class="col-sm-3 col-md-2">
-				<a href="#" class="btn btn-success btn-block"> Search </a>
+				<a href="#" class="btn btn-success btn-block" ng-click="getAllBySearch()"> Search </a>
 			</div>
 		</div>
 		<!-- /Search Filter -->
@@ -68,7 +68,9 @@
 					<table class="table table-striped custom-table datatable">
 						<thead>
 							<tr>
-								<th style="width: 20px;">#</th>
+								<th>				<div class="form-check form-check-inline">
+									<input class="form-check-input" type="checkbox" >
+								</div></th>
 								<th>Username</th>
 								<th>Address</th>
 								<th>Total Money Spent</th>
@@ -79,28 +81,25 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
+							<tr ng-repeat="cate in couponOwners">
 								<td>
 									<div class="form-check form-check-inline">
 										<input class="form-check-input" type="checkbox" >
 									</div>
 								</td>
-								<td>Lê Đăng Dương</td>
-								<td> 126 Lê Văn Thọ - Phường 13 - Gò Vấp - TP.Hồ Chí Minh</td>
-								<td>20.000.000 <span>VNĐ</span></td>
+								<td>{{cate.userName}}</td>
+								<td>{{cate.location}}</td>
+								<td>{{cate.totalMoneySpent}}<span>VNĐ</span></td>
 								<td class="text-left"><a class="text-dark" href="#" data-toggle="modal"
-										data-target="#edit_Coupon">Mã giảm giá Mùa hè</a></td>
-								<td>ABDJHGMKET</td>
+										data-target="#edit_Coupon">{{cate.voucherName}}</a></td>
+								<td>{{cate.code}}</td>
 								<td>
 									<div class="dropdown action-label">
-										<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-											data-toggle="dropdown" aria-expanded="false">
+										<a class="dropdown-item" href="#" ng-if="cate.status">
 											<i class="fa fa-dot-circle-o text-success"></i> Đã Bật
 										</a>
-										<div class="dropdown-menu">
-											<a class="dropdown-item" href="#"><i
-													class="fa fa-dot-circle-o text-danger"></i>Đã Tắt</a>
-										</div>
+										<a class="dropdown-item" href="#" ng-if="!cate.status"><i
+												class="fa fa-dot-circle-o text-danger"></i>Đã Tắt</a>
 									</div>
 								</td>
 								<td class="text-right">
@@ -108,244 +107,10 @@
 										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
 											aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
 										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#" data-toggle="modal"
+											<a class="dropdown-item" href="#" data-toggle="modal" ng-click="selectCouponOwner(cate)"
 												data-target="#edit_Coupon"><i class="fa fa-pencil m-r-5"></i>
 												Edit</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#delete_Coupon"><i class="fa fa-trash-o m-r-5"></i>
-												Delete</a>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<div class="form-check form-check-inline">
-										<input class="form-check-input" type="checkbox" >
-									</div>
-								</td>
-								<td>Lê Đăng Dương</td>
-								<td> 126 Lê Văn Thọ - Phường 13 - Gò Vấp - TP.Hồ Chí Minh</td>
-								<td>20.000.000 <span>VNĐ</span></td>
-								<td class="text-left"><a class="text-dark" href="#" data-toggle="modal"
-										data-target="#edit_Coupon">Mã giảm giá Mùa hè</a></td>
-								<td>ABDJHGMKET</td>
-								<td>
-									<div class="dropdown action-label">
-										<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-											data-toggle="dropdown" aria-expanded="false">
-											<i class="fa fa-dot-circle-o text-success"></i> Đã Bật
-										</a>
-										<div class="dropdown-menu">
-											<a class="dropdown-item" href="#"><i
-													class="fa fa-dot-circle-o text-danger"></i>Đã Tắt</a>
-										</div>
-									</div>
-								</td>
-								<td class="text-right">
-									<div class="dropdown dropdown-action">
-										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-											aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#edit_Coupon"><i class="fa fa-pencil m-r-5"></i>
-												Edit</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#delete_Coupon"><i class="fa fa-trash-o m-r-5"></i>
-												Delete</a>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<div class="form-check form-check-inline">
-										<input class="form-check-input" type="checkbox" >
-									</div>
-								</td>
-								<td>Lê Đăng Dương</td>
-								<td> 126 Lê Văn Thọ - Phường 13 - Gò Vấp - TP.Hồ Chí Minh</td>
-								<td>20.000.000 <span>VNĐ</span></td>
-								<td class="text-left"><a class="text-dark" href="#" data-toggle="modal"
-										data-target="#edit_Coupon">Mã giảm giá Mùa hè</a></td>
-								<td>ABDJHGMKET</td>
-								<td>
-									<div class="dropdown action-label">
-										<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-											data-toggle="dropdown" aria-expanded="false">
-											<i class="fa fa-dot-circle-o text-danger"></i> Đã Tắt
-										</a>
-										<div class="dropdown-menu">
-											<a class="dropdown-item" href="#"><i
-													class="fa fa-dot-circle-o text-success"></i>Chờ Tắt</a>
-										</div>
-									</div>
-								</td>
-								<td class="text-right">
-									<div class="dropdown dropdown-action">
-										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-											aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#edit_Coupon"><i class="fa fa-pencil m-r-5"></i>
-												Edit</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#delete_Coupon"><i class="fa fa-trash-o m-r-5"></i>
-												Delete</a>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<div class="form-check form-check-inline">
-										<input class="form-check-input" type="checkbox" >
-									</div>
-								</td>
-								<td>Lê Đăng Dương</td>
-								<td> 126 Lê Văn Thọ - Phường 13 - Gò Vấp - TP.Hồ Chí Minh</td>
-								<td>20.000.000 <span>VNĐ</span></td>
-								<td class="text-left"><a class="text-dark" href="#" data-toggle="modal"
-										data-target="#edit_Coupon">Mã giảm giá Mùa hè</a></td>
-								<td>ABDJHGMKET</td>
-								<td>
-									<div class="dropdown action-label">
-										<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-											data-toggle="dropdown" aria-expanded="false">
-											<i class="fa fa-dot-circle-o text-success"></i> Đã Bật
-										</a>
-										<div class="dropdown-menu">
-											<a class="dropdown-item" href="#"><i
-													class="fa fa-dot-circle-o text-danger"></i>Đã Tắt</a>
-										</div>
-									</div>
-								</td>
-								<td class="text-right">
-									<div class="dropdown dropdown-action">
-										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-											aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#edit_Coupon"><i class="fa fa-pencil m-r-5"></i>
-												Edit</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#delete_Coupon"><i class="fa fa-trash-o m-r-5"></i>
-												Delete</a>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<div class="form-check form-check-inline">
-										<input class="form-check-input" type="checkbox" >
-									</div>
-								</td>
-								<td>Lê Đăng Dương</td>
-								<td> 126 Lê Văn Thọ - Phường 13 - Gò Vấp - TP.Hồ Chí Minh</td>
-								<td>20.000.000 <span>VNĐ</span></td>
-								<td class="text-left"><a class="text-dark" href="#" data-toggle="modal"
-										data-target="#edit_Coupon">Mã giảm giá Mùa hè</a></td>
-								<td>ABDJHGMKET</td>
-								<td>
-									<div class="dropdown action-label">
-										<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-											data-toggle="dropdown" aria-expanded="false">
-											<i class="fa fa-dot-circle-o text-success"></i> Đã Bật
-										</a>
-										<div class="dropdown-menu">
-											<a class="dropdown-item" href="#"><i
-													class="fa fa-dot-circle-o text-danger"></i>Đã Tắt</a>
-										</div>
-									</div>
-								</td>
-								<td class="text-right">
-									<div class="dropdown dropdown-action">
-										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-											aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#edit_Coupon"><i class="fa fa-pencil m-r-5"></i>
-												Edit</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#delete_Coupon"><i class="fa fa-trash-o m-r-5"></i>
-												Delete</a>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<div class="form-check form-check-inline">
-										<input class="form-check-input" type="checkbox" >
-									</div>
-								</td>
-								<td>Lê Đăng Dương</td>
-								<td> 126 Lê Văn Thọ - Phường 13 - Gò Vấp - TP.Hồ Chí Minh</td>
-								<td>20.000.000 <span>VNĐ</span></td>
-								<td class="text-left"><a class="text-dark" href="#" data-toggle="modal"
-										data-target="#edit_Coupon">Mã giảm giá Mùa hè</a></td>
-								<td>ABDJHGMKET</td>
-								<td>
-									<div class="dropdown action-label">
-										<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-											data-toggle="dropdown" aria-expanded="false">
-											<i class="fa fa-dot-circle-o text-success"></i> Đã Bật
-										</a>
-										<div class="dropdown-menu">
-											<a class="dropdown-item" href="#"><i
-													class="fa fa-dot-circle-o text-danger"></i>Đã Tắt</a>
-										</div>
-									</div>
-								</td>
-								<td class="text-right">
-									<div class="dropdown dropdown-action">
-										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-											aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#edit_Coupon"><i class="fa fa-pencil m-r-5"></i>
-												Edit</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#delete_Coupon"><i class="fa fa-trash-o m-r-5"></i>
-												Delete</a>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<div class="form-check form-check-inline">
-										<input class="form-check-input" type="checkbox" >
-									</div>
-								</td>
-								<td>Lê Đăng Dương</td>
-								<td> 126 Lê Văn Thọ - Phường 13 - Gò Vấp - TP.Hồ Chí Minh</td>
-								<td>20.000.000 <span>VNĐ</span></td>
-								<td class="text-left"><a class="text-dark" href="#" data-toggle="modal"
-										data-target="#edit_Coupon">Mã giảm giá Mùa hè</a></td>
-								<td>ABDJHGMKET</td>
-								<td>
-									<div class="dropdown action-label">
-										<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-											data-toggle="dropdown" aria-expanded="false">
-											<i class="fa fa-dot-circle-o text-success"></i> Đã Bật
-										</a>
-										<div class="dropdown-menu">
-											<a class="dropdown-item" href="#"><i
-													class="fa fa-dot-circle-o text-danger"></i>Đã Tắt</a>
-										</div>
-									</div>
-								</td>
-								<td class="text-right">
-									<div class="dropdown dropdown-action">
-										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-											aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#" data-toggle="modal"
-												data-target="#edit_Coupon"><i class="fa fa-pencil m-r-5"></i>
-												Edit</a>
-											<a class="dropdown-item" href="#" data-toggle="modal"
+											<a class="dropdown-item" href="#" data-toggle="modal" ng-click="selectCouponOwner(cate)"
 												data-target="#delete_Coupon"><i class="fa fa-trash-o m-r-5"></i>
 												Delete</a>
 										</div>
@@ -376,9 +141,7 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="voucher-img-wrap edit-img">
-									<img class="inline-block"
-										src="https://www.shutterstock.com/image-vector/mega-sale-web-banner-55-260nw-700602064.jpg"
-										alt="user">
+									<img class="thumb" ng-src="https://drive.google.com/uc?export=view&id={{image}}" />
 								</div>
 							</div>
 						</div>
@@ -386,18 +149,16 @@
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label class="col-form-label">Username <span class="text-danger">*</span></label>
-									<input class="form-control" type="text">
+									<select class="select" ng-model="accountId">
+										<option ng-repeat="(key, value) in accounts" value="{{value.id}}" >{{value.fullname}}</option>
+									</select>
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label>Voucher Name <span class="text-danger">*</span></label>
-									<select class="select">
-										<option selected>Mã giảm giá Thanh Toán Trực Tuyến</option>
-										<option>Mã giảm giá Mùa Hè</option>
-										<option>Mã giảm giá Mua 2 Tặng 1</option>
-										<option>Mã giảm giá Giờ Vàng</option>
-										<option>Mã giảm giá Thẻ Thành Viên</option>
+									<select class="select" ng-model="couponId" ng-change="changeSelectCoupon()">
+										<option ng-repeat="(key, value) in coupons" value="{{value.id}}" >{{value.couponName}}</option>
 									</select>
 								</div>
 							</div>
@@ -405,7 +166,7 @@
 
 						</div>
 						<div class="submit-section">
-							<button class="btn btn-primary submit-btn">Submit</button>
+							<button class="btn btn-primary submit-btn" ng-click="submitAdd()">Submit</button>
 						</div>
 					</form>
 				</div>
@@ -429,9 +190,7 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="voucher-img-wrap edit-img">
-									<img class="inline-block"
-										src="https://www.shutterstock.com/image-vector/mega-sale-web-banner-55-260nw-700602064.jpg"
-										alt="user">
+									<img class="thumb" ng-src="https://drive.google.com/uc?export=view&id={{image}}" />
 								</div>
 							</div>
 						</div>
@@ -439,26 +198,22 @@
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label class="col-form-label">Username <span class="text-danger">*</span></label>
-									<input class="form-control" type="text">
+									<select class="select" ng-model="accountId">
+										<option ng-repeat="(key, value) in accounts" value="{{value.id}}" >{{value.fullname}}</option>
+									</select>
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label>Voucher Name <span class="text-danger">*</span></label>
-									<select class="select">
-										<option selected>Mã giảm giá Thanh Toán Trực Tuyến</option>
-										<option>Mã giảm giá Mùa Hè</option>
-										<option>Mã giảm giá Mua 2 Tặng 1</option>
-										<option>Mã giảm giá Giờ Vàng</option>
-										<option>Mã giảm giá Thẻ Thành Viên</option>
+									<select class="select" ng-model="couponId" ng-change="changeSelectCoupon()">
+										<option ng-repeat="(key, value) in coupons" value="{{value.id}}" >{{value.couponName}}</option>
 									</select>
 								</div>
 							</div>
-
-
 						</div>
 						<div class="submit-section">
-							<button class="btn btn-primary submit-btn">Submit</button>
+							<button class="btn btn-primary submit-btn" ng-click="submitAdd()">Submit</button>
 						</div>
 					</form>
 				</div>
@@ -479,7 +234,7 @@
 					<div class="modal-btn delete-action">
 						<div class="row">
 							<div class="col-6">
-								<a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
+								<a href="javascript:void(0);" ng-click="delete()" class="btn btn-primary continue-btn">Delete</a>
 							</div>
 							<div class="col-6">
 								<a href="javascript:void(0);" data-dismiss="modal"

@@ -27,6 +27,7 @@ public class AccountMapperImpl implements AccountMapper {
 		accountDTO.setPhoto(account.getPhoto());
 		accountDTO.setStatus(account.getStatus());
 		accountDTO.setUsername(account.getUsername());
+		accountDTO.setType(account.getType());
 		accountDTO.setRole(null);
 
 		return accountDTO;
@@ -47,6 +48,7 @@ public class AccountMapperImpl implements AccountMapper {
 		account.setPhoto(accountDTO.getPhoto());
 		account.setStatus(accountDTO.getStatus());
 		account.setUsername(accountDTO.getUsername());
+		account.setType(accountDTO.getType());
 
 		return account;
 	}

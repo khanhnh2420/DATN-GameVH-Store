@@ -20,4 +20,9 @@ public interface ProductService {
 	
 	void deleteProduct(Product product);
 	
+
+	List<Object[]> getReportProduct();
+
+	List<Product> findTop5();
+	
 }

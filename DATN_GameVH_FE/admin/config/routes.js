@@ -3,12 +3,16 @@ app.config(function ($routeProvider, $locationProvider) {
     $locationProvider.hashPrefix('');
 
     $routeProvider
-        .when('/', {
-            templateUrl: '/views/index.html',
-            pageTitle: 'Dashboard'
+        .when("/", {
+            templateUrl: "/views/login.html",
+            pageTitle: "Login",
+        })
+        .when("/dashboard", {
+            templateUrl: "/views/index.html",
+            pageTitle: "Dashboard",
         })
         .when('/index.html', {
-            redirectTo : '/'
+            redirectTo : '/dashboard'
         })
         .when('/accessories-list', {
             templateUrl: '/views/accessories-list.html',

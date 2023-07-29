@@ -45,4 +45,16 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	
+
+	@Override
+	public List<Object[]> getReportProduct() {
+		return productRepository.reportProduct();
+	}
+
+	@Override
+	public List<Product> findTop5() {
+		return productRepository.getTop5();
+	}
+
+
 }

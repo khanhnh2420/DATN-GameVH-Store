@@ -58,6 +58,20 @@ app.factory('AccountService', function ($http, $window, $q, $location, $route) {
         },
         createAccount: function (user) {
             return $http.post(baseUrl + '/create', user);
+        },
+        updateAccount: function (user) {
+            return $http.put(baseUrl + '/update', user);
+        },
+        uploadImage: function (imageFile) {
+            return $http.post(baseUrl + '/upload', imageFile, {
+                headers: {
+                    'Content-Type': undefined
+                }
+            });
+        },
+        changePassword: function (user) {
+            return $http.put(baseUrl + '/changePassword', user);
         }
+
     };
 });

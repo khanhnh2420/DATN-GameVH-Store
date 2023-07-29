@@ -1,25 +1,31 @@
-app.controller("ProductController", function(ProductAdminService, $scope, $routeParams, $timeout, $rootScope, $filter) {
+app.controller("ProductController", function(ProductAdminService, $http, $scope, $routeParams, $timeout, $rootScope, $filter) {
 
     $scope.product = {}; // Thông tin sản phẩm sẽ được hiển thị trên trang chi tiết
     $scope.thumbnails = []; // Mảng hình ảnh thumbnail của sản phẩm
 
+    $scope.editProduct = {};
 
     $scope.categories = [];
+    $scope.feedback = [];
+    $scope.thumbnails = [];
 
     $scope.posters = [];
     $scope.thumbnails = [];
     $scope.editMode = false; // Mặc định là chế độ "Add"
 
     var productId;
-    // Lấy thông tin sản phẩm theo ID
-    ProductAdminService.getProductDTO(productId)
-        .then(function(response) {
-            $scope.product = response.data;
 
-        })
-        .catch(function(error) {
-            console.error('Lỗi khi lấy thông tin sản phẩm:', error);
-        });
+
+
+    // // Lấy thông tin sản phẩm theo ID
+    // ProductAdminService.getProductDTO(productId)
+    //     .then(function(response) {
+    //         $scope.product = response.data;
+
+    //     })
+    //     .catch(function(error) {
+    //         console.error('Lỗi khi lấy thông tin sản phẩm:', error);
+    //     });
 
 
 
@@ -31,6 +37,80 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
         .catch(function(error) {
             console.error('Lỗi khi lấy danh sách category:', error);
         });
+
+
+    $scope.getFeedbackForProduct = function(productId) {
+        ProductAdminService.getFeedbackProduct(productId)
+            .then(function(response) {
+                $scope.feedback = response.data;
+                $('#comment_Product').modal('show');
+                // Gọi hàm loadProductFeedback để hiển thị dữ liệu phản hồi lên form
+                $scope.loadProductFeedback();
+            })
+            .catch(function(error) {
+                console.error('Lỗi khi lấy danh sách phản hồi:', error);
+            });
+    };
+
+    $scope.loadProductFeedback = function() {
+        var feedbackTableBody = $('#feedbackTableBody');
+        feedbackTableBody.empty();
+
+        $scope.feedback.forEach(function(feedback) {
+            var starIcons = '';
+            for (var i = 1; i <= 5; i++) {
+                starIcons += '<span class="fa fa-star' + (feedback.star >= i ? ' checked' : '') + '"></span>';
+            }
+
+            var feedbackRow = '<tr>' +
+                '<td>' + feedback.id + '</td>' +
+                '<td>' + feedback.account.username + '</td>' +
+                '<td class="d-flex text-wrap">' + feedback.content + '</td>' +
+                '<td>' + starIcons + '</td>' +
+                '<td>' + feedback.createDate + '</td>' +
+                '<td>' +
+                '<div class="dropdown action-label">' +
+                '<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">' +
+                '<i class="fa fa-dot-circle-o text-' + (feedback.status ? 'success' : 'danger') + '"></i> ' +
+                (feedback.status ? 'Đã Duyệt' : 'Chưa Duyệt') +
+                '</a>' +
+                '<div class="dropdown-menu">' +
+                '<a class="dropdown-item" href="#" ng-click="updateFeedbackStatus(true, feedback.id)" ><i class="fa fa-dot-circle-o text-success"></i>Đã Duyệt</a>' +
+                '<a class="dropdown-item" href="#" ng-click="updateFeedbackStatus(false, feedback.id)"><i class="fa fa-dot-circle-o text-danger"></i>Chưa Duyệt</a>' +
+                '</div>' +
+                '</div>' +
+                '</td>' +
+                '<td class="text-right">' +
+                '<div class=" text-right">' +
+                '<button href="#" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Delete</button>' +
+                '</div>' +
+                '</td>' +
+                '</tr>';
+
+            feedbackTableBody.append(feedbackRow);
+        });
+    };
+
+
+    $scope.updateFeedbackStatus = function(status, feedbackId) {
+        // Gọi phương thức trong Service để cập nhật trạng thái feedback
+        ProductAdminService.updateFeedbackStatus(feedbackId, status)
+            .then(function(response) {
+                console.log("Feedback đã được cập nhật:", response.data);
+                // Cập nhật trạng thái của feedback sau khi nhận phản hồi thành công từ API
+                // Chắc chắn rằng biến feedback chứa danh sách các feedback và feedback có id tương ứng được cập nhật
+                var feedback = $scope.feedback.find(function(item) {
+                    return item.id === feedbackId;
+                });
+                if (feedback) {
+                    feedback.status = status;
+                }
+            })
+            .catch(function(error) {
+                console.error("Lỗi khi cập nhật feedback:", error);
+                // Xử lý lỗi nếu có
+            });
+    };
 
 
     // Lấy tất cả sản phẩm
@@ -64,41 +144,12 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
                 },
                 {
                     data: null, // Cột "Poster"
-                    // render: function(data, type, row) {
-                    //         // Render giao diện cho cột "Poster"
-                    //         return '<h2 class="table-poster"><a href="#" class="poster"><img alt="" src="/assets/img/products/' + row.poster + '" data-zoom-image="/assets/img/products/' + row.poster + '" alt="product image"></a></h2>';
-                    //     }
                     render: function(data, type, row) {
-                            // Render giao diện cho cột "Poster"
-                            var posterUrl = row.poster ? row.poster : '1xbZ557bXhtiEG-sPP4TRXf007THuPsns';
-                            var imageUrl = 'https://drive.google.com/uc?id=' + posterUrl;
-                            return '<h2 class="table-poster"><a href="#" class="poster"><img alt="" src="' + imageUrl + '" data-zoom-image="' + imageUrl + '" alt="product image"></a></h2>';
-                        }
-                        // render: function(data, type, row) {
-                        //     // Render giao diện cho cột "Poster"
-                        //     var posterUrl = row.poster ? row.poster : '1xbZ557bXhtiEG-sPP4TRXf007THuPsns';
-                        //     var imageUrl = 'https://drive.google.com/uc?id=' + posterUrl;
-
-                    //     // Kiểm tra xem có giá trị posterUrl không
-                    //     if (posterUrl) {
-                    //         // Đặt hình ảnh vào phần hiển thị trong form edit
-                    //         $('#posterPreview').show(); // Hiển thị phần hiển thị hình ảnh
-                    //         $('#posterImage').attr('src', imageUrl); // Đặt đường dẫn hình ảnh
-                    //         console.log(imageUrl)
-                    //         $('#posterInput').val(posterUrl); // Đặt giá trị của hình ảnh vào input hidden
-
-                    //     } else {
-                    //         // Ẩn phần hiển thị hình ảnh nếu không có giá trị posterUrl
-                    //         $('#posterPreview').hide();
-                    //         $('#posterImage').attr('src', ''); // Đặt đường dẫn rỗng
-                    //         $('#posterInput').val(''); // Đặt giá trị rỗng cho input hidden
-
-                    //     }
-
-                    //     return '<h2 class="table-poster"><a href="#" class="poster"><img alt="" src="' + imageUrl + '" data-zoom-image="' + imageUrl + '" alt="product image"></a></h2>';
-                    // }
-
-
+                        // Render giao diện cho cột "Poster"
+                        var posterUrl = row.poster ? row.poster : '1xbZ557bXhtiEG-sPP4TRXf007THuPsns';
+                        var imageUrl = 'https://drive.google.com/uc?id=' + posterUrl;
+                        return '<h2 class="table-poster"><a href="#" class="poster"><img alt="" src="' + imageUrl + '" data-zoom-image="' + imageUrl + '" alt="product image"></a></h2>';
+                    }
 
                 },
                 {
@@ -145,10 +196,11 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
                             '</a>' +
                             '<div class="dropdown-menu dropdown-menu-right">' +
                             '<a class="dropdown-item edit-product" href="#" data-product-id="' + row.id + '" data-toggle="modal" data-target="#edit_Product">' +
-                            '<i class="fa fa-pencil m-r-5"></i>Edit' +
+                            '<i class="fa fa-pencil m-r-5"></i>Chỉnh Sửa' +
                             '</a>' +
-                            '<a class="dropdown-item" href="#" data-toggle="modal" data-target="#comment_Product">' +
-                            '<i class="fa fa-pencil-square-o m-r-5"></i>Feedback' +
+                            // Call the loadProductFeedback function with the product ID
+                            '<a class="dropdown-item view-feedback" href="#" data-product-id="' + row.id + '" data-toggle="modal" data-target="#comment_Product">' +
+                            '<i class="fa fa-pencil-square-o m-r-5"></i>Đánh Giá' +
                             '</a>' +
                             '</div>' +
                             '</div>';
@@ -163,9 +215,13 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
             console.log(productId)
             $scope.editProductClicked(productId);
         });
+        $(document).on('click', '.view-feedback', function() {
+            var productId = $(this)[0].dataset.productId;
+            console.log(productId)
+            $scope.getFeedbackForProduct(productId);
+        });
 
     }
-
 
 
 
@@ -173,7 +229,8 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
     $scope.editProductClicked = function(productId) {
         ProductAdminService.getProduct(productId)
             .then(function(response) {
-                $scope.product = response.data;
+                $scope.editProduct = response.data;
+                loadThumbnails();
                 $('#edit_Product').modal('show');
             })
             .catch(function(error) {
@@ -187,8 +244,29 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
         $scope.editProductClicked(productId);
     });
 
+    // Hàm để trích xuất các thumbnail từ chuỗi productThumbnail
+    function extractThumbnails(productThumbnail) {
+        if (!productThumbnail) return [];
+        const thumbnailIds = productThumbnail.split("***");
+        return thumbnailIds;
+    }
 
+    // Hàm để hiển thị các thumbnail
+    function displayThumbnails(thumbnails) {
+        thumbnails.forEach((thumbnailId) => {
+            const imageUrl = "https://drive.google.com/uc?id=" + thumbnailId.trim();
+            $scope.displayThumbnail(imageUrl);
+        });
+    }
 
+    // Hàm để tải các thumbnail cho editProduct
+    function loadThumbnails() {
+        // Đảm bảo rằng editProduct.thumbnail đã được xác định trước khi trích xuất các thumbnail
+        if ($scope.editProduct && $scope.editProduct.thumbnail) {
+            $scope.thumbnails = extractThumbnails($scope.editProduct.thumbnail);
+            displayThumbnails($scope.thumbnails);
+        }
+    }
 
     // Cập nhật sản phẩm
     $scope.updateProduct = function() {
@@ -301,6 +379,103 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
 
 
 
+    $scope.searchProducts = function() {
+        var productName = $scope.searchProductName;
+        var productType = $scope.searchProductType;
+        var categoryName = $scope.searchCategoryName;
+
+        // Gọi phương thức getListProductSearch từ service để thực hiện tìm kiếm sản phẩm
+        ProductAdminService.getListProductSearch(productName, productType, categoryName)
+            .then(function(response) {
+                // Lấy danh sách sản phẩm tìm kiếm được từ phản hồi của API
+                var searchResults = response.data;
+
+                // Gán danh sách sản phẩm tìm kiếm được vào biến $scope.products
+                $scope.products = searchResults;
+            })
+            .catch(function(error) {
+                console.error('Lỗi khi tìm kiếm sản phẩm:', error);
+            });
+    };
+
+    /*----IMAGE----*/
+    // Hàm xử lý sự kiện khi click vào nút "upload-button".
+    // Trong phạm vi AngularJS controller.
+    $scope.handleUploadClick = function() {
+        // Lấy ra input file-upload thông qua ID.
+        var fileInput = document.getElementById('fileInput');
+        // Khi click vào nút "upload-button", kích hoạt sự kiện click cho input file-upload.
+        fileInput.click();
+    };
+
+    // Đăng ký sự kiện change cho input file-upload để xử lý khi người dùng chọn ảnh và thực hiện upload.
+    document.getElementById('fileInput').addEventListener('change', function() {
+        // Lấy danh sách các file đã chọn từ input file-upload.
+        var selectedFiles = this.files;
+        if (selectedFiles.length > 0) {
+            // Lấy file đầu tiên trong danh sách (vì input file-upload cho phép multiple selection).
+            var selectedFile = selectedFiles[0];
+
+            // Tạo một đường dẫn tạm thời cho ảnh từ file đã chọn.
+            var tempPhotoUrl = URL.createObjectURL(selectedFile);
+            $scope.$apply(function() {
+                // Cập nhật đường dẫn mới vào biến "currentPhotoUrl" để thay đổi ảnh hiển thị.
+                $scope.currentPhotoUrl = tempPhotoUrl;
+            });
+        }
+    });
+    // // Sự kiện khi người dùng nhấn nút "Upload Thumbnail"
+    // $scope.handleThumbnailUploadClick = function() {
+    //     // Tìm đến phần tử chứa thẻ <input> và thẻ <img>
+    //     var fileInputthumbnail = document.getElementById('fileInputthumbnail');
+    //     // Khi click vào nút "upload-button", kích hoạt sự kiện click cho input file-upload.
+    //     fileInputthumbnail.click();
+    // };
+
+    // // Đăng ký sự kiện change cho input file-upload để xử lý khi người dùng chọn ảnh và thực hiện upload.
+    // document.getElementById('fileInputthumbnail').addEventListener('change', function() {
+    //     // Lấy danh sách các file đã chọn từ input file-upload.
+    //     var selectedFiles = this.files;
+    //     if (selectedFiles.length > 0) {
+    //         // Lấy file đầu tiên trong danh sách (vì input file-upload cho phép multiple selection).
+    //         var selectedFile = selectedFiles[0];
+
+    //         // Tạo một đường dẫn tạm thời cho ảnh từ file đã chọn.
+    //         var tempPhotoUrl = URL.createObjectURL(selectedFile);
+    //         $scope.$apply(function() {
+    //             // Gọi hàm displayThumbnail để hiển thị ảnh thumbnail được chọn
+    //             $scope.displayThumbnail(tempPhotoUrl);
+    //         });
+    //     }
+    // });
+
+    /*----END IMAGE----*/
+
+    //Excel
+    $scope.downloadExcel = function() {
+        $http({
+            url: 'http://localhost:8080/api/product/downloadExcel', // Địa chỉ API endpoint của Spring Boot backend
+            method: 'GET',
+            responseType: 'arraybuffer'
+        }).then(function(response) {
+            var blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            // Lấy ngày hiện tại và định dạng
+            var currentDate = new Date();
+            var formattedDate = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate();
+
+            a.download = 'ReportSanpham_' + formattedDate + '.xlsx';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }, function(error) {
+            console.error('Lỗi khi tải xuống tệp Excel:', error);
+        });
+    };
+
+
+
 }).filter('vndFormat', function() {
     // Filter định dạng tiền tệ
     return function(input) {
@@ -323,4 +498,6 @@ app.controller("ProductController", function(ProductAdminService, $scope, $route
         var formattedDate = day + '/' + month + '/' + year;
         return formattedDate;
     };
+
+
 });

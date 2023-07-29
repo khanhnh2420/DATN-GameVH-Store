@@ -6,7 +6,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
                     <li class="breadcrumb-item"><a href="/blog">Bài viết</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{blog.tittle}}</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{blog.title}}</li>
                 </ol>
             </div><!-- End .container -->
         </nav><!-- End .breadcrumb-nav -->
@@ -106,7 +106,7 @@
                                 </div><!-- End .entry-meta -->
 
                                 <h2 class="entry-title">
-                                    {{blog.tittle}}
+                                    {{blog.title}}
                                 </h2><!-- End .entry-title -->
                                 <br>
                                 <div class="entry-content editor-content" ng-bind-html="blog.content">
@@ -219,7 +219,7 @@
 
                                         <div>
                                             <span>{{ calculateTimeAgo(item.createDate) }}</span>
-                                            <h4><a href="/blog/detail/{{item.id}}">{{item.tittle}}</a></h4>
+                                            <h4><a href="/blog/detail/{{item.id}}">{{item.title}}</a></h4>
                                         </div>
                                     </li>
                                 </ul><!-- End .posts-list -->

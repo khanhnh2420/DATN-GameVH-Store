@@ -20,4 +20,9 @@ function LoginController($scope,$location,$window, LoginService, SweetAlert) {
         });
     };
 
+    $scope.logout = function(){
+        $window.localStorage.removeItem("userName");
+        $window.localStorage.removeItem("photo");
+        $location.path("/")
+    }
 }

@@ -80,7 +80,9 @@
 								<td>{{cate.minSpend}}</td>
 								<td>{{cate.mfgDate | date: 'dd/MM/yyyy'}}</td>
 								<td>{{cate.expDate | date: 'dd/MM/yyyy'}}</td>
-								<td><span class="badge bg-inverse-success">{{cate.status ==1 ? 'Available':''}}</span></td>
+								<td>
+									<span class="badge bg-inverse-success" ng-if="cate.status ==1">Available</span>
+									<span class="badge bg-inverse-danger" ng-if="cate.status !=1">UnAvailable</span>
 								<td class="text-right">
 									<div class="dropdown dropdown-action">
 										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"

@@ -396,28 +396,24 @@ function BlogController($scope, $filter, $document, $window, BlogService, ToastS
             ]
         });
         $(document).one('click', '#delete-comment-btn', function () {
-            $scope.temporaryComment.commentId = $(this).data('comment-id');
-            $scope.temporaryComment.blogId = $(this).data('blog-id');
-            console.log($scope.temporaryComment.commentId);
-            console.log($scope.temporaryComment.blogId);
+            var commentId = $(this).data('comment-id');
+            var blogId = $(this).data('blog-id');
+            $scope.deleteComment(commentId, blogId);
         });
     };
 
-    $scope.deleteComment = function () {
-        // BlogService.deleteCommentById($scope.commentId)
-        //     .then(function (resp) {
-        //         // Xử lý thành công, data chứa dữ liệu thành công từ service
-        //         ToastService.showSuccessToast("Xóa bình luận thành công"); // Hiển thị thông báo thành công
-        //         $(document).ready(function () {
-        //             $scope.getCommentByBlogId($scope.blogId);
-        //             $('#comment_Blog').modal('show');
-        //         });
-        //     })
-        //     .catch(function (error) {
-        //         // Xử lý lỗi, error chứa dữ liệu lỗi từ service
-        //         console.log(error)
-        //         ToastService.showErrorToast("Lỗi khi xóa bình luận")// Log thông báo lỗi từ service
-        //     });
+    $scope.deleteComment = function (commentId, blogId) {
+        BlogService.deleteCommentById(commentId)
+            .then(function (resp) {
+                // Xử lý thành công, data chứa dữ liệu thành công từ service
+                ToastService.showSuccessToast("Xóa bình luận thành công"); // Hiển thị thông báo thành công
+                $(document).ready(function () {
+                    $scope.getCommentByBlogId(blogId);
+                });
+            })
+            .catch(function (error) {
+                // Xử lý lỗi, error chứa dữ liệu lỗi từ service
+            });
     };
 
     $scope.changeCommentStatus = function (commentId, blogId, newStatus) {

@@ -63,6 +63,49 @@ INSERT INTO `account` VALUES
 UNLOCK TABLES;
 
 --
+-- Table structure for table `account`
+--
+
+DROP TABLE IF EXISTS `feedback_website`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `feedback_website` (
+  `Id` int NOT NULL AUTO_INCREMENT,
+  `content` longtext NOT NULL  COMMENT 'Nội dung',
+  `create_date` datetime NOT NULL COMMENT 'Ngày tạo',
+  `account_id` int NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `FK_feedbackWebsite_Users` (`account_id`),
+  CONSTRAINT `FK_feedbackWebsite_Users` FOREIGN KEY (`account_id`) REFERENCES `account` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `feedback_website`
+--
+
+LOCK TABLES `feedback_website` WRITE;
+/*!40000 ALTER TABLE `feedback_website` DISABLE KEYS */;
+INSERT INTO `feedback_website` VALUES 
+(1,'Website hơi lag','2023-07-02 07:30:00.000000',1),
+(2,'Mong web phát triển tính năng so sánh sản phẩm','2023-06-12 07:30:00.000000',1),
+(3,'Mong admin sớm fix chức năng xem comment cho điện thoại','2023-05-22 07:30:00.000000',1),
+(4,'Hiển thị trên điện thoại chưa được mượt lắm','2023-06-17 07:30:00.000000',1),
+(5,'Tốc độ load trang còn hơi chậm','2023-03-14 07:30:00.000000',1),
+(6,'Web trông khá ổn nhưng nên mở rộng thêm chức năng','2023-07-18 07:30:00.000000',1),
+(7,'Mong web sẽ có thêm nhiều sản phẩm hơn','2023-06-05 07:30:00.000000',2),
+(8,'Có vẻ chức năng thêm sản phẩm đang bị lỗi','2023-05-17 07:30:00.000000',2),
+(9,'Hãy fix chức năng thêm sản phẩm đi ad ơi','2023-04-13 07:30:00.000000',2),
+(10,'Chúc web sớm phát triển và thành công','2023-02-17 07:30:00.000000',3),
+(11,'Sevenbee mãi đỉnh','2023-05-21 07:30:00.000000',3),
+(12,'ad hãy fix chức năng xem các sản phẩm tương tự trong trang chi tiết sản phẩm đi','2023-06-24 07:30:00.000000',3),
+(13,'web đang bị lỗi hiển thị trên trình duyệt firefox mong ad sớm fix','2023-07-02 07:30:00.000000',4),
+(14,'web chưa tương thích trên điện thoại','2023-06-25 07:30:00.000000',5),
+(15,'Web rất tuyệt vời nhưng vẫn còn một số lỗi nhỏ trên điện thoại mong ad cải thiện','2023-07-15 07:30:00.000000',6);
+/*!40000 ALTER TABLE `feedback_website` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `authority`
 --
 

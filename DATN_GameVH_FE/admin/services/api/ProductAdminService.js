@@ -21,13 +21,20 @@ app.factory('ProductAdminService', function($http) {
         getFeedbackProduct: function(productId) {
             return $http.get(baseUrl + '/getProduct/' + productId);
         },
-        uploadImage: function(image) {
-            var formData = new FormData();
-            formData.append('image', image);
+        // uploadImage: function(image) {
+        //     var formData = new FormData();
+        //     formData.append('image', image);
 
-            return $http.post(baseUrl + '/upload', formData, {
-                transformRequest: angular.identity,
-                headers: { 'Content-Type': undefined }
+        //     return $http.post(baseUrl + '/upload', formData, {
+        //         transformRequest: angular.identity,
+        //         headers: { 'Content-Type': undefined }
+        //     });
+        // },
+        uploadImage: function(imageFile) {
+            return $http.post(baseUrl + '/upload', imageFile, {
+                headers: {
+                    'Content-Type': undefined
+                }
             });
         },
         createProduct: function(productData) {

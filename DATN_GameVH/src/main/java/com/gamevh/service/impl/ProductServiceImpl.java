@@ -51,6 +51,10 @@ public class ProductServiceImpl implements ProductService {
 		return productRepository.reportProduct();
 	}
 
+	@Override
+	public List<Product> findTop5() {
+		return productRepository.getTop5();
+	}
 
-	
+
 }

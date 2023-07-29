@@ -35,6 +35,11 @@
 	<link rel="stylesheet" href="/assets/css/skins/skin-demo-19.css">
 	<link rel="stylesheet" href="/assets/css/demos/demo-19.css">
 
+	<!-- 	FontAwesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+		integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 	<!-- AngularJS -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"
 		integrity="sha512-KZmyTq3PLx9EZl0RHShHQuXtrvdJ+m35tuOiwlcZfs/rE7NZv29ygNA8SFCkMXTnYZQK2OX0Gm2qKGfvWEtRXA=="
@@ -63,6 +68,7 @@
 	<script src="/services/api/BcryptService.js"></script>
 	<script src="/services/api/AuthorityService.js"></script>
 	<script src="/services/api/SendMailService.js"></script>
+	<script src="/services/api/ToastService.js"></script>
 </head>
 
 <body ng-app="app">
@@ -107,7 +113,7 @@
 										<!-- End Error Username-->
 
 										<div class="form-group">
-											<label for="singin-password">Mật khẩu *</label> <input type="password"
+											<label for="singin-password">Mật khẩu *</label> <input type="password" ng-change="inputPassChange()"
 												ng-model="account.password" class="form-control" id="singin-password"
 												ng-class="{'is-invalid': (LoginForm.password.$invalid && LoginForm.password.$touched) || (LoginForm.$submitted && LoginForm.password.$invalid) || (LoginForm.$submitted && isValidPassword)}"
 												name="password" required>
@@ -172,6 +178,7 @@
 										<!-- End .row -->
 									</div>
 									<!-- End .form-choice -->
+									<div id="toast"></div>
 								</div>
 								<!-- .End .tab-pane -->
 								<div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab"

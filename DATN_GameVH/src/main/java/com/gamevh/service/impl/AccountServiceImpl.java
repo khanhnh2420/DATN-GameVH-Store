@@ -40,8 +40,8 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public List<Account> findByUsername(String username) {
-		return accountRepository.findByUsernameContaining(username);
+	public Account findByUsername(String username) {
+		return accountRepository.findByUsername(username);
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public List<Account> findByEmail(String email) {
-		return accountRepository.findByEmailContaining(email);
+	public Account findByEmail(String email) {
+		return accountRepository.findByEmail(email);
 	}	
 }

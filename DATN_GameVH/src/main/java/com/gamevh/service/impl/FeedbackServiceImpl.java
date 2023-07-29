@@ -35,9 +35,16 @@ public class FeedbackServiceImpl implements FeedbackService{
 
 	@Override
 	public List<Feedback> findByAllProductId(Integer productId) {
-		// TODO Auto-generated method stub
 		return feedbackRepository.findByAllProductId(productId);
 	}
 
-	
+	@Override
+	public Feedback findByAccountAndProduct(String username, Integer productId) {
+		return feedbackRepository.findByAccountUsernameAndProductId(username, productId);
+	}
+
+	@Override
+	public Feedback addOrUpdate(Feedback feedback) {
+		return feedbackRepository.save(feedback);
+	}
 }

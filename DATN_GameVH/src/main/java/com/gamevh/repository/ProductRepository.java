@@ -16,4 +16,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
              "(SELECT COUNT(*) FROM Product WHERE status = 1) AS availableProducts " +
              "FROM Product p", nativeQuery = true)
 	 	List<Object[]> reportProduct();
+
+	@Query(value = "SELECT * FROM product order by create_date desc LIMIT 5",nativeQuery = true)
+	List<Product> getTop5();
 }

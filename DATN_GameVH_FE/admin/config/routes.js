@@ -12,7 +12,7 @@ app.config(function ($routeProvider, $locationProvider) {
             pageTitle: "Dashboard",
         })
         .when('/index.html', {
-            redirectTo : '/'
+            redirectTo : '/dashboard'
         })
         .when('/accessories-list', {
             templateUrl: '/views/accessories-list.html',

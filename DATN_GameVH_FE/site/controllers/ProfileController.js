@@ -1,5 +1,5 @@
 app.controller("ProfileController", function (AccountService, LocationService, OrderService, OrderDetailService,
-    CouponOwnerService, ToastService, PageService, $scope, $window, $http, $timeout) {
+    CouponOwnerService, ToastService, PageService, BcryptService, FeedbackService, $scope, $window, $http, $timeout) {
     $scope.account = {}; // Biến lưu thông tin account 
     $scope.username = null;
     $scope.orders = [];
@@ -112,12 +112,7 @@ app.controller("ProfileController", function (AccountService, LocationService, O
         { filled: false }
     ];
 
-    $scope.currentRating = 3;
-
-    // Cập nhật trạng thái các ngôi sao dựa vào giá trị currentRating
-    for (var i = 0; i < $scope.currentRating; i++) {
-        $scope.stars[i].filled = true;
-    }
+    $scope.currentRating = 0;
 
     $scope.setRating = function (star) {
         // Đánh giá sao khi người dùng nhấp vào
@@ -128,6 +123,15 @@ app.controller("ProfileController", function (AccountService, LocationService, O
 
         // Cập nhật thông tin đánh giá hiện tại
         $scope.currentRating = index + 1;
+
+        // Cập nhật trạng thái ngôi sao dựa vào currentRating
+        $scope.updateStars();
+    };
+
+    $scope.updateStars = function () {
+        for (var i = 0; i < $scope.stars.length; i++) {
+            $scope.stars[i].filled = i < $scope.currentRating;
+        }
     };
 
     $scope.hoverStar = function (star) {
@@ -147,7 +151,79 @@ app.controller("ProfileController", function (AccountService, LocationService, O
             $scope.stars[i].hovered = false;
         }
     };
+
+    // Gọi hàm cập nhật trạng thái ngôi sao khi giá trị currentRating thay đổi
+    $scope.updateStars();
     /*----END RATING----*/
+
+    /*----FEEDBACK----*/
+    // Mở tab feedback
+    $scope.feedback = {};
+    $scope.openTabFeedBack = function (event, productId, productName) {
+        $scope.productFeedbackName = productName;
+        if (productId) {
+            $scope.productFeedbackId = productId;
+            document.getElementById("tabTitleFeedback").removeAttribute("hidden");
+            document.getElementById("tabFeedback").removeAttribute("hidden");
+            $scope.changeTab(event, "feedback");
+
+            FeedbackService.getFeedbackByUsernameAndProductId($scope.account.username, productId).then(function (response) {
+                $scope.feedback = response.data;
+                if ($scope.feedback) {
+                    $scope.currentRating = $scope.feedback.star;
+                    $scope.updateStars();
+                    $scope.buttonFeedback = "CHỈNH SỬA ĐÁNH GIÁ";
+                } else {
+                    $scope.feedback = {};
+                    $scope.currentRating = 0;
+                    $scope.updateStars();
+                    $scope.buttonFeedback = "ĐÁNH GIÁ";
+                    $scope.feedback.content = "";
+                    $scope.feedback.star = 0;
+                }
+            }).catch(function (error) {
+                console.error('Lỗi khi lấy product feedback');
+            });
+        }
+    }
+
+    $scope.feedbackSubmit = function () {
+        // Lấy ngày hiện tại
+        var currentDate = new Date();
+
+        // Tạo các hàm phụ trợ để định dạng số thành chuỗi hai chữ số
+        function padZero(number) {
+            return number < 10 ? "0" + number : number;
+        }
+
+        // Định dạng ngày tháng
+        var year = currentDate.getFullYear();
+        var month = padZero(currentDate.getMonth() + 1);
+        var day = padZero(currentDate.getDate());
+        var hours = padZero(currentDate.getHours());
+        var minutes = padZero(currentDate.getMinutes());
+        var seconds = padZero(currentDate.getSeconds());
+
+        // Chuỗi định dạng "yyyy-MM-ddTHH:mm:ss"
+        var formattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+
+        $scope.feedback.createDate = formattedDate;
+        $scope.feedback.status = false;
+        $scope.feedback.star = $scope.currentRating;
+
+        FeedbackService.addOrUpdateFeedback($scope.account.username, $scope.productFeedbackId, $scope.feedback).then(function (response) {
+            $scope.fb = response.data;
+            if ($scope.fb) {
+                ToastService.showSuccessToast($scope.buttonFeedback.charAt(0).toUpperCase() + $scope.buttonFeedback.slice(1).toLowerCase() + " sản phẩm thành công!");
+            } else {
+                ToastService.showErrorToast($scope.buttonFeedback.charAt(0).toUpperCase() + $scope.buttonFeedback.slice(1).toLowerCase() + " sản phẩm thất bại!");
+            }
+        }).catch(function (error) {
+            ToastService.showErrorToast($scope.buttonFeedback.charAt(0).toUpperCase() + $scope.buttonFeedback.slice(1).toLowerCase() + " sản phẩm thất bại!");
+        });
+    }
+
+    /*----FEEDBACK----*/
 
     /*----CHANGE TAB----*/
     // Change tab điều hướng
@@ -192,7 +268,7 @@ app.controller("ProfileController", function (AccountService, LocationService, O
                             $scope.user = userInfo.data;
                             if ($scope.user) {
                                 LocationService.createOrUpdate($scope.locations).then(function (locations) {
-
+                                    ToastService.showSuccessToast("Cập nhật thông tin thành công!");
                                 }).catch(function (error) {
                                     console.error('Lỗi khi update location:', error);
                                 });
@@ -204,28 +280,100 @@ app.controller("ProfileController", function (AccountService, LocationService, O
                 }).catch(function (error) {
                     console.error('Lỗi khi up avatar lên drive:', error);
                 });
+            } else {
+                AccountService.updateAccount($scope.account).then(function (userInfo) {
+                    $scope.user = userInfo.data;
+                    if ($scope.user) {
+                        LocationService.createOrUpdate($scope.locations).then(function (locations) {
+                            ToastService.showSuccessToast("Cập nhật thông tin thành công!");
+                        }).catch(function (error) {
+                            console.error('Lỗi khi update location:', error);
+                        });
+                    }
+                }).catch(function (error) {
+                    console.error('Lỗi khi update account:', error);
+                });
             }
-        } else {
-            $scope.locations.forEach(location => {
-                location.account = $scope.account;
-            });
-
-            AccountService.updateAccount($scope.account).then(function (userInfo) {
-                $scope.user = userInfo.data;
-                if ($scope.user) {
-                    LocationService.createOrUpdate($scope.locations).then(function (locations) {
-
-                    }).catch(function (error) {
-                        console.error('Lỗi khi update location:', error);
-                    });
-                }
-            }).catch(function (error) {
-                console.error('Lỗi khi update account:', error);
-            });
         }
     }
 
     /*----END SUBMIT FORM ACCOUNT----*/
+
+    /*----SUBMIT FORM CHANGE PASSWORD----*/
+    $scope.formPasword = {};
+    $scope.passwordMatchError = false;
+
+    $scope.changePassSubmit = function () {
+        $scope.checkPasswordMatch();
+
+        var formElement = document.getElementById('changePassForm');
+        if (formElement.checkValidity() && $scope.passwordMatchError === false) {
+            // Biểu mẫu hợp lệ, tiến hành xử lý
+            AccountService.getByUsername($scope.account.username).then(function (user) {
+                $scope.user = user.data; // Thông tin user từ Server
+                if ($scope.user != null && $scope.user != undefined && $scope.user != "") {
+                    // So sánh password người dùng nhập với password đã mã hóa 
+                    BcryptService.compare($scope.formPasword.password, $scope.user.password).then(function (isComparePassword) {
+                        if (!$scope.user.status) {
+                            $window.localStorage.removeItem("username");
+                            $window.sessionStorage.removeItem("username");
+                            $window.sessionStorage.setItem("messageLogin", "Tài khoản này đã bị khóa!");
+                            $window.location.href = 'login.html';
+                        } else if (!isComparePassword.data) {
+                            // So sánh password người dùng nhập với password đã mã hóa
+                            // Nếu không đúng thì xuất lỗi
+                            $scope.isValidCurrentPass = true;
+                            $scope.CurrentPassError = "Mật khẩu không đúng!";
+                        } else if ($scope.user.role != "CUST") {
+                            // Kiểm tra quyền của người dùng có phải là CUST hay không ?
+                            $window.localStorage.removeItem("username");
+                            $window.sessionStorage.removeItem("username");
+                            $window.sessionStorage.setItem("messageLogin", "Bạn không có quyền truy cập trang này!");
+                            $window.location.href = 'login.html';
+                        } else {
+                            var accountChangePass = $scope.account;
+                            accountChangePass.password = $scope.formPasword.newPass;
+                            AccountService.changePassword(accountChangePass).then(function (account) {
+                                $window.localStorage.removeItem("username");
+                                $window.sessionStorage.removeItem("username");
+                                $window.sessionStorage.setItem("messageLoginSuccess", "Đổi mật khẩu thành công vui lòng đăng nhập lại!");
+                                $window.location.href = 'login.html';
+                            }).catch(function (error) {
+                                ToastService.showSuccessToast("Đổi mật khẩu thất bại!");
+                            });
+                        }
+                    }).catch(function (error) {
+                        $scope.isValidCurrentPass = true;
+                        $scope.CurrentPassError = "Mật khẩu không đúng!";
+                    });
+                } else {
+                    $window.localStorage.removeItem("username");
+                    $window.sessionStorage.removeItem("username");
+                    $window.sessionStorage.setItem("messageLogin", "Vui lòng đăng nhập lại để sử dụng chức năng!");
+                    $window.location.href = 'login.html';
+                }
+            }).catch(function (error) {
+                $window.localStorage.removeItem("username");
+                $window.sessionStorage.removeItem("username");
+                $window.sessionStorage.setItem("messageLogin", "Vui lòng đăng nhập lại để sử dụng chức năng!");
+                $window.location.href = 'login.html';
+            });
+        }
+    }
+
+    $scope.checkPasswordMatch = function () {
+        if ($scope.formPasword.newPass !== $scope.formPasword.confirmPass) {
+            $scope.passwordMatchError = true;
+        } else {
+            $scope.passwordMatchError = false;
+        }
+    };
+
+    $scope.currentPassChange = function () {
+        $scope.isValidCurrentPass = false;
+        $scope.CurrentPassError = "";
+    }
+    /*----END SUBMIT FORM CHANGE PASSWORD----*/
 
     /*----MODAL----*/
     $scope.fillDataModal = function (locationIndex, type) {
@@ -251,7 +399,7 @@ app.controller("ProfileController", function (AccountService, LocationService, O
                     $scope.locationForm.address = document.getElementById("inputAddress").value;
                     $scope.locationForm.address += ", " + $scope.selectedLocation;
                     $scope.locationForm.addressDefault = document.getElementById("addressDefaultModal").checked;
-                    console.log(document.getElementById("addressDefaultModal").checked)
+
                     if ($scope.locations.length <= 0) {
                         $scope.locations = [];
                     } else {
@@ -330,6 +478,9 @@ app.controller("ProfileController", function (AccountService, LocationService, O
                 if (locationIndex >= 0) {
                     for (let i = 0; i < $scope.locations.length; i++) {
                         if (i == locationIndex) {
+                            if ($scope.locations[i].id) {
+                                $scope.locationForm.id = $scope.locations[i].id;
+                            }
                             $scope.locationForm.addressDefault = $scope.locations[i].addressDefault;
                             $scope.locationForm.address = $scope.locations[i].address;
                             $scope.locationForm.type = $scope.locations[i].type;
@@ -421,19 +572,6 @@ app.controller("ProfileController", function (AccountService, LocationService, O
     };
 
     /*----END MODAL----*/
-
-    /*----FEEDBACK----*/
-    // Mở tab feedback
-    $scope.openTabFeedBack = function (event, productId) {
-        if (productId) {
-            document.getElementById("tabTitleFeedback").removeAttribute("hidden");
-            document.getElementById("tabFeedback").removeAttribute("hidden");
-            $scope.changeTab(event, "feedback");
-            console.log(productId)
-        }
-    }
-
-    /*----FEEDBACK----*/
 
     /*----CHIA TRANG----*/
     // Page Order

@@ -60,7 +60,7 @@
 												<div class="upload-button" ng-click="handleUploadClick()">
 													<i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
 												</div>
-												<input class="file-upload" type="file" id="fileInput" 
+												<input class="file-upload" type="file" id="fileInput"
 													accept="image/*" />
 											</div>
 
@@ -136,23 +136,68 @@
 
 									<h4 class="mt-2 mb-2" ng-if="account.type == null || account.type == ''">ĐỔI MẬT
 										KHẨU</h4>
-									<form ng-if="account.type == null || account.type == ''">
+									<form ng-if="account.type == null || account.type == ''" name="changePass"
+										id="changePassForm" ng-submit="changePassSubmit()" novalidate>
 										<div class="row">
 											<div class="col">
-												<label>Mật khẩu hiện tại *</label> <input type="password" readonly
-													ng-model="form.password" class="form-control">
+												<label>Mật khẩu hiện tại *</label> <input type="password"
+													ng-model="formPasword.password" class="form-control"
+													ng-class="{'is-invalid': (changePass.currentPassword.$invalid && changePass.currentPassword.$touched) || (changePass.$submitted && changePass.currentPassword.$invalid) || (changePass.$submitted && isValidCurrentPass)}"
+													name="currentPassword" required ng-trim="false"
+													ng-change="currentPassChange()" ng-pattern="/^\S+$/">
+												<div class="mt-1 text-danger font-weight-bold">
+													<div
+														ng-show="(changePass.currentPassword.$error.required && changePass.currentPassword.$touched) || (changePass.$submitted && changePass.currentPassword.$error.required)">
+														Mật khẩu không được để trống!
+													</div>
+													<div
+														ng-show="(changePass.currentPassword.$error.pattern && changePass.currentPassword.$touched) || (changePass.$submitted && changePass.currentPassword.$error.pattern)">
+														Mật khẩu không được chứa khoảng trắng!
+													</div>
+													<div ng-show="(changePass.$submitted && isValidCurrentPass)">
+														{{CurrentPassError}}
+													</div>
+												</div>
+												<!-- End Error Current Password-->
 											</div>
 											<!-- End .col-sm-6 -->
 										</div>
 										<div class="row">
 											<div class="col-sm-6">
-												<label>Mật khẩu mới *</label> <input type="password" ng-model="newPass"
-													class="form-control">
+												<label>Mật khẩu mới *</label> <input type="password"
+													ng-model="formPasword.newPass" class="form-control"
+													ng-class="{'is-invalid': (changePass.newPass.$invalid && changePass.newPass.$touched) || (changePass.$submitted && changePass.newPass.$invalid) || (changePass.$submitted && isValidNewPass)}"
+													name="newPass" required ng-trim="false" ng-pattern="/^\S+$/">
+												<div class="mt-1 text-danger font-weight-bold">
+													<div
+														ng-show="(changePass.newPass.$error.required && changePass.newPass.$touched) || (changePass.$submitted && changePass.newPass.$error.required)">
+														Mật khẩu mới không được để trống!
+													</div>
+													<div
+														ng-show="(changePass.newPass.$error.pattern && changePass.newPass.$touched) || (changePass.$submitted && changePass.newPass.$error.pattern)">
+														Mật khẩu mới không được chứa khoảng trắng!
+													</div>
+													<div ng-show="(changePass.$submitted && isValidNewPass)">
+														{{NewPassError}}
+													</div>
+												</div>
+												<!-- End Error Current Password-->
 											</div>
 											<!-- End .col-sm-6 -->
 											<div class="col-sm-6">
-												<label>Xác nhận mật khẩu mới *</label> <input type="password"
-													ng-model="confirmNewPass" class="form-control mb-2">
+												<div class="form-group">
+													<label>Xác nhận mật khẩu mới *</label>
+													<input type="password" class="form-control"
+														ng-model="formPasword.confirmPass"
+														ng-class="{'is-invalid': (passwordMatchError && changePass.confirmPass.$touched) || (changePass.$submitted && passwordMatchError)}"
+														name="confirmPass" required ng-change="checkPasswordMatch()">
+													<div class="mb-1 text-danger font-weight-bold">
+														<div ng-show="passwordMatchError">
+															Mật khẩu không khớp!
+														</div>
+													</div>
+													<!-- End Error Password-->
+												</div>
 											</div>
 											<!-- End .col-sm-6 -->
 										</div>
@@ -431,7 +476,7 @@
 										<td>{{product.price | vndFormat}}</td>
 										<td ng-if="order.orderStatus === 'Đã hoàn thành'"><a
 												class="btn btn-outline-primary-2" type="button"
-												ng-click="openTabFeedBack($event, product.productId)"
+												ng-click="openTabFeedBack($event, product.productId, product.productName)"
 												style="min-width: 30px; border-radius: 10%; cursor: pointer; padding: 0.55rem 1rem;">Đánh
 												giá</a>
 										</td>
@@ -444,12 +489,22 @@
 							<h4
 								style="caption-side: top; text-align: center; font-size: 3rem; font-weight: 800; margin-top: 1em;">
 								ĐÁNH GIÁ SẢN PHẨM</h4>
+							<h5 class="text-center" style="font-size: 2rem; font-weight: 700">{{productFeedbackName}}</h5>
 							<div class="row d-flex justify-content-center mb-4 mt-4">
 								<div ng-repeat="star in stars" ng-click="setRating(star)"
 									style="display: inline-block;">
 									<i class="star fa-solid fa-star"
 										ng-class="{'active': star.filled, 'far': !star.filled, 'hovered': star.hovered}"></i>
 								</div>
+							</div>
+							<div class="row d-flex justify-content-center">
+								<textarea class="form-control" cols="10" rows="2" ng-model="feedback.content" style="width: 90%;"
+									placeholder="Để lại đánh giá của bạn về sản phẩm"></textarea>
+							</div>
+							<div class="row d-flex justify-content-center pb-5 pt-2">
+								<button type="button" class="btn btn-outline-primary-2" ng-click="feedbackSubmit()">
+									<span>{{buttonFeedback}}</span> <i class="icon-long-arrow-right"></i>
+								</button>
 							</div>
 						</div>
 					</div>

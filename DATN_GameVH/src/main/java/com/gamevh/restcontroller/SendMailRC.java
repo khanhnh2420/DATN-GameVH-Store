@@ -66,7 +66,7 @@ public class SendMailRC {
 	public ResponseEntity<String> sendMailRegister(@PathVariable("username") String username, @PathVariable("password") String password,
 			@RequestBody MailInfoDTO mailInfo) throws MessagingException {
 		if (mailInfo != null) {
-			Account account = accountService.findByUsername(username).get(0);
+			Account account = accountService.findByUsername(username);
 			if (account != null) {
 				mailService.send(mailInfo.getTo(), mailInfo.getSubject(), mail_CONSTANT
 						.mail_Welcome(account.getFullname(), account.getUsername(), password));

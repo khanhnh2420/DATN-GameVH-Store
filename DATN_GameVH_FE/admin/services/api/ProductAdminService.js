@@ -44,20 +44,20 @@ app.factory('ProductAdminService', function($http) {
             return $http.post(baseUrl + '/updateProduct/' + productId, productData);
         },
 
-        deleteProduct: function(productId) {
-            return $http.delete(baseUrl + '/delete' + productId);
+        deleteFeedback: function(feedbackIdtId) {
+            return $http.delete(baseUrl + '/delete' + feedbackIdtId);
         },
         getListProductSearch: function(productName, productType, categoryName) {
             return $http.get(baseUrl + '/products/search?productName=' + productName + '&productType=' + productType + '&categoryName=' + categoryName);
         },
         updateFeedbackStatus: function(feedbackId, feedbackStatus) {
             var feedbackData = {
-                id: feedbackId,
                 status: feedbackStatus
             };
 
-            return $http.put(baseUrl + '/updateFeedback', feedbackData);
+            return $http.put(baseUrl + '/updateFeedback/' + feedbackId, feedbackData);
         },
+
 
     };
 });

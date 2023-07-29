@@ -75,8 +75,8 @@ app.controller("ProductController", function(ProductAdminService, $http, $scope,
                 (feedback.status ? 'Đã Duyệt' : 'Chưa Duyệt') +
                 '</a>' +
                 '<div class="dropdown-menu">' +
-                '<a class="dropdown-item" href="#" ng-click="updateFeedbackStatus(true, feedback.id)" ><i class="fa fa-dot-circle-o text-success"></i>Đã Duyệt</a>' +
-                '<a class="dropdown-item" href="#" ng-click="updateFeedbackStatus(false, feedback.id)"><i class="fa fa-dot-circle-o text-danger"></i>Chưa Duyệt</a>' +
+                '<a class="dropdown-item" href="#" ng-click="updateFeedbackStatus(feedback, true)"><i class="fa fa-dot-circle-o text-success"></i>Đã Duyệt</a>' +
+                '<a class="dropdown-item" href="#" ng-click="updateFeedbackStatus(feedback, false)"><i class="fa fa-dot-circle-o text-danger"></i>Chưa Duyệt</a>' +
                 '</div>' +
                 '</div>' +
                 '</td>' +
@@ -92,25 +92,22 @@ app.controller("ProductController", function(ProductAdminService, $http, $scope,
     };
 
 
-    $scope.updateFeedbackStatus = function(status, feedbackId) {
+
+    $scope.updateFeedbackStatus = function(feedback, status) {
         // Gọi phương thức trong Service để cập nhật trạng thái feedback
-        ProductAdminService.updateFeedbackStatus(feedbackId, status)
+        ProductAdminService.updateFeedbackStatus(feedback.id, status)
             .then(function(response) {
                 console.log("Feedback đã được cập nhật:", response.data);
                 // Cập nhật trạng thái của feedback sau khi nhận phản hồi thành công từ API
-                // Chắc chắn rằng biến feedback chứa danh sách các feedback và feedback có id tương ứng được cập nhật
-                var feedback = $scope.feedback.find(function(item) {
-                    return item.id === feedbackId;
-                });
-                if (feedback) {
-                    feedback.status = status;
-                }
+                feedback.status = status;
+                console.log(feedback.id)
             })
             .catch(function(error) {
                 console.error("Lỗi khi cập nhật feedback:", error);
                 // Xử lý lỗi nếu có
             });
     };
+
 
 
     // Lấy tất cả sản phẩm

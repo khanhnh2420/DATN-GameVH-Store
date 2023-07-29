@@ -72,6 +72,7 @@
 								<th>User Created</th>
 								<th>Created Date</th>
 								<th>Status</th>
+								<th>Comments</th>
 								<th class="text-right no-sort">Action</th>
 							</tr>
 						</thead>
@@ -85,9 +86,8 @@
 	</div>
 	<!-- /Page Content -->
 
-
 	<!-- Add Blog Modal -->
-	<div id="add_Blog" class="modal custom-modal fade" role="dialog">
+	<div id="add_Blog" class="modal custom-modal fade" aria-hidden="true" role="dialog">
 		<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -198,8 +198,35 @@
 	<!-- Toast message -->
 	<div id="toast"></div>
 	<!-- Toast message -->
+
+	<!-- Second Modal - Modal Xác Nhận xóa bình luận -->
+	<div id="delete_Comment" class="modal custom-modal fade" data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="form-header">
+						<h3>Xóa bình luận</h3>
+						<p>Bạn có chắc muốn xóa bình luận này không?</p>
+					</div>
+					<div class="modal-btn delete-action">
+						<div class="row">
+							<div class="col-6">
+								<a href="javascript:void(0);" ng-click="deleteComment()"
+									class="btn btn-primary continue-btn">Xóa</a>
+							</div>
+							<div class="col-6">
+								<a href="javascript:void(0);" data-dismiss="modal"
+									class="btn btn-primary cancel-btn">Hủy</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<!-- Comment Product Modal -->
-	<div id="comment_Blog" class="modal custom-modal fade" role="dialog">
+	<div id="comment_Blog" class="modal custom-modal fade" data-backdrop="static" data-keyboard="false">
 		<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -224,39 +251,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<!-- <tr>
-											<td>1</a></td>
-											<td>Lê Đăng Dương</td>
-											<td class="d-flex text-wrap">Giật lagggg game tệ Giật lagggg
-												game tệ Giật lagggg game tệ Giật lagggg game tệ Giật lagggg
-												game tệ</td>
 
-											<td>2023-06-01</td>
-
-											<td>
-												<div class="dropdown action-label">
-													<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
-														data-toggle="dropdown" aria-expanded="false">
-														<i class="fa fa-dot-circle-o text-success"></i> Đã
-														Duyệt
-													</a>
-													<div class="dropdown-menu">
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-success"></i>
-															Đã Duyệt</a>
-														<a class="dropdown-item" href="#"><i
-																class="fa fa-dot-circle-o text-danger"></i>
-															Chưa Duyệt</a>
-													</div>
-												</div>
-											</td>
-											<td class="text-right">
-												<div class=" text-right">
-													<button href="#" data-toggle="modal" data-target="#delete_comment"
-														class="border btn-danger">Delete</button>
-												</div>
-											</td>
-										</tr> -->
 									</tbody>
 								</table>
 							</div>
@@ -269,7 +264,7 @@
 	<!-- /Comment Product Modal -->
 
 	<!-- Delete Blog Modal -->
-	<div class="modal custom-modal fade" id="delete_Blog" role="dialog">
+	<div id="delete_Blog" class="modal custom-modal fade" role="dialog">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-body">

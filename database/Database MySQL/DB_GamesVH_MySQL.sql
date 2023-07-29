@@ -499,7 +499,9 @@ INSERT INTO `feedback` VALUES
 (15,4,'Chất lượng sản phẩm tuyệt vời, giá cả phải chăng.',1,5,'2023-07-12 03:13:28.000000',8),
 (16,4,'Sản phẩm rất tốt, tôi rất hài lòng với chất lượng và hiệu suất của nó.',1,5,'2023-07-12 03:13:28.000000',17),
 (17,5,'Đáng giá mỗi đồng.',1,4,'2023-07-12 03:13:28.000000',19),
-(18,5,'Phụ kiện gaming chất lượng cao, tôi rất hài lòng.',1,5,'2023-07-12 03:13:28.000000',18);
+(18,5,'Phụ kiện gaming chất lượng cao, tôi rất hài lòng.',1,5,'2023-07-12 03:13:28.000000',18),
+(19,1,'Game chỉ ở mức bình thường.',1,3,'2023-05-22 03:13:28.000000',1),
+(20,1,'Tôi rất ứng ý về tựa game này. Tôi đánh giá khá cao về nó, đây là một tựa game đáng để chơi.',1,5,'2022-02-02 03:13:28.000000',8);
 /*!40000 ALTER TABLE `feedback` ENABLE KEYS */;
 UNLOCK TABLES;
 

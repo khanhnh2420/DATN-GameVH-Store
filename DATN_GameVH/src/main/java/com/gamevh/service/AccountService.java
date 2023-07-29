@@ -17,7 +17,7 @@ public interface AccountService {
 	
 	Account add(Account account);
 	
-	List<Account> findByUsername(String username);
+	Account findByUsername(String username);
 	
-	List<Account> findByEmail(String email);
+	Account findByEmail(String email);
 }

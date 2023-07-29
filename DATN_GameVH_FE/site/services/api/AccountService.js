@@ -68,6 +68,9 @@ app.factory('AccountService', function ($http, $window, $q, $location, $route) {
                     'Content-Type': undefined
                 }
             });
+        },
+        changePassword: function (user) {
+            return $http.put(baseUrl + '/changePassword', user);
         }
 
     };

@@ -27,13 +27,13 @@ public class LoginRC {
         if(StringUtils.isEmpty(user.getUserName())){
             return ResponseEntity.badRequest().build();
         }
-        List<Account> accounts = accountService.findByUsername(user.getUserName());
-        if(CollectionUtils.isEmpty(accounts)){
+        Account account = accountService.findByUsername(user.getUserName());
+        if(account == null){
             return ResponseEntity.badRequest().build();
         }
-        if(!encryptionService.compare(user.getPassword(),accounts.get(0).getPassword())){
+        if(!encryptionService.compare(user.getPassword(),account.getPassword())){
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok().body(accounts.get(0));
+        return ResponseEntity.ok().body(account);
     }
 }

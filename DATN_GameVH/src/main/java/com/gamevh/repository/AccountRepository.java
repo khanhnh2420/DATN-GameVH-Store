@@ -11,13 +11,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface AccountRepository extends JpaRepository<Account, String> {
-	List<Account> findByUsernameContaining(String username);
-
-	List<Account> findByEmailContaining(String email);
-
 	Account findById(Integer accountId);
 
 	Account findByUsername(String username);
+	
+	Account findByEmail(String email);
 
 	@Query("SELECT account FROM Account AS account JOIN account.authority AS auth WHERE " +
 			"(:username = '' or :username IS NULL or LOWER(account.username) like CONCAT('%',:username,'%')) AND" +

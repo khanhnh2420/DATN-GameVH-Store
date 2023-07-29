@@ -1,9 +1,15 @@
-app.controller("LoginController", function (AccountService, BcryptService, $scope, $window, $location, $route) {
+app.controller("LoginController", function (AccountService, BcryptService, ToastService, $scope, $window, $location, $route) {
     $scope.account = {}; // Thông tin người dùng nhập từ form
     $scope.user = {}; // Thông tin người dùng lấy từ Server
     $scope.rememberMe; // Lưu đăng nhập
     $scope.message = ($window.sessionStorage.getItem("messageLogin") != null) ? $window.sessionStorage.getItem("messageLogin") : null;// Trạng thái
     $window.sessionStorage.removeItem("messageLogin");
+
+    $scope.messageSuccess = ($window.sessionStorage.getItem("messageLoginSuccess") != null) ? $window.sessionStorage.getItem("messageLoginSuccess") : null;// Trạng thái
+    $window.sessionStorage.removeItem("messageLoginSuccess");
+    if ($scope.messageSuccess) {
+        ToastService.showSuccessToast($scope.messageSuccess);
+    }
 
     // Trở về trang đăng nhập
     $scope.redirectToLogin = function () {
@@ -34,6 +40,10 @@ app.controller("LoginController", function (AccountService, BcryptService, $scop
             }
         }
     };
+
+    $scope.inputPassChange = function() {
+        $scope.isValidPassword = false;
+    }
 
     $scope.login = function () {
         // Reset biến mỗi lần bấm đăng nhập

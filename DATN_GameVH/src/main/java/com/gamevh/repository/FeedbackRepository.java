@@ -15,4 +15,5 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Integer> {
 	@Query("SELECT f FROM Feedback f WHERE f.product.id = :productId")
 	List<Feedback> findByAllProductId(@Param("productId") Integer productId);
 
+	Feedback findByAccountUsernameAndProductId(String username, Integer ProductId);
 }

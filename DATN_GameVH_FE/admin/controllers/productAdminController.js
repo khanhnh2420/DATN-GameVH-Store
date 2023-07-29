@@ -3,11 +3,11 @@ app.controller("ProductController", function(ProductAdminService, $http, $scope,
     $scope.product = {}; // Thông tin sản phẩm sẽ được hiển thị trên trang chi tiết
     $scope.thumbnails = []; // Mảng hình ảnh thumbnail của sản phẩm
 
-
+    $scope.editProduct = {};
 
     $scope.categories = [];
     $scope.feedback = [];
-
+    $scope.thumbnails = [];
 
     $scope.posters = [];
     $scope.thumbnails = [];
@@ -17,15 +17,15 @@ app.controller("ProductController", function(ProductAdminService, $http, $scope,
 
 
 
-    // Lấy thông tin sản phẩm theo ID
-    ProductAdminService.getProductDTO(productId)
-        .then(function(response) {
-            $scope.product = response.data;
+    // // Lấy thông tin sản phẩm theo ID
+    // ProductAdminService.getProductDTO(productId)
+    //     .then(function(response) {
+    //         $scope.product = response.data;
 
-        })
-        .catch(function(error) {
-            console.error('Lỗi khi lấy thông tin sản phẩm:', error);
-        });
+    //     })
+    //     .catch(function(error) {
+    //         console.error('Lỗi khi lấy thông tin sản phẩm:', error);
+    //     });
 
 
 
@@ -80,11 +80,11 @@ app.controller("ProductController", function(ProductAdminService, $http, $scope,
                 '</div>' +
                 '</div>' +
                 '</td>' +
-                // '<td class="text-right">' +
-                // '<div class=" text-right">' +
-                // '<button href="#" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Delete</button>' +
-                // '</div>' +
-                // '</td>' +
+                '<td class="text-right">' +
+                '<div class=" text-right">' +
+                '<button href="#" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Delete</button>' +
+                '</div>' +
+                '</td>' +
                 '</tr>';
 
             feedbackTableBody.append(feedbackRow);
@@ -229,12 +229,9 @@ app.controller("ProductController", function(ProductAdminService, $http, $scope,
     $scope.editProductClicked = function(productId) {
         ProductAdminService.getProduct(productId)
             .then(function(response) {
-                $scope.product = response.data;
+                $scope.editProduct = response.data;
+                loadThumbnails();
                 $('#edit_Product').modal('show');
-                // var defaultImageURL = 'https://drive.google.com/uc?id=' + $scope.product.poster;
-                // var dropifyWrapper = $('.productIMG .dropify-wrapper');
-                // dropifyWrapper.find('.dropify-render img').attr('src', defaultImageURL);
-                // dropifyWrapper.removeClass('has-preview');
             })
             .catch(function(error) {
                 console.error('Lỗi khi lấy thông tin sản phẩm:', error);
@@ -247,8 +244,29 @@ app.controller("ProductController", function(ProductAdminService, $http, $scope,
         $scope.editProductClicked(productId);
     });
 
+    // Hàm để trích xuất các thumbnail từ chuỗi productThumbnail
+    function extractThumbnails(productThumbnail) {
+        if (!productThumbnail) return [];
+        const thumbnailIds = productThumbnail.split("***");
+        return thumbnailIds;
+    }
 
+    // Hàm để hiển thị các thumbnail
+    function displayThumbnails(thumbnails) {
+        thumbnails.forEach((thumbnailId) => {
+            const imageUrl = "https://drive.google.com/uc?id=" + thumbnailId.trim();
+            $scope.displayThumbnail(imageUrl);
+        });
+    }
 
+    // Hàm để tải các thumbnail cho editProduct
+    function loadThumbnails() {
+        // Đảm bảo rằng editProduct.thumbnail đã được xác định trước khi trích xuất các thumbnail
+        if ($scope.editProduct && $scope.editProduct.thumbnail) {
+            $scope.thumbnails = extractThumbnails($scope.editProduct.thumbnail);
+            displayThumbnails($scope.thumbnails);
+        }
+    }
 
     // Cập nhật sản phẩm
     $scope.updateProduct = function() {
@@ -379,6 +397,59 @@ app.controller("ProductController", function(ProductAdminService, $http, $scope,
                 console.error('Lỗi khi tìm kiếm sản phẩm:', error);
             });
     };
+
+    /*----IMAGE----*/
+    // Hàm xử lý sự kiện khi click vào nút "upload-button".
+    // Trong phạm vi AngularJS controller.
+    $scope.handleUploadClick = function() {
+        // Lấy ra input file-upload thông qua ID.
+        var fileInput = document.getElementById('fileInput');
+        // Khi click vào nút "upload-button", kích hoạt sự kiện click cho input file-upload.
+        fileInput.click();
+    };
+
+    // Đăng ký sự kiện change cho input file-upload để xử lý khi người dùng chọn ảnh và thực hiện upload.
+    document.getElementById('fileInput').addEventListener('change', function() {
+        // Lấy danh sách các file đã chọn từ input file-upload.
+        var selectedFiles = this.files;
+        if (selectedFiles.length > 0) {
+            // Lấy file đầu tiên trong danh sách (vì input file-upload cho phép multiple selection).
+            var selectedFile = selectedFiles[0];
+
+            // Tạo một đường dẫn tạm thời cho ảnh từ file đã chọn.
+            var tempPhotoUrl = URL.createObjectURL(selectedFile);
+            $scope.$apply(function() {
+                // Cập nhật đường dẫn mới vào biến "currentPhotoUrl" để thay đổi ảnh hiển thị.
+                $scope.currentPhotoUrl = tempPhotoUrl;
+            });
+        }
+    });
+    // // Sự kiện khi người dùng nhấn nút "Upload Thumbnail"
+    // $scope.handleThumbnailUploadClick = function() {
+    //     // Tìm đến phần tử chứa thẻ <input> và thẻ <img>
+    //     var fileInputthumbnail = document.getElementById('fileInputthumbnail');
+    //     // Khi click vào nút "upload-button", kích hoạt sự kiện click cho input file-upload.
+    //     fileInputthumbnail.click();
+    // };
+
+    // // Đăng ký sự kiện change cho input file-upload để xử lý khi người dùng chọn ảnh và thực hiện upload.
+    // document.getElementById('fileInputthumbnail').addEventListener('change', function() {
+    //     // Lấy danh sách các file đã chọn từ input file-upload.
+    //     var selectedFiles = this.files;
+    //     if (selectedFiles.length > 0) {
+    //         // Lấy file đầu tiên trong danh sách (vì input file-upload cho phép multiple selection).
+    //         var selectedFile = selectedFiles[0];
+
+    //         // Tạo một đường dẫn tạm thời cho ảnh từ file đã chọn.
+    //         var tempPhotoUrl = URL.createObjectURL(selectedFile);
+    //         $scope.$apply(function() {
+    //             // Gọi hàm displayThumbnail để hiển thị ảnh thumbnail được chọn
+    //             $scope.displayThumbnail(tempPhotoUrl);
+    //         });
+    //     }
+    // });
+
+    /*----END IMAGE----*/
 
     //Excel
     $scope.downloadExcel = function() {

@@ -2,7 +2,7 @@ package com.gamevh.service;
 
 import java.util.List;
 
-
+import org.springframework.http.ResponseEntity;
 
 import com.gamevh.entities.Product;
 
@@ -20,7 +20,7 @@ public interface ProductService {
 	
 	void deleteProduct(Product product);
 	
-
+	ResponseEntity<Object> deleteFeedbackById(Integer Id);
 	List<Object[]> getReportProduct();
 
 	List<Product> findTop5();

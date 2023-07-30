@@ -50,21 +50,22 @@
 								</div>
 								<!-- End .toolbox-sort -->
 								<div class="toolbox-layout">
-									<a href="/shop-list" class="btn-layout">
+									<a href="/shop-list?search={{search}}" class="btn-layout">
 										<svg width="16" height="10">
 											<rect x="0" y="0" width="4" height="4" />
 											<rect x="6" y="0" width="10" height="4" />
 											<rect x="0" y="6" width="4" height="4" />
 											<rect x="6" y="6" width="10" height="4" />
 										</svg>
-									</a> <a href="/shop-2cols" class="btn-layout active"> <svg width="10" height="10">
+									</a> <a href="/shop-2cols?search={{search}}" class="btn-layout active"> <svg
+											width="10" height="10">
 											<rect x="0" y="0" width="4" height="4" />
 											<rect x="6" y="0" width="4" height="4" />
 											<rect x="0" y="6" width="4" height="4" />
 											<rect x="6" y="6" width="4" height="4" />
 										</svg>
-									</a> <a href="/shop" class="btn-layout"> <svg
-											width="16" height="10">
+									</a> <a href="/shop?search={{search}}" class="btn-layout"> <svg width="16"
+											height="10">
 											<rect x="0" y="0" width="4" height="4" />
 											<rect x="6" y="0" width="4" height="4" />
 											<rect x="12" y="0" width="4" height="4" />
@@ -72,8 +73,8 @@
 											<rect x="6" y="6" width="4" height="4" />
 											<rect x="12" y="6" width="4" height="4" />
 										</svg>
-									</a> <a href="/shop-4cols" class="btn-layout"> <svg
-											width="22" height="10">
+									</a> <a href="/shop-4cols?search={{search}}" class="btn-layout"> <svg width="22"
+											height="10">
 											<rect x="0" y="0" width="4" height="4" />
 											<rect x="6" y="0" width="4" height="4" />
 											<rect x="12" y="0" width="4" height="4" />
@@ -96,13 +97,12 @@
 								<div ng-if="displayedItems.length === 0">
 									<p>Không có dữ liệu sản phẩm</p>
 								</div>
-								<div class="col-6"ng-if="displayedItems.length > 0"
-									ng-repeat="item in displayedItems">
+								<div class="col-6" ng-if="displayedItems.length > 0" ng-repeat="item in displayedItems">
 									<div class="product product-7 text-center">
 										<figure class="product-media">
 											<a href="/product/detail/{{item.id}}"> <img
-													src="https://drive.google.com/uc?id={{item.poster ? item.poster : '1k7mZ306aaQltWZVJBe-zbXizg2NmAogx'}}" alt="Product image"
-													class="product-image">
+													src="https://drive.google.com/uc?id={{item.poster ? item.poster : '1k7mZ306aaQltWZVJBe-zbXizg2NmAogx'}}"
+													alt="Product image" class="product-image">
 											</a>
 
 											<div class="product-action-vertical">
@@ -127,7 +127,8 @@
 
 										<div class="product-body">
 											<div class="product-cat">
-												<a href="/{{typePageShop}}/{{item.type}}/{{item.categoryId}}">{{item.categoryName}}</a>
+												<a
+													href="/{{typePageShop}}/{{item.type}}/{{item.categoryId}}">{{item.categoryName}}</a>
 											</div>
 											<!-- End .product-cat -->
 											<h3 class="product-title">
@@ -202,7 +203,7 @@
 					<aside class="col-lg-3 order-lg-first">
 						<div class="sidebar sidebar-shop">
 							<div class="widget widget-clean">
-								<label>Lọc:</label> <a href="" ng-click="get_all()" class="sidebar-filter-clear">Làm
+								<label>Lọc:</label> <a href="" ng-click="resetFilter()" class="sidebar-filter-clear">Làm
 									mới</a>
 							</div>
 							<!-- End .widget widget-clean -->
@@ -221,8 +222,9 @@
 											<div class="filter-item" ng-repeat="(key, value) in categories">
 												<div class="custom-control custom-checkbox"
 													ng-if="value.type == 'Game'">
-													<input type="checkbox" class="custom-control-input"
-														ng-click="get_ByCategory($event,key)" id="{{'cat-' + $index}}">
+													<input type="checkbox" class="custom-control-input game"
+														id="{{'cat-' + $index}}"
+														data-category-id="{{value.categoryId}}">
 													<label class="custom-control-label"
 														for="{{'cat-' + $index}}">{{value.name}}</label>
 												</div>
@@ -232,8 +234,9 @@
 											<h5 class="mt-2">Phụ kiện</h5>
 											<div class="filter-item" ng-repeat="(key, value) in categories">
 												<div class="custom-control custom-checkbox" ng-if="value.type == 'PK'">
-													<input type="checkbox" class="custom-control-input"
-														ng-click="get_ByCategory($event,key)" id="{{'cat-' + $index}}">
+													<input type="checkbox" class="custom-control-input pk"
+														data-category-id="{{value.categoryId}}"
+														id="{{'cat-' + $index}}">
 													<label class="custom-control-label"
 														for="{{'cat-' + $index}}">{{value.name}}</label>
 												</div>
@@ -261,24 +264,34 @@
 									<div class="widget-body">
 										<div class="filter-price">
 											<div class="custom-control custom-checkbox">
-												<input type="checkbox" class="custom-control-input" id="range1">
+												<input type="checkbox" class="custom-control-input rangePrice"
+													id="range1" value="0" ng-model="priceRanges[0].selected">
 												<label class="custom-control-label" for="range1">0 - 1.000.000
 													VND</label>
 											</div>
 											<div class="custom-control custom-checkbox">
-												<input type="checkbox" class="custom-control-input" id="range2">
+												<input type="checkbox" class="custom-control-input rangePrice"
+													id="range2" value="1000000" ng-model="priceRanges[1].selected">
 												<label class="custom-control-label" for="range2">1.000.000 - 5.000.000
 													VND</label>
 											</div>
 											<div class="custom-control custom-checkbox">
-												<input type="checkbox" class="custom-control-input" id="range3">
+												<input type="checkbox" class="custom-control-input rangePrice"
+													id="range3" value="5000000" ng-model="priceRanges[2].selected">
 												<label class="custom-control-label" for="range3">5.000.000 - 10.000.000
 													VND</label>
 											</div>
 											<div class="custom-control custom-checkbox">
-												<input type="checkbox" class="custom-control-input" id="range4">
+												<input type="checkbox" class="custom-control-input rangePrice"
+													id="range4" value="10000000" ng-model="priceRanges[3].selected">
 												<label class="custom-control-label" for="range4">Trên 10.000.000
 													VND</label>
+											</div>
+											<div class="d-flex mt-3">
+												<button type="button" class="btn btn-outline-primary-2"
+													ng-click="filter()">
+													<span>ÁP DỤNG</span> <i class="icon-long-arrow-right"></i>
+												</button>
 											</div>
 											<!-- End #price-slider -->
 										</div>
@@ -299,6 +312,6 @@
 			<!-- End .container -->
 		</div>
 		<!-- End .page-content -->
-		<div id="toast"></div> 
+		<div id="toast"></div>
 	</main>
 </div>

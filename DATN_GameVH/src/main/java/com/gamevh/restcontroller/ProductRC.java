@@ -56,7 +56,8 @@ import com.gamevh.dto.ProductDTO;
 import com.gamevh.dto.impl.ProductAdminDTOImpl;
 import com.gamevh.dto.impl.ProductDTOImpl;
 import com.gamevh.entities.Category;
-
+import com.gamevh.entities.Comment;
+import com.gamevh.entities.Favorite;
 import com.gamevh.entities.Feedback;
 import com.gamevh.entities.OrderDetail;
 import com.gamevh.entities.Product;
@@ -516,14 +517,14 @@ public class ProductRC {
 //	}
 	
 	@PutMapping("/updateFeedback/{id}")
-	public ResponseEntity<Feedback> updateFeedbackStatus(@PathVariable Integer id, @RequestBody Feedback updatedFeedback) {
+	public ResponseEntity<Feedback> updateFeedbackStatus(@PathVariable Integer id, @RequestBody Boolean status) {
 	    // Kiểm tra xem feedback có tồn tại trong database hay không dựa trên ID
 	    Optional<Feedback> existingFeedbackOptional = feedbackRepository.findById(id);
 	    if (existingFeedbackOptional.isPresent()) {
 	        Feedback existingFeedback = existingFeedbackOptional.get();
 	        
 	        // Cập nhật trạng thái của feedback với dữ liệu từ đối tượng feedback mới
-	        existingFeedback.setStatus(updatedFeedback.getStatus());
+	        existingFeedback.setStatus(status);
 
 	        // Lưu lại feedback đã cập nhật vào database
 	        feedbackRepository.save(existingFeedback);
@@ -533,7 +534,11 @@ public class ProductRC {
 	        return ResponseEntity.notFound().build(); // Nếu không tìm thấy feedback trong database, trả về phản hồi không tìm thấy.
 	    }
 	}
-
+	
+	@DeleteMapping("/deleteFeedback/{id}")
+	public ResponseEntity<Object> deleteCommentById(@PathVariable Integer id) {
+		return productService.deleteFeedbackById(id);
+	}
 
 	
 	@GetMapping("/downloadExcel")

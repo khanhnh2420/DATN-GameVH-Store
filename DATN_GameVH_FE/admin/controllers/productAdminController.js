@@ -1,4 +1,4 @@
-app.controller("ProductController", function(ProductAdminService, $http, $scope, $routeParams, $timeout, $rootScope, $filter) {
+app.controller("ProductController", function(ProductAdminService, ToastService, $http, $scope, $compile, $routeParams, $timeout, $rootScope, $filter) {
 
     $scope.product = {}; // Thông tin sản phẩm sẽ được hiển thị trên trang chi tiết
     $scope.thumbnails = []; // Mảng hình ảnh thumbnail của sản phẩm
@@ -44,7 +44,6 @@ app.controller("ProductController", function(ProductAdminService, $http, $scope,
             .then(function(response) {
                 $scope.feedback = response.data;
                 $('#comment_Product').modal('show');
-                // Gọi hàm loadProductFeedback để hiển thị dữ liệu phản hồi lên form
                 $scope.loadProductFeedback();
             })
             .catch(function(error) {
@@ -52,11 +51,13 @@ app.controller("ProductController", function(ProductAdminService, $http, $scope,
             });
     };
 
+
     $scope.loadProductFeedback = function() {
         var feedbackTableBody = $('#feedbackTableBody');
         feedbackTableBody.empty();
 
         $scope.feedback.forEach(function(feedback) {
+
             var starIcons = '';
             for (var i = 1; i <= 5; i++) {
                 starIcons += '<span class="fa fa-star' + (feedback.star >= i ? ' checked' : '') + '"></span>';
@@ -75,38 +76,123 @@ app.controller("ProductController", function(ProductAdminService, $http, $scope,
                 (feedback.status ? 'Đã Duyệt' : 'Chưa Duyệt') +
                 '</a>' +
                 '<div class="dropdown-menu">' +
-                '<a class="dropdown-item" href="#" ng-click="updateFeedbackStatus(feedback, true)"><i class="fa fa-dot-circle-o text-success"></i>Đã Duyệt</a>' +
-                '<a class="dropdown-item" href="#" ng-click="updateFeedbackStatus(feedback, false)"><i class="fa fa-dot-circle-o text-danger"></i>Chưa Duyệt</a>' +
+                '<a class="dropdown-item" href="#" ng-click="updateFeedbackStatus(' + feedback.id + ',' + feedback.product.id + ',1)"><i class="fa fa-dot-circle-o text-success"></i>Đã Duyệt</a>' +
+                '<a class="dropdown-item" href="#" ng-click="updateFeedbackStatus(' + feedback.id + ',' + feedback.product.id + ',0)"><i class="fa fa-dot-circle-o text-danger"></i>Chưa Duyệt</a>' +
                 '</div>' +
                 '</div>' +
                 '</td>' +
                 '<td class="text-right">' +
                 '<div class=" text-right">' +
-                '<button href="#" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Delete</button>' +
+                '<button href="#" ng-click="deleteFeedback(' + feedback.id + ',' + feedback.product.id + ')" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Delete</button>' +
                 '</div>' +
                 '</td>' +
                 '</tr>';
-
+            // Thêm feedbackRow vào feedbackTableBody
             feedbackTableBody.append(feedbackRow);
+
+            // Biên dịch các sự kiện ng-click trong feedbackRow
+            var rowElement = feedbackTableBody.find('tr:last-child');
+            $compile(rowElement)($scope);
         });
     };
 
 
-
-    $scope.updateFeedbackStatus = function(feedback, status) {
+    $scope.updateFeedbackStatus = function(feedbackId, productId, status) {
         // Gọi phương thức trong Service để cập nhật trạng thái feedback
-        ProductAdminService.updateFeedbackStatus(feedback.id, status)
+        ProductAdminService.updateFeedbackStatus(feedbackId, status)
             .then(function(response) {
                 console.log("Feedback đã được cập nhật:", response.data);
-                // Cập nhật trạng thái của feedback sau khi nhận phản hồi thành công từ API
-                feedback.status = status;
-                console.log(feedback.id)
+                showSuccessToast("Đã thay đổi trạng thái đánh giá thành công");
+                $scope.getFeedbackForProduct(productId);
             })
             .catch(function(error) {
                 console.error("Lỗi khi cập nhật feedback:", error);
-                // Xử lý lỗi nếu có
             });
     };
+
+    $scope.deleteFeedback = function(feedbackId, productId) {
+        ProductAdminService.deleteFeedbackById(feedbackId)
+            .then(function(resp) {
+                // Xử lý thành công, data chứa dữ liệu thành công từ service
+                showSuccessToast("Đã xóa đánh giá thành công");
+                $scope.getFeedbackForProduct(productId);
+            })
+            .catch(function(error) {
+                // Xử lý lỗi, error chứa dữ liệu lỗi từ service
+            });
+    };
+
+
+    // Thông báo Toast Success
+    function showSuccessToast(message) {
+        var toastMessage = message || "Sản phẩm đã được xóa thành công.";
+        toast({
+            title: "Thành công!",
+            message: toastMessage,
+            type: "success",
+            duration: 5000
+        });
+    }
+
+    function showErrorToast(message) {
+        var toastMessage = message || "Thất bại.";
+        toast({
+            title: "Thất bại!",
+            message: toastMessage,
+            type: "error",
+            duration: 5000
+        });
+    }
+
+    // Toast function
+    function toast({ title = "", message = "", type = "info", duration = 3000 }) {
+        const main = document.getElementById("toast");
+        if (main) {
+            const toast = document.createElement("div");
+
+            // Auto remove toast
+            const autoRemoveId = setTimeout(function() {
+                main.removeChild(toast);
+            }, duration + 1000);
+
+            // Remove toast when clicked
+            toast.onclick = function(e) {
+                if (e.target.closest(".toast__close")) {
+                    main.removeChild(toast);
+                    clearTimeout(autoRemoveId);
+                }
+            };
+
+            const icons = {
+                success: "fas fa-check-circle",
+                info: "fas fa-info-circle",
+                warning: "fas fa-exclamation-circle",
+                error: "fas fa-exclamation-circle"
+            };
+            const icon = icons[type];
+            const delay = (duration / 1000).toFixed(2);
+
+            toast.classList.add("toastDesign", `toast--${type}`);
+            toast.style.animation = `slideInLeft ease .3s, fadeOut linear 1s ${delay}s forwards`;
+
+            toast.innerHTML = `
+                      <div class="toast__icon">
+                          <i class="${icon}"></i>
+                      </div>
+                      <div class="toast__body">
+                          <h3 class="toast__title">${title}</h3>
+                          <p class="toast__msg">${message}</p>
+                      </div>
+                      <div class="toast__close">
+                          <i class="fas fa-times"></i>
+                      </div>
+                  `;
+            main.appendChild(toast);
+        }
+    };
+
+
+
 
 
 

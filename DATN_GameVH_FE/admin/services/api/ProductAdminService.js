@@ -50,14 +50,11 @@ app.factory('ProductAdminService', function($http) {
         getListProductSearch: function(productName, productType, categoryName) {
             return $http.get(baseUrl + '/products/search?productName=' + productName + '&productType=' + productType + '&categoryName=' + categoryName);
         },
-        updateFeedbackStatus: function(feedbackId, feedbackStatus) {
-            var feedbackData = {
-                status: feedbackStatus
-            };
-
-            return $http.put(baseUrl + '/updateFeedback/' + feedbackId, feedbackData);
+        updateFeedbackStatus: function(feedbackId, status) {
+            return $http.put(baseUrl + '/updateFeedback/' + feedbackId, status);
         },
-
-
+        deleteFeedbackById: function(feedbackId) {
+            return $http.delete(baseUrl + '/deleteFeedback/' + feedbackId)
+        },
     };
 });

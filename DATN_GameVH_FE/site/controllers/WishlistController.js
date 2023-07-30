@@ -1,4 +1,4 @@
-app.controller("WishlistController", function($scope, ToastService, AccountService, ProductService, WishlistService, $http) {
+app.controller("WishlistController", function($scope, ToastService, AccountService, ProductService, WishlistService, $window, $http) {
     $scope.favorite = []
 
     $scope.account = {}; // Biến lưu thông tin account 

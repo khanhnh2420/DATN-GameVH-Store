@@ -6,6 +6,7 @@ app.controller("BlogController", function (PageService, BlogService, TimeService
     $scope.blogs = [];
     $scope.blogPopular = [];
     $scope.calculateTimeAgo = TimeService.calculateTimeAgo;
+    $scope.tempBlogs = [];
 
     $scope.limitContent = function (content) {
         return content.length > 243 ? content.substring(0, 243) + '...' : content;
@@ -14,6 +15,7 @@ app.controller("BlogController", function (PageService, BlogService, TimeService
     $scope.loadData = function () {
         BlogService.getAllBlog().then(function (resp) {
             $scope.blogs = resp.data;
+            $scope.tempBlogs = $scope.blogs;
             $scope.getListProductOnPage();
         }).catch(function (error) {
             console.error('Lỗi khi lấy tất cả sản phẩm DTO:', error);
@@ -25,6 +27,18 @@ app.controller("BlogController", function (PageService, BlogService, TimeService
         });
     }
     $scope.loadData();
+
+    $scope.searchBlog = function () {
+        $scope.blogs = $scope.tempBlogs;
+        var searchTerm = document.getElementById("search-blog-id").value.toLowerCase(); // Chuyển searchTerm thành chữ thường
+        var result = $scope.blogs.filter(function (item) {
+            var blogTitle = item.title.toLowerCase(); // Chuyển giá trị thuộc tính name thành chữ thường
+            return blogTitle.indexOf(searchTerm) !== -1;
+        });
+
+        $scope.blogs = result;
+        $scope.getListProductOnPage();
+    }
 
     $scope.getListProductOnPage = function () {
         // Tổng số trang

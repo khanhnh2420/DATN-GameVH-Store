@@ -20,7 +20,9 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-9">
-
+                        <div ng-if="displayedItems.length === 0" class="text-center">
+                            <p>Không có bài viết nào được hiển thị!</p>
+                        </div>
                         <article class="entry entry-list" ng-repeat="item in displayedItems">
                             <div class="row align-items-center">
                                 <div class="col-md-5">
@@ -92,10 +94,10 @@
                             <div class="widget widget-search">
                                 <h3 class="widget-title">Tìm kiếm</h3><!-- End .widget-title -->
 
-                                <form action="#">
-                                    <label for="ws" class="sr-only">Tìm kiếm bài viết</label>
-                                    <input type="search" class="form-control" name="ws" id="ws"
-                                        placeholder="Tìm kiếm bài viết" required>
+                                <form ng-submit="searchBlog()">
+                                    <label for="search-blog-id" class="sr-only">Tìm kiếm bài viết</label>
+                                    <input type="search" class="form-control" name="ws" id="search-blog-id"
+                                        placeholder="Tìm kiếm bài viết">
                                     <button type="submit" class="btn"><i class="icon-search"></i><span
                                             class="sr-only">Search</span></button>
                                 </form>

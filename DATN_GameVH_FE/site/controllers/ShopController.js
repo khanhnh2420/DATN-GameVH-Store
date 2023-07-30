@@ -1,6 +1,7 @@
 app.controller("ShopController", function (PageService, ProductService, CategoryService, $scope, $routeParams, $location, $window) {
 	$scope.type = $routeParams.type;
 	$scope.category = $routeParams.category;
+	$scope.search = $routeParams.search;
 	$scope.itemsPerPage = 9; // Số lượng phần tử hiển thị trên mỗi trang
 	$scope.currentPage = 1; // Trang hiện tại
 	$scope.totalPages = 0;
@@ -8,6 +9,15 @@ app.controller("ShopController", function (PageService, ProductService, Category
 	$scope.products = [];
 	$scope.categories = [];
 	$scope.typePageShop = 'shop';
+	$scope.tempProducts = [];
+
+	// Tạo mảng giá để filter
+	$scope.priceRanges = [
+		{ range: "0 - 1.000.000 VND", min: 0, max: 1000000, selected: false },
+		{ range: "1.000.000 - 5.000.000 VND", min: 1000000, max: 5000000, selected: false },
+		{ range: "5.000.000 - 10.000.000 VND", min: 5000000, max: 10000000, selected: false },
+		{ range: "Trên 10.000.000 VND", min: 10000000, max: Infinity, selected: false }
+	];
 
 	if ($scope.type != null && $scope.type != undefined) {
 		$scope.selectedType = $scope.type;
@@ -27,20 +37,143 @@ app.controller("ShopController", function (PageService, ProductService, Category
 		} else if (link.indexOf("shop-list") !== -1) {
 			$scope.itemsPerPage = 4;
 			$scope.typePageShop = "shop-list";
-			console.log("abc")
 		} else {
 			$scope.itemsPerPage = 9;
 			$scope.typePageShop = "shop";
-		}	
+		}
 	};
 
 	$scope.checkLink();
 
+	$scope.searchProductInArr = function (arr) {
+		$scope.search = $routeParams.search;
+		document.getElementById("search").value = $scope.search;
+		if ($routeParams.search && $routeParams.search != "undefined" && $routeParams.search != "null") {
+			var searchTerm = $routeParams.search.toLowerCase(); // Chuyển searchTerm thành chữ thường
+			var result = arr.filter(function (item) {
+				var itemName = item.name.toLowerCase(); // Chuyển giá trị thuộc tính name thành chữ thường
+				return itemName.indexOf(searchTerm) !== -1;
+			});
+			return result;
+		} else {
+			document.getElementById("search").value = "";
+		}
+		return null;
+	}
+
+	$scope.resetFilter = function () {
+		var gameElements = document.querySelectorAll(".game");
+		// Sử dụng forEach để duyệt qua từng phần tử
+		gameElements.forEach(function (element) {
+			// Kiểm tra giá trị "checked" của từng phần tử
+			if (element.checked) {
+				element.checked = false;
+			}
+		});
+
+		var pkElements = document.querySelectorAll(".pk");
+		// Sử dụng forEach để duyệt qua từng phần tử
+		pkElements.forEach(function (element) {
+			// Kiểm tra giá trị "checked" của từng phần tử
+			if (element.checked) {
+				element.checked = false;
+			}
+		});
+
+		$scope.priceRanges.forEach(function (element) {
+			// Kiểm tra giá trị "checked" của từng phần tử
+			if (element.selected) {
+				element.selected = false;
+			}
+		})
+
+		$scope.products = $scope.tempProducts;
+		$scope.getListProductOnPage();
+	}
+
+	$scope.filter = function () {
+		var arrFilter = []; // Lưu các loại sản phẩm người dùng chọn để lọc
+		var arrRangePriceSelected = []; // Lưu các khoảng giá người dùng chọn để lọc
+		var filteredProducts = []; // mảng sản phẩm đã lọc theo loại sản phẩm
+		var filteredProductsPrice = []; // mảng sản phẩm đã lọc theo giá sản phẩm
+		$scope.products = $scope.tempProducts; // làm mới lại danh sách sản phẩm
+
+		// Duyệt để lấy ra các loại game người dùng chọn để filter
+		var gameElements = document.querySelectorAll(".game");
+		// Sử dụng forEach để duyệt qua từng phần tử
+		gameElements.forEach(function (element) {
+			// Kiểm tra giá trị "checked" của từng phần tử
+			if (element.checked) {
+				arrFilter.push(element.getAttribute("data-category-id"));
+			}
+		});
+
+		// Duyệt để lấy ra các loại phụ kiện người dùng chọn để filter
+		var pkElements = document.querySelectorAll(".pk");
+		// Sử dụng forEach để duyệt qua từng phần tử
+		pkElements.forEach(function (element) {
+			// Kiểm tra giá trị "checked" của từng phần tử
+			if (element.checked) {
+				arrFilter.push(element.getAttribute("data-category-id"));
+			}
+		});
+
+		// Duyệt để lấy ra khoảng giá người dùng chọn để filter
+		$scope.priceRanges.forEach(function (element) {
+			if (element.selected) {
+				arrRangePriceSelected.push(element);
+			}
+		})
+
+		// Check nếu có loại sản phẩm thì lọc theo loại
+		if (arrFilter.length > 0) {
+			filteredProducts = $scope.products.filter(function (product) {
+				return arrFilter.includes(product.categoryId);
+			});
+		}
+
+		if (filteredProducts.length > 0) {
+			// Lọc theo giá
+			var filteredProductsPrice = filteredProducts.filter(function (product) {
+				return $scope.priceRanges.some(function (priceRange) {
+					return priceRange.selected && (product.salePrice - (product.salePrice * product.offer)) >= priceRange.min && (product.salePrice - (product.salePrice * product.offer)) <= priceRange.max;
+				});
+			});
+
+			// Check nếu có lọc theo giá thì hiển thị
+			if (arrRangePriceSelected.length > 0) {
+				$scope.products = filteredProductsPrice || [];
+				$scope.getListProductOnPage();
+			} else {
+				// Hiển thị lọc theo loại sản phẩm
+				$scope.products = filteredProducts || [];
+				$scope.getListProductOnPage();
+			}
+		} else {
+			// Lọc theo giá
+			var filteredProductsPrice = $scope.products.filter(function (product) {
+				return $scope.priceRanges.some(function (priceRange) {
+					return priceRange.selected && (product.salePrice - (product.salePrice * product.offer)) >= priceRange.min && (product.salePrice - (product.salePrice * product.offer)) <= priceRange.max;
+				});
+			});
+			// Hiển thị lọc theo giá
+			$scope.products = filteredProductsPrice || [];
+			$scope.getListProductOnPage();
+		}
+	}
+
 	$scope.loadData = function () {
 		if ($scope.type == null || $scope.type == undefined) {
-			// Lấy sản phẩm theo ID để hiển thị trên trang chi tiết
 			ProductService.getAllProductDTO().then(function (response) {
 				$scope.products = response.data;
+				$scope.tempProducts = $scope.products;
+
+				// Tìm kiếm sản phẩm
+				$scope.searchProducts = $scope.searchProductInArr($scope.products);
+				if ($scope.searchProducts) {
+					$scope.products = $scope.searchProducts;
+				}
+
 				$scope.getListProductOnPage();
 			}).catch(function (error) {
 				console.error('Lỗi khi lấy tất cả sản phẩm DTO:', error);
@@ -50,6 +183,14 @@ app.controller("ShopController", function (PageService, ProductService, Category
 				if ($scope.type == "Game") {
 					ProductService.getAllProductDTOByType($scope.type).then(function (response) {
 						$scope.products = response.data;
+						$scope.tempProducts = $scope.products;
+
+						// Tìm kiếm sản phẩm
+						$scope.searchProducts = $scope.searchProductInArr($scope.products);
+						if ($scope.searchProducts) {
+							$scope.products = $scope.searchProducts;
+						}
+
 						$scope.getListProductOnPage();
 					}).catch(function (error) {
 						console.error('Lỗi khi lấy danh sách game:', error);
@@ -57,6 +198,14 @@ app.controller("ShopController", function (PageService, ProductService, Category
 				} else {
 					ProductService.getAllProductDTOByType($scope.type).then(function (response) {
 						$scope.products = response.data;
+						$scope.tempProducts = $scope.products;
+
+						// Tìm kiếm sản phẩm
+						$scope.searchProducts = $scope.searchProductInArr($scope.products);
+						if ($scope.searchProducts) {
+							$scope.products = $scope.searchProducts;
+						}
+
 						$scope.getListProductOnPage();
 					}).catch(function (error) {
 						console.error('Lỗi khi lấy danh sách phụ kiện:', error);
@@ -65,6 +214,13 @@ app.controller("ShopController", function (PageService, ProductService, Category
 			} else {
 				ProductService.getAllProductDTOByTypeAndCategory($scope.type, $scope.category).then(function (response) {
 					$scope.products = response.data;
+					$scope.tempProducts = $scope.products;
+
+					$scope.searchProducts = $scope.searchProductInArr($scope.products);
+					if ($scope.searchProducts) {
+						$scope.products = $scope.searchProducts;
+					}
+
 					$scope.getListProductOnPage();
 				}).catch(function (error) {
 					console.error('Lỗi khi lấy tất cả sản phẩm DTO theo loại và danh mục:', error);

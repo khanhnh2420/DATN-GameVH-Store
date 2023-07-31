@@ -13,10 +13,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.*;
 
 @SuppressWarnings("serial")
-@Data
+@EqualsAndHashCode(exclude = "authority")
+@ToString(exclude = "authority")
+@Setter
+@Getter
 @Entity
 @Table(name="account", indexes={@Index(name="account_Username_IX", columnList="Username", unique=true), @Index(name="account_Email_IX", columnList="Email", unique=true), @Index(name="account_Photo_IX", columnList="Photo", unique=false)})
 public class Account  implements Serializable{

@@ -41,8 +41,6 @@ public class ProductServiceImpl implements ProductService {
 		return productRepository.save(product);
 	}
 
-	
-
 	@Override
 	public Product updateProduct(Product product) {
 		 return productRepository.save(product);
@@ -52,8 +50,6 @@ public class ProductServiceImpl implements ProductService {
 	public void deleteProduct(Product product) {
 		 productRepository.delete(product);
 	}
-
-	
 
 	@Override
 	public List<Object[]> getReportProduct() {

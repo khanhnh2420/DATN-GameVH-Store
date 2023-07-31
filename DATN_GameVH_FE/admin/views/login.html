@@ -1,22 +1,23 @@
 
 <!-- Main Wrapper -->
-<div class="main-wrapper" ng-controller="LoginController">
+<div class="main-wrapper" ng-controller="LoginController" style="height: 100vh; background-image: url(../assets/images/masonry/background-login.gif);background-repeat: no-repeat;
+background-attachment: fixed;
+background-size:  cover, contain;">
 	<div class="account-content">
 		<div class="container">
 
 			<!-- Account Logo -->
 			<div class="account-logo">
-				<a href="index.html"><img src="assets/images/masonry/AU-thumb2.jpg" alt="7TL Technologies" class="rounded-circle"></a>
+				<a href="index.html"><img src="../assets/images/masonry/logo-login.jpg" alt="7TL Technologies" ></a>
 			</div>
 			<!-- /Account Logo -->
 
 			<div class="account-box">
-				<div class="account-wrapper">
-					<h3 class="account-title">Login</h3>
-					<p class="account-subtitle">Access to our dashboard</p>
-
+				
+				<div class="account-wrapper" >
+					<h1 class="account-title" style="color: #fff; ">LOGIN</h1>
 					<!-- Account Form -->
-					<form>
+					<form >
 						<div class="form-group">
 							<label>Username</label>
 							<input ng-model="userName" class="form-control" type="text">

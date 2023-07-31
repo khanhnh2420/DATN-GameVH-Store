@@ -8,6 +8,7 @@ import java.io.IOException;
 
 
 
+
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -56,8 +57,7 @@ import com.gamevh.dto.ProductDTO;
 import com.gamevh.dto.impl.ProductAdminDTOImpl;
 import com.gamevh.dto.impl.ProductDTOImpl;
 import com.gamevh.entities.Category;
-import com.gamevh.entities.Comment;
-import com.gamevh.entities.Favorite;
+
 import com.gamevh.entities.Feedback;
 import com.gamevh.entities.OrderDetail;
 import com.gamevh.entities.Product;
@@ -505,16 +505,27 @@ public class ProductRC {
 	    return driveService.uploadFile(image, fileName, mimeType, folderId);
 	}
 	
-//	@GetMapping("/search")
-//	public ResponseEntity<List<Product>> searchProducts(
-//	        @RequestParam(value = "productName", required = false) String productName,
-//	        @RequestParam(value = "productType", required = false) String productType,
-//	        @RequestParam(value = "categoryName", required = false) String categoryName) {
-//
-//	    List<Product> searchResults = productService.searchByProductNameAndProductTypeAndCategoryName(productName, productType, categoryName);
-//
-//	    return ResponseEntity.ok(searchResults);
-//	}
+	@GetMapping("search")
+	public ResponseEntity<List<Product>> searchEmployees(
+			@RequestParam(value = "productName", required = false) Optional<String> ProductName,
+			@RequestParam(value = "productType", required = false) Optional<String> ProductType,
+			@RequestParam(value = "categoryName", required = false) Optional<String> CategoryName) {
+		if (ProductName.orElse("0").equals("0")) {
+			ProductName = null;
+		}
+
+		if (ProductType.orElse("0").equals("0")) {
+			ProductType = null;
+		}
+
+		if (CategoryName.orElse("").equals("")) {
+			CategoryName = null;
+		}
+
+		List<Product> searchResults = productService.searchProduct(ProductName,ProductType,CategoryName);
+
+		return ResponseEntity.ok(searchResults);
+	}
 	
 	@PutMapping("/updateFeedback/{id}")
 	public ResponseEntity<Feedback> updateFeedbackStatus(@PathVariable Integer id, @RequestBody Boolean status) {

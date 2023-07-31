@@ -70,7 +70,7 @@
                 </div>
             </div>
             <div class="col-sm-6 col-md-2">
-                <a href="#" class="btn btn-success btn-block" ng-click="searchProduct()"> Tìm Kiếm </a>
+                <a href="#" class="btn btn-success btn-block" ng-click="SearchProduct()"> Tìm Kiếm </a>
             </div>
             <div class="col-sm-6 col-md-2">
                 <a href="#" class="btn btn-success btn-block" ng-click="downloadExcel()"> Xuất Báo Cáo </a>
@@ -97,32 +97,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- <tr ng-repeat="product in products">
-                                <td class="text-center">{{product.id}}</td>
-                                <td class="text-center">
-                                    <h2 class="table-poster">
-                                        <a href="#" class="poster"><img alt="" src="/assets/img/products/{{ product.poster }}" data-zoom-image="/assets/img/products/{{ product.poster }}" alt="product image"></a>
-                                    </h2>
-                                </td>
-                                <td><a href="#" class="text-dark" data-toggle="modal" data-target="#edit_Product">{{ product.name }}</a></td>
-                                <td>{{ product.originPrice | vndFormat}}</td>
-                                <td>{{ product.salePrice | vndFormat}}</td>
-                                <td>{{ product.source }}</td>
-                                <td>{{ product.createDate | dateFormat}}</td>
-                                <td>{{ product.category.type }}</td>
-                                <td><span class="badge bg-inverse-{{ product.status == 'Đã đăng' ? 'success' : 'danger' }}">{{ product.status }}</span></td>
-                                <td class="text-right">
-                                    <div class="dropdown dropdown-action">
-                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_Product"><i class="fa fa-pencil m-r-5"></i>Edit</a>
-                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_Product"><i class="fa fa-trash-o m-r-5"></i>Delete</a>
-                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#comment_Product"><i class="fa fa-pencil-square-o m-r-5"></i>Comment</a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr> -->
-
 
                         </tbody>
 
@@ -388,26 +362,30 @@
                                 <div class="card-body">
                                     <div class="row d-flex justify-content-center">
                                         <h4 class="">Ảnh Thu Nhỏ</h4>
-                                        <h5 class="text-danger fs-3 mt-1 ml-2">*Only 3 Photos*</h5>
+                                        <h5 class="text-danger fs-3 mt-1 ml-2">*Chỉ được 3 ảnh thu nhỏ*</h5>
                                     </div>
                                     <div class="dropzone-container d-flex justify-content-center flex-wrap" id="dropzone_remove">
                                         <div ng-repeat="thumbnailId in thumbnails">
-                                            <img ng-src="https://drive.google.com/uc?id={{thumbnailId.trim()}}" alt="Thumbnail" class="thumbnail">
-                                            <!-- <div class="upload-button" ng-click="handleThumbnailUploadClick()">
-                                                <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
-                                            </div>
-                                            <input class="fileInputthumbnail" type="file" id="fileInputthumbnail" accept="image/*" /> -->
+                                            <!-- <img ng-src="https://drive.google.com/uc?id={{thumbnailId.trim()}}" alt="Thumbnail" class="thumbnail"> -->
+                                            <form ng-submit="handleFormSubmit()">
+                                                <img ng-src="https://drive.google.com/uc?id={{thumbnailId.trim()}}" alt="Thumbnail" class="thumbnail">
+                                                <div ng-repeat="index in [1, 2, 3]">
+                                                    <div class="upload-button" ng-click="handleThumbnailUploadClick(index)">
+                                                        <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
+                                                    </div>
+                                                    <input class="fileInputthumbnail" type="file" id="fileInputthumbnail{{index}}" accept="image/*" style="display: none;" />
+                                                </div>
+                                                <!-- <button type="submit" style="display: none;"></button> -->
+                                            </form>
                                         </div>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
                         <style>
                             .thumbnail {
                                 width: 300px;
-                                height: 500px;
+                                height: 300px;
                                 object-fit: cover;
                                 margin: 5px;
                                 border-radius: 5%;
@@ -420,7 +398,7 @@
                         </style>
                     </div>
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" ng-click="updateProduct()">Sửa</button>
+                        <button class="btn btn-primary submit-btn" ng-click="updateProduct(productId)">Sửa</button>
                     </div>
                 </div>
             </div>
@@ -444,7 +422,7 @@
                     <form>
                         <div class="col-md-12">
                             <div class="table-responsive">
-                                <table class="table table-striped custom-table datatable">
+                                <table class="table table-striped custom-table">
                                     <thead>
                                         <tr>
                                             <th>ID</th>

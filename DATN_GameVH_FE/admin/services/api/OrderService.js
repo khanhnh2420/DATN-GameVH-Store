@@ -4,7 +4,7 @@ app.factory("OrderService", function ($http) {
     getAll: function (filters) {
       const queries = {
         page: filters.page || 0,
-        size: filters.size || 5,
+        size: filters.size || 500,
         username: filters.username || null,
         phone: filters.phone || null,
         createdAt: filters.createdAt || null,

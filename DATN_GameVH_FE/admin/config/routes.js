@@ -59,6 +59,10 @@ app
         templateUrl: "/views/login.html",
         pageTitle: "Login",
       })
+      .when("/loading", {
+        templateUrl: "/views/loading.html",
+        pageTitle: "Loading",
+      })
       .otherwise({
         templateUrl: "/views/error-404.html",
       });

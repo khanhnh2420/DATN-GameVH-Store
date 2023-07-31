@@ -21,14 +21,8 @@
           </ul>
         </div>
         <div class="col-auto float-right ml-auto">
-          <a
-            ng-click="openAddModal()"
-            href="#"
-            class="btn add-btn"
-            data-toggle="modal"
-            data-target="#add_Staff"
-            ><i class="fa fa-plus"></i> Add Staff Account</a
-          >
+          <a ng-click="openAddModal()" href="#" class="btn add-btn" data-toggle="modal" data-target="#add_Staff"><i
+              class="fa fa-plus"></i> Add Staff Account</a>
         </div>
       </div>
     </div>
@@ -38,21 +32,13 @@
     <div class="row filter-row">
       <div class="col-sm-6 col-md-4">
         <div class="form-group form-focus">
-          <input
-            ng-model="usernameFilter"
-            type="text"
-            class="form-control floating"
-          />
+          <input ng-model="usernameFilter" type="text" class="form-control floating" />
           <label class="focus-label">Username</label>
         </div>
       </div>
       <div class="col-sm-6 col-md-4">
         <div class="form-group form-focus">
-          <input
-            ng-model="nameFilter"
-            type="text"
-            class="form-control floating"
-          />
+          <input ng-model="nameFilter" type="text" class="form-control floating" />
           <label class="focus-label">Staff Name</label>
         </div>
       </div>
@@ -84,58 +70,32 @@
               <tr ng-repeat="employee in employees">
                 <td>
                   <h2 class="table-avatar">
-                    <a href="profile.html" class="avatar"
-                      ><img
-                        alt=""
-                        ng-src="https://drive.google.com/uc?id={{employee.photo}}"
-                    /></a>
+                    <a href="profile.html" class="avatar"><img alt=""
+                        ng-src="https://drive.google.com/uc?id={{employee.photo}}" /></a>
                     <a href="profile.html">{{employee.fullname}}</a>
                   </h2>
                 </td>
                 <td>{{employee.id}}</td>
                 <td>{{employee.username}}</td>
-                <td>{{employee.password}}</td>
+                <td style="width: 200px; ">{{employee.password}}</td>
                 <td>
                   <div class="dropdown action-label">
-                    <a
-                      ng-click="toggleAccountStatus(employee)"
-                      class="btn btn-white btn-sm btn-rounded dropdown-toggle"
-                      href="#"
-                      ><i
-                        class="fa fa-dot-circle-o"
-                        ng-class="{'text-success': employee.status, 'text-danger': !employee.status}"
-                      ></i>
+                    <a ng-click="toggleAccountStatus(employee)" class="btn btn-white btn-sm btn-rounded dropdown-toggle"
+                      href="#"><i class="fa fa-dot-circle-o"
+                        ng-class="{'text-success': employee.status, 'text-danger': !employee.status}"></i>
                       {{employee.status? "Đang Hoạt Động" : "Không Hoạt Động"}}
                     </a>
                   </div>
                 </td>
                 <td>{{employee.email}}</td>
                 <td class="staff-msg">
-                  <a
-                    class="btn btn-custom"
-                    data-toggle="modal"
-                    data-target="#send_mail"
-                    >Send Email</a
-                  >
+                  <a class="btn btn-custom" data-toggle="modal" data-target="#send_mail">Send Email</a>
                 </td>
                 <td class="text-right">
                   <div class="dropdown dropdown-action">
-                    <a
-                      href="#"
-                      class="action-icon dropdown-toggle"
-                      data-toggle="dropdown"
-                      aria-expanded="false"
-                      ><i class="material-icons font-weight-bold">⋮</i></a
-                    >
                     <button class="btn">
-                      <a
-                        ng-click="selectEmployee(employee)"
-                        class="dropdown-item"
-                        href="#"
-                        data-toggle="modal"
-                        data-target="#edit_Staff"
-                        ><i class="fa fa-pencil m-r-5"></i> Edit</a
-                      >
+                      <a ng-click="selectEmployee(employee)" class="dropdown-item" href="#" data-toggle="modal"
+                        data-target="#edit_Staff"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                     </button>
                   </div>
                 </td>
@@ -155,12 +115,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Send Mail</h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -172,45 +127,26 @@
                   <div class="card-body">
                     <form>
                       <div class="form-group">
-                        <input
-                          type="email"
-                          placeholder="To"
-                          class="form-control"
-                        />
+                        <input type="email" placeholder="To" class="form-control" />
                       </div>
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group">
-                            <input
-                              type="email"
-                              placeholder="Cc"
-                              class="form-control"
-                            />
+                            <input type="email" placeholder="Cc" class="form-control" />
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
-                            <input
-                              type="email"
-                              placeholder="Bcc"
-                              class="form-control"
-                            />
+                            <input type="email" placeholder="Bcc" class="form-control" />
                           </div>
                         </div>
                       </div>
                       <div class="form-group">
-                        <input
-                          type="text"
-                          placeholder="Subject"
-                          class="form-control"
-                        />
+                        <input type="text" placeholder="Subject" class="form-control" />
                       </div>
                       <div class="form-group">
-                        <textarea
-                          rows="4"
-                          class="form-control summernote"
-                          placeholder="Enter your message here"
-                        ></textarea>
+                        <textarea rows="4" class="form-control summernote"
+                          placeholder="Enter your message here"></textarea>
                       </div>
                       <div class="form-group mb-0">
                         <div class="text-center">
@@ -244,12 +180,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Add Staff</h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -259,20 +190,11 @@
               <div class="col-md-12">
                 <div class="profile-img-wrap edit-img">
                   <div>
-                    <img
-                      id="add_staff_image"
-                      class="inline-block"
-                      src="assets/img/profiles/avatar-02.jpg"
-                      alt="user"
-                    />
+                    <img id="add_staff_image" class="inline-block" src="assets/img/profiles/avatar-02.jpg" alt="user" />
                   </div>
                   <div class="fileupload btn">
                     <span class="btn-text">edit</span>
-                    <input
-                      file-change="handleFileChange"
-                      class="upload"
-                      type="file"
-                    />
+                    <input file-change="handleFileChange" class="upload" type="file" />
                   </div>
                 </div>
               </div>
@@ -280,73 +202,40 @@
             <div class="row">
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label class="col-form-label"
-                    >Staff ID <span class="text-danger">*</span></label
-                  >
-                  <input
-                    ng-model="employeeForm.id"
-                    class="form-control"
-                    readonly
-                    type="text"
-                  />
+                  <label class="col-form-label">Staff ID <span class="text-danger">*</span></label>
+                  <input ng-model="employeeForm.id" class="form-control" readonly type="text" />
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label class="col-form-label"
-                    >Full Name <span class="text-danger">*</span></label
-                  >
-                  <input
-                    ng-model="employeeForm.fullName"
-                    class="form-control"
-                    type="text"
-                  />
+                  <label class="col-form-label">Full Name <span class="text-danger">*</span></label>
+                  <input ng-model="employeeForm.fullName" class="form-control" type="text" />
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label class="col-form-label"
-                    >Username <span class="text-danger">*</span></label
-                  >
-                  <input
-                    ng-model="employeeForm.username"
-                    class="form-control"
-                    type="text"
-                  />
+                  <label class="col-form-label">Username <span class="text-danger">*</span></label>
+                  <input ng-model="employeeForm.username" class="form-control" type="text" />
                 </div>
               </div>
 
               <div class="col-sm-6">
                 <div class="form-group">
                   <label class="col-form-label">Password</label>
-                  <input
-                    ng-model="employeeForm.password"
-                    class="form-control"
-                    type="password"
-                  />
+                  <input ng-model="employeeForm.password" class="form-control" type="password" />
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
                   <label class="col-form-label">Confirm Password</label>
-                  <input
-                    ng-model="employeeForm.rePassword"
-                    class="form-control"
-                    type="password"
-                  />
+                  <input ng-model="employeeForm.rePassword" class="form-control" type="password" />
                 </div>
               </div>
 
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label class="col-form-label"
-                    >Email <span class="text-danger">*</span></label
-                  >
-                  <input
-                    ng-model="employeeForm.email"
-                    class="form-control"
-                    type="email"
-                  />
+                  <label class="col-form-label">Email <span class="text-danger">*</span></label>
+                  <input ng-model="employeeForm.email" class="form-control" type="email" />
                 </div>
               </div>
             </div>
@@ -368,12 +257,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Edit Staff</h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -382,19 +266,11 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="profile-img-wrap edit-img">
-                  <img
-                    id="update_staff_image"
-                    class="inline-block"
-                    src="assets/img/profiles/avatar-02.jpg"
-                    alt="user"
-                  />
+                  <img id="update_staff_image" class="inline-block" src="assets/img/profiles/avatar-02.jpg"
+                    alt="user" />
                   <div class="fileupload btn">
                     <span class="btn-text">edit</span>
-                    <input
-                      file-change="handleUpdateImage"
-                      class="upload"
-                      type="file"
-                    />
+                    <input file-change="handleUpdateImage" class="upload" type="file" />
                   </div>
                 </div>
               </div>
@@ -402,81 +278,45 @@
             <div class="row">
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label class="col-form-label"
-                    >Staff ID <span class="text-danger">*</span></label
-                  >
-                  <input
-                    ng-model="employeeForm.id"
-                    class="form-control"
-                    readonly
-                    type="text"
-                  />
+                  <label class="col-form-label">Staff ID <span class="text-danger">*</span></label>
+                  <input ng-model="employeeForm.id" class="form-control" readonly type="text" />
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label class="col-form-label"
-                    >Full Name <span class="text-danger">*</span></label
-                  >
-                  <input
-                    ng-model="employeeForm.fullName"
-                    class="form-control"
-                    type="text"
-                  />
+                  <label class="col-form-label">Full Name <span class="text-danger">*</span></label>
+                  <input ng-model="employeeForm.fullName" class="form-control" type="text" />
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label class="col-form-label"
-                    >Username <span class="text-danger">*</span></label
-                  >
-                  <input
-                    ng-model="employeeForm.username"
-                    class="form-control"
-                    type="text"
-                  />
+                  <label class="col-form-label">Username <span class="text-danger">*</span></label>
+                  <input ng-model="employeeForm.username" class="form-control" type="text" />
                 </div>
               </div>
 
               <div class="col-sm-6">
                 <div class="form-group">
                   <label class="col-form-label">Password</label>
-                  <input
-                    ng-model="employeeForm.password"
-                    class="form-control"
-                    type="password"
-                  />
+                  <input ng-model="employeeForm.password" class="form-control" type="password" />
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
                   <label class="col-form-label">Confirm Password</label>
-                  <input
-                    ng-model="employeeForm.rePassword"
-                    class="form-control"
-                    type="password"
-                  />
+                  <input ng-model="employeeForm.rePassword" class="form-control" type="password" />
                 </div>
               </div>
 
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label class="col-form-label"
-                    >Email <span class="text-danger">*</span></label
-                  >
-                  <input
-                    ng-model="employeeForm.email"
-                    class="form-control"
-                    type="email"
-                  />
+                  <label class="col-form-label">Email <span class="text-danger">*</span></label>
+                  <input ng-model="employeeForm.email" class="form-control" type="email" />
                 </div>
               </div>
             </div>
             <div class="submit-section">
-              <button
-                ng-click="submitEdit()"
-                class="btn btn-primary submit-btn"
-              >
+              <button ng-click="submitEdit()" class="btn btn-primary submit-btn">
                 Submit
               </button>
             </div>
@@ -499,19 +339,10 @@
           <div class="modal-btn delete-action">
             <div class="row">
               <div class="col-6">
-                <a
-                  href="javascript:void(0);"
-                  class="btn btn-primary continue-btn"
-                  >Delete</a
-                >
+                <a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
               </div>
               <div class="col-6">
-                <a
-                  href="javascript:void(0);"
-                  data-dismiss="modal"
-                  class="btn btn-primary cancel-btn"
-                  >Cancel</a
-                >
+                <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
               </div>
             </div>
           </div>

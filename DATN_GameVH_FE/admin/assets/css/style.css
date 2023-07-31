@@ -2366,20 +2366,23 @@ table.dataTable thead>tr>td.sorting {
 }
 
 .account-box {
-	background-color: #fff;
-	border: 1px solid #ededed;
+	background: rgba(255,255,255,0.1);
+	position: relative;
+	border: 1px solid #6b6969cc;
 	border-radius: 4px;
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
 	margin: 0 auto;
 	overflow: hidden;
 	width: 480px;
+	backdrop-filter: blur(5px);
 }
-
 .account-wrapper {
+	
 	padding: 30px;
 }
 
 .account-logo {
+	margin-top: 50px;
 	margin-bottom: 30px;
 	text-align: center;
 }
@@ -2416,14 +2419,14 @@ table.dataTable thead>tr>td.sorting {
 }
 
 .account-box label {
-	color: #1f1f1f;
+	color: #ffff;
 	font-size: 16px;
 	font-weight: normal;
 	margin-bottom: 5px;
 }
 
 .account-logo img {
-	width: 100px;
+	width: 240px;
 }
 
 .account-footer {

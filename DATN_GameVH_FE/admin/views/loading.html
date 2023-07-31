@@ -1,34 +1,26 @@
 
 <!-- Page Wrapper -->
 <div class="page-wrapper " id="example">
-    <svg class="bike" viewBox="0 0 48 30" width="48px" height="30px">
-		<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1">
-			<g transform="translate(9.5,19)">
-				<circle class="bike__tire" r="9" stroke-dasharray="56.549 56.549" />
-				<g class="bike__spokes-spin" stroke-dasharray="31.416 31.416" stroke-dashoffset="-23.562">
-					<circle class="bike__spokes" r="5" />
-					<circle class="bike__spokes" r="5" transform="rotate(180,0,0)" />
-				</g>
-			</g>
-			<g transform="translate(24,19)">
-				<g class="bike__pedals-spin" stroke-dasharray="25.133 25.133" stroke-dashoffset="-21.991" transform="rotate(67.5,0,0)">
-					<circle class="bike__pedals" r="4" />
-					<circle class="bike__pedals" r="4" transform="rotate(180,0,0)" />
-				</g>
-			</g>
-			<g transform="translate(38.5,19)">
-				<circle class="bike__tire" r="9" stroke-dasharray="56.549 56.549" />
-				<g class="bike__spokes-spin" stroke-dasharray="31.416 31.416" stroke-dashoffset="-23.562">
-					<circle class="bike__spokes" r="5" />
-					<circle class="bike__spokes" r="5" transform="rotate(180,0,0)" />
-				</g>
-			</g>
-			<polyline class="bike__seat" points="14 3,18 3" stroke-dasharray="5 5" />
-			<polyline class="bike__body" points="16 3,24 19,9.5 19,18 8,34 7,24 19" stroke-dasharray="79 79" />
-			<path class="bike__handlebars" d="m30,2h6s1,0,1,1-1,1-1,1" stroke-dasharray="10 10" />
-			<polyline class="bike__front" points="32.5 2,38.5 19" stroke-dasharray="19 19" />
-		</g>
-	</svg>
+    <div class="animation-container">
+		<div class="lightning-container">
+			<div class="lightning white"></div>
+			<div class="lightning red"></div>
+		</div>
+		<div class="boom-container">
+			<div class="shape circle big white"></div>
+			<div class="shape circle white"></div>
+			<div class="shape triangle big yellow"></div>
+			<div class="shape disc white"></div>
+			<div class="shape triangle blue"></div>
+		</div>
+		<div class="boom-container second">
+			<div class="shape circle big white"></div>
+			<div class="shape circle white"></div>
+			<div class="shape disc white"></div>
+			<div class="shape triangle blue"></div>
+		</div>
+	</div>
+	
 </div>
 <!-- /Page Wrapper -->
 
@@ -42,165 +34,278 @@
         margin-left: -15em;
         position: fixed;
       }
-* {
-	border: 0;
-	box-sizing: border-box;
-	margin: 0;
-	padding: 0;
-}
-:root {
-	--hue: 223;
-	--bg: hsl(var(--hue),90%,90%);
-	--fg: hsl(var(--hue),90%,10%);
-	--primary: hsl(var(--hue),90%,50%);
-	--trans-dur: 0.3s;
-	font-size: calc(16px + (32 - 16) * (100vw - 320px) / (2560 - 320));
-}
-body {
-	background-color: var(--bg);
-	color: var(--fg);
+
+	  body {
 	display: flex;
-	font: 1em/1.5 sans-serif;
-	height: 100vh;
-	transition:
-		background-color var(--trans-dur),
-		color var(--trans-dur);
+	align-items: center;
+	position: relative;
+	background: linear-gradient(to bottom right, #070630 0%,#060454 100%);
+	min-height: 100vh;
 }
-.bike {
+
+.animation-container {
 	display: block;
-	margin: auto;
-	width: 16em;
-	height: auto;
-}
-.bike__body,
-.bike__front,
-.bike__handlebars,
-.bike__pedals,
-.bike__pedals-spin,
-.bike__seat,
-.bike__spokes,
-.bike__spokes-spin,
-.bike__tire {
-	animation: bikeBody 3s ease-in-out infinite;
-	stroke: var(--primary);
-	transition: stroke var(--trans-dur);
-}
-.bike__front {
-	animation-name: bikeFront;
-}
-.bike__handlebars {
-	animation-name: bikeHandlebars;
-}
-.bike__pedals {
-	animation-name: bikePedals;
-}
-.bike__pedals-spin {
-	animation-name: bikePedalsSpin;
-}
-.bike__seat {
-	animation-name: bikeSeat;
-}
-.bike__spokes,
-.bike__tire {
-	stroke: currentColor;
-}
-.bike__spokes {
-	animation-name: bikeSpokes;
-}
-.bike__spokes-spin {
-	animation-name: bikeSpokesSpin;
-}
-.bike__tire {
-	animation-name: bikeTire;
+	position: relative;
+	width: 800px;
+	max-width: 100%;
+	margin: 0 auto;
+	
+	.lightning-container {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		display: flex;
+		transform: translateY(-50%);
+		
+		.lightning {
+			position: absolute;
+			display: block;
+			height: 12px;
+			width: 12px;
+			border-radius: 12px;
+			transform-origin: 6px 6px;
+
+			animation-name: woosh;
+			animation-duration: 1.5s;
+			animation-iteration-count: infinite;
+			animation-timing-function: cubic-bezier(0.445, 0.050, 0.550, 0.950);
+			animation-direction: alternate;
+
+			&.white {
+				background-color: white;
+				box-shadow: 0px 50px 50px 0px transparentize(white, 0.7);
+			}
+
+			&.red {
+				background-color: #fc7171;
+				box-shadow: 0px 50px 50px 0px transparentize(#fc7171, 0.7);
+				animation-delay: 0.2s;
+			}
+		}
+	}
+	
+	
+	.boom-container {
+		position: absolute;
+		display: flex;
+		width: 80px;
+		height: 80px;
+		text-align: center;
+		align-items: center;
+		transform: translateY(-50%);
+    left: 200px;
+    top: -145px;
+		
+		.shape {
+			display: inline-block;
+			position: relative;
+			opacity: 0;
+			transform-origin: center center;
+			
+			&.triangle {
+				width: 0;
+				height: 0;
+				border-style: solid;
+				transform-origin: 50% 80%;
+				animation-duration: 1s;
+				animation-timing-function: ease-out;
+				animation-iteration-count: infinite;
+				margin-left: -15px;
+				border-width: 0 2.5px 5px 2.5px;
+				border-color: transparent transparent #42e599 transparent;
+				animation-name: boom-triangle;
+				
+				&.big {
+					margin-left: -25px;
+					border-width: 0 5px 10px 5px;
+					border-color: transparent transparent #fade28 transparent;
+					animation-name: boom-triangle-big;
+				}
+			}
+			
+			&.disc {
+				width: 8px;
+				height: 8px;
+				border-radius: 100%;
+				background-color: #d15ff4;
+				animation-name: boom-disc;
+				animation-duration: 1s;
+				animation-timing-function: ease-out;
+				animation-iteration-count: infinite;
+			}
+			
+			&.circle {
+				width: 20px;
+				height: 20px;
+				animation-name: boom-circle;
+				animation-duration: 1s;
+				animation-timing-function: ease-out;
+				animation-iteration-count: infinite;
+				border-radius: 100%;
+				margin-left: -30px;
+				
+				&.white {
+					border: 1px solid white;
+				}
+				
+				&.big {
+					width: 40px;
+					height: 40px;
+					margin-left: 0px;
+					
+					&.white {
+						border: 2px solid white;
+					}
+				}
+			}
+			
+			&:after {
+				background-color: rgba(178, 215, 232, 0.2);
+			}
+		}
+		
+		.shape {
+			&.triangle, &.circle, &.circle.big, &.disc {
+				animation-delay: .38s;
+				animation-duration: 3s;
+			}
+			
+			&.circle {
+				animation-delay: 0.6s;
+			}
+		}
+		
+		&.second {
+			left: 485px;
+			top: 155px;
+			.shape {
+				&.triangle, &.circle, &.circle.big, &.disc {
+					animation-delay: 1.9s;
+				}
+				&.circle {
+					animation-delay: 2.15s;
+				}
+			}
+		}
+	}
 }
 
-/* Dark theme */
-@media (prefers-color-scheme: dark) {
-	:root {
-		--bg: hsl(var(--hue),90%,10%);
-		--fg: hsl(var(--hue),90%,90%);
+@keyframes woosh {
+	0% {
+		width: 12px;
+		transform: translate(0px, 0px) rotate(-35deg);
+	}
+	15% {
+		width: 50px;
+	}
+	30% {
+		width: 12px;
+		transform: translate(214px, -150px) rotate(-35deg);
+	}
+	30.1% {
+		transform: translate(214px, -150px) rotate(46deg);
+	}
+	50% {
+		width: 110px;
+	}
+	70% {
+		width: 12px;
+		transform: translate(500px, 150px) rotate(46deg);
+	}
+	70.1% {
+		transform: translate(500px, 150px) rotate(-37deg);
+	}
+	
+	85% {
+		width: 50px;
+	}
+	100% {
+		width: 12px;
+		transform: translate(700px, 0) rotate(-37deg);
 	}
 }
 
-/* Animations */
-@keyframes bikeBody {
-	from { stroke-dashoffset: 79; }
-	33%,
-	67% { stroke-dashoffset: 0; }
-	to { stroke-dashoffset: -79; }
-}
-@keyframes bikeFront {
-	from { stroke-dashoffset: 19; }
-	33%,
-	67% { stroke-dashoffset: 0; }
-	to { stroke-dashoffset: -19; }
-}
-@keyframes bikeHandlebars {
-	from { stroke-dashoffset: 10; }
-	33%,
-	67% { stroke-dashoffset: 0; }
-	to { stroke-dashoffset: -10; }
-}
-@keyframes bikePedals {
-	from {
-		animation-timing-function: ease-in;
-		stroke-dashoffset: -25.133;
+@keyframes boom-circle {
+	0% {
+		opacity: 0;
 	}
-	33%,
-	67% {
-		animation-timing-function: ease-out;
-		stroke-dashoffset: -21.991;
+	5% {
+		opacity: 1;
 	}
-	to {
-		stroke-dashoffset: -25.133;
+	30% {
+		opacity: 0;
+		transform: scale(3);
+	}
+	100% {
 	}
 }
-@keyframes bikePedalsSpin {
-	from { transform: rotate(0.1875turn); }
-	to { transform: rotate(3.1875turn); }
-}
-@keyframes bikeSeat {
-	from { stroke-dashoffset: 5; }
-	33%,
-	67% { stroke-dashoffset: 0; }
-	to { stroke-dashoffset: -5; }
-}
-@keyframes bikeSpokes {
-	from {
-		animation-timing-function: ease-in;
-		stroke-dashoffset: -31.416;
+
+@keyframes boom-triangle-big {
+	0% {
+		opacity: 0;
 	}
-	33%,
-	67% {
-		animation-timing-function: ease-out;
-		stroke-dashoffset: -23.562;
+	5% {
+		opacity: 1;
 	}
-	to {
-		stroke-dashoffset: -31.416;
+	
+	40% {
+		opacity: 0;
+		transform: scale(2.5) translate(50px, -50px) rotate(360deg);
+	}
+	100% {
 	}
 }
-@keyframes bikeSpokesSpin {
-	from { transform: rotate(0); }
-	to { transform: rotate(3turn); }
+
+@keyframes boom-triangle {
+	0% {
+		opacity: 0;
+	}
+	5% {
+		opacity: 1;
+	}
+	
+	30% {
+		opacity: 0;
+		transform: scale(3) translate(20px, 40px) rotate(360deg);
+	}
+	
+	100% {
+	}
 }
-@keyframes bikeTire {
-	from {
-		animation-timing-function: ease-in;
-		stroke-dashoffset: 56.549;
-		transform: rotate(0);
+
+@keyframes boom-disc {
+	0% {
+		opacity: 0;
 	}
-	33% {
-		stroke-dashoffset: 0;
-		transform: rotate(0.33turn);
+	5% {
+		opacity: 1;
 	}
-	67% {
-		animation-timing-function: ease-out;
-		stroke-dashoffset: 0;
-		transform: rotate(0.67turn);
+	40% {
+		opacity: 0;
+		transform: scale(2) translate(-70px, -30px);
 	}
-	to {
-		stroke-dashoffset: -56.549;
-		transform: rotate(1turn);
+	100% {
+		
+	}
+}
+
+
+ FOOTER
+.footer {
+	color: white;
+	font-size: 10px;
+	position: fixed;
+	bottom: 0;
+	font-weight: 200;
+	padding: 10px 20px;
+	
+	a {
+		&,
+		&:hover,
+		&:focus,
+		&:visited {
+			color: #c6c6c6;
+		}
 	}
 }
 </style>

@@ -53,21 +53,22 @@
     <div class="row">
       <div class="col-md-12">
         <div class="table-responsive">
-          <table class="table table-striped custom-table">
+          <table class="table table-striped custom-table datatable">
             <thead>
               <tr>
+                <th>#</th>
                 <th>Name</th>
                 <th>Staff ID</th>
                 <th>Username</th>
                 <th>Password</th>
                 <th>Email</th>
                 <th class="text-center">Status</th>
-                <th>Send Mail</th>
                 <th class="text-right no-sort">Action</th>
               </tr>
             </thead>
             <tbody>
               <tr ng-repeat="employee in employees">
+                <td>{{$index + 1}}</td>
                 <td>
                   <h2 class="table-avatar">
                     <a href="profile.html" class="avatar"><img alt=""
@@ -88,15 +89,17 @@
                   </div>
                 </td>
                 <td>{{employee.email}}</td>
-                <td class="staff-msg">
-                  <a class="btn btn-custom" data-toggle="modal" data-target="#send_mail">Send Email</a>
-                </td>
                 <td class="text-right">
                   <div class="dropdown dropdown-action">
-                    <button class="btn">
+                    <!-- <button class="btn">
                       <a ng-click="selectEmployee(employee)" class="dropdown-item" href="#" data-toggle="modal"
                         data-target="#edit_Staff"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                    </button>
+                    </button> -->
+                    <div class="text-right">
+                      <button ng-click="selectEmployee(employee)" href="#" type="button" data-toggle="modal" data-target="#edit_Staff" class="btn btn-primary">
+                          View
+                      </button>
+                  </div>
                   </div>
                 </td>
               </tr>

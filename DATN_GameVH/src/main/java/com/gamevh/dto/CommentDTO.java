@@ -16,4 +16,5 @@ public class CommentDTO {
     private Date createDate;
     private String username;
     private String avatarUser;
+    private Integer status;
 }

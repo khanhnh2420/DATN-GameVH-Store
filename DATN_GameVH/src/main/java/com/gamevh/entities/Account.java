@@ -80,4 +80,8 @@ public class Account  implements Serializable{
     @JsonIgnore
     @OneToMany(mappedBy="account")
     private List<Authority> authority;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy="account")
+    private List<FeedbackWebsite> feedbackWebsite;
 }

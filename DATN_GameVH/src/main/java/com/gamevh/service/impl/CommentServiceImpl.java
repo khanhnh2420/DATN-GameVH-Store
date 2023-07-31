@@ -3,8 +3,11 @@ package com.gamevh.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.gamevh.dto.CommentDTO;
@@ -29,7 +32,7 @@ public class CommentServiceImpl implements CommentService {
 
 	@Override
 	public List<CommentDTO> findAllByBlogId(Integer blogId) {
-		List<Comment> comments = commentRepository.findByBlogIdAndStatus(blogId, true);
+		List<Comment> comments = commentRepository.findByBlogIdAndStatus(blogId, 1);
 		List<CommentDTO> commentDTOs = new ArrayList<>();
 		for (Comment comment : comments) {
 			CommentDTO commentDTO = new CommentDTO();
@@ -51,7 +54,7 @@ public class CommentServiceImpl implements CommentService {
 		Comment entity = new Comment();
 		entity.setContent(dto.getContent());
 		entity.setCreateDate(new Date());
-		entity.setStatus(false); //trạng thái mặc định cho comment luôn là false để chờ kiểm duyệt
+		entity.setStatus(0); // trạng thái mặc định cho comment luôn là false để chờ kiểm duyệt
 
 		Account account = accountRepository.findByUsername(dto.getUsername());
 		if (account != null) {
@@ -65,4 +68,46 @@ public class CommentServiceImpl implements CommentService {
 		commentRepository.save(entity);
 	}
 
+	@Override
+	public ResponseEntity<Object> deleteCommentById(Long commentId) {
+		try {
+			Optional<Comment> comment = commentRepository.findById(commentId);
+			if (comment.isPresent()) {
+				commentRepository.delete(comment.get());
+				// Xóa blog thành công, trả về trạng thái HTTP 200 OK và thông báo thành công
+				return ResponseEntity.status(HttpStatus.OK).build();
+			} else {
+				// Nếu không tìm thấy blog, trả về trạng thái HTTP 404 Not Found
+				return ResponseEntity.notFound().build();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// Xử lý lỗi, trả về trạng thái HTTP 500 Internal Server Error và thông báo lỗi
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Đã xảy ra lỗi khi xóa comment: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public ResponseEntity<Object> updateCommentStatus(Long commentId, Integer newStatus) {
+        try {
+            Optional<Comment> comment = commentRepository.findById(commentId);
+            if (comment.isPresent()) {
+                Comment existingComment = comment.get();
+                existingComment.setStatus(newStatus);
+                commentRepository.save(existingComment);
+
+                // Cập nhật trạng thái của comment thành công, trả về trạng thái HTTP 200 OK và thông báo thành công
+                return ResponseEntity.status(HttpStatus.OK).build();
+            } else {
+                // Nếu không tìm thấy comment, trả về trạng thái HTTP 404 Not Found
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Xử lý lỗi, trả về trạng thái HTTP 500 Internal Server Error và thông báo lỗi
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Đã xảy ra lỗi khi cập nhật trạng thái của comment: " + e.getMessage());
+        }
+    }
 }

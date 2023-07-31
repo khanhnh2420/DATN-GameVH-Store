@@ -1,4 +1,4 @@
-app.controller("WishlistController", function($scope, ToastService, AccountService, ProductService, WishlistService, $http) {
+app.controller("WishlistController", function($scope, ToastService, AccountService, ProductService, WishlistService, $window, $http) {
     $scope.favorite = []
 
     $scope.account = {}; // Biến lưu thông tin account 
@@ -14,21 +14,25 @@ app.controller("WishlistController", function($scope, ToastService, AccountServi
         $window.location.href = 'login.html';
     };
 
-    AccountService.checkLogin().then(function(account) {
-        // Người dùng đã đăng nhập
-        $scope.account = account;
-        $scope.fetchWishlistItems();
-    }).catch(function(error) {
-        // Người dùng chưa đăng nhập hoặc có lỗi
-        console.error('Lỗi đăng nhập hoặc chưa đăng nhập:', error);
-        if (error === "Người dùng chưa đăng nhập") {
-            // Xử lý logic khi người dùng chưa đăng nhập
-            $window.localStorage.removeItem("username");
-            $window.sessionStorage.removeItem("username");
-            $window.sessionStorage.setItem("messageLogin", "Vui lòng đăng nhập!");
-            $window.location.href = 'login.html';
-        }
-    });
+    var link = $window.location.href || '';
+
+    if (link.indexOf("wishlist") !== -1) {
+        AccountService.checkLogin().then(function(account) {
+            // Người dùng đã đăng nhập
+            $scope.account = account;
+            $scope.fetchWishlistItems();
+        }).catch(function(error) {
+            // Người dùng chưa đăng nhập hoặc có lỗi
+            console.error('Lỗi đăng nhập hoặc chưa đăng nhập:', error);
+            if (error === "Người dùng chưa đăng nhập") {
+                // Xử lý logic khi người dùng chưa đăng nhập
+                $window.localStorage.removeItem("username");
+                $window.sessionStorage.removeItem("username");
+                $window.sessionStorage.setItem("messageLogin", "Vui lòng đăng nhập!");
+                $window.location.href = 'login.html';
+            }
+        });
+    }
 
     $scope.totalFavorite = 0;
     $scope.fetchWishlistItems = function() {
@@ -55,72 +59,89 @@ app.controller("WishlistController", function($scope, ToastService, AccountServi
 
 
     $scope.toggleFavorite = function(event) {
-        var productId = event.currentTarget.getAttribute('data-product-id');
-        var existingFavorite = null;
+        AccountService.checkLogin().then(function(account) {
+            // Người dùng đã đăng nhập
+            $scope.account = account;
+            if ($scope.account) {
+                var productId = event.currentTarget.getAttribute('data-product-id');
+                var existingFavorite = null;
 
-        // Tìm kiếm sản phẩm trong danh sách yêu thích
-        for (var i = 0; i < $scope.favorite.length; i++) {
-            var item = $scope.favorite[i];
-            if (item.product.id === parseInt(productId)) {
-                existingFavorite = item;
-                break;
+                // Tìm kiếm sản phẩm trong danh sách yêu thích
+                for (var i = 0; i < $scope.favorite.length; i++) {
+                    var item = $scope.favorite[i];
+                    if (item.product.id === parseInt(productId)) {
+                        existingFavorite = item;
+                        break;
+                    }
+                }
+
+                if (existingFavorite) {
+                    // Sản phẩm đã tồn tại trong danh sách yêu thích
+                    existingFavorite.status = !existingFavorite.status; // Đảo ngược trạng thái yêu thích
+
+                    WishlistService.updateFavorite(existingFavorite)
+                        .then(function(response) {
+                            // Xử lý phản hồi từ máy chủ nếu cần
+                            console.log('Cập nhật trạng thái sản phẩm thành công.');
+
+                            // Thông báo sản phẩm thành công khi cập nhật từ true sang false
+                            if (existingFavorite.status === true) {
+                                showSuccessToast("Sản phẩm đã thêm vào danh sách yêu thích thành công");
+                            } else {
+                                showErrorToast("Sản phẩm đã tồn tại");
+                            }
+                        })
+                        .catch(function(error) {
+                            console.error('Lỗi khi cập nhật sản phẩm yêu thích:', error);
+                        });
+                } else {
+                    // Sản phẩm chưa tồn tại trong danh sách yêu thích, thêm mới vào
+                    ProductService.getProduct(productId)
+                        .then(function(response) {
+                            var product = response.data;
+                            if (product.available && product.qty > 0) {
+                                var favoriteData = {
+                                    account: {
+                                        id: $scope.account.id
+                                    },
+                                    product: {
+                                        id: productId
+                                    },
+                                    status: true // Trạng thái mặc định là true khi thêm mới vào danh sách yêu thích
+                                };
+
+                                WishlistService.addWishlist(favoriteData)
+                                    .then(function(response) {
+                                        // Xử lý phản hồi từ máy chủ nếu cần
+                                        console.log('Thêm sản phẩm vào danh sách yêu thích thành công.');
+                                        // Thêm sản phẩm mới vào danh sách yêu thích hiển thị
+                                        $scope.favorite.push(response.data);
+                                        showSuccessToast("Sản phẩm đã thêm vào danh sách yêu thích thành công");
+
+                                        $scope.fetchWishlistItems();
+                                    })
+                                    .catch(function(error) {
+                                        console.error('Lỗi khi thêm sản phẩm vào danh sách yêu thích:', error);
+                                    });
+                            }
+                        })
+                        .catch(function(error) {
+                            console.error('Lỗi khi lấy sản phẩm theo Id:', error);
+                        });
+                }
             }
-        }
+        }).catch(function(error) {
+            // Người dùng chưa đăng nhập hoặc có lỗi
+            console.error('Lỗi đăng nhập hoặc chưa đăng nhập:', error);
+            if (error === "Người dùng chưa đăng nhập") {
+                // Xử lý logic khi người dùng chưa đăng nhập
+                $window.localStorage.removeItem("username");
+                $window.sessionStorage.removeItem("username");
+                $window.sessionStorage.setItem("messageLogin", "Vui lòng đăng nhập!");
+                $window.location.href = 'login.html';
+            }
+        });
 
-        if (existingFavorite) {
-            // Sản phẩm đã tồn tại trong danh sách yêu thích
-            existingFavorite.status = !existingFavorite.status; // Đảo ngược trạng thái yêu thích
-
-            WishlistService.updateFavorite(existingFavorite)
-                .then(function(response) {
-                    // Xử lý phản hồi từ máy chủ nếu cần
-                    console.log('Cập nhật trạng thái sản phẩm thành công.');
-
-                    // Thông báo sản phẩm thành công khi cập nhật từ true sang false
-                    if (existingFavorite.status === true) {
-                        showSuccessToast("Sản phẩm đã thêm vào danh sách thành công");
-                    } else {
-                        showErrorToast("Sản phẩm đã tồn tại");
-                    }
-                })
-                .catch(function(error) {
-                    console.error('Lỗi khi cập nhật sản phẩm yêu thích:', error);
-                });
-        } else {
-            // Sản phẩm chưa tồn tại trong danh sách yêu thích, thêm mới vào
-            ProductService.getProduct(productId)
-                .then(function(response) {
-                    var product = response.data;
-                    if (product.available && product.qty > 0) {
-                        var favoriteData = {
-                            account: {
-                                id: $scope.account.id
-                            },
-                            product: {
-                                id: productId
-                            },
-                            status: true // Trạng thái mặc định là true khi thêm mới vào danh sách yêu thích
-                        };
-
-                        WishlistService.addWishlist(favoriteData)
-                            .then(function(response) {
-                                // Xử lý phản hồi từ máy chủ nếu cần
-                                console.log('Thêm sản phẩm vào danh sách yêu thích thành công.');
-                                // Thêm sản phẩm mới vào danh sách yêu thích hiển thị
-                                $scope.favorite.push(response.data);
-                                showSuccessToast("Sản phẩm đã thêm vào danh sách thành công");
-
-                                $scope.fetchWishlistItems();
-                            })
-                            .catch(function(error) {
-                                console.error('Lỗi khi thêm sản phẩm vào danh sách yêu thích:', error);
-                            });
-                    }
-                })
-                .catch(function(error) {
-                    console.error('Lỗi khi lấy sản phẩm theo Id:', error);
-                });
-        }
     };
 
 
@@ -128,33 +149,49 @@ app.controller("WishlistController", function($scope, ToastService, AccountServi
 
 
     $scope.removeFromFavorite = function(event) {
-        var productId = event.currentTarget.getAttribute('data-product-id');
-        var existingFavoriteIndex = false;
-        $scope.favorite.forEach(function(item) {
-            if (item.product.id === parseInt(productId)) {
-                existingFavoriteIndex = true;
+        AccountService.checkLogin().then(function(account) {
+            // Người dùng đã đăng nhập
+            $scope.account = account;
+            if ($scope.account) {
+                var productId = event.currentTarget.getAttribute('data-product-id');
+                var existingFavoriteIndex = false;
+                $scope.favorite.forEach(function(item) {
+                    if (item.product.id === parseInt(productId)) {
+                        existingFavoriteIndex = true;
+                    }
+                });
+                if (existingFavoriteIndex) {
+                    // Xoá sản phẩm khỏi danh sách yêu thích
+
+
+                    WishlistService.removeFromWishlist(productId)
+                        .then(function() {
+                            // Xử lý phản hồi từ máy chủ nếu cần
+                            console.log('Xoá sản phẩm khỏi danh sách yêu thích thành công.');
+
+                            // Hiển thị thông báo thành công
+                            showSuccessToast("Sản phẩm đã xóa thành công");
+
+                            // Lấy danh sách yêu thích mới sau khi đã xoá thành công
+                            $scope.fetchWishlistItems();
+                        })
+                        .catch(function(error) {
+                            console.error('Lỗi khi xoá sản phẩm khỏi danh sách yêu thích:', error);
+                        });
+
+                }
+            }
+        }).catch(function(error) {
+            // Người dùng chưa đăng nhập hoặc có lỗi
+            console.error('Lỗi đăng nhập hoặc chưa đăng nhập:', error);
+            if (error === "Người dùng chưa đăng nhập") {
+                // Xử lý logic khi người dùng chưa đăng nhập
+                $window.localStorage.removeItem("username");
+                $window.sessionStorage.removeItem("username");
+                $window.sessionStorage.setItem("messageLogin", "Vui lòng đăng nhập!");
+                $window.location.href = 'login.html';
             }
         });
-        if (existingFavoriteIndex) {
-            // Xoá sản phẩm khỏi danh sách yêu thích
-
-
-            WishlistService.removeFromWishlist(productId)
-                .then(function() {
-                    // Xử lý phản hồi từ máy chủ nếu cần
-                    console.log('Xoá sản phẩm khỏi danh sách yêu thích thành công.');
-
-                    // Hiển thị thông báo thành công
-                    showSuccessToast("Sản phẩm đã xóa thành công");
-
-                    // Lấy danh sách yêu thích mới sau khi đã xoá thành công
-                    $scope.fetchWishlistItems();
-                })
-                .catch(function(error) {
-                    console.error('Lỗi khi xoá sản phẩm khỏi danh sách yêu thích:', error);
-                });
-
-        }
     };
 
     // Thông báo Toast Success

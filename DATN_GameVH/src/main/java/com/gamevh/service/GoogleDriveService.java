@@ -46,7 +46,7 @@ public class GoogleDriveService {
 	        updateRequest.setFields("id,name"); // Chỉ lấy về trường id và name của tệp tin
 	        var updatedFile = updateRequest.execute();
 
-	        System.out.println("Updated File ID: " + updatedFile.getId());
+//	        System.out.println("Updated File ID: " + updatedFile.getId());
 	        return updatedFile.getId();
 	    } else {
 	        // Nếu tệp tin chưa tồn tại, tạo một tệp tin mới

@@ -36,27 +36,27 @@
 		<div class="row filter-row">
 			<div class="col-sm-6 col-md-3">
 				<div class="form-group form-focus">
-					<input type="text" class="form-control floating">
+					<input type="text" class="form-control floating" id="searchTitle" ng-keydown="searchWithEnter($event)">
 					<label class="focus-label">Title</label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-3">
 				<div class="form-group form-focus">
-					<input type="text" class="form-control floating">
+					<input type="text" class="form-control floating" id="searchUsername" ng-keydown="searchWithEnter($event)">
 					<label class="focus-label">User Name</label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-2">
 				<div class="form-group form-focus cal-icon">
-					<input type="text" class="form-control floating datetimepicker  ">
+					<input type="text" class="form-control floating datetimepicker" id="searchCreateDate" ng-keydown="searchWithEnter($event)">
 					<label class="focus-label">Created Date</label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-2">
-				<a href="#" class="btn btn-success btn-block"> Search </a>
+				<a href="#" class="btn btn-success btn-block" ng-click="searchBlog()" ng-keydown="searchWithEnter($event)"> Search </a>
 			</div>
 			<div class="col-sm-6 col-md-2">
-				<a href="#" ng-click="getDataBlog()" class="btn btn-success btn-block"> Refresh </a>
+				<a href="#" class="btn btn-success btn-block" ng-click="refreshSearch()"> Refresh </a>
 			</div>
 		</div>
 		<!-- /Search Filter -->

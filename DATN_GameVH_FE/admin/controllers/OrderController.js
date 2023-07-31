@@ -33,6 +33,14 @@ function OrderController($scope, OrderService, SweetAlert) {
   };
 
   $scope.statusOptions = [
+    {
+      value: "Đã hoàn thành",
+      label: "Đã Hoàn Thành",
+    },
+    {
+      value: "Đang vận chuyển",
+      label: "Đang Vận Chuyển",
+    },
     { value: "Đang chờ xử lý", label: "Đang Chờ Xử Lý" },
     { value: "Đã hủy", label: "Đã Hủy" },
   ];
@@ -41,21 +49,6 @@ function OrderController($scope, OrderService, SweetAlert) {
     OrderService.getOne(order.orderId)
       .then((response) => {
         $scope.selectedOrderStatus = response.data.orderData;
-        if ($scope.selectedOrderStatus.paymentStatus) {
-          $scope.statusOptions.push({
-            value: "Đã hoàn thành",
-            label: "Đã Hoàn Thành",
-          });
-          $scope.statusOptions.push({
-            value: "Đang vận chuyển",
-            label: "Đang Vận Chuyển",
-          });
-        } else {
-          $scope.statusOptions = [
-            { value: "Đang chờ xử lý", label: "Đang Chờ Xử Lý" },
-            { value: "Đã hủy", label: "Đã Hủy" },
-          ];
-        }
       })
       .catch((err) =>
         SweetAlert.error("Error occured!", "Please try again later!")

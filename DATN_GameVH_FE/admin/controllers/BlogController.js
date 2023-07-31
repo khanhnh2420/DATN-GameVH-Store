@@ -8,6 +8,7 @@ function BlogController($scope, $filter, $document, $window, BlogService, ToastS
         username: $scope.username = $window.localStorage.getItem("username") || $window.sessionStorage.getItem("username"),
         image: null
     };
+    $scope.tempBlogs = [];
 
     // Khởi tạo biến để lưu trữ tạm
     $scope.blogIdToDelete = null;
@@ -17,6 +18,15 @@ function BlogController($scope, $filter, $document, $window, BlogService, ToastS
         BlogService.getAllBlog()
             .then(function (resp) {
                 $scope.blogs = resp.data;
+                $scope.tempBlogs = $scope.blogs;
+
+                // Kiểm tra nếu có search thì sẽ fill data dạng search
+                var searchTitle = document.getElementById("searchTitle").value.toLowerCase();
+                var searchUsername = document.getElementById("searchUsername").value.toLowerCase();
+                var searchCreateDate = document.getElementById("searchCreateDate").value;
+                if (searchTitle || searchUsername || searchCreateDate) {
+                    $scope.searchBlog();
+                }
                 $(document).ready(function () {
                     $scope.loadDataTableBlog($scope.blogs);
                 });
@@ -100,6 +110,71 @@ function BlogController($scope, $filter, $document, $window, BlogService, ToastS
             $scope.getCommentByBlogId(blogId);
         });
     };
+
+    $scope.searchBlog = function () {
+        var searchTitle = document.getElementById("searchTitle").value.toLowerCase();
+        var searchUsername = document.getElementById("searchUsername").value.toLowerCase();
+        var searchCreateDate = document.getElementById("searchCreateDate").value;
+
+        $scope.blogs = $scope.tempBlogs;
+
+        if (searchTitle) {
+            var result = $scope.blogs.filter(function (item) {
+                var blogTitle = item.title.toLowerCase(); // Chuyển giá trị thuộc tính title thành chữ thường
+                return blogTitle.indexOf(searchTitle) !== -1;
+            });
+            $scope.blogs = result;
+        }
+
+        if (searchUsername) {
+            var result = $scope.blogs.filter(function (item) {
+                var userCreated = item.username.toLowerCase(); // Chuyển giá trị thuộc tính user created thành chữ thường
+                return userCreated.indexOf(searchUsername) !== -1;
+            });
+            $scope.blogs = result;
+        }
+
+        if (searchCreateDate) {
+            searchCreateDate = convertDateFormat(searchCreateDate);
+            var result = $scope.blogs.filter(function (item) {
+                var createDate = item.createDate;
+                return createDate.indexOf(searchCreateDate) !== -1;
+            });
+            $scope.blogs = result;
+        }
+
+        $(document).ready(function () {
+            $scope.loadDataTableBlog($scope.blogs);
+        });
+    }
+
+    $scope.searchWithEnter = function(event) {
+        if (event.keyCode === 13) {
+            $scope.searchBlog();
+        }
+    }
+
+    $scope.refreshSearch = function () {
+        document.getElementById("searchTitle").value = "";
+        document.getElementById("searchUsername").value = "";
+        document.getElementById("searchCreateDate").value = "";
+
+        $scope.getDataBlog();
+        $scope.loadDataTableBlog($scope.blogs);
+    }
+
+    function convertDateFormat(inputDate) {
+        // Tách ngày, tháng, năm từ chuỗi đầu vào
+        const dateParts = inputDate.split('/');
+        const day = dateParts[0];
+        const month = dateParts[1];
+        const year = dateParts[2];
+
+        // Ghép lại thành dạng ngày/tháng/năm mới
+        const newDateFormat = `${year}-${month}-${day}`;
+
+        return newDateFormat;
+    }
 
     $scope.newBlog = function () {
         // Đánh dấu form là untouched và pristine để xóa thông báo lỗi

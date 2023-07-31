@@ -6,16 +6,17 @@ app.factory("OrderService", function ($http) {
         page: filters.page || 0,
         size: filters.size || 5,
         username: filters.username || null,
-        orderId: filters.orderId || null,
-        createDate: filters.createDate || null,
+        phone: filters.phone || null,
+        createdAt: filters.createdAt || null,
       };
-      return $http.get(baseUrl, queries);
+      console.log(queries);
+      return $http.get(baseUrl, { params: queries });
     },
     getOne(id) {
       return $http.get(`${baseUrl}/full/${id}`);
     },
     getTop5() {
-      return $http.get(baseUrl +"/getTop5");
+      return $http.get(baseUrl + "/getTop5");
     },
   };
 });

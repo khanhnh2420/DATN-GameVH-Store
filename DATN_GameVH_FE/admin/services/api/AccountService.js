@@ -6,6 +6,7 @@ app.factory("AccountService", function ($http) {
         page: filters.page || 0,
         size: filters.size || 5,
         username: filters.username || null,
+        email: filters.email || null,
         name: filters.name || null,
         roleId: filters.roleId || null,
       };
@@ -57,6 +58,7 @@ app.factory("AccountService", function ($http) {
         page: filters.page || 0,
         size: filters.size || 5,
         username: filters.username || null,
+        email: filters.email || null,
         name: filters.name || null,
         roleId: filters.roleId || null,
       };

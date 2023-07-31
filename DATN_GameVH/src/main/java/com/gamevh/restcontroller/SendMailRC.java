@@ -49,7 +49,7 @@ public class SendMailRC {
 			@RequestBody MailInfoDTO mailInfo) throws MessagingException {
 		if (mailInfo != null) {
 			if (!orderId.equals("") && orderId != null) {
-				OrderData orderData = orderService.findByOrderId(orderId).get(0);
+				OrderData orderData = orderService.findByOrderId(orderId);
 				if (orderData != null) {
 					List<OrderDetail> orderDetail = orderDetailService.findByOrderId(orderData.getId());
 					mailService.send(mailInfo.getTo(), mailInfo.getSubject(),

@@ -67,17 +67,20 @@ public class GoogleDriveService {
 	}
 
 
-	private File getFileByName(Drive driveService, String fileName, String folderId) throws IOException {
-	    var query = "name='" + fileName + "' and '" + folderId + "' in parents";
-	    var request = driveService.files().list().setQ(query).setSpaces("drive").setFields("files(id,name)").setSupportsAllDrives(true);
-	    var response = request.execute();
-	    var files = response.getFiles();
-
-	    if (files != null && !files.isEmpty()) {
-	        return files.get(0); // Trả về tệp tin đầu tiên có cùng tên
-	    }
-
-	    return null;
+	private File getFileByName(Drive driveService, String fileName, String folderId) {
+	    try{
+			var query = "name='" + fileName + "' and '" + folderId + "' in parents";
+			var request = driveService.files().list().setQ(query).setSpaces("drive").setFields("files(id,name)").setSupportsAllDrives(true);
+			var response = request.execute();
+			var files = response.getFiles();
+			if (files != null && !files.isEmpty()) {
+				return files.get(0); // Trả về tệp tin đầu tiên có cùng tên
+			}
+			return null;
+		}
+		catch (Exception e){
+			return null;
+		}
 	}
 
 

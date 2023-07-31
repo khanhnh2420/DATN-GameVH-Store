@@ -1,18 +1,16 @@
 package com.gamevh.restcontroller;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
+import com.gamevh.dto.FullOrderDTO;
+import com.gamevh.handle.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.gamevh.dto.CartDTO;
 import com.gamevh.dto.MailInfoDTO;
@@ -63,8 +61,14 @@ public class OrderDataRC {
 	ProductService productService;
 
 	@GetMapping("")
-	public ResponseEntity<List<OrderData>> getAll(Model model) {
-		return ResponseEntity.ok(orderDataRepository.findAll());
+	public ResponseEntity<Page<OrderData>> getAll(
+			@RequestParam("page") Optional<Integer> page,
+			@RequestParam("size") Optional<Integer> size,
+			@RequestParam(value = "username", defaultValue = "", required = false) String username,
+			@RequestParam(value = "phone", defaultValue = "", required = false) String phone,
+			@RequestParam(value = "createdAt", defaultValue = "", required = false) LocalDate createdAt
+	) {
+		return ResponseEntity.ok(orderService.findAll(page, size, username, phone, createdAt));
 	}
 
 	@GetMapping("/categories")
@@ -112,7 +116,7 @@ public class OrderDataRC {
 	@PostMapping("/create")
 	public ResponseEntity<OrderData> createOrderAndOrderDetailAndUpdateCouponOwner(@RequestBody OrderRequestDTO orderRequestDTO) {
 		if (orderRequestDTO.getOrderData() != null) {
-			if (orderRequestDTO.getOrderData().getId() == null && orderService.findByOrderId(orderRequestDTO.getOrderData().getOrderId()).isEmpty()) {
+			if (orderRequestDTO.getOrderData().getId() == null && orderService.findByOrderId(orderRequestDTO.getOrderData().getOrderId()) != null) {
 				OrderData orderDataResult = orderService.add(orderRequestDTO.getOrderData());
 				if (orderDataResult != null && orderRequestDTO.getOrderData().getCouponCode() != null
 						&& !orderRequestDTO.getOrderData().getCouponCode().equals("")) {
@@ -145,4 +149,10 @@ public class OrderDataRC {
 	public ResponseEntity<List<OrderData>> getTop5() {
 		return ResponseEntity.ok(orderDetailsDAO.getTop5OrderDataOrderCreatedDate());
 	}
+
+	@GetMapping("/full/{orderId}")
+	public FullOrderDTO findOne(@PathVariable("orderId") String orderId) throws CustomException {
+		return orderService.findOne(orderId);
+	}
+
 }

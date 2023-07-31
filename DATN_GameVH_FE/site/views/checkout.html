@@ -34,7 +34,8 @@
 						<form class="d-flex row ml-1" style="width: 45em;">
 							<input type="text" class="form-control col-8 m-0" id="checkout-discount-input"
 								placeholder="Nhập mã giảm giá..." ng-model="form.coupon"
-								ng-class="{'is-invalid-no-x': (isValidCoupon || isValidMinSpendCoupon || isValidDateCoupon)}" ng-change="updateStatusCoupon()">
+								ng-class="{'is-invalid-no-x': (isValidCoupon || isValidMinSpendCoupon || isValidDateCoupon)}"
+								ng-change="updateStatusCoupon()">
 							<a href="#" class="col ml-4 btn btn-outline-primary-2 btn-order btn-block"
 								ng-click="checkCoupon()">ÁP DỤNG MÃ</a>
 							<div class="mb-1 text-danger font-weight-bold">
@@ -220,10 +221,13 @@
 												<img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/92b78ced-1b1f-4a14-ad7e-4aa19910e24a/deifbc2-bcc43f88-e0e6-48ab-8478-658fef994cd2.png/v1/fill/w_1280,h_427,q_80,strp/jett_valorant_twitter_header_by_connorjones_deifbc2-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDI3IiwicGF0aCI6IlwvZlwvOTJiNzhjZWQtMWIxZi00YTE0LWFkN2UtNGFhMTk5MTBlMjRhXC9kZWlmYmMyLWJjYzQzZjg4LWUwZTYtNDhhYi04NDc4LTY1OGZlZjk5NGNkMi5wbmciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.Ejp1rc60MbEECnawk9LaIskMwB2gpMOwt5x6CofVIbs"
 													alt="Ticket Image" class="ticket-image img-responsive">
 												<div class="ticket-content">
-													<h5 class="text-white">{{coupon ? coupon.couponName : "Tiêu đề"}}</h5>
-													<p class="text-white">{{coupon ? coupon.description : "Thông tin về mã giảm giá"}} 
+													<h5 class="text-white">{{coupon ? coupon.couponName : "Tiêu đề"}}
+													</h5>
+													<p class="text-white">{{coupon ? coupon.description : "Thông tin về
+														mã giảm giá"}}
 													</p>
-													<button type="button" class="btn close-button" ng-click="clearCoupon()"></button>
+													<button type="button" class="btn close-button"
+														ng-click="clearCoupon()"></button>
 												</div>
 											</div>
 										</div>
@@ -277,7 +281,8 @@
 														Khuyến mãi:</td>
 													<!-- <td style="border: none; border-bottom: 0.1rem solid #cccccc;">{{coupon ? coupon.code : ""}}
 													</td> -->
-													<td style="border: none; border-bottom: 0.1rem solid #cccccc;">{{coupon ? "- " + (coupon.value | vndFormat) : "..."}}
+													<td style="border: none; border-bottom: 0.1rem solid #cccccc;">
+														{{coupon ? "- " + (coupon.value | vndFormat) : "..."}}
 													</td>
 												</tr>
 												<tr class="summary-total">
@@ -360,5 +365,30 @@
 			<!-- End .checkout -->
 		</div>
 		<!-- End .page-content -->
+		<div id="toast"></div>
 	</main>
+	<!-- Loading -->
+	<div class="overlay" id="loading" hidden>
+		<div class="animation-container">
+			<div class="lightning-container">
+				<div class="lightning white"></div>
+				<div class="lightning red"></div>
+			</div>
+			<div class="boom-container">
+				<div class="shape circle big white"></div>
+				<div class="shape circle white"></div>
+				<div class="shape triangle big yellow"></div>
+				<div class="shape disc white"></div>
+				<div class="shape triangle blue"></div>
+			</div>
+			<div class="boom-container second">
+				<div class="shape circle big white"></div>
+				<div class="shape circle white"></div>
+				<div class="shape disc white"></div>
+				<div class="shape triangle blue"></div>
+			</div>
+		</div>
+	</div>
+	<!-- End Loading -->
+	<!-- /Page Wrapper -->
 </div>

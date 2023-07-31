@@ -1,6 +1,6 @@
 // Angular js
 app.controller("CheckoutController", function (AccountService, OrderService, CouponOwnerService, MomoService, IPService,
-	PaypalService, ZaloPayService, VNPayService, SendMailService, LocationService, $scope, $window, $http) {
+	PaypalService, ZaloPayService, VNPayService, SendMailService, LocationService, ToastService, $scope, $window, $http) {
 
 	$scope.cart = [];
 	$scope.TotalPrice = 0;
@@ -56,19 +56,17 @@ app.controller("CheckoutController", function (AccountService, OrderService, Cou
 							$scope.form.address = cutStringToRetainAddress(item.address);
 							$scope.form.phone = item.phone;
 							$scope.form.province = parseInt(item.province);
-                            $scope.form.district = parseInt(item.district);
-                            $scope.form.ward = parseInt(item.ward);
-                            $scope.updateLocation();
+							$scope.form.district = parseInt(item.district);
+							$scope.form.ward = parseInt(item.ward);
+							$scope.updateLocation();
 						}
 					});
 				}
 			}).catch(function (error) {
-				console.error('Lỗi khi lấy location:', error);
 			});
 		}
 	}).catch(function (error) {
 		// Người dùng chưa đăng nhập hoặc có lỗi
-		console.error('Lỗi đăng nhập hoặc chưa đăng nhập:', error);
 		if (error === "Người dùng chưa đăng nhập") {
 			// Xử lý logic khi người dùng chưa đăng nhập
 			$window.localStorage.removeItem("username");
@@ -109,6 +107,8 @@ app.controller("CheckoutController", function (AccountService, OrderService, Cou
 			$scope.cart.forEach(function (data) {
 				$scope.TotalPrice += (data.salePrice - (data.salePrice * data.offer)) * data.qty;
 			});
+		} else {
+			$window.location.href = "/";
 		}
 	}
 	$scope.load_all = function () {
@@ -165,7 +165,6 @@ app.controller("CheckoutController", function (AccountService, OrderService, Cou
 					getCartData();
 				}
 			}).catch(function (error) {
-				console.error('Lỗi khi lấy thông tin mã giảm giá:', error);
 			});
 		} else {
 			$scope.isValidCoupon = true;
@@ -191,6 +190,8 @@ app.controller("CheckoutController", function (AccountService, OrderService, Cou
 	// Xử lý event thanh toán
 	$scope.checkout = function () {
 		if ($scope.orderForm.$valid) {
+			// Show loading
+			document.getElementById("loading").removeAttribute("hidden");
 			// Xử lý logic khi form đã được điền đúng
 
 			// Tạo một đối tượng ngày hiện tại
@@ -248,7 +249,9 @@ app.controller("CheckoutController", function (AccountService, OrderService, Cou
 						})
 					})
 					.catch(function (error) {
-						console.log('Error:', error);
+						// hidden loading
+						document.getElementById("loading").setAttribute("hidden", true);
+						ToastService.showshowErrorToast("Thanh toán thất bại!");
 					});
 
 			} else if ($scope.paymentMethod === "paypal") {
@@ -323,11 +326,15 @@ app.controller("CheckoutController", function (AccountService, OrderService, Cou
 					$window.localStorage.removeItem("carts");
 					$window.location.href = returnUrl;
 				}).catch(function (error) {
-					console.error('Lỗi khi gửi mail:', error);
+					// hidden loading
+					document.getElementById("loading").setAttribute("hidden", true);
+					ToastService.showshowErrorToast("Thanh toán thất bại!");
 				});
 			}
 		}).catch(function (error) {
-			console.error('Lỗi khi tạo order:', error);
+			// hidden loading
+			document.getElementById("loading").setAttribute("hidden", true);
+			ToastService.showshowErrorToast("Thanh toán thất bại!");
 		});
 	}
 
@@ -416,7 +423,9 @@ app.controller("CheckoutController", function (AccountService, OrderService, Cou
 			$scope.momo = response.data;
 			$scope.createOrderOnDB(inpOrderId, $scope.momo.payUrl);
 		}).catch(function (error) {
-			console.error('Lỗi khi tạo order Momo:', error);
+			// hidden loading
+			document.getElementById("loading").setAttribute("hidden", true);
+			ToastService.showshowErrorToast("Thanh toán thất bại!");
 		});
 	}
 
@@ -479,7 +488,9 @@ app.controller("CheckoutController", function (AccountService, OrderService, Cou
 			// Tạo order trên DB
 			$scope.createOrderOnDB($scope.paypal.id, $scope.paypal.links[1].href);
 		}).catch(function (error) {
-			console.error('Lỗi khi tạo order paypal:', error);
+			// hidden loading
+			document.getElementById("loading").setAttribute("hidden", true);
+			ToastService.showshowErrorToast("Thanh toán thất bại!");
 		});
 	}
 

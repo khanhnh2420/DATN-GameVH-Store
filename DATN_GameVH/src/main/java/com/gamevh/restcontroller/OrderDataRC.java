@@ -117,8 +117,9 @@ public class OrderDataRC {
 	@PostMapping("/create")
 	public ResponseEntity<OrderData> createOrderAndOrderDetailAndUpdateCouponOwner(@RequestBody OrderRequestDTO orderRequestDTO) {
 		if (orderRequestDTO.getOrderData() != null) {
-			if (orderRequestDTO.getOrderData().getId() == null && orderService.findByOrderId(orderRequestDTO.getOrderData().getOrderId()) != null) {
+			if (orderRequestDTO.getOrderData().getId() == null && orderService.findByOrderId(orderRequestDTO.getOrderData().getOrderId()) == null) {
 				OrderData orderDataResult = orderService.add(orderRequestDTO.getOrderData());
+				
 				if (orderDataResult != null && orderRequestDTO.getOrderData().getCouponCode() != null
 						&& !orderRequestDTO.getOrderData().getCouponCode().equals("")) {
 					CouponOwner couponOwner = couponOwnerService

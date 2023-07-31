@@ -239,7 +239,7 @@ app.controller("ProfileController", function (AccountService, LocationService, O
 
     $scope.changeTab = function (event, tabName) {
         if (!(tabName == "feedback")) {
-            document.getElementById("tabTitleFeedback").setAttribute("hidden", true);;
+            document.getElementById("tabTitleFeedback").setAttribute("hidden", true);
             document.getElementById("tabFeedback").setAttribute("hidden", true);
         }
 

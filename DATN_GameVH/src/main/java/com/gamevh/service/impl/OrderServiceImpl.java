@@ -64,5 +64,12 @@ public class OrderServiceImpl implements OrderService {
 						new CustomException("Không tìm thấy order với mã là " + orderId, HttpStatus.NOT_FOUND));
 		return orderMapper.orderToFullOrder(orderData);
 	}
-	
+	@Override
+	public void updateStatus(String orderId, String newStatus) throws CustomException {
+		OrderData orderData = orderDataRepository.findByOrderId(orderId)
+				.orElseThrow(() ->
+						new CustomException("Không tìm thấy order với mã là " + orderId, HttpStatus.NOT_FOUND));
+		orderData.setOrderStatus(newStatus);
+		orderDataRepository.save(orderData);
+	}
 }

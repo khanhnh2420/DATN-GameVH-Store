@@ -17,11 +17,11 @@ function OrderController($scope, OrderService, SweetAlert) {
   };
 
   $scope.selectedOrderData;
+  $scope.selectedOrderStatus;
   $scope.selectedorderDetail;
   $scope.viewData = function (order) {
     OrderService.getOne(order.orderId)
       .then((response) => {
-        console.log(response);
         $scope.selectedOrderData = response.data.orderData;
         $scope.selectedorderDetail = response.data.orderDetail.map(
           (e, index) => ({ ...e, index })
@@ -30,6 +30,52 @@ function OrderController($scope, OrderService, SweetAlert) {
       .catch((err) =>
         SweetAlert.error("Error occured!", "Please try again later!")
       );
+  };
+
+  $scope.statusOptions = [
+    { value: "Đang chờ xử lý", label: "Đang Chờ Xử Lý" },
+    { value: "Đã hủy", label: "Đã Hủy" },
+  ];
+
+  $scope.viewOrderStatus = function (order) {
+    OrderService.getOne(order.orderId)
+      .then((response) => {
+        $scope.selectedOrderStatus = response.data.orderData;
+        if ($scope.selectedOrderStatus.paymentStatus) {
+          $scope.statusOptions.push({
+            value: "Đã hoàn thành",
+            label: "Đã Hoàn Thành",
+          });
+          $scope.statusOptions.push({
+            value: "Đang vận chuyển",
+            label: "Đang Vận Chuyển",
+          });
+        } else {
+          $scope.statusOptions = [
+            { value: "Đang chờ xử lý", label: "Đang Chờ Xử Lý" },
+            { value: "Đã hủy", label: "Đã Hủy" },
+          ];
+        }
+      })
+      .catch((err) =>
+        SweetAlert.error("Error occured!", "Please try again later!")
+      );
+  };
+  $scope.updateStatus = function () {
+    OrderService.updateStatus(
+      $scope.selectedOrderStatus.orderId,
+      $scope.selectedOrderStatus.orderStatus
+    )
+      .then((response) => {
+        SweetAlert.success(
+          "Status updated!",
+          "Order Status changed to " + $scope.selectedOrderStatus.orderStatus
+        );
+        getPage(0);
+      })
+      .catch((err) => {
+        SweetAlert.error("Error occured!", "Please try again later!");
+      });
   };
 
   function getPage(page) {

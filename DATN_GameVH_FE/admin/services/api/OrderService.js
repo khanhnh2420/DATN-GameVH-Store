@@ -18,5 +18,8 @@ app.factory("OrderService", function ($http) {
     getTop5() {
       return $http.get(baseUrl + "/getTop5");
     },
+    updateStatus(orderId, newStatus) {
+      return $http.put(`${baseUrl}/status/${orderId}`, newStatus);
+    },
   };
 });

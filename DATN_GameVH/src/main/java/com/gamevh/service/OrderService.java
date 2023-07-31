@@ -21,4 +21,5 @@ public interface OrderService {
 	
 	OrderData add(OrderData orderData);
 	FullOrderDTO findOne(String orderId) throws CustomException;
+	void updateStatus(String orderId, String newStatus) throws CustomException;
 }

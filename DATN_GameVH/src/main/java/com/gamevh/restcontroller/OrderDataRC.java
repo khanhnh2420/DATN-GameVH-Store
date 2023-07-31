@@ -8,6 +8,7 @@ import com.gamevh.dto.FullOrderDTO;
 import com.gamevh.handle.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.web.JsonPath;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -155,4 +156,8 @@ public class OrderDataRC {
 		return orderService.findOne(orderId);
 	}
 
+	@PutMapping("/status/{orderId}")
+	public void updateStatus(@PathVariable("orderId") String orderId, @RequestBody String newStatus) throws CustomException {
+		orderService.updateStatus(orderId, newStatus);
+	}
 }

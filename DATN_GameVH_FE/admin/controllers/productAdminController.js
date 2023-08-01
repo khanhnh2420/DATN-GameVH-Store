@@ -334,13 +334,20 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
         return thumbnailIds;
     }
 
-    // Hàm để hiển thị các thumbnail
-    function displayThumbnails(thumbnails) {
+    $scope.displayThumbnails = function(thumbnails) {
         thumbnails.forEach((thumbnailId) => {
             const imageUrl = "https://drive.google.com/uc?id=" + thumbnailId.trim();
             $scope.displayThumbnail(imageUrl);
         });
-    }
+    };
+
+    // // Hàm để hiển thị các thumbnail
+    // function displayThumbnails(thumbnails) {
+    //     thumbnails.forEach((thumbnailId) => {
+    //         const imageUrl = "https://drive.google.com/uc?id=" + thumbnailId.trim();
+    //         $scope.displayThumbnail(imageUrl);
+    //     });
+    // }
 
     // Hàm để tải các thumbnail cho editProduct
     function loadThumbnails() {
@@ -352,7 +359,7 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
     }
 
     // Cập nhật sản phẩm
-    $scope.updateProduct = function() {
+    $scope.updateProduct = function(productId) {
         ProductAdminService.updateProduct(productId, $scope.editProduct)
             .then(function(response) {
                 console.log("Sản phẩm đã được cập nhật");
@@ -419,7 +426,7 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
         var formData = new FormData();
         formData.append('image', file);
 
-        ProductAdminService.uploadimage(formData)
+        ProductAdminService.uploadImage(formData)
             .then(function(response) {
                 // Xử lý khi tải lên poster thành công
                 var fileId = response.data.fileId;
@@ -462,24 +469,32 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
 
 
 
-    $scope.searchProducts = function() {
-        var productName = $scope.searchProductName;
-        var productType = $scope.searchProductType;
-        var categoryName = $scope.searchCategoryName;
 
-        // Gọi phương thức getListProductSearch từ service để thực hiện tìm kiếm sản phẩm
+    $scope.name = null;
+    $scope.type = "Game";
+    $scope.category = {
+        name: "0"
+    };
+
+    $scope.SearchProduct = function() {
+        // Chuyển đổi giá trị null hoặc undefined thành Optional
+        var productName = $scope.name ? $scope.name : null;
+        var productType = $scope.type ? $scope.type : null;
+        var categoryName = $scope.category.name ? $scope.category.name : null;
+
         ProductAdminService.getListProductSearch(productName, productType, categoryName)
             .then(function(response) {
-                // Lấy danh sách sản phẩm tìm kiếm được từ phản hồi của API
-                var searchResults = response.data;
-
-                // Gán danh sách sản phẩm tìm kiếm được vào biến $scope.products
-                $scope.products = searchResults;
+                $scope.product = response.data;
+                $(document).ready(function() {
+                    $scope.loadDataTableProduct($scope.product);
+                });
             })
             .catch(function(error) {
-                console.error('Lỗi khi tìm kiếm sản phẩm:', error);
+                console.error("Lỗi khi tìm kiếm sản phẩm:", error);
             });
     };
+
+
 
     /*----IMAGE----*/
     // Hàm xử lý sự kiện khi click vào nút "upload-button".
@@ -507,30 +522,61 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
             });
         }
     });
-    // // Sự kiện khi người dùng nhấn nút "Upload Thumbnail"
-    // $scope.handleThumbnailUploadClick = function() {
-    //     // Tìm đến phần tử chứa thẻ <input> và thẻ <img>
-    //     var fileInputthumbnail = document.getElementById('fileInputthumbnail');
-    //     // Khi click vào nút "upload-button", kích hoạt sự kiện click cho input file-upload.
-    //     fileInputthumbnail.click();
-    // };
+    // Khởi tạo một mảng để lưu trữ các URL tạm thời cho các hình ảnh thu nhỏ đã được tải lên
+    $scope.tempPhotoUrls = [];
 
-    // // Đăng ký sự kiện change cho input file-upload để xử lý khi người dùng chọn ảnh và thực hiện upload.
-    // document.getElementById('fileInputthumbnail').addEventListener('change', function() {
-    //     // Lấy danh sách các file đã chọn từ input file-upload.
-    //     var selectedFiles = this.files;
-    //     if (selectedFiles.length > 0) {
-    //         // Lấy file đầu tiên trong danh sách (vì input file-upload cho phép multiple selection).
-    //         var selectedFile = selectedFiles[0];
+    // Sự kiện khi người dùng nhấn nút "Upload Thumbnail"
+    $scope.handleThumbnailUploadClick = function(index) {
+        // Tìm đến phần tử chứa thẻ <input> tương ứng với index của nút được nhấn
+        var fileInputthumbnail = document.getElementById('fileInputthumbnail' + index);
 
-    //         // Tạo một đường dẫn tạm thời cho ảnh từ file đã chọn.
-    //         var tempPhotoUrl = URL.createObjectURL(selectedFile);
-    //         $scope.$apply(function() {
-    //             // Gọi hàm displayThumbnail để hiển thị ảnh thumbnail được chọn
-    //             $scope.displayThumbnail(tempPhotoUrl);
-    //         });
-    //     }
-    // });
+        // Đăng ký sự kiện change cho input file-upload để xử lý khi người dùng chọn ảnh và thực hiện upload.
+        fileInputthumbnail.addEventListener('change', function() {
+            // Lấy danh sách các file đã chọn từ input file-upload.
+            var selectedFiles = this.files;
+            if (selectedFiles.length > 0) {
+                // Lấy file đầu tiên trong danh sách (vì input file-upload cho phép multiple selection).
+                var selectedFile = selectedFiles[0];
+
+                // Tạo một đường dẫn tạm thời cho ảnh từ file đã chọn.
+                var tempPhotoUrl = URL.createObjectURL(selectedFile);
+
+                // Lưu đường dẫn tạm thời vào mảng tương ứng với index của input
+                $scope.tempPhotoUrls[index] = tempPhotoUrl;
+
+                $scope.$apply(function() {
+                    // Gọi hàm displayThumbnail để hiển thị ảnh thumbnail được chọn
+                    $scope.displayThumbnail(tempPhotoUrl);
+                });
+            }
+        });
+
+        // Khi click vào nút "upload-button", kích hoạt sự kiện click cho input file-upload.
+        fileInputthumbnail.click();
+    };
+
+    // Đăng ký sự kiện change cho input file-upload để xử lý khi người dùng chọn ảnh và thực hiện upload.
+    document.querySelectorAll('.fileInputthumbnail').forEach(function(inputElement, index) {
+        inputElement.addEventListener('change', function() {
+            // Lấy danh sách các file đã chọn từ input file-upload.
+            var selectedFiles = this.files;
+            if (selectedFiles.length > 0) {
+                // Lấy file đầu tiên trong danh sách (vì input file-upload cho phép multiple selection).
+                var selectedFile = selectedFiles[0];
+
+                // Tạo một đường dẫn tạm thời cho ảnh từ file đã chọn.
+                var tempPhotoUrl = URL.createObjectURL(selectedFile);
+
+                // Lưu đường dẫn tạm thời vào mảng tương ứng với index của input
+                $scope.tempPhotoUrls[index] = tempPhotoUrl;
+
+                $scope.$apply(function() {
+                    // Gọi hàm displayThumbnail để hiển thị ảnh thumbnail được chọn
+                    $scope.displayThumbnail(tempPhotoUrl);
+                });
+            }
+        });
+    });
 
     /*----END IMAGE----*/
 

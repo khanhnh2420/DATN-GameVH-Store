@@ -1,13 +1,10 @@
 app.controller("ProductController", function(ProductAdminService, ToastService, $http, $scope, $compile, $routeParams, $timeout, $rootScope, $filter) {
 
     $scope.product = {}; // Thông tin sản phẩm sẽ được hiển thị trên trang chi tiết
-    $scope.thumbnails = []; // Mảng hình ảnh thumbnail của sản phẩm
-
     $scope.editProduct = {};
 
     $scope.categories = [];
     $scope.feedback = [];
-    $scope.thumbnails = [];
 
     $scope.posters = [];
     $scope.thumbnails = [];
@@ -190,7 +187,6 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
     // Lấy tất cả sản phẩm
     ProductAdminService.getAllProducts().then(function(response) {
         $scope.product = response.data;
-
         $scope.temProduct = $scope.product;
         // Kiểm tra nếu có search thì sẽ fill data dạng search
         var selectElement = document.getElementById("searchTitle").value;
@@ -315,7 +311,8 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
         ProductAdminService.getProduct(productId)
             .then(function(response) {
                 $scope.editProduct = response.data;
-                loadThumbnails();
+                $scope.thumbnails = extractThumbnails($scope.editProduct.thumbnail);
+                console.log($scope.thumbnails)
                 $('#edit_Product').modal('show');
             })
             .catch(function(error) {
@@ -333,15 +330,27 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
     function extractThumbnails(productThumbnail) {
         if (!productThumbnail) return [];
         const thumbnailIds = productThumbnail.split("***");
-        return thumbnailIds;
+        const thumbnails = [];
+        if (thumbnailIds.length > 0) {
+            for (let i; i < thumbnailIds.length; i++) {
+                var jsonImg = {
+                    href: "https://drive.google.com/uc?id=",
+                    key: thumbnailIds[i]
+                }
+                console.log(jsonImg)
+                thumbnails.push(jsonImg);
+            }
+        }
+        console.log(thumbnails)
+        return thumbnails;
     }
 
-    $scope.displayThumbnails = function(thumbnails) {
-        thumbnails.forEach((thumbnailId) => {
-            const imageUrl = "https://drive.google.com/uc?id=" + thumbnailId.trim();
-            $scope.displayThumbnail(imageUrl);
-        });
-    };
+    // $scope.displayThumbnails = function(thumbnails) {
+    //     thumbnails.forEach((thumbnailId) => {
+    //         const imageUrl = "https://drive.google.com/uc?id=" + thumbnailId.trim();
+    //         $scope.displayThumbnail(imageUrl);
+    //     });
+    // };
 
     // // Hàm để hiển thị các thumbnail
     // function displayThumbnails(thumbnails) {
@@ -351,14 +360,14 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
     //     });
     // }
 
-    // Hàm để tải các thumbnail cho editProduct
-    function loadThumbnails() {
-        // Đảm bảo rằng editProduct.thumbnail đã được xác định trước khi trích xuất các thumbnail
-        if ($scope.editProduct && $scope.editProduct.thumbnail) {
-            $scope.thumbnails = extractThumbnails($scope.editProduct.thumbnail);
-            displayThumbnails($scope.thumbnails);
-        }
-    }
+    // // Hàm để tải các thumbnail cho editProduct
+    // function loadThumbnails() {
+    //     // Đảm bảo rằng editProduct.thumbnail đã được xác định trước khi trích xuất các thumbnail
+    //     if ($scope.editProduct && $scope.editProduct.thumbnail) {
+    //         $scope.thumbnails = extractThumbnails($scope.editProduct.thumbnail);
+    //         displayThumbnails($scope.thumbnails);
+    //     }
+    // }
 
     // Cập nhật sản phẩm
     $scope.updateProduct = function(productId) {
@@ -573,6 +582,7 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
     $scope.handleThumbnailUploadClick = function(index) {
         // Tìm đến phần tử chứa thẻ <input> tương ứng với index của nút được nhấn
         var fileInputthumbnail = document.getElementById('fileInputthumbnail' + index);
+        var img = document.getElementById('img' + index);
 
         // Đăng ký sự kiện change cho input file-upload để xử lý khi người dùng chọn ảnh và thực hiện upload.
         fileInputthumbnail.addEventListener('change', function() {
@@ -583,15 +593,12 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
                 var selectedFile = selectedFiles[0];
 
                 // Tạo một đường dẫn tạm thời cho ảnh từ file đã chọn.
-                var tempPhotoUrl = URL.createObjectURL(selectedFile);
+                var tempPhotoUrls = URL.createObjectURL(selectedFile);
 
                 // Lưu đường dẫn tạm thời vào mảng tương ứng với index của input
-                $scope.tempPhotoUrls[index] = tempPhotoUrl;
 
-                $scope.$apply(function() {
-                    // Gọi hàm displayThumbnail để hiển thị ảnh thumbnail được chọn
-                    $scope.displayThumbnail(tempPhotoUrl);
-                });
+                $scope.thumbnails[index].href = "";
+                $scope.thumbnails[index] = tempPhotoUrls;
             }
         });
 
@@ -599,28 +606,7 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
         fileInputthumbnail.click();
     };
 
-    // Đăng ký sự kiện change cho input file-upload để xử lý khi người dùng chọn ảnh và thực hiện upload.
-    document.querySelectorAll('.fileInputthumbnail').forEach(function(inputElement, index) {
-        inputElement.addEventListener('change', function() {
-            // Lấy danh sách các file đã chọn từ input file-upload.
-            var selectedFiles = this.files;
-            if (selectedFiles.length > 0) {
-                // Lấy file đầu tiên trong danh sách (vì input file-upload cho phép multiple selection).
-                var selectedFile = selectedFiles[0];
 
-                // Tạo một đường dẫn tạm thời cho ảnh từ file đã chọn.
-                var tempPhotoUrl = URL.createObjectURL(selectedFile);
-
-                // Lưu đường dẫn tạm thời vào mảng tương ứng với index của input
-                $scope.tempPhotoUrls[index] = tempPhotoUrl;
-
-                $scope.$apply(function() {
-                    // Gọi hàm displayThumbnail để hiển thị ảnh thumbnail được chọn
-                    $scope.displayThumbnail(tempPhotoUrl);
-                });
-            }
-        });
-    });
 
     /*----END IMAGE----*/
 

@@ -353,15 +353,15 @@
                                         <h5 class="text-danger fs-3 mt-1 ml-2">*Chỉ được 3 ảnh thu nhỏ*</h5>
                                     </div>
                                     <div class="dropzone-container d-flex justify-content-center flex-wrap" id="dropzone_remove">
-                                        <div ng-repeat="thumbnailId in thumbnails">
+                                        <div ng-repeat="(key,thumbnailId) in thumbnails">
                                             <!-- <img ng-src="https://drive.google.com/uc?id={{thumbnailId.trim()}}" alt="Thumbnail" class="thumbnail"> -->
-                                            <form ng-submit="handleFormSubmit()">
-                                                <img ng-src="https://drive.google.com/uc?id={{thumbnailId.trim()}}" alt="Thumbnail" class="thumbnail">
-                                                <div ng-repeat="index in [1, 2, 3]">
-                                                    <div class="upload-button" ng-click="handleThumbnailUploadClick(index)">
+                                            <form>
+                                                <img id="img{{key}}" ng-src="{{thumbnailId.href + thumbnailId.key.trim()}}" alt="Thumbnail" class="thumbnail" ng-click="handleThumbnailUploadClick(key)">
+                                                <div>
+                                                    <div class="upload-button" style="width: 0;">
                                                         <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
                                                     </div>
-                                                    <input class="fileInputthumbnail" type="file" id="fileInputthumbnail{{index}}" accept="image/*" style="display: none;" />
+                                                    <input class="fileInputthumbnail" type="file" id="fileInputthumbnail{{key}}" accept="image/*" style="display: none;" />
                                                 </div>
                                                 <!-- <button type="submit" style="display: none;"></button> -->
                                             </form>

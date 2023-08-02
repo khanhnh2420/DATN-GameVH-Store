@@ -15,17 +15,8 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
 
     var productId;
 
+    $scope.temProduct = {};
 
-
-    // // Lấy thông tin sản phẩm theo ID
-    // ProductAdminService.getProductDTO(productId)
-    //     .then(function(response) {
-    //         $scope.product = response.data;
-
-    //     })
-    //     .catch(function(error) {
-    //         console.error('Lỗi khi lấy thông tin sản phẩm:', error);
-    //     });
 
 
 
@@ -199,7 +190,17 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
     // Lấy tất cả sản phẩm
     ProductAdminService.getAllProducts().then(function(response) {
         $scope.product = response.data;
-        console.log(response.data)
+
+        $scope.temProduct = $scope.product;
+        // Kiểm tra nếu có search thì sẽ fill data dạng search
+        var selectElement = document.getElementById("searchTitle").value;
+        var searchName = document.getElementById("searchUsername").value.toLowerCase();
+        var searchCreateDate = document.getElementById("searchCreateDate").value;
+        console.log(selectElement || searchName)
+            // if (selectElement || searchName) {
+            //     $scope.searchProduct();
+            // }
+
         $(document).ready(function() {
             $scope.loadDataTableProduct($scope.product);
         });
@@ -209,6 +210,7 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
 
     $scope.loadDataTableProduct = function(products) {
         var table = $('#tableProduct');
+
 
         if ($.fn.DataTable.isDataTable(table)) {
             table.DataTable().destroy();
@@ -467,32 +469,74 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
     };
 
 
+    $scope.searchProduct = function() {
+        var selectElement = document.getElementById("searchTitle").value;
+        var searchName = document.getElementById("searchUsername").value.toLowerCase();
+        var searchCreateDate = document.getElementById("searchCreateDate").value;
+        $scope.product = $scope.temProduct;
 
 
-
-    $scope.name = null;
-    $scope.type = "Game";
-    $scope.category = {
-        name: "0"
-    };
-
-    $scope.SearchProduct = function() {
-        // Chuyển đổi giá trị null hoặc undefined thành Optional
-        var productName = $scope.name ? $scope.name : null;
-        var productType = $scope.type ? $scope.type : null;
-        var categoryName = $scope.category.name ? $scope.category.name : null;
-
-        ProductAdminService.getListProductSearch(productName, productType, categoryName)
-            .then(function(response) {
-                $scope.product = response.data;
-                $(document).ready(function() {
-                    $scope.loadDataTableProduct($scope.product);
-                });
-            })
-            .catch(function(error) {
-                console.error("Lỗi khi tìm kiếm sản phẩm:", error);
+        if (selectElement) {
+            var result = $scope.product.filter(function(item) {
+                var ProductType = item.type; // Chuyển giá trị thuộc tính title thành chữ thường
+                return ProductType.indexOf(selectElement) !== -1;
             });
-    };
+            $scope.product = result;
+        }
+
+        if (searchCreateDate) {
+            searchCreateDate = convertDateFormat(searchCreateDate);
+            console.log(searchCreateDate)
+            var result = $scope.product.filter(function(item) {
+                var createDate = item.createDate;
+                console.log(createDate)
+                return createDate.indexOf(searchCreateDate) !== -1;
+            });
+            $scope.product = result;
+        }
+
+        if (searchName) {
+            var result = $scope.product.filter(function(item) {
+                var ProductName = item.name.toLowerCase(); // Chuyển giá trị thuộc tính user created thành chữ thường
+                return ProductName.indexOf(searchName) !== -1;
+            });
+            $scope.product = result;
+        }
+
+
+        $(document).ready(function() {
+            $scope.loadDataTableProduct($scope.product);
+        });
+    }
+
+    $scope.searchWithEnter = function(event) {
+        if (event.keyCode === 13) {
+            $scope.searchProduct();
+        }
+    }
+
+
+    $scope.refreshSearch = function() {
+        document.getElementById("searchTitle").value = "";
+        document.getElementById("searchUsername").value = "";
+        document.getElementById("searchCreateDate").value = "";
+
+        $scope.getAllProducts();
+        $scope.loadDataTableProduct($scope.product)
+    }
+
+    function convertDateFormat(inputDate) {
+        // Tách ngày, tháng, năm từ chuỗi đầu vào
+        const dateParts = inputDate.split('/');
+        const day = dateParts[0];
+        const month = dateParts[1];
+        const year = dateParts[2];
+
+        // Ghép lại thành dạng ngày/tháng/năm mới
+        const newDateFormat = `${year}-${month}-${day}`;
+
+        return newDateFormat;
+    }
 
 
 

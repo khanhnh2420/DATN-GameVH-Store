@@ -34,43 +34,31 @@
         <div class="row filter-row">
             <div class="col-sm-6 col-md-2">
                 <div class="form-group form-focus">
-                    <input type="text" class="form-control" ng-model="product.name">
+                    <input type="text" class="form-control" id="searchUsername">
                     <label class="focus-label">Tên Sản Phẩm</label>
                 </div>
             </div>
-            <!-- <div class="col-sm-6 col-md-2">
-                <div class="form-group form-focus select-focus">
+            <div class="col-sm-6 col-md-2">
+                <div class="form-group form-focus cal-icon">
+                    <input type="text" class="form-control floating datetimepicker" id="searchCreateDate" ng-keydown="searchWithEnter($event)">
                     <label class="focus-label">Created Date</label>
-                    <input class="form-control" type="date">
                 </div>
-            </div> -->
+            </div>
             <div class="col-sm-6 col-md-2">
                 <div class="form-group form-focus select-focus">
                     <label class="focus-label">Loại Sản Phẩm</label>
-                    <select class="select" ng-model="product.type">
-						<option>Game</option>
-						<option>Phụ kiện</option>
+                    <select class="select" id="searchTitle">
+                        <option value="" selected>Vui lòng chọn</option>
+						<option value="Game">Game</option>
+						<option value="PK">Phụ kiện</option>
 					</select>
                 </div>
             </div>
             <div class="col-sm-6 col-md-2">
-                <div class="form-group form-focus select-focus">
-                    <label class="focus-label">Danh Mục Game</label>
-                    <select class="select" ng-model="product.category.id">
-                        <option ng-repeat="category in categories | filter:{type: 'Game'}" value="{{category.id}}">{{category.name}}</option>
-                    </select>
-                </div>
+                <a href="#" class="btn btn-success btn-block" ng-click="searchProduct()"> Tìm Kiếm </a>
             </div>
             <div class="col-sm-6 col-md-2">
-                <div class="form-group form-focus select-focus">
-                    <label class="focus-label">Danh Mục Phụ Kiện</label>
-                    <select class="select" ng-model="product.category.id">
-                        <option ng-repeat="category in categories | filter:{type: 'PK'}" value="{{category.id}}">{{category.name}}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-2">
-                <a href="#" class="btn btn-success btn-block" ng-click="SearchProduct()"> Tìm Kiếm </a>
+                <a href="#" class="btn btn-success btn-block" ng-click="refreshSearch()"> Refresh </a>
             </div>
             <div class="col-sm-6 col-md-2">
                 <a href="#" class="btn btn-success btn-block" ng-click="downloadExcel()"> Xuất Báo Cáo </a>

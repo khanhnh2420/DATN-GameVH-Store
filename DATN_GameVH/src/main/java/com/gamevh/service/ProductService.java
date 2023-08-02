@@ -26,5 +26,5 @@ public interface ProductService {
 
 	List<Product> findTop5();
 	
-	List<Product> searchProduct(Optional<String> ProductName, Optional<String> ProductType, Optional<String> CategoryName);
+	
 }

@@ -82,12 +82,6 @@ public class ProductServiceImpl implements ProductService {
 		}
 	}
 
-	@Override
-	public List<Product> searchProduct(Optional<String> ProductName, Optional<String> ProductType,
-			Optional<String> CategoryName) {
-		// TODO Auto-generated method stub
-		return productRepository.searchProduct(ProductName, ProductType, CategoryName);
-	}
 
 
 }

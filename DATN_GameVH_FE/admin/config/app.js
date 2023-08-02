@@ -8,8 +8,7 @@ app.directive('customzdatetime', function () {
         link: function (scope, element, attrs, ngModelCtrl) {
             element.datetimepicker({
                 debug: false,
-                format: 'DD-MM-YYYY',
-                maxDate: moment()
+                format: 'DD-MM-YYYY'
             }).on('dp.change', function (e) {
                 ngModelCtrl.$setViewValue(e.date);
                 scope.$apply();

@@ -3,7 +3,7 @@ app.controller("CustomerController", CustomerController);
 function CustomerController($scope, AccountService, SweetAlert) {
   $scope.customers = [];
   $scope.pageNo = 0;
-  $scope.pageSize = 2;
+  $scope.pageSize = 10;
   $scope.nameFilter = "";
   $scope.emailFilter = "";
   $scope.init = function () {

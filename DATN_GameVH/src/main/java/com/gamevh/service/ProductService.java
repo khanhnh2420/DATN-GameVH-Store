@@ -1,7 +1,6 @@
 package com.gamevh.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 
@@ -15,9 +14,7 @@ public interface ProductService {
 
 	Product findById(Integer id);
 	
-	Product createProduct(Product product);
-	
-	Product updateProduct(Product product);
+	Product createOrUpdateProduct(Product product);
 	
 	void deleteProduct(Product product);
 	

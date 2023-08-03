@@ -1,7 +1,7 @@
 app.service('ToastService', function () {
     this.showSuccessToast = function (message) {
         toast({
-            title: 'Thành công!',
+            title: 'Success!',
             message: message,
             type: 'success',
             duration: 3000 // Thời gian hiển thị 5000ms (5 giây)
@@ -10,7 +10,7 @@ app.service('ToastService', function () {
 
     this.showErrorToast = function (message) {
         toast({
-            title: 'Thất bại!',
+            title: 'Failure!',
             message: message,
             type: 'error',
             duration: 3000 // Thời gian hiển thị 5000ms (5 giây)

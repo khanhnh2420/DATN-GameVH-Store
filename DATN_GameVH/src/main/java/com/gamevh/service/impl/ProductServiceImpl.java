@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.gamevh.entities.Comment;
 import com.gamevh.entities.Feedback;
 import com.gamevh.entities.Product;
 import com.gamevh.repository.FeedbackRepository;
@@ -37,13 +36,8 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Product createProduct(Product product) {
+	public Product createOrUpdateProduct(Product product) {
 		return productRepository.save(product);
-	}
-
-	@Override
-	public Product updateProduct(Product product) {
-		 return productRepository.save(product);
 	}
 
 	@Override

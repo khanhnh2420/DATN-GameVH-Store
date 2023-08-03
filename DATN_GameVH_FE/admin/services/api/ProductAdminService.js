@@ -1,59 +1,50 @@
-app.factory('ProductAdminService', function($http) {
+app.factory('ProductAdminService', function ($http) {
     var baseUrl = host + '/api/product';
     var baseUrlCa = host + '/api/category';
 
     return {
-        getProductDTO: function(productId) {
+        getProductDTO: function (productId) {
             return $http.get(baseUrl + '/getProductAdminDTO/' + productId);
         },
-        getProduct: function(productId) {
+        getProduct: function (productId) {
             return $http.get(baseUrl + '/' + productId);
         },
-        getAllCategories: function() {
+        getAllCategories: function () {
             return $http.get(baseUrlCa + '/getAll');
         },
-        getAllProducts: function() {
+        getAllProducts: function () {
             return $http.get(baseUrl + '/getAll');
         },
-        getAllFeedback: function() {
+        getAllFeedback: function () {
             return $http.get(baseUrl + '/getAllFeedback');
         },
-        getFeedbackProduct: function(productId) {
+        getFeedbackProduct: function (productId) {
             return $http.get(baseUrl + '/getProduct/' + productId);
         },
-        // uploadImage: function(image) {
-        //     var formData = new FormData();
-        //     formData.append('image', image);
-
-        //     return $http.post(baseUrl + '/upload', formData, {
-        //         transformRequest: angular.identity,
-        //         headers: { 'Content-Type': undefined }
-        //     });
-        // },
-        uploadImage: function(imageFile) {
+        uploadImage: function (imageFile) {
             return $http.post(baseUrl + '/upload', imageFile, {
                 headers: {
                     'Content-Type': undefined
                 }
             });
         },
-        createProduct: function(productData) {
-            return $http.post(baseUrl, productData);
+        createProduct: function (productData) {
+            return $http.post(baseUrl + '/createProduct', productData);
         },
-        updateProduct: function(productId, productData) {
-            return $http.post(baseUrl + '/updateProduct/' + productId, productData);
+        updateProduct: function (productData) {
+            return $http.put(baseUrl + '/updateProduct', productData);
         },
 
-        deleteFeedback: function(feedbackIdtId) {
+        deleteFeedback: function (feedbackIdtId) {
             return $http.delete(baseUrl + '/delete' + feedbackIdtId);
         },
-        getListProductSearch: function(productName, productType, categoryName) {
+        getListProductSearch: function (productName, productType, categoryName) {
             return $http.get(baseUrl + '/products/search?productName=' + productName + '&productType=' + productType + '&categoryName=' + categoryName);
         },
-        updateFeedbackStatus: function(feedbackId, status) {
+        updateFeedbackStatus: function (feedbackId, status) {
             return $http.put(baseUrl + '/updateFeedback/' + feedbackId, status);
         },
-        deleteFeedbackById: function(feedbackId) {
+        deleteFeedbackById: function (feedbackId) {
             return $http.delete(baseUrl + '/deleteFeedback/' + feedbackId)
         },
     };

@@ -742,12 +742,8 @@ CREATE TABLE `product` (
   `Status` tinyint(1) NOT NULL,
   `Type` varchar(8) NOT NULL,
   PRIMARY KEY (`Id`),
-  UNIQUE KEY `Thumbnail` (`Thumbnail`),
-  UNIQUE KEY `Poster` (`Poster`),
   UNIQUE KEY `Name` (`Name`),
   UNIQUE KEY `product_Name_IX` (`Name`),
-  UNIQUE KEY `product_Poster_IX` (`Poster`),
-  UNIQUE KEY `product_Thumbnail_IX` (`Thumbnail`),
   KEY `category_id` (`category_id`),
   CONSTRAINT `FK_Product_Category` FOREIGN KEY (`category_id`) REFERENCES `category` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

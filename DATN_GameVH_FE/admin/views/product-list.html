@@ -16,15 +16,15 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">SẢN PHẨM</h3>
+                    <h3 class="page-title">Product List</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Trang Chủ</a></li>
-                        <li class="breadcrumb-item active">Product</li>
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Product List</li>
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
                     <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_Product"><i
-							class="fa fa-plus"></i> Thêm Sản Phẩm</a>
+                            class="fa fa-plus"></i>Add Product</a>
                 </div>
             </div>
         </div>
@@ -34,46 +34,35 @@
         <div class="row filter-row">
             <div class="col-sm-6 col-md-2">
                 <div class="form-group form-focus">
-                    <input type="text" class="form-control" ng-model="product.name">
-                    <label class="focus-label">Tên Sản Phẩm</label>
+                    <input type="text" class="form-control" id="searchUsername">
+                    <label class="focus-label">Product Name</label>
                 </div>
             </div>
-            <!-- <div class="col-sm-6 col-md-2">
-                <div class="form-group form-focus select-focus">
+            <div class="col-sm-6 col-md-2">
+                <div class="form-group form-focus cal-icon">
+                    <input type="text" class="form-control floating datetimepicker" id="searchCreateDate"
+                        ng-keydown="searchWithEnter($event)">
                     <label class="focus-label">Created Date</label>
-                    <input class="form-control" type="date">
-                </div>
-            </div> -->
-            <div class="col-sm-6 col-md-2">
-                <div class="form-group form-focus select-focus">
-                    <label class="focus-label">Loại Sản Phẩm</label>
-                    <select class="select" ng-model="product.type">
-						<option>Game</option>
-						<option>Phụ kiện</option>
-					</select>
                 </div>
             </div>
             <div class="col-sm-6 col-md-2">
                 <div class="form-group form-focus select-focus">
-                    <label class="focus-label">Danh Mục Game</label>
-                    <select class="select" ng-model="product.category.id">
-                        <option ng-repeat="category in categories | filter:{type: 'Game'}" value="{{category.id}}">{{category.name}}</option>
+                    <label class="focus-label">Type</label>
+                    <select class="select" id="searchTitle">
+                        <option value="" selected>Select Type</option>
+                        <option value="Game">Game</option>
+                        <option value="PK">Phụ kiện</option>
                     </select>
                 </div>
             </div>
             <div class="col-sm-6 col-md-2">
-                <div class="form-group form-focus select-focus">
-                    <label class="focus-label">Danh Mục Phụ Kiện</label>
-                    <select class="select" ng-model="product.category.id">
-                        <option ng-repeat="category in categories | filter:{type: 'PK'}" value="{{category.id}}">{{category.name}}</option>
-                    </select>
-                </div>
+                <a href="#" class="btn btn-success btn-block" ng-click="searchProduct()">Search</a>
             </div>
             <div class="col-sm-6 col-md-2">
-                <a href="#" class="btn btn-success btn-block" ng-click="SearchProduct()"> Tìm Kiếm </a>
+                <a href="#" class="btn btn-success btn-block" ng-click="refreshSearch()">Refresh</a>
             </div>
             <div class="col-sm-6 col-md-2">
-                <a href="#" class="btn btn-success btn-block" ng-click="downloadExcel()"> Xuất Báo Cáo </a>
+                <a href="#" class="btn btn-success btn-block" ng-click="downloadExcel()">Export Report</a>
             </div>
         </div>
         <!-- /Search Filter -->
@@ -85,15 +74,16 @@
                         <thead>
                             <tr>
                                 <th class="text-center">#</th>
-                                <td class="text-center">Ảnh Áp Phích</td>
-                                <th>Tên Sản Phẩm</th>
-                                <th>Giá Gốc</th>
-                                <th>Giá Bán</th>
-                                <th>Nhà Phát Hành</th>
-                                <th class="text-nowrap">Ngày Phát Hành</th>
-                                <th>Loại Sản Phẩm</th>
-                                <th>Trạng Thái</th>
-                                <th class="text-right no-sort">Hoạt Động</th>
+                                <td class="text-center">Poster</td>
+                                <th>Product Name</th>
+                                <th>Origin Price</th>
+                                <th>Sale Price</th>
+                                <th>Offer</th>
+                                <th>Source</th>
+                                <th class="text-nowrap">Create Date</th>
+                                <th>Type</th>
+                                <th>Available</th>
+                                <th class="text-right no-sort">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -114,59 +104,65 @@
                 <div class="modal-header">
                     <h5 class="modal-title">Add Product</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-sm-12 col-md-8">
-                            <form>
+                            <form name="formAddProduct" novalidate>
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">ID</label>
-                                            <input class="form-control" type="text" ng-model="product.id">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
                                             <label class="col-form-label">Product Name</label>
-                                            <input class="form-control" type="text" ng-model="product.name">
+                                            <input class="form-control" type="text" ng-model="addProductForm.name">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Origin Price</label>
-                                            <input class="form-control" type="text" ng-model="product.originPrice">
+                                            <input class="form-control" type="number"
+                                                ng-model="addProductForm.originPrice">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Sale Price</label>
-                                            <input class="form-control" type="text" ng-model="product.salePrice">
+                                            <input class="form-control" type="number"
+                                                ng-model="addProductForm.salePrice">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Offer</label>
+                                            <input class="form-control" type="text" ng-model="addProductForm.offer">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Type</label>
-                                            <select class="select" ng-model="product.type">
+                                            <select class="select" ng-model="addProductForm.type">
+                                                <option value="">Please choose Type</option>
                                                 <option value="Game">Game</option>
-                                                <option value="Phụ kiện">Phụ kiện</option>
+                                                <option value="PK">Phụ kiện</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Category</label>
-                                            <select class="select" ng-model="product.category.id" ng-options="category.id as category.name for category in categories">
+                                            <select class="select" ng-model="addProductForm.category.id"
+                                                ng-options="category.id as category.name for category in categories">
+                                                <option value="">Please choose Category</option>
                                             </select>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Status</label>
-                                            <select class="select" ng-model="product.status">
+                                            <label class="col-form-label">Available</label>
+                                            <select class="select" ng-model="addProductForm.available">
+                                                <option value="">Please choose Available</option>
                                                 <option value="true">Còn Hàng</option>
                                                 <option value="false">Hết Hàng</option>
                                             </select>
@@ -175,26 +171,28 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Quantity</label>
-                                            <input class="form-control" type="number" ng-model="product.qty">
+                                            <input class="form-control" type="number" ng-model="addProductForm.qty"
+                                                min="1">
                                         </div>
                                     </div>
 
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Source</label>
-                                            <input class="form-control" type="text" ng-model="product.source">
+                                            <input class="form-control" type="text" ng-model="addProductForm.source">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="col-form-label">Link</label>
-                                            <input class="form-control" type="text" ng-model="product.link">
+                                            <input class="form-control" type="text" ng-model="addProductForm.link">
                                         </div>
                                     </div>
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label>Description</label>
-                                            <textarea class="form-control" rows="5" ng-model="product.details"></textarea>
+                                            <textarea class="form-control" rows="5"
+                                                ng-model="addProductForm.details"></textarea>
                                         </div>
                                     </div>
 
@@ -205,7 +203,7 @@
                             <h4 class="d-flex justify-content-center">IMAGE POSTER</h4>
                             <div class="card border-0">
                                 <div class="body d-flex justify-content-center">
-                                    <input type="file" class="dropify" ng-model="product.poster" accept="image/*">
+                                    <input type="file" class="dropify" id="posterImage" accept="image/*">
                                 </div>
                             </div>
                             <!-- <div class="mt-2">
@@ -223,8 +221,14 @@
                                         <h4 class="">IMAGE THUMBNAIL</h4>
                                         <h5 class="text-danger fs-3 mt-1 ml-2">*Only 3 Photos*</h5>
                                     </div>
+                                    <div class="row d-flex flex-row-reverse mr-3 mb-2">
+                                        <h5 class="text-danger fs-3 mt-1 ml-2" style="cursor: pointer;"
+                                            id="refreshThumbnail">Click here to remove all thumbnail
+                                        </h5>
+                                    </div>
 
-                                    <form action="#" class="dropzone d-flex justify-content-center flex-wrap" id="thumbnailDropzone"></form>
+                                    <!-- Directive Dropzone sẽ được gọi ở đây -->
+                                    <dropzone thumbnails="thumbnailsList" max-files="3"></dropzone>
                                 </div>
                             </div>
                         </div>
@@ -243,78 +247,96 @@
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Chỉnh Sửa Sản Phẩm</h5>
+                    <h5 class="modal-title">Edit Product</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-sm-12 col-md-8">
-                            <form>
+                            <form name="formAddProduct" novalidate>
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">ID </label>
-                                            <input class="form-control" type="text" ng-model="editProduct.id" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="col-form-label">Tên Sản Phẩm </label>
+                                            <label class="col-form-label">Product Name</label>
                                             <input class="form-control" type="text" ng-model="editProduct.name">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Giá Gốc</label>
-                                            <input class="form-control" type="text" ng-model="editProduct.originPrice">
+                                            <label class="col-form-label">Origin Price</label>
+                                            <input class="form-control" type="number"
+                                                ng-model="editProduct.originPrice">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Giá Bán </label>
-                                            <input class="form-control" type="text" ng-model="editProduct.salePrice">
+                                            <label class="col-form-label">Sale Price</label>
+                                            <input class="form-control" type="number" ng-model="editProduct.salePrice">
                                         </div>
                                     </div>
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Đường Dẫn </label>
-                                            <input class="form-control" type="email" ng-model="editProduct.link">
+                                            <label class="col-form-label">Offer</label>
+                                            <input class="form-control" type="text" ng-model="editProduct.offer">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Type</label>
+                                            <select class="select" ng-model="editProduct.type">
+                                                <option value="">Please choose Type</option>
+                                                <option value="Game">Game</option>
+                                                <option value="PK">Phụ kiện</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Danh Mục</label>
-                                            <select class="select" ng-model="editProduct.category.id" ng-options="category.id as category.name for category in categories">
+                                            <label class="col-form-label">Category</label>
+                                            <select class="select" ng-model="editProduct.category.id"
+                                                ng-options="category.id as category.name for category in categories">
+                                                <option value="">Please choose Category</option>
                                             </select>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Trạng Thái</label>
-                                            <select class="select" ng-model="editProduct.status">
-                                                <option value="true" ng-selected="editProduct.status === true">Còn Hàng</option>
-                                                <option value="false" ng-selected="editProduct.status === false">Hết Hàng</option>
+                                            <label class="col-form-label">Available</label>
+                                            <select class="select" ng-model="editProduct.available">
+                                                <option value="">Please choose Available</option>
+                                                <option value="true">Còn Hàng</option>
+                                                <option value="false">Hết Hàng</option>
                                             </select>
                                         </div>
-                                        <!-- <div class="form-group">
-                                            <label class="col-form-label">Status</label>
-                                            <input type="text" class="form-control" value="{{ product.status ? 'Còn Hàng' : 'Hết Hàng' }}">
-                                        </div> -->
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Quantity</label>
+                                            <input class="form-control" type="number" ng-model="editProduct.qty"
+                                                min="1">
+                                        </div>
                                     </div>
 
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Nhà Phát Hành</label>
+                                            <label class="col-form-label">Source</label>
                                             <input class="form-control" type="text" ng-model="editProduct.source">
                                         </div>
                                     </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Link</label>
+                                            <input class="form-control" type="text" ng-model="editProduct.link">
+                                        </div>
+                                    </div>
                                     <div class="col-sm-12">
                                         <div class="form-group">
-                                            <label>Mô Tả Sản Phẩm</label>
-                                            <textarea class="form-control" rows="5" ng-model="editProduct.details"></textarea>
+                                            <label>Description</label>
+                                            <textarea class="form-control" rows="5"
+                                                ng-model="editProduct.details"></textarea>
                                         </div>
                                     </div>
 
@@ -322,61 +344,36 @@
                             </form>
                         </div>
                         <div class="col-sm-12 col-md-4 theme-blush">
-                            <h4 class="d-flex justify-content-center">Ảnh Áp Phích</h4>
+                            <h4 class="d-flex justify-content-center">IMAGE POSTER</h4>
                             <div class="avatar-wrapper">
-                                <img class="profile-pic" ng-src="{{currentPhotoUrl || 'https://drive.google.com/uc?id=' + editProduct.poster}}" alt="Avatar" />
+                                <img class="profile-pic" ng-src="{{posterEdit.href + posterEdit.key}}" alt="Avatar" />
                                 <div class="upload-button" ng-click="handleUploadClick()">
                                     <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
                                 </div>
                                 <input class="file-upload" type="file" id="fileInput" accept="image/*" />
                             </div>
-
-                            <!-- <div class="card border-0">
-                                <div class="body d-flex flex-column align-items-center">
-
-                                    <img style="width: 300px; height: 533px;" src="https://drive.google.com/uc?id={{product.poster}}">
-                                    <input type="file" class="dropify" ng-model="product.poster" accept="image/*">
-
-                                </div>
-                            </div> -->
                         </div>
-
                     </div>
-                    <!-- <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="row  d-flex justify-content-center">
-                                        <h4 class=" ">IMAGE THUMBNAIL</h4>
-                                        <h5 class="text-danger fs-3 mt-1 ml-2">*Only 3 Photos*</h5>
-                                    </div>
-
-                                    <form action="#" class="dropzone d-flex justify-content-center flex-wrap" id="dropzone_remove"></form>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row d-flex justify-content-center">
-                                        <h4 class="">Ảnh Thu Nhỏ</h4>
-                                        <h5 class="text-danger fs-3 mt-1 ml-2">*Chỉ được 3 ảnh thu nhỏ*</h5>
+                                        <h4 class="">IMAGE THUMBNAIL</h4>
+                                        <h5 class="text-danger fs-3 mt-1 ml-2">*Only 3 Photos*</h5>
                                     </div>
-                                    <div class="dropzone-container d-flex justify-content-center flex-wrap" id="dropzone_remove">
-                                        <div ng-repeat="thumbnailId in thumbnails">
-                                            <!-- <img ng-src="https://drive.google.com/uc?id={{thumbnailId.trim()}}" alt="Thumbnail" class="thumbnail"> -->
-                                            <form ng-submit="handleFormSubmit()">
-                                                <img ng-src="https://drive.google.com/uc?id={{thumbnailId.trim()}}" alt="Thumbnail" class="thumbnail">
-                                                <div ng-repeat="index in [1, 2, 3]">
-                                                    <div class="upload-button" ng-click="handleThumbnailUploadClick(index)">
-                                                        <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
-                                                    </div>
-                                                    <input class="fileInputthumbnail" type="file" id="fileInputthumbnail{{index}}" accept="image/*" style="display: none;" />
+                                    <div class="dropzone-container d-flex justify-content-center flex-wrap"
+                                        id="dropzone_remove">
+                                        <div ng-repeat="(key,thumbnail) in thumbnails">
+                                            <div class="avatar-wrapper mr-4">
+                                                <img class="profile-pic" ng-src="{{thumbnail.href + thumbnail.key}}"
+                                                    alt="Avatar" />
+                                                <div class="upload-button" ng-click="handleUploadClick(key)">
+                                                    <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
                                                 </div>
-                                                <!-- <button type="submit" style="display: none;"></button> -->
-                                            </form>
+                                                <input class="file-upload d-none" type="file" id="thumbnail{{key}}"
+                                                    accept="image/*" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -391,14 +388,15 @@
                                 border-radius: 5%;
                                 transition: transform 0.3s;
                             }
-                            
+
                             .thumbnail:hover {
                                 transform: scale(1.2);
                             }
                         </style>
                     </div>
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" ng-click="updateProduct(productId)">Sửa</button>
+                        <button class="btn btn-primary submit-btn"
+                            ng-click="updateProduct(editProduct.id)">Edit</button>
                     </div>
                 </div>
             </div>
@@ -413,10 +411,10 @@
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Đánh Giá Sản Phẩm</h5>
+                    <h5 class="modal-title">Feedback</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <form>
@@ -426,11 +424,11 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Tên Người Dùng</th>
-                                            <th style="width: 300px;">Đánh Giá</th>
-                                            <th>Số Sao</th>
-                                            <th>Ngày Đánh Giá</th>
-                                            <th>Trạng Thái</th>
+                                            <th>Fullname</th>
+                                            <th style="width: 300px;">Content</th>
+                                            <th>Star</th>
+                                            <th>Create Date</th>
+                                            <th>Status</th>
                                             <th class="text-right no-sort">Action</th>
                                         </tr>
                                     </thead>
@@ -472,7 +470,6 @@
                                         </tr> -->
 
                                     </tbody>
-                                    <div id="toast"></div>
                                 </table>
                             </div>
                         </div>
@@ -502,7 +499,8 @@
                                 <a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
                             </div>
                             <div class="col-6">
-                                <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                <a href="javascript:void(0);" data-dismiss="modal"
+                                    class="btn btn-primary cancel-btn">Cancel</a>
                             </div>
                         </div>
                     </div>
@@ -526,7 +524,8 @@
                                 <a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
                             </div>
                             <div class="col-6">
-                                <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                <a href="javascript:void(0);" data-dismiss="modal"
+                                    class="btn btn-primary cancel-btn">Cancel</a>
                             </div>
                         </div>
                     </div>
@@ -535,6 +534,7 @@
         </div>
     </div>
     <!-- /Delete Comment Modal -->
+    <div id="toast"></div>
 
 </div>
 <!-- /Page Wrapper -->

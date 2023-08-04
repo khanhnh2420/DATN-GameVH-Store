@@ -4,7 +4,8 @@ app.directive('dropzone', function () {
     return {
         restrict: 'E',
         scope: {
-            thumbnails: '='
+            thumbnails: '=',
+            clearThumbnailsFn: '&' // Thêm thuộc tính để nhận hàm xóa từ controller
         },
         template: '<form action="#" class="dropzone d-flex justify-content-center flex-wrap" id="thumbnailDropzone"></form>',
         link: function (scope, element, attrs) {
@@ -18,18 +19,14 @@ app.directive('dropzone', function () {
 
                         this.on("addedfile", function (file) {
                             var thumbnails = dropzone.getAcceptedFiles();
-                            scope.$apply(function () {
-                                scope.thumbnails = thumbnails;
-                            });
+                            scope.thumbnails = thumbnails;
 
                             scope.thumbnails.push(file);
                         });
 
                         this.on("success", function (file, response) {
                             var thumbnails = dropzone.getAcceptedFiles();
-                            scope.$apply(function () {
-                                scope.thumbnails = thumbnails;
-                            });
+                            scope.thumbnails = thumbnails;
                         });
 
                         this.on("error", function (file) {
@@ -37,18 +34,14 @@ app.directive('dropzone', function () {
                             dropzone.removeFile(file);
                             // Cập nhật lại danh sách thumbnails
                             var thumbnails = dropzone.getAcceptedFiles();
-                            scope.$apply(function () {
-                                scope.thumbnails = thumbnails;
-                            });
+                            scope.thumbnails = thumbnails;
                         });
 
                         // Xử lý sự kiện khi nhấn nút để xóa tất cả các file
                         document.getElementById("refreshThumbnail").addEventListener('click', function () {
                             myDropzone.removeAllFiles(true); // Xóa tất cả các file trong dropzone
                             completedFiles = 0; // Reset biến đếm file đã hoàn thành
-                            scope.$apply(function () {
-                                scope.thumbnails = []; // Cập nhật lại data trả về là một mảng trống
-                            });
+                            scope.thumbnails = []; // Cập nhật lại data trả về là một mảng trống
                         });
                     }
                 });

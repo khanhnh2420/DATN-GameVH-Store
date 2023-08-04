@@ -1736,9 +1736,9 @@ table.dataTable thead>tr>td.sorting {
 
 .header {
 	background: #f43b48;
-	background: -moz-linear-gradient(left, #453a94 0%, #f43b48  100%);
-	background: -webkit-linear-gradient(left, #453a94 0%, #f43b48  100%);
-	background: -ms-linear-gradient(left, #453a94 0%, #f43b48  100%);
+	background: -moz-linear-gradient(left, #453a94 0%, #f43b48 100%);
+	background: -webkit-linear-gradient(left, #453a94 0%, #f43b48 100%);
+	background: -ms-linear-gradient(left, #453a94 0%, #f43b48 100%);
 	background: linear-gradient(to right, #453a94 0%, #f43b48 100%);
 	border-bottom: 1px solid transparent;
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
@@ -2366,7 +2366,7 @@ table.dataTable thead>tr>td.sorting {
 }
 
 .account-box {
-	background: rgba(255,255,255,0.1);
+	background: rgba(255, 255, 255, 0.1);
 	position: relative;
 	border: 1px solid #6b6969cc;
 	border-radius: 4px;
@@ -2376,8 +2376,9 @@ table.dataTable thead>tr>td.sorting {
 	width: 480px;
 	backdrop-filter: blur(5px);
 }
+
 .account-wrapper {
-	
+
 	padding: 30px;
 }
 
@@ -10605,4 +10606,8 @@ ul.comment-list li ul.children {
 	font-size: 20px;
 	color: rgba(0, 0, 0, 0.3);
 	cursor: pointer;
+}
+
+.is-invalid-no-x {
+	border: 1px solid red !important;
 }

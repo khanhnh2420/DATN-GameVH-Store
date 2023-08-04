@@ -1,5 +1,5 @@
 app.controller("ProductController", function (ProductAdminService, ToastService, $http, $scope,
-    $compile, $filter) {
+    $compile, $filter, $timeout) {
 
     $scope.product = {}; // Thông tin sản phẩm sẽ được hiển thị trên trang chi tiết
 
@@ -15,6 +15,7 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
     $scope.editMode = false; // Mặc định là chế độ "Add"
     $scope.thumbnailsList = []; // array thumbnail add
     $scope.addProductForm = {};
+    $scope.addProductForm.available = "true";
 
     $scope.temProduct = {};
 
@@ -128,7 +129,7 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
             $scope.temProduct = $scope.product;
             // Kiểm tra nếu có search thì sẽ fill data dạng search
             var selectElement = document.getElementById("searchTitle").value;
-            var searchName = document.getElementById("searchUsername").value.toLowerCase();
+            var searchName = document.getElementById("productNameSearch").value.toLowerCase();
             var searchCreateDate = document.getElementById("searchCreateDate").value;
             console.log(selectElement || searchName)
             // if (selectElement || searchName) {
@@ -192,17 +193,8 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
                     return formattedCreateDate;
                 }
             },
-            { data: 'category.type' }, // Cột "Type"
-            {
-                data: 'status', // Cột "Status"
-                render: function (data) {
-                    // Render giao diện cho cột "Status"
-                    var statusText = (data === true) ? 'Còn hàng' : 'Hết hàng';
-                    var badgeClass = (data === true) ? 'success' : 'danger';
-                    return '<span class="badge bg-inverse-' + badgeClass + '">' + statusText + '</span>';
-                }
-
-            },
+            { data: 'type' }, // Cột "Type"
+            { data: 'qty' }, // Cột "Qty"
             {
                 data: null, // Cột "Action"
                 // render: function(data, type, row) {
@@ -244,6 +236,16 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
     }
     /*----END LOAD DATA TABLE PRODUCT----*/
 
+    /*----ERROR FORM EDIT----*/
+    $scope.typeEdit = function () {
+        $scope.isValidTypeFormEdit = false;
+    }
+
+    $scope.categoryEdit = function () {
+        $scope.isValidCategoryFormEdit = false;
+    }
+    /*----END ERROR FORM EDIT----*/
+
     /*----UPDATE PRODUCT----*/
     // Hàm xử lý khi nhấp vào nút "Edit" trong cột "Action"
     $scope.editProductClicked = function (productId) {
@@ -257,6 +259,11 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
                     file: ""
                 }
                 $('#edit_Product').modal('show');
+                if ($scope.editProduct.available) {
+                    $scope.editProduct.available = "true";
+                } else {
+                    $scope.editProduct.available = "false";
+                }
             })
             .catch(function (error) {
                 console.error('Lỗi khi lấy thông tin sản phẩm:', error);
@@ -270,38 +277,71 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
     });
 
     $scope.updateProduct = function (productId) {
+        if ($scope.formEditProduct.$valid) {
+            var result = $scope.product.filter(function (item) {
+                var productName = item.name.toLowerCase(); // Chuyển giá trị thuộc tính title thành chữ thường
+                var tempProductId = item.id;
+                return productName == $scope.editProduct.name.toLowerCase() && tempProductId != productId;
+            });
+            if (result.length == 0) {
+                ToastService.showInfoToast("Processing!", "Please wait a moment!");
+                $scope.categories.forEach(function (category) {
+                    if ($scope.editProduct.category.id == category.id) {
+                        $scope.editProduct.category = category;
+                    }
+                });
+                // Chuyển đổi offer về Float
+                $scope.editProduct.offer = parseFloat($scope.editProduct.offer);
 
-        ToastService.showInfoToast("Processing!", "Please wait a moment!");
-        $scope.categories.forEach(function (category) {
-            if ($scope.editProduct.category.id = category.id) {
-                $scope.editProduct.category = category;
-            }
-        });
-        // Chuyển đổi offer về Float
-        $scope.editProduct.offer = parseFloat($scope.editProduct.offer);
+                // Chuyển đổi available về Boolean
+                $scope.editProduct.available = $scope.editProduct.available === "true";
 
-        // Chuyển đổi available về Boolean
-        $scope.editProduct.available = $scope.editProduct.available === "true";
+                // Khởi tạo status = true
+                $scope.editProduct.status = true;
 
-        // Khởi tạo status = true
-        $scope.editProduct.status = true;
+                console.log($scope.editProduct)
 
-        // Gán lại key image cho product 
-        ProductAdminService.getProduct(productId)
-            .then(function (product) {
-                $scope.editProduct.thumbnail = product.data.thumbnail;
-                $scope.editProduct.poster = product.data.poster;
-                // Update product với poster và thumbnail key mới
-                ProductAdminService.updateProduct($scope.editProduct)
-                    .then(function (response) {
-                        productResult = response.data;
-                        if ($scope.posterEdit.file) {
-                            var formData = new FormData();
-                            var modifiedFileName = productResult.id + "-poster";
-                            formData.append('image', $scope.posterEdit.file, modifiedFileName);
-                            // Upload poster
-                            ProductAdminService.uploadImage(formData)
-                                .then(function (poster) {
+                // Gán lại key image cho product 
+                ProductAdminService.getProduct(productId)
+                    .then(function (product) {
+                        $scope.editProduct.thumbnail = product.data.thumbnail;
+                        $scope.editProduct.poster = product.data.poster;
+                        // Update product với poster và thumbnail key mới
+                        ProductAdminService.updateProduct($scope.editProduct)
+                            .then(function (response) {
+                                productResult = response.data;
+                                if ($scope.posterEdit.file) {
+                                    var formData = new FormData();
+                                    var modifiedFileName = productResult.id + "-poster";
+                                    formData.append('image', $scope.posterEdit.file, modifiedFileName);
+                                    // Upload poster
+                                    ProductAdminService.uploadImage(formData)
+                                        .then(function (poster) {
+                                            for (let i = 0; i <= $scope.thumbnails.length; i++) {
+                                                if (i == $scope.thumbnails.length) {
+                                                    $('#edit_Product').modal('hide');
+                                                    ToastService.showSuccessToast("Update product successfully!");
+
+                                                    $scope.getAllProducts();
+                                                    break;
+                                                }
+                                                var thumbnail = $scope.thumbnails[i];
+                                                if (thumbnail.file) {
+                                                    var formDataThumb = new FormData();
+                                                    var modifiedFileNameThumb = productResult.id + "-thumb" + i;
+                                                    formDataThumb.append('image', thumbnail.file, modifiedFileNameThumb);
+                                                    ProductAdminService.uploadImage(formDataThumb)
+                                                        .then(function (thumb) {
+                                                        })
+                                                        .catch(function (error) {
+                                                        });
+                                                }
+                                            }
+                                        })
+                                        .catch(function (error) {
+                                            ToastService.showErrorToast("Upload poster failure!");
+                                        });
+                                } else {
                                     for (let i = 0; i <= $scope.thumbnails.length; i++) {
                                         if (i == $scope.thumbnails.length) {
                                             $('#edit_Product').modal('hide');
@@ -322,146 +362,207 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
                                                 });
                                         }
                                     }
-                                })
-                                .catch(function (error) {
-                                    ToastService.showErrorToast("Upload poster failure!");
-                                });
-                        } else {
-                            for (let i = 0; i <= $scope.thumbnails.length; i++) {
-                                if (i == $scope.thumbnails.length) {
-                                    $('#edit_Product').modal('hide');
-                                    ToastService.showSuccessToast("Update product successfully!");
-
-                                    $scope.getAllProducts();
-                                    break;
                                 }
-                                var thumbnail = $scope.thumbnails[i];
-                                if (thumbnail.file) {
-                                    var formDataThumb = new FormData();
-                                    var modifiedFileNameThumb = productResult.id + "-thumb" + i;
-                                    formDataThumb.append('image', thumbnail.file, modifiedFileNameThumb);
-                                    ProductAdminService.uploadImage(formDataThumb)
-                                        .then(function (thumb) {
-                                        })
-                                        .catch(function (error) {
-                                        });
-                                }
-                            }
-                        }
+                            })
+                            .catch(function (error) {
+                                ToastService.showErrorToast("Update product failure!");
+                            });
                     })
                     .catch(function (error) {
                         ToastService.showErrorToast("Update product failure!");
                     });
-            })
-            .catch(function (error) {
-                ToastService.showErrorToast("Update product failure!");
-            });
+            } else {
+                ToastService.showErrorToast("Product name already exists!");
+            }
+        } else {
+            if (!$scope.editProduct.type || $scope.editProduct.type == "") {
+                $scope.isValidTypeFormEdit = true;
+            }
+
+            if (!$scope.editProduct.category || !$scope.editProduct.category.id) {
+                $scope.isValidCategoryFormEdit = true;
+            }
+        }
     }
 
     /*----END UPDATE PRODUCT----*/
 
+    /*----ERROR FORM ADD----*/
+    $scope.typeAdd = function () {
+        $scope.isValidTypeFormAdd = false;
+    }
+
+    $scope.categoryAdd = function () {
+        $scope.isValidCategoryFormAdd = false;
+    }
+    /*----END ERROR FORM ADD----*/
+
     /*----ADD PRODUCT----*/
     $scope.addProduct = function () {
-        console.log($scope.thumbnailsList)
-        console.log($scope.product.poster)
+        if ($scope.formAddProduct.$valid) {
+            if ($scope.product.poster) {
+                if ($scope.thumbnailsList.length < 3) {
+                    ToastService.showErrorToast("Please choose 3 thumbnails!");
+                } else {
+                    var result = $scope.product.filter(function (item) {
+                        var productName = item.name.toLowerCase(); // Chuyển giá trị thuộc tính title thành chữ thường
+                        return productName == $scope.addProductForm.name.toLowerCase();
+                    });
+                    if (result.length == 0) {
+                        ToastService.showInfoToast("Processing!", "Please wait a moment!");
+                        $scope.categories.forEach(function (category) {
+                            if ($scope.addProductForm.category.id == category.id) {
+                                $scope.addProductForm.category = category;
+                            }
+                        });
+                        // Chuyển đổi offer về Float
+                        $scope.addProductForm.offer = parseFloat($scope.addProductForm.offer);
 
-        ToastService.showInfoToast("Processing!", "Please wait a moment!");
-        $scope.categories.forEach(function (category) {
-            if ($scope.addProductForm.category.id = category.id) {
-                $scope.addProductForm.category = category;
-            }
-        });
-        // Chuyển đổi offer về Float
-        $scope.addProductForm.offer = parseFloat($scope.addProductForm.offer);
+                        // Chuyển đổi available về Boolean
+                        $scope.addProductForm.available = $scope.addProductForm.available === "true";
 
-        // Chuyển đổi available về Boolean
-        $scope.addProductForm.available = $scope.addProductForm.available === "true";
+                        // Khởi tạo status = true
+                        $scope.addProductForm.status = true;
 
-        // Khởi tạo status = true
-        $scope.addProductForm.status = true;
+                        // Lấy ngày hiện tại
+                        var currentDate = new Date();
 
-        // Lấy ngày hiện tại
-        var currentDate = new Date();
+                        // Lấy giá trị ngày, tháng, năm
+                        var year = currentDate.getFullYear();
+                        var month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0, nên cộng thêm 1 và định dạng số thành chuỗi
+                        var day = String(currentDate.getDate()).padStart(2, '0');
 
-        // Lấy giá trị ngày, tháng, năm
-        var year = currentDate.getFullYear();
-        var month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0, nên cộng thêm 1 và định dạng số thành chuỗi
-        var day = String(currentDate.getDate()).padStart(2, '0');
+                        // Tạo chuỗi ngày tháng dạng "YYYY-MM-DD"
+                        var formattedDate = year + '-' + month + '-' + day;
 
-        // Tạo chuỗi ngày tháng dạng "YYYY-MM-DD"
-        var formattedDate = year + '-' + month + '-' + day;
+                        // Khởi tạo createDate bằng ngày hiện tại
+                        $scope.addProductForm.createDate = formattedDate;
 
-        // Khởi tạo createDate bằng ngày hiện tại
-        $scope.addProductForm.createDate = formattedDate;
+                        $scope.addProductForm.poster = generateRandomString(14);
+                        $scope.addProductForm.thumbnail = generateRandomString(14);
 
-        $scope.addProductForm.poster = generateRandomString(14);
-        $scope.addProductForm.thumbnail = generateRandomString(14);
-
-        // Add product
-        ProductAdminService.createProduct($scope.addProductForm)
-            .then(function (product) {
-                var productResult = product.data;
-                if (productResult) {
-                    var formData = new FormData();
-                    var modifiedFileName = productResult.id + "-poster";
-                    formData.append('image', $scope.product.poster, modifiedFileName);
-                    // Upload poster
-                    ProductAdminService.uploadImage(formData)
-                        .then(function (poster) {
-                            var posterResult = poster.data.fileId;
-                            productResult.poster = posterResult;
-                            var thumbnailKey = "";
-                            var index = 0;
-                            for (let i = 0; i <= $scope.thumbnailsList.length; i++) {
-                                // Upload thumbnail
-                                if (i == $scope.thumbnailsList.length) {
-                                    $scope.getAllProducts();
-                                    // Load lại data table
-                                    $scope.addProductForm = {};
-                                    $scope.thumbnailsList = [];
-                                    $scope.product.poster = null;
-                                    $('#add_Product').modal('hide');
-                                    ToastService.showSuccessToast("Add product successfully!");
-                                } else {
-                                    var length = $scope.thumbnailsList.length;
-                                    var thumbnail = $scope.thumbnailsList[i];
-                                    var formDataThumb = new FormData();
-                                    var modifiedFileNameThumb = productResult.id + "-thumb" + i;
-                                    formDataThumb.append('image', thumbnail, modifiedFileNameThumb);
-                                    ProductAdminService.uploadImage(formDataThumb)
-                                        .then(function (thumb) {
-                                            var thumbResult = thumb.data.fileId;
-                                            if (index == length - 1) {
-                                                thumbnailKey += thumbResult;
-                                            } else {
-                                                thumbnailKey += thumbResult + "***";
-                                            }
-                                            index++;
-                                            productResult.thumbnail = thumbnailKey;
-                                            // Update product với poster và thumbnail key mới
-                                            ProductAdminService.updateProduct(productResult)
-                                                .then(function (response) {
+                        // Add product
+                        ProductAdminService.createProduct($scope.addProductForm)
+                            .then(function (product) {
+                                var productResult = product.data;
+                                if (productResult) {
+                                    var formData = new FormData();
+                                    var modifiedFileName = productResult.id + "-poster";
+                                    formData.append('image', $scope.product.poster, modifiedFileName);
+                                    // Upload poster
+                                    ProductAdminService.uploadImage(formData)
+                                        .then(function (poster) {
+                                            var posterResult = poster.data.fileId;
+                                            productResult.poster = posterResult;
+                                            var thumbnailKey = "";
+                                            var index = 0;
+                                            for (let i = 0; i <= $scope.thumbnailsList.length; i++) {
+                                                // Upload thumbnail
+                                                if (i == $scope.thumbnailsList.length) {
                                                     $scope.getAllProducts();
-                                                })
-                                                .catch(function (error) {
-                                                });
+                                                    // Load lại data table
+                                                    $scope.resetForm();
+                                                    $('#add_Product').modal('hide');
+                                                    ToastService.showSuccessToast("Add product successfully!");
+                                                } else {
+                                                    var length = $scope.thumbnailsList.length;
+                                                    var thumbnail = $scope.thumbnailsList[i];
+                                                    var formDataThumb = new FormData();
+                                                    var modifiedFileNameThumb = productResult.id + "-thumb" + i;
+                                                    formDataThumb.append('image', thumbnail, modifiedFileNameThumb);
+                                                    ProductAdminService.uploadImage(formDataThumb)
+                                                        .then(function (thumb) {
+                                                            var thumbResult = thumb.data.fileId;
+                                                            if (index == length - 1) {
+                                                                thumbnailKey += thumbResult;
+                                                            } else {
+                                                                thumbnailKey += thumbResult + "***";
+                                                            }
+                                                            index++;
+                                                            productResult.thumbnail = thumbnailKey;
+                                                            // Update product với poster và thumbnail key mới
+                                                            ProductAdminService.updateProduct(productResult)
+                                                                .then(function (response) {
+                                                                    $scope.getAllProducts();
+                                                                })
+                                                                .catch(function (error) {
+                                                                });
+                                                        })
+                                                        .catch(function (error) {
+                                                        });
+                                                }
+                                            }
                                         })
                                         .catch(function (error) {
+                                            ToastService.showErrorToast("Upload poster failure!");
                                         });
+                                } else {
+                                    ToastService.showErrorToast("Add product failure!");
                                 }
-                            }
-                        })
-                        .catch(function (error) {
-                            ToastService.showErrorToast("Upload poster failure!");
-                        });
-                } else {
-                    ToastService.showErrorToast("Add product failure!");
+                            })
+                            .catch(function (error) {
+                                ToastService.showErrorToast("Add product failure!");
+                            });
+                    } else {
+                        ToastService.showErrorToast("Product name already exists!");
+                    }
                 }
-            })
-            .catch(function (error) {
-                ToastService.showErrorToast("Add product failure!");
-            });
+            } else {
+                ToastService.showErrorToast("Please choose poster image!");
+            }
+        } else {
+            if (!$scope.addProductForm.type || $scope.addProductForm.type == "") {
+                $scope.isValidTypeFormAdd = true;
+            }
+
+            if (!$scope.addProductForm.category || !$scope.addProductForm.category.id) {
+                $scope.isValidCategoryFormAdd = true;
+            }
+        }
     };
+
+    $scope.callClearThumbnailsInDirective = function () {
+        var dropzoneDirectiveScope = angular.element(document.querySelector('dropzone')).scope();
+        if (dropzoneDirectiveScope && typeof dropzoneDirectiveScope.clearThumbnails === 'function') {
+            dropzoneDirectiveScope.clearThumbnails();
+        }
+    };
+
+    $scope.resetForm = function () {
+        // Reset giá trị của biến addProductForm thành một object rỗng hoặc giá trị mặc định
+        $scope.addProductForm = {};
+
+        // Reset giá trị của biến Available 
+        $scope.addProductForm.available = "true";
+
+        // Set trạng thái pristine của form về true
+        $scope.formAddProduct.$setPristine();
+
+        // Set trạng thái Untouched của form về true
+        $scope.formAddProduct.$setUntouched();
+
+        // Clear poster image
+        var dropifPreviews = document.getElementsByClassName('dropify-preview');
+        // Lặp qua từng phần tử và xóa class "dropify-preview"
+        for (var i = 0; i < dropifPreviews.length; i++) {
+            dropifPreviews[i].style.display = "none";
+        }
+
+        // Tìm các phần tử có class "dropify-wrapper"
+        var dropifyWrappers = document.querySelectorAll('.dropify-wrapper');
+
+        // Lặp qua từng phần tử và xóa class "has-preview"
+        for (var i = 0; i < dropifyWrappers.length; i++) {
+            dropifyWrappers[i].classList.remove('has-preview');
+        }
+
+        $scope.product.poster = "";
+
+        // Clear thumbnail
+        var refreshThumbButton = document.getElementById("refreshThumbnail");
+        refreshThumbButton.click();
+    };
+
 
     function generateRandomString(length) {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -486,7 +587,7 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
     /*----SEARCH----*/
     $scope.searchProduct = function () {
         var selectElement = document.getElementById("searchTitle").value;
-        var searchName = document.getElementById("searchUsername").value.toLowerCase();
+        var searchName = document.getElementById("productNameSearch").value.toLowerCase();
         var searchCreateDate = document.getElementById("searchCreateDate").value;
         $scope.product = $scope.temProduct;
 
@@ -533,7 +634,7 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
 
     $scope.refreshSearch = function () {
         document.getElementById("searchTitle").value = "";
-        document.getElementById("searchUsername").value = "";
+        document.getElementById("productNameSearch").value = "";
         document.getElementById("searchCreateDate").value = "";
 
         $scope.getAllProducts();

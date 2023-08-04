@@ -113,8 +113,9 @@
 										<!-- End Error Username-->
 
 										<div class="form-group">
-											<label for="singin-password">Mật khẩu *</label> <input type="password" ng-change="inputPassChange()"
-												ng-model="account.password" class="form-control" id="singin-password"
+											<label for="singin-password">Mật khẩu *</label> <input type="password"
+												ng-change="inputPassChange()" ng-model="account.password"
+												class="form-control" id="singin-password"
 												ng-class="{'is-invalid': (LoginForm.password.$invalid && LoginForm.password.$touched) || (LoginForm.$submitted && LoginForm.password.$invalid) || (LoginForm.$submitted && isValidPassword)}"
 												name="password" required>
 										</div>

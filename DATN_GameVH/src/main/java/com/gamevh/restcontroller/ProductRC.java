@@ -1,14 +1,6 @@
 package com.gamevh.restcontroller;
 
-
-
-
-
 import java.io.IOException;
-
-
-
-
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -21,47 +13,37 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.eclipse.jetty.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.validation.annotation.Validated;
-
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.springframework.http.MediaType;
-
-import org.eclipse.jetty.http.HttpStatus;
-
 import com.gamevh.dto.ProductAdminDTO;
 import com.gamevh.dto.ProductDTO;
 import com.gamevh.dto.impl.ProductAdminDTOImpl;
 import com.gamevh.dto.impl.ProductDTOImpl;
-import com.gamevh.entities.Category;
-
 import com.gamevh.entities.Feedback;
 import com.gamevh.entities.OrderDetail;
 import com.gamevh.entities.Product;
-
 import com.gamevh.repository.FeedbackRepository;
 import com.gamevh.repository.OrderDetailRepository;
 import com.gamevh.service.CategoryService;
@@ -71,8 +53,6 @@ import com.gamevh.service.ProductService;
 
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
-
-
 
 
 @CrossOrigin("*")
@@ -336,80 +316,16 @@ public class ProductRC {
 	    return null;
 	}
 	
-	
-
-	
 	@PostMapping("createProduct")
-	public ResponseEntity<HttpStatus> createProduct(@Validated @ModelAttribute ProductAdminDTOImpl dto,
-	                                                @RequestParam("posters") List<MultipartFile> posters,
-	                                                @RequestParam("thumbnails") List<MultipartFile> thumbnails) {
-	    if (dto != null) {
-	        // Tạo mới sản phẩm và lưu vào cơ sở dữ liệu
-	        Product product = new Product();
-	        product.setName(dto.getName());
-	        product.setOriginPrice(dto.getOriginPrice());
-	        product.setSalePrice(dto.getSalePrice());
-	        product.setOffer(dto.getOffer());
-	        product.setCreateDate(dto.getCreateDate());
-	        product.setAvailable(dto.getAvailable());
-	        product.setSource(dto.getSource());
-	        product.setLink(dto.getLink());
-	        product.setDetails(dto.getDetails());
-	        product.setQty(dto.getQty());
-	        product.setStatus(dto.getStatus());
-	        product.setType(dto.getType());
-
-	        Category category = new Category();
-	        category.setCategoryId(dto.getCategoryId());
-	        category.setName(dto.getCategoryName());
-	        category.setType(dto.getType());
-
-	        product.setCategory(category);
-
-	        try {
-	            if (!posters.isEmpty()) {
-	                MultipartFile poster = posters.get(0); // Get the first poster from the list
-	                ResponseEntity<Object> response = uploadImage(poster);
-	                if (String.valueOf(response.getStatusCode()).equals("200")) {
-	                    String posterFileId = (String) response.getBody();
-	                    product.setPoster(posterFileId);
-	                } else {
-	                    // Xử lý lỗi khi tải ảnh poster lên Google Drive
-	                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
-	                }
-	            }
-	            if (!thumbnails.isEmpty()) {
-	                List<String> thumbnailFileIds = new ArrayList<>();
-	                for (MultipartFile thumbnail : thumbnails) {
-	                    ResponseEntity<Object> response = uploadImage(thumbnail);
-	                    if (String.valueOf(response.getStatusCode()).equals("200")) {
-	                        String thumbnailFileId = (String) response.getBody();
-	                        if (thumbnailFileId != null) {
-	                            thumbnailFileIds.add(thumbnailFileId);
-	                        }
-	                    } else {
-	                        // Xử lý lỗi khi tải ảnh thumbnail lên Google Drive
-	                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
-	                    }
-	                }
-	                String thumbnailKeys = String.join("***", thumbnailFileIds);
-	                product.setThumbnail(thumbnailKeys);
-	            }
-	        } catch (GeneralSecurityException e) {
-	            // Xử lý lỗi khi tải ảnh lên Google Drive
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
-	        }
-
-	        productService.createProduct(product);
-
-	        return ResponseEntity.ok().build();
+	public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+	    if(product != null) {
+	    	if(product.getId() == null) {
+	    		Product productResult = productService.createOrUpdateProduct(product);
+	    		return ResponseEntity.ok(productResult);
+	    	}
 	    }
-	    return ResponseEntity.badRequest().build();
+	    return null;
 	}
-
-
-
-
 
 	@PostMapping("upload")
 	public ResponseEntity<Object> uploadImage(@RequestParam("image") MultipartFile image)
@@ -419,7 +335,7 @@ public class ProductRC {
 	        	
 	            String fileName = image.getOriginalFilename();
 	            String mimeType = image.getContentType();
-	            String folderId = "1mMOXDZOQvQVs2MvJJF77UUpACbkfp5sv"; // ID của thư mục trên Google Drive để lưu file
+	            String folderId = "1xbZ557bXhtiEG-sPP4TRXf007THuPsns"; // ID của thư mục trên Google Drive để lưu file
 	            // URL example:
 	            // https://drive.google.com/drive/folders/10VLW7dddQHqi4-f4ddSTqxjN9YmLFZWi
 	            String fileId = driveService.uploadFile(image, fileName, mimeType, folderId);
@@ -438,62 +354,17 @@ public class ProductRC {
 	    
 	}
 
-	@PostMapping("updateProduct/{id}")
-	public ResponseEntity<HttpStatus> updateProduct(@PathVariable Integer id, @Validated @RequestBody ProductAdminDTOImpl dto, @RequestParam(required = false) MultipartFile poster, @RequestParam(required = false) List<MultipartFile> thumbnails) {
-	    Product product = productService.findById(id);
-	    if (product != null) {
-	        // Cập nhật các thuộc tính của sản phẩm dựa trên ProductAdminDTOImpl
-	        product.setName(dto.getName());
-	        product.setOriginPrice(dto.getOriginPrice());
-	        product.setSalePrice(dto.getSalePrice());
-	        product.setOffer(dto.getOffer());
-	        product.setCreateDate(dto.getCreateDate());
-	        product.setAvailable(dto.getAvailable());
-	        product.setSource(dto.getSource());
-	        product.setLink(dto.getLink());
-	        product.setDetails(dto.getDetails());
-	        product.setQty(dto.getQty());
-	        product.setStatus(dto.getStatus());
-	        product.setType(dto.getType());
-
-	        // Cập nhật Category trong Product
-	        product.getCategory().setCategoryId(dto.getCategoryId());
-
-	        // Kiểm tra nếu người dùng thay đổi ảnh poster
-	        if (poster != null) {
-	            // Tải ảnh mới lên Google Drive và nhận lại ID của file
-	            try {
-	                String newPosterId = uploadImagedrive(poster);
-	                product.setPoster(newPosterId);
-	            } catch (Exception e) {
-	                // Xử lý lỗi khi tải ảnh lên Google Drive
-	                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
-	            }
-	        }
-
-	        // Kiểm tra nếu người dùng thay đổi ảnh thumbnail
-	        if (thumbnails != null && !thumbnails.isEmpty()) {
-	            List<String> thumbnailIds = new ArrayList<>();
-	            for (MultipartFile thumbnail : thumbnails) {
-	                // Tải từng ảnh thumbnail lên Google Drive và nhận lại ID của file
-	                try {
-	                    String newThumbnailId = uploadImagedrive(thumbnail);
-	                    thumbnailIds.add(newThumbnailId);
-	                } catch (Exception e) {
-	                    // Xử lý lỗi khi tải ảnh lên Google Drive
-	                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
-	                }
-	            }
-	            String thumbnailIdsString = String.join("***", thumbnailIds);
-	            product.setThumbnail(thumbnailIdsString);
-	        }
-
-
-	        productService.updateProduct(product);
-
-	        return ResponseEntity.ok().build();
-	    }
-	    return ResponseEntity.notFound().build();
+	@PutMapping("updateProduct")
+	public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
+		if(product != null) {
+			if (product.getId() != null) {
+				if(productService.findById(product.getId()) != null) {
+					Product productResult = productService.createOrUpdateProduct(product);
+					return ResponseEntity.ok(productResult);
+				}
+			}
+		}
+		return null; 
 	}
 
 	@SuppressWarnings("unused")
@@ -505,27 +376,7 @@ public class ProductRC {
 	    return driveService.uploadFile(image, fileName, mimeType, folderId);
 	}
 	
-	@GetMapping("search")
-	public ResponseEntity<List<Product>> searchEmployees(
-			@RequestParam(value = "productName", required = false) Optional<String> ProductName,
-			@RequestParam(value = "productType", required = false) Optional<String> ProductType,
-			@RequestParam(value = "categoryName", required = false) Optional<String> CategoryName) {
-		if (ProductName.orElse("0").equals("0")) {
-			ProductName = null;
-		}
-
-		if (ProductType.orElse("0").equals("0")) {
-			ProductType = null;
-		}
-
-		if (CategoryName.orElse("").equals("")) {
-			CategoryName = null;
-		}
-
-		List<Product> searchResults = productService.searchProduct(ProductName,ProductType,CategoryName);
-
-		return ResponseEntity.ok(searchResults);
-	}
+	
 	
 	@PutMapping("/updateFeedback/{id}")
 	public ResponseEntity<Feedback> updateFeedbackStatus(@PathVariable Integer id, @RequestBody Boolean status) {

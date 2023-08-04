@@ -16,15 +16,15 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">SẢN PHẨM</h3>
+                    <h3 class="page-title">Product List</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Trang Chủ</a></li>
-                        <li class="breadcrumb-item active">Product</li>
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Product List</li>
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
                     <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_Product"><i
-							class="fa fa-plus"></i> Thêm Sản Phẩm</a>
+                            class="fa fa-plus"></i>Add Product</a>
                 </div>
             </div>
         </div>
@@ -34,46 +34,36 @@
         <div class="row filter-row">
             <div class="col-sm-6 col-md-2">
                 <div class="form-group form-focus">
-                    <input type="text" class="form-control" ng-model="product.name">
-                    <label class="focus-label">Tên Sản Phẩm</label>
+                    <input type="text" class="form-control floating" id="productNameSearch"
+                        ng-keydown="searchWithEnter($event)">
+                    <label class="focus-label">Product Name</label>
                 </div>
             </div>
-            <!-- <div class="col-sm-6 col-md-2">
-                <div class="form-group form-focus select-focus">
+            <div class="col-sm-6 col-md-2">
+                <div class="form-group form-focus cal-icon">
+                    <input type="text" class="form-control floating datetimepicker" id="searchCreateDate"
+                        ng-keydown="searchWithEnter($event)" ng-keydown="searchWithEnter($event)">
                     <label class="focus-label">Created Date</label>
-                    <input class="form-control" type="date">
-                </div>
-            </div> -->
-            <div class="col-sm-6 col-md-2">
-                <div class="form-group form-focus select-focus">
-                    <label class="focus-label">Loại Sản Phẩm</label>
-                    <select class="select" ng-model="product.type">
-						<option>Game</option>
-						<option>Phụ kiện</option>
-					</select>
                 </div>
             </div>
             <div class="col-sm-6 col-md-2">
                 <div class="form-group form-focus select-focus">
-                    <label class="focus-label">Danh Mục Game</label>
-                    <select class="select" ng-model="product.category.id">
-                        <option ng-repeat="category in categories | filter:{type: 'Game'}" value="{{category.id}}">{{category.name}}</option>
+                    <label class="focus-label">Type</label>
+                    <select class="form-control" id="searchTitle">
+                        <option value="" selected>Select Type</option>
+                        <option value="Game">Game</option>
+                        <option value="PK">Phụ kiện</option>
                     </select>
                 </div>
             </div>
             <div class="col-sm-6 col-md-2">
-                <div class="form-group form-focus select-focus">
-                    <label class="focus-label">Danh Mục Phụ Kiện</label>
-                    <select class="select" ng-model="product.category.id">
-                        <option ng-repeat="category in categories | filter:{type: 'PK'}" value="{{category.id}}">{{category.name}}</option>
-                    </select>
-                </div>
+                <a href="#" class="btn btn-success btn-block" ng-click="searchProduct()">Search</a>
             </div>
             <div class="col-sm-6 col-md-2">
-                <a href="#" class="btn btn-success btn-block" ng-click="SearchProduct()"> Tìm Kiếm </a>
+                <a href="#" class="btn btn-success btn-block" ng-click="refreshSearch()">Refresh</a>
             </div>
             <div class="col-sm-6 col-md-2">
-                <a href="#" class="btn btn-success btn-block" ng-click="downloadExcel()"> Xuất Báo Cáo </a>
+                <a href="#" class="btn btn-success btn-block" ng-click="downloadExcel()">Export Report</a>
             </div>
         </div>
         <!-- /Search Filter -->
@@ -85,15 +75,16 @@
                         <thead>
                             <tr>
                                 <th class="text-center">#</th>
-                                <td class="text-center">Ảnh Áp Phích</td>
-                                <th>Tên Sản Phẩm</th>
-                                <th>Giá Gốc</th>
-                                <th>Giá Bán</th>
-                                <th>Nhà Phát Hành</th>
-                                <th class="text-nowrap">Ngày Phát Hành</th>
-                                <th>Loại Sản Phẩm</th>
-                                <th>Trạng Thái</th>
-                                <th class="text-right no-sort">Hoạt Động</th>
+                                <td class="text-center">Poster</td>
+                                <th>Product Name</th>
+                                <th>Origin Price</th>
+                                <th>Sale Price</th>
+                                <th>Offer</th>
+                                <th>Source</th>
+                                <th class="text-nowrap">Create Date</th>
+                                <th>Type</th>
+                                <th>Quantity</th>
+                                <th class="text-right no-sort">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -114,90 +105,229 @@
                 <div class="modal-header">
                     <h5 class="modal-title">Add Product</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-sm-12 col-md-8">
-                            <form>
+                            <form name="formAddProduct" id="formAddProduct" novalidate ng-submit="addProduct()">
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">ID</label>
-                                            <input class="form-control" type="text" ng-model="product.id">
+                                            <label class="col-form-label">Product Name <span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control" type="text" ng-model="addProductForm.name"
+                                                ng-class="{'is-invalid': (formAddProduct.productName.$invalid && formAddProduct.productName.$touched) || (formAddProduct.$submitted && formAddProduct.productName.$invalid) || (formAddProduct.$submitted && isValidProductName)}"
+                                                name="productName" required
+                                                ng-pattern="/^(([a-zA-Z0-9\sÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*)([a-zA-Z0-9\s\'ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*)([a-zA-Z0-9\sÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]))*$/">
                                         </div>
+                                        <div class="mb-1 text-danger font-weight-bold">
+                                            <div
+                                                ng-show="(formAddProduct.productName.$error.required && formAddProduct.productName.$touched) || (formAddProduct.$submitted && formAddProduct.productName.$error.required)">
+                                                Product name can't be blank!
+                                            </div>
+                                            <div
+                                                ng-show="(formAddProduct.productName.$error.pattern && formAddProduct.productName.$touched) || (formAddProduct.$submitted && formAddProduct.productName.$error.pattern)">
+                                                Product name can't contain special characters!
+                                            </div>
+                                        </div>
+                                        <!-- End Error Product Name-->
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Product Name</label>
-                                            <input class="form-control" type="text" ng-model="product.name">
+                                            <label class="col-form-label">Origin Price <span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control" type="number"
+                                                ng-model="addProductForm.originPrice"
+                                                ng-class="{'is-invalid': (formAddProduct.originPrice.$invalid && formAddProduct.originPrice.$touched) || (formAddProduct.$submitted && formAddProduct.originPrice.$invalid) || (formAddProduct.$submitted && isValidOriginPrice)}"
+                                                name="originPrice" required min="1">
                                         </div>
+                                        <div class="mb-1 text-danger font-weight-bold">
+                                            <div
+                                                ng-show="(formAddProduct.originPrice.$error.required && formAddProduct.originPrice.$touched) || (formAddProduct.$submitted && formAddProduct.originPrice.$error.required)">
+                                                Origin price can't be blank!
+                                            </div>
+                                            <div
+                                                ng-show="(formAddProduct.originPrice.$error.min && formAddProduct.originPrice.$touched) || (formAddProduct.$submitted && formAddProduct.originPrice.$error.min)">
+                                                Origin price must be greater than 0!
+                                            </div>
+                                        </div>
+                                        <!-- End Error Origin price-->
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Origin Price</label>
-                                            <input class="form-control" type="text" ng-model="product.originPrice">
+                                            <label class="col-form-label">Sale Price <span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control" type="number"
+                                                ng-model="addProductForm.salePrice"
+                                                ng-class="{'is-invalid': (formAddProduct.salePrice.$invalid && formAddProduct.salePrice.$touched) || (formAddProduct.$submitted && formAddProduct.salePrice.$invalid) || (formAddProduct.$submitted && isValidSalePrice)}"
+                                                name="salePrice" required min="1">
                                         </div>
+                                        <div class="mb-1 text-danger font-weight-bold">
+                                            <div
+                                                ng-show="(formAddProduct.salePrice.$error.required && formAddProduct.salePrice.$touched) || (formAddProduct.$submitted && formAddProduct.salePrice.$error.required)">
+                                                Sale price can't be blank!
+                                            </div>
+                                            <div
+                                                ng-show="(formAddProduct.salePrice.$error.min && formAddProduct.salePrice.$touched) || (formAddProduct.$submitted && formAddProduct.salePrice.$error.min)">
+                                                Sale price must be greater than 0!
+                                            </div>
+                                        </div>
+                                        <!-- End Error Sale price-->
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Sale Price</label>
-                                            <input class="form-control" type="text" ng-model="product.salePrice">
+                                            <label class="col-form-label">Offer <span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control" type="text" ng-model="addProductForm.offer"
+                                                ng-class="{'is-invalid': (formAddProduct.offer.$invalid && formAddProduct.offer.$touched) || (formAddProduct.$submitted && formAddProduct.offer.$invalid)}"
+                                                name="offer" required pattern="^0(\.[0-9]+)?$|^1\.0$"
+                                                inputmode="decimal" min="0" max="1.0">
                                         </div>
+                                        <div class="mb-1 text-danger font-weight-bold">
+                                            <div
+                                                ng-show="(formAddProduct.offer.$error.required && formAddProduct.offer.$touched) || (formAddProduct.$submitted && formAddProduct.offer.$error.required)">
+                                                Offer can't be blank!
+                                            </div>
+                                            <div
+                                                ng-show="formAddProduct.offer.$error.pattern && (formAddProduct.offer.$touched || formAddProduct.$submitted)">
+                                                Offer must be between 0 and 1.0!
+                                            </div>
+                                        </div>
+                                        <!-- End Error Offer-->
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Type</label>
-                                            <select class="select" ng-model="product.type">
+                                            <label class="col-form-label">Type <span
+                                                    class="text-danger">*</span></label>
+                                            <select class="form-control" ng-model="addProductForm.type"
+                                                ng-required="true" name="type" ng-change="typeAdd()"
+                                                ng-class="{'is-invalid-no-x': isValidTypeFormAdd}">
+                                                <option value="">Please choose Type</option>
                                                 <option value="Game">Game</option>
-                                                <option value="Phụ kiện">Phụ kiện</option>
+                                                <option value="PK">Phụ kiện</option>
                                             </select>
                                         </div>
+                                        <div class="mb-1 text-danger font-weight-bold">
+                                            <div ng-show="isValidTypeFormAdd">
+                                                Type is required. Please choose an option!
+                                            </div>
+                                        </div>
+                                        <!-- End Error Type-->
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Category</label>
-                                            <select class="select" ng-model="product.category.id" ng-options="category.id as category.name for category in categories">
+                                            <label class="col-form-label">Category <span
+                                                    class="text-danger">*</span></label>
+                                            <select class="form-control" ng-model="addProductForm.category.id"
+                                                ng-required="true" name="category" ng-change="categoryAdd()"
+                                                ng-options="category.id as category.name for category in categories"
+                                                ng-class="{'is-invalid-no-x': isValidCategoryFormAdd}">
+                                                <option value="">Please choose Category</option>
                                             </select>
                                         </div>
+                                        <div class="mb-1 text-danger font-weight-bold">
+                                            <div ng-show="isValidCategoryFormAdd">
+                                                Category is required. Please choose an option!
+                                            </div>
+                                        </div>
+                                        <!-- End Error category-->
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Status</label>
-                                            <select class="select" ng-model="product.status">
-                                                <option value="true">Còn Hàng</option>
-                                                <option value="false">Hết Hàng</option>
-                                            </select>
+                                            <label class="col-form-label d-block mb-2">Available <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                                    id="inlineRadio1" value="true" ng-model="addProductForm.available"
+                                                    checked>
+                                                <label class="form-check-label" for="inlineRadio1">Còn Hàng</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                                    id="inlineRadio2" value="false" ng-model="addProductForm.available">
+                                                <label class="form-check-label" for="inlineRadio2">Hết Hàng</label>
+                                            </div>
                                         </div>
+                                        <div class="mb-1 text-danger font-weight-bold">
+                                            <div ng-show="isValidAvailableFormAdd">
+                                                Available is required. Please choose an option!
+                                            </div>
+                                        </div>
+                                        <!-- End Error category-->
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Quantity</label>
-                                            <input class="form-control" type="number" ng-model="product.qty">
+                                            <label class="col-form-label">Quantity <span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control" type="number" ng-model="addProductForm.qty"
+                                                ng-class="{'is-invalid': (formAddProduct.quantity.$invalid && formAddProduct.quantity.$touched) || (formAddProduct.$submitted && formAddProduct.quantity.$invalid) || (formAddProduct.$submitted && isValidQuantity)}"
+                                                name="quantity" required min="1" step="any"
+                                                ng-pattern="/^(?!0(\.0*)?$)([1-9]\d*|0)(\.\d+)?$/">
                                         </div>
+                                        <div class="mb-1 text-danger font-weight-bold">
+                                            <div
+                                                ng-show="(formAddProduct.quantity.$error.required && formAddProduct.quantity.$touched) || (formAddProduct.$submitted && formAddProduct.quantity.$error.required)">
+                                                Quantity can't be blank!
+                                            </div>
+                                            <div
+                                                ng-show="(formAddProduct.quantity.$error.pattern && formAddProduct.quantity.$touched) || (formAddProduct.$submitted && formAddProduct.quantity.$error.pattern)">
+                                                Invalid quantity! Please enter a valid number and must be greater than
+                                                0!
+                                            </div>
+                                        </div>
+                                        <!-- End Error Quantity -->
                                     </div>
 
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Source</label>
-                                            <input class="form-control" type="text" ng-model="product.source">
+                                            <label class="col-form-label">Source <span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control" type="text" ng-model="addProductForm.source"
+                                                ng-class="{'is-invalid': (formAddProduct.source.$invalid && formAddProduct.source.$touched) || (formAddProduct.$submitted && formAddProduct.source.$invalid) || (formAddProduct.$submitted && isValidSource)}"
+                                                name="source" required>
                                         </div>
+                                        <div class="mb-1 text-danger font-weight-bold">
+                                            <div
+                                                ng-show="(formAddProduct.source.$error.required && formAddProduct.source.$touched) || (formAddProduct.$submitted && formAddProduct.source.$error.required)">
+                                                Source can't be blank!
+                                            </div>
+                                        </div>
+                                        <!-- End Error Source -->
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Link</label>
-                                            <input class="form-control" type="text" ng-model="product.link">
+                                            <label class="col-form-label">Link <span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control" type="text" ng-model="addProductForm.link"
+                                                ng-class="{'is-invalid': (formAddProduct.link.$invalid && formAddProduct.link.$touched) || (formAddProduct.$submitted && formAddProduct.link.$invalid) || (formAddProduct.$submitted && isValidLink)}"
+                                                name="link" required>
                                         </div>
+                                        <div class="mb-1 text-danger font-weight-bold">
+                                            <div
+                                                ng-show="(formAddProduct.link.$error.required && formAddProduct.link.$touched) || (formAddProduct.$submitted && formAddProduct.link.$error.required)">
+                                                Link can't be blank!
+                                            </div>
+                                        </div>
+                                        <!-- End Error Source -->
                                     </div>
                                     <div class="col-sm-12">
                                         <div class="form-group">
-                                            <label>Description</label>
-                                            <textarea class="form-control" rows="5" ng-model="product.details"></textarea>
+                                            <label>Description <span class="text-danger">*</span></label>
+                                            <textarea class="form-control" rows="5" ng-model="addProductForm.details"
+                                                ng-class="{'is-invalid': (formAddProduct.description.$invalid && formAddProduct.description.$touched) || (formAddProduct.$submitted && formAddProduct.description.$invalid) || (formAddProduct.$submitted && isValidDescription)}"
+                                                name="description" required></textarea>
                                         </div>
+                                        <div class="mb-1 text-danger font-weight-bold">
+                                            <div
+                                                ng-show="(formAddProduct.description.$error.required && formAddProduct.description.$touched) || (formAddProduct.$submitted && formAddProduct.description.$error.required)">
+                                                Description can't be blank!
+                                            </div>
+                                        </div>
+                                        <!-- End Error Description -->
                                     </div>
-
                                 </div>
                             </form>
                         </div>
@@ -205,12 +335,9 @@
                             <h4 class="d-flex justify-content-center">IMAGE POSTER</h4>
                             <div class="card border-0">
                                 <div class="body d-flex justify-content-center">
-                                    <input type="file" class="dropify" ng-model="product.poster" accept="image/*">
+                                    <input type="file" class="dropify" id="posterImage" accept="image/*">
                                 </div>
                             </div>
-                            <!-- <div class="mt-2">
-                                <img ng-src="{{product.poster}}" alt="Poster Preview" class="img-fluid">
-                            </div> -->
                         </div>
 
 
@@ -223,14 +350,20 @@
                                         <h4 class="">IMAGE THUMBNAIL</h4>
                                         <h5 class="text-danger fs-3 mt-1 ml-2">*Only 3 Photos*</h5>
                                     </div>
+                                    <div class="row d-flex flex-row-reverse mr-3 mb-2">
+                                        <h5 class="text-danger fs-3 mt-1 ml-2" style="cursor: pointer;"
+                                            id="refreshThumbnail">Click here to remove all thumbnail
+                                        </h5>
+                                    </div>
 
-                                    <form action="#" class="dropzone d-flex justify-content-center flex-wrap" id="thumbnailDropzone"></form>
+                                    <!-- Directive Dropzone sẽ được gọi ở đây -->
+                                    <dropzone thumbnails="thumbnailsList" max-files="3"></dropzone>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" ng-click="addProduct()">ADD</button>
+                        <button type="submit" class="btn btn-primary submit-btn" form="formAddProduct">ADD</button>
                     </div>
                 </div>
             </div>
@@ -243,140 +376,262 @@
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Chỉnh Sửa Sản Phẩm</h5>
+                    <h5 class="modal-title">Edit Product</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-sm-12 col-md-8">
-                            <form>
+                            <form name="formEditProduct" novalidate>
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">ID </label>
-                                            <input class="form-control" type="text" ng-model="editProduct.id" readonly>
+                                            <label class="col-form-label">Product Name <span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control" type="text" ng-model="editProduct.name"
+                                                ng-class="{'is-invalid': (formEditProduct.productName.$invalid && formEditProduct.productName.$touched) || (formEditProduct.$submitted && formEditProduct.productName.$invalid) || (formEditProduct.$submitted && isValidProductName)}"
+                                                name="productName" required
+                                                ng-pattern="/^(([a-zA-Z0-9\sÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*)([a-zA-Z0-9\s\'ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*)([a-zA-Z0-9\sÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]))*$/">
                                         </div>
+                                        <div class="mb-1 text-danger font-weight-bold">
+                                            <div
+                                                ng-show="(formEditProduct.productName.$error.required && formEditProduct.productName.$touched) || (formEditProduct.$submitted && formEditProduct.productName.$error.required)">
+                                                Product name can't be blank!
+                                            </div>
+                                            <div
+                                                ng-show="(formEditProduct.productName.$error.pattern && formEditProduct.productName.$touched) || (formEditProduct.$submitted && formEditProduct.productName.$error.pattern)">
+                                                Product name can't contain special characters!
+                                            </div>
+                                        </div>
+                                        <!-- End Error Product Name-->
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Tên Sản Phẩm </label>
-                                            <input class="form-control" type="text" ng-model="editProduct.name">
+                                            <label class="col-form-label">Origin Price <span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control" type="number" ng-model="editProduct.originPrice"
+                                                ng-class="{'is-invalid': (formEditProduct.originPrice.$invalid && formEditProduct.originPrice.$touched) || (formEditProduct.$submitted && formEditProduct.originPrice.$invalid) || (formEditProduct.$submitted && isValidOriginPrice)}"
+                                                name="originPrice" required min="1">
                                         </div>
+                                        <div class="mb-1 text-danger font-weight-bold">
+                                            <div
+                                                ng-show="(formEditProduct.originPrice.$error.required && formEditProduct.originPrice.$touched) || (formEditProduct.$submitted && formEditProduct.originPrice.$error.required)">
+                                                Origin price can't be blank!
+                                            </div>
+                                            <div
+                                                ng-show="(formEditProduct.originPrice.$error.min && formEditProduct.originPrice.$touched) || (formEditProduct.$submitted && formEditProduct.originPrice.$error.min)">
+                                                Origin price must be greater than 0!
+                                            </div>
+                                        </div>
+                                        <!-- End Error Origin price-->
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Giá Gốc</label>
-                                            <input class="form-control" type="text" ng-model="editProduct.originPrice">
+                                            <label class="col-form-label">Sale Price <span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control" type="number" ng-model="editProduct.salePrice"
+                                                ng-class="{'is-invalid': (formEditProduct.salePrice.$invalid && formEditProduct.salePrice.$touched) || (formEditProduct.$submitted && formEditProduct.salePrice.$invalid) || (formEditProduct.$submitted && isValidSalePrice)}"
+                                                name="salePrice" required min="1">
                                         </div>
+                                        <div class="mb-1 text-danger font-weight-bold">
+                                            <div
+                                                ng-show="(formEditProduct.salePrice.$error.required && formEditProduct.salePrice.$touched) || (formEditProduct.$submitted && formEditProduct.salePrice.$error.required)">
+                                                Sale price can't be blank!
+                                            </div>
+                                            <div
+                                                ng-show="(formEditProduct.salePrice.$error.min && formEditProduct.salePrice.$touched) || (formEditProduct.$submitted && formEditProduct.salePrice.$error.min)">
+                                                Sale price must be greater than 0!
+                                            </div>
+                                        </div>
+                                        <!-- End Error Sale price-->
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Giá Bán </label>
-                                            <input class="form-control" type="text" ng-model="editProduct.salePrice">
+                                            <label class="col-form-label">Offer <span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control" type="text" ng-model="editProduct.offer"
+                                                ng-class="{'is-invalid': (formEditProduct.offer.$invalid && formEditProduct.offer.$touched) || (formEditProduct.$submitted && formEditProduct.offer.$invalid)}"
+                                                name="offer" required pattern="^0(\.[0-9]+)?$|^1\.0$"
+                                                inputmode="decimal" min="0" max="1.0">
                                         </div>
+                                        <div class="mb-1 text-danger font-weight-bold">
+                                            <div
+                                                ng-show="(formEditProduct.offer.$error.required && formEditProduct.offer.$touched) || (formEditProduct.$submitted && formEditProduct.offer.$error.required)">
+                                                Offer can't be blank!
+                                            </div>
+                                            <div
+                                                ng-show="formEditProduct.offer.$error.pattern && (formEditProduct.offer.$touched || formEditProduct.$submitted)">
+                                                Offer must be between 0 and 1.0!
+                                            </div>
+                                        </div>
+                                        <!-- End Error Offer-->
                                     </div>
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Đường Dẫn </label>
-                                            <input class="form-control" type="email" ng-model="editProduct.link">
+                                            <label class="col-form-label">Type<span class="text-danger">*</span></label>
+                                            <select class="form-control" ng-model="editProduct.type" ng-required="true"
+                                                ng-change="typeEdit()" name="type"
+                                                ng-class="{'is-invalid-no-x': isValidTypeFormEdit}">
+                                                <option value="">Please choose Type</option>
+                                                <option value="Game">Game</option>
+                                                <option value="PK">Phụ kiện</option>
+                                            </select>
                                         </div>
+                                        <div class="mb-1 text-danger font-weight-bold">
+                                            <div ng-show="isValidTypeFormEdit">
+                                                Type is required. Please choose an option!
+                                            </div>
+                                        </div>
+                                        <!-- End Error Type-->
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Danh Mục</label>
-                                            <select class="select" ng-model="editProduct.category.id" ng-options="category.id as category.name for category in categories">
+                                            <label class="col-form-label">Category <span
+                                                    class="text-danger">*</span></label>
+                                            <select class="form-control" ng-model="editProduct.category.id"
+                                                ng-change="categoryEdit()" ng-required="true" name="category"
+                                                ng-class="{'is-invalid-no-x': isValidCategoryFormEdit}"
+                                                ng-options="category.id as category.name for category in categories">
+                                                <option value="" selected>Please choose Category</option>
                                             </select>
                                         </div>
+                                        <div class="mb-1 text-danger font-weight-bold">
+                                            <div ng-show="isValidCategoryFormEdit">
+                                                Category is required. Please choose an option!
+                                            </div>
+                                        </div>
+                                        <!-- End Error category-->
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Trạng Thái</label>
-                                            <select class="select" ng-model="editProduct.status">
-                                                <option value="true" ng-selected="editProduct.status === true">Còn Hàng</option>
-                                                <option value="false" ng-selected="editProduct.status === false">Hết Hàng</option>
-                                            </select>
+                                            <label class="col-form-label d-block mb-2">Available <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                                    id="inlineRadio1" value="true" ng-model="editProduct.available"
+                                                    checked>
+                                                <label class="form-check-label" for="inlineRadio1">Còn Hàng</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                                    id="inlineRadio2" value="false" ng-model="editProduct.available">
+                                                <label class="form-check-label" for="inlineRadio2">Hết Hàng</label>
+                                            </div>
                                         </div>
-                                        <!-- <div class="form-group">
-                                            <label class="col-form-label">Status</label>
-                                            <input type="text" class="form-control" value="{{ product.status ? 'Còn Hàng' : 'Hết Hàng' }}">
-                                        </div> -->
+                                        <div class="mb-1 text-danger font-weight-bold">
+                                            <div ng-show="isValidAvailableFormEdit">
+                                                Available is required. Please choose an option!
+                                            </div>
+                                        </div>
+                                        <!-- End Error category-->
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Quantity <span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control" type="number" ng-model="editProduct.qty"
+                                                ng-class="{'is-invalid': (formEditProduct.quantity.$invalid && formEditProduct.quantity.$touched) || (formEditProduct.$submitted && formEditProduct.quantity.$invalid) || (formEditProduct.$submitted && isValidQuantity)}"
+                                                name="quantity" required min="1" step="any"
+                                                ng-pattern="/^(?!0(\.0*)?$)([1-9]\d*|0)(\.\d+)?$/">
+                                        </div>
+                                        <div class="mb-1 text-danger font-weight-bold">
+                                            <div
+                                                ng-show="(formEditProduct.quantity.$error.required && formEditProduct.quantity.$touched) || (formEditProduct.$submitted && formEditProduct.quantity.$error.required)">
+                                                Quantity can't be blank!
+                                            </div>
+                                            <div
+                                                ng-show="(formEditProduct.quantity.$error.pattern && formEditProduct.quantity.$touched) || (formEditProduct.$submitted && formEditProduct.quantity.$error.pattern)">
+                                                Invalid quantity! Please enter a valid number and must be greater than
+                                                0!
+                                            </div>
+                                        </div>
+                                        <!-- End Error Quantity -->
                                     </div>
 
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Nhà Phát Hành</label>
-                                            <input class="form-control" type="text" ng-model="editProduct.source">
+                                            <label class="col-form-label">Source <span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control" type="text" ng-model="editProduct.source"
+                                                ng-class="{'is-invalid': (formEditProduct.source.$invalid && formEditProduct.source.$touched) || (formEditProduct.$submitted && formEditProduct.source.$invalid) || (formEditProduct.$submitted && isValidSource)}"
+                                                name="source" required>
                                         </div>
+                                        <div class="mb-1 text-danger font-weight-bold">
+                                            <div
+                                                ng-show="(formEditProduct.source.$error.required && formEditProduct.source.$touched) || (formEditProduct.$submitted && formEditProduct.source.$error.required)">
+                                                Source can't be blank!
+                                            </div>
+                                        </div>
+                                        <!-- End Error Source -->
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Link <span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control" type="text" ng-model="editProduct.link"
+                                                ng-class="{'is-invalid': (formEditProduct.link.$invalid && formEditProduct.link.$touched) || (formEditProduct.$submitted && formEditProduct.link.$invalid) || (formEditProduct.$submitted && isValidLink)}"
+                                                name="link" required>
+                                        </div>
+                                        <div class="mb-1 text-danger font-weight-bold">
+                                            <div
+                                                ng-show="(formEditProduct.link.$error.required && formEditProduct.link.$touched) || (formEditProduct.$submitted && formEditProduct.link.$error.required)">
+                                                Link can't be blank!
+                                            </div>
+                                        </div>
+                                        <!-- End Error Source -->
                                     </div>
                                     <div class="col-sm-12">
                                         <div class="form-group">
-                                            <label>Mô Tả Sản Phẩm</label>
-                                            <textarea class="form-control" rows="5" ng-model="editProduct.details"></textarea>
+                                            <label>Description <span class="text-danger">*</span></label>
+                                            <textarea class="form-control" rows="5" ng-model="editProduct.details"
+                                                ng-class="{'is-invalid': (formEditProduct.description.$invalid && formEditProduct.description.$touched) || (formEditProduct.$submitted && formEditProduct.description.$invalid) || (formEditProduct.$submitted && isValidDescription)}"
+                                                name="description" required></textarea>
                                         </div>
+                                        <div class="mb-1 text-danger font-weight-bold">
+                                            <div
+                                                ng-show="(formEditProduct.description.$error.required && formEditProduct.description.$touched) || (formEditProduct.$submitted && formEditProduct.description.$error.required)">
+                                                Description can't be blank!
+                                            </div>
+                                        </div>
+                                        <!-- End Error Description -->
                                     </div>
-
                                 </div>
                             </form>
                         </div>
                         <div class="col-sm-12 col-md-4 theme-blush">
-                            <h4 class="d-flex justify-content-center">Ảnh Áp Phích</h4>
+                            <h4 class="d-flex justify-content-center">IMAGE POSTER</h4>
                             <div class="avatar-wrapper">
-                                <img class="profile-pic" ng-src="{{currentPhotoUrl || 'https://drive.google.com/uc?id=' + editProduct.poster}}" alt="Avatar" />
+                                <img class="profile-pic" ng-src="{{posterEdit.href + posterEdit.key}}" alt="Avatar" />
                                 <div class="upload-button" ng-click="handleUploadClick()">
                                     <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
                                 </div>
                                 <input class="file-upload" type="file" id="fileInput" accept="image/*" />
                             </div>
-
-                            <!-- <div class="card border-0">
-                                <div class="body d-flex flex-column align-items-center">
-
-                                    <img style="width: 300px; height: 533px;" src="https://drive.google.com/uc?id={{product.poster}}">
-                                    <input type="file" class="dropify" ng-model="product.poster" accept="image/*">
-
-                                </div>
-                            </div> -->
                         </div>
-
                     </div>
-                    <!-- <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="row  d-flex justify-content-center">
-                                        <h4 class=" ">IMAGE THUMBNAIL</h4>
-                                        <h5 class="text-danger fs-3 mt-1 ml-2">*Only 3 Photos*</h5>
-                                    </div>
-
-                                    <form action="#" class="dropzone d-flex justify-content-center flex-wrap" id="dropzone_remove"></form>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row d-flex justify-content-center">
-                                        <h4 class="">Ảnh Thu Nhỏ</h4>
-                                        <h5 class="text-danger fs-3 mt-1 ml-2">*Chỉ được 3 ảnh thu nhỏ*</h5>
+                                        <h4 class="">IMAGE THUMBNAIL</h4>
+                                        <h5 class="text-danger fs-3 mt-1 ml-2">*Only 3 Photos*</h5>
                                     </div>
-                                    <div class="dropzone-container d-flex justify-content-center flex-wrap" id="dropzone_remove">
-                                        <div ng-repeat="thumbnailId in thumbnails">
-                                            <!-- <img ng-src="https://drive.google.com/uc?id={{thumbnailId.trim()}}" alt="Thumbnail" class="thumbnail"> -->
-                                            <form ng-submit="handleFormSubmit()">
-                                                <img ng-src="https://drive.google.com/uc?id={{thumbnailId.trim()}}" alt="Thumbnail" class="thumbnail">
-                                                <div ng-repeat="index in [1, 2, 3]">
-                                                    <div class="upload-button" ng-click="handleThumbnailUploadClick(index)">
-                                                        <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
-                                                    </div>
-                                                    <input class="fileInputthumbnail" type="file" id="fileInputthumbnail{{index}}" accept="image/*" style="display: none;" />
+                                    <div class="dropzone-container d-flex justify-content-center flex-wrap"
+                                        id="dropzone_remove">
+                                        <div ng-repeat="(key,thumbnail) in thumbnails">
+                                            <div class="avatar-wrapper mr-4">
+                                                <img class="profile-pic" ng-src="{{thumbnail.href + thumbnail.key}}"
+                                                    alt="Avatar" />
+                                                <div class="upload-button" ng-click="handleUploadClick(key)">
+                                                    <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
                                                 </div>
-                                                <!-- <button type="submit" style="display: none;"></button> -->
-                                            </form>
+                                                <input class="file-upload d-none" type="file" id="thumbnail{{key}}"
+                                                    accept="image/*" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -391,14 +646,15 @@
                                 border-radius: 5%;
                                 transition: transform 0.3s;
                             }
-                            
+
                             .thumbnail:hover {
                                 transform: scale(1.2);
                             }
                         </style>
                     </div>
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" ng-click="updateProduct(productId)">Sửa</button>
+                        <button class="btn btn-primary submit-btn"
+                            ng-click="updateProduct(editProduct.id)">EDIT</button>
                     </div>
                 </div>
             </div>
@@ -413,10 +669,10 @@
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Đánh Giá Sản Phẩm</h5>
+                    <h5 class="modal-title">Feedback</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <form>
@@ -426,11 +682,11 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Tên Người Dùng</th>
-                                            <th style="width: 300px;">Đánh Giá</th>
-                                            <th>Số Sao</th>
-                                            <th>Ngày Đánh Giá</th>
-                                            <th>Trạng Thái</th>
+                                            <th>Fullname</th>
+                                            <th style="width: 300px;">Content</th>
+                                            <th>Star</th>
+                                            <th>Create Date</th>
+                                            <th>Status</th>
                                             <th class="text-right no-sort">Action</th>
                                         </tr>
                                     </thead>
@@ -472,7 +728,6 @@
                                         </tr> -->
 
                                     </tbody>
-                                    <div id="toast"></div>
                                 </table>
                             </div>
                         </div>
@@ -502,7 +757,8 @@
                                 <a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
                             </div>
                             <div class="col-6">
-                                <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                <a href="javascript:void(0);" data-dismiss="modal"
+                                    class="btn btn-primary cancel-btn">Cancel</a>
                             </div>
                         </div>
                     </div>
@@ -526,7 +782,8 @@
                                 <a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
                             </div>
                             <div class="col-6">
-                                <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                <a href="javascript:void(0);" data-dismiss="modal"
+                                    class="btn btn-primary cancel-btn">Cancel</a>
                             </div>
                         </div>
                     </div>
@@ -535,6 +792,7 @@
         </div>
     </div>
     <!-- /Delete Comment Modal -->
+    <div id="toast"></div>
 
 </div>
 <!-- /Page Wrapper -->

@@ -66,11 +66,11 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
                 '<div class="dropdown action-label">' +
                 '<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">' +
                 '<i class="fa fa-dot-circle-o text-' + (feedback.status ? 'success' : 'danger') + '"></i> ' +
-                (feedback.status ? 'Đã Duyệt' : 'Chưa Duyệt') +
+                (feedback.status ? 'Approved' : 'Disapprove') +
                 '</a>' +
                 '<div class="dropdown-menu">' +
-                '<a class="dropdown-item" href="#" ng-click="updateFeedbackStatus(' + feedback.id + ',' + feedback.product.id + ',1)"><i class="fa fa-dot-circle-o text-success"></i>Đã Duyệt</a>' +
-                '<a class="dropdown-item" href="#" ng-click="updateFeedbackStatus(' + feedback.id + ',' + feedback.product.id + ',0)"><i class="fa fa-dot-circle-o text-danger"></i>Chưa Duyệt</a>' +
+                '<a class="dropdown-item" href="#" ng-click="updateFeedbackStatus(' + feedback.id + ',' + feedback.product.id + ',1)"><i class="fa fa-dot-circle-o text-success"></i>Approved</a>' +
+                '<a class="dropdown-item" href="#" ng-click="updateFeedbackStatus(' + feedback.id + ',' + feedback.product.id + ',0)"><i class="fa fa-dot-circle-o text-danger"></i>Disapprove</a>' +
                 '</div>' +
                 '</div>' +
                 '</td>' +

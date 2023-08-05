@@ -1,4 +1,4 @@
-app.controller("ProductController", function (ProductAdminService, ToastService, $http, $scope,
+app.controller("ProductController", function(ProductAdminService, ToastService, $http, $scope,
     $compile, $filter, $timeout) {
 
     $scope.product = {}; // Thông tin sản phẩm sẽ được hiển thị trên trang chi tiết
@@ -7,7 +7,7 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
     $scope.feedback = [];
 
     //Modal edit
-    $scope.posterEdit = {};// Poster form Edit
+    $scope.posterEdit = {}; // Poster form Edit
     $scope.thumbnails = []; // array thumbnail edit
     $scope.editProduct = {};
 
@@ -23,33 +23,33 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
     /*----GET DATA CATEGORY----*/
     // Lấy danh sách category
     ProductAdminService.getAllCategories()
-        .then(function (response) {
+        .then(function(response) {
             $scope.categories = response.data;
         })
-        .catch(function (error) {
+        .catch(function(error) {
             console.error('Lỗi khi lấy danh sách category:', error);
         });
     /*----GET DATA CATEGORY----*/
 
     /*----LOAD DATA TABLE FEEDBACK----*/
-    $scope.getFeedbackForProduct = function (productId) {
+    $scope.getFeedbackForProduct = function(productId) {
         ProductAdminService.getFeedbackProduct(productId)
-            .then(function (response) {
+            .then(function(response) {
                 $scope.feedback = response.data;
                 $('#comment_Product').modal('show');
                 $scope.loadProductFeedback();
             })
-            .catch(function (error) {
+            .catch(function(error) {
                 console.error('Lỗi khi lấy danh sách phản hồi:', error);
             });
     };
 
 
-    $scope.loadProductFeedback = function () {
+    $scope.loadProductFeedback = function() {
         var feedbackTableBody = $('#feedbackTableBody');
         feedbackTableBody.empty();
 
-        $scope.feedback.forEach(function (feedback) {
+        $scope.feedback.forEach(function(feedback) {
 
             var starIcons = '';
             for (var i = 1; i <= 5; i++) {
@@ -92,29 +92,29 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
 
 
     /*----UPDATE FEEDBACK----*/
-    $scope.updateFeedbackStatus = function (feedbackId, productId, status) {
+    $scope.updateFeedbackStatus = function(feedbackId, productId, status) {
         // Gọi phương thức trong Service để cập nhật trạng thái feedback
         ProductAdminService.updateFeedbackStatus(feedbackId, status)
-            .then(function (response) {
+            .then(function(response) {
                 console.log("Feedback đã được cập nhật:", response.data);
-                showSuccessToast("Đã thay đổi trạng thái đánh giá thành công");
+                ToastService.showSuccessToast("Update Feedback successfully!");
                 $scope.getFeedbackForProduct(productId);
             })
-            .catch(function (error) {
+            .catch(function(error) {
                 console.error("Lỗi khi cập nhật feedback:", error);
             });
     };
     /*----END UPDATE FEEDBACK----*/
 
     /*----DELETE FEEDBACK----*/
-    $scope.deleteFeedback = function (feedbackId, productId) {
+    $scope.deleteFeedback = function(feedbackId, productId) {
         ProductAdminService.deleteFeedbackById(feedbackId)
-            .then(function (resp) {
+            .then(function(resp) {
                 // Xử lý thành công, data chứa dữ liệu thành công từ service
-                showSuccessToast("Đã xóa đánh giá thành công");
+                ToastService.showSuccessToast("Delete Feedback successfully!");
                 $scope.getFeedbackForProduct(productId);
             })
-            .catch(function (error) {
+            .catch(function(error) {
                 // Xử lý lỗi, error chứa dữ liệu lỗi từ service
             });
     };
@@ -123,8 +123,8 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
 
     /*----LOAD DATA TABLE PRODUCT----*/
     // Lấy tất cả sản phẩm
-    $scope.getAllProducts = function () {
-        ProductAdminService.getAllProducts().then(function (response) {
+    $scope.getAllProducts = function() {
+        ProductAdminService.getAllProducts().then(function(response) {
             $scope.product = response.data;
             $scope.temProduct = $scope.product;
             // Kiểm tra nếu có search thì sẽ fill data dạng search
@@ -132,125 +132,125 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
             var searchName = document.getElementById("productNameSearch").value.toLowerCase();
             var searchCreateDate = document.getElementById("searchCreateDate").value;
             console.log(selectElement || searchName)
-            // if (selectElement || searchName) {
-            //     $scope.searchProduct();
-            // }
+                // if (selectElement || searchName) {
+                //     $scope.searchProduct();
+                // }
 
-            $(document).ready(function () {
+            $(document).ready(function() {
                 $scope.loadDataTableProduct($scope.product);
             });
-        }).catch(function (error) {
+        }).catch(function(error) {
             console.error('Lỗi khi lấy danh sách sản phẩm:', error);
         });
     }
     $scope.getAllProducts();
 
-    $scope.loadDataTableProduct = function (products) {
-        var table = $('#tableProduct');
+    $scope.loadDataTableProduct = function(products) {
+            var table = $('#tableProduct');
 
 
-        if ($.fn.DataTable.isDataTable(table)) {
-            table.DataTable().destroy();
-        }
-
-        table.DataTable({
-            searching: false,
-            data: products, // Dữ liệu được truyền vào DataTables
-            columns: [{
-                data: null,
-                render: function (data, type, row, meta) {
-                    // Render giao diện cho cột "#"
-                    // return meta.row + 1;
-                    return row.id;
-                }
-            },
-            {
-                data: null, // Cột "Poster"
-                render: function (data, type, row) {
-                    // Render giao diện cho cột "Poster"
-                    var posterUrl = row.poster ? row.poster : '1xbZ557bXhtiEG-sPP4TRXf007THuPsns';
-                    var imageUrl = 'https://drive.google.com/uc?id=' + posterUrl;
-                    return '<h2 class="table-poster"><a href="#" class="poster"><img alt="" src="' + imageUrl + '" data-zoom-image="' + imageUrl + '" alt="product image"></a></h2>';
-                }
-
-            },
-            {
-                data: null, // Cột "Name"
-                render: function (data, type, row) {
-                    // Render giao diện cho cột "Name"
-                    return '<td><a href="#" class="text-dark" data-toggle="modal" data-target="#edit_Product">' + row.name + '</a></td>';
-                }
-            },
-            { data: 'originPrice', render: function (data) { return $filter('vndFormat')(data); } }, // Cột "Origin Price"
-            { data: 'salePrice', render: function (data) { return $filter('vndFormat')(data); } }, // Cột "Sale Price"
-            { data: 'offer', render: function (data) { return (data * 100) + "%"; } }, // Cột "Offer"
-            { data: 'source' }, // Cột "Source"
-            {
-                data: 'createDate', // Cột "Created Date"
-                render: function (data, type, row) {
-                    // Sử dụng filter date để định dạng lại giá trị ngày tạo
-                    var formattedCreateDate = $filter('date')(row.createDate, 'dd/MM/yyyy');
-                    return formattedCreateDate;
-                }
-            },
-            { data: 'type' }, // Cột "Type"
-            { data: 'qty' }, // Cột "Qty"
-            {
-                data: null, // Cột "Action"
-                // render: function(data, type, row) {
-                //     // Render giao diện cho cột "Action"
-                //     return '<div class="dropdown dropdown-action"><a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a><div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#" ng-click="editProductClicked(' + row.id + ')" data-toggle="modal" data-target="#edit_Product"><i class="fa fa-pencil m-r-5"></i>Edit</a><a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_Product"><i class="fa fa-trash-o m-r-5"></i>Delete</a><a class="dropdown-item" href="#" data-toggle="modal" data-target="#comment_Product"><i class="fa fa-pencil-square-o m-r-5"></i>Comment</a></div></div>';
-                // }
-
-                render: function (data, type, row) {
-                    // Render giao diện cho cột "Action"
-                    return '<div class="dropdown dropdown-action text-center">' +
-                        '<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">' +
-                        '<i class="material-icons font-weight-bold">⋮</i>' +
-                        '</a>' +
-                        '<div class="dropdown-menu dropdown-menu-right">' +
-                        '<a class="dropdown-item edit-product" href="#" data-product-id="' + row.id + '" data-toggle="modal" data-target="#edit_Product">' +
-                        '<i class="fa fa-pencil m-r-5"></i>Edit' +
-                        '</a>' +
-                        // Call the loadProductFeedback function with the product ID
-                        '<a class="dropdown-item view-feedback" href="#" data-product-id="' + row.id + '" data-toggle="modal" data-target="#comment_Product">' +
-                        '<i class="fa fa-pencil-square-o m-r-5"></i>Feedback' +
-                        '</a>' +
-                        '</div>' +
-                        '</div>';
-                }
-
+            if ($.fn.DataTable.isDataTable(table)) {
+                table.DataTable().destroy();
             }
-            ]
-        });
-        // Thêm sự kiện click vào phần tử chỉnh sửa
-        $(document).on('click', '.edit-product', function () {
-            var productId = $(this)[0].dataset.productId;
-            $scope.editProductClicked(productId);
-        });
-        $(document).on('click', '.view-feedback', function () {
-            var productId = $(this)[0].dataset.productId;
-            $scope.getFeedbackForProduct(productId);
-        });
 
-    }
-    /*----END LOAD DATA TABLE PRODUCT----*/
+            table.DataTable({
+                searching: false,
+                data: products, // Dữ liệu được truyền vào DataTables
+                columns: [{
+                        data: null,
+                        render: function(data, type, row, meta) {
+                            // Render giao diện cho cột "#"
+                            // return meta.row + 1;
+                            return row.id;
+                        }
+                    },
+                    {
+                        data: null, // Cột "Poster"
+                        render: function(data, type, row) {
+                            // Render giao diện cho cột "Poster"
+                            var posterUrl = row.poster ? row.poster : '1xbZ557bXhtiEG-sPP4TRXf007THuPsns';
+                            var imageUrl = 'https://drive.google.com/uc?id=' + posterUrl;
+                            return '<h2 class="table-poster"><a href="#" class="poster"><img alt="" src="' + imageUrl + '" data-zoom-image="' + imageUrl + '" alt="product image"></a></h2>';
+                        }
+
+                    },
+                    {
+                        data: null, // Cột "Name"
+                        render: function(data, type, row) {
+                            // Render giao diện cho cột "Name"
+                            return '<td><a href="#" class="text-dark" data-toggle="modal" data-target="#edit_Product">' + row.name + '</a></td>';
+                        }
+                    },
+                    { data: 'originPrice', render: function(data) { return $filter('vndFormat')(data); } }, // Cột "Origin Price"
+                    { data: 'salePrice', render: function(data) { return $filter('vndFormat')(data); } }, // Cột "Sale Price"
+                    { data: 'offer', render: function(data) { return (data * 100) + "%"; } }, // Cột "Offer"
+                    { data: 'source' }, // Cột "Source"
+                    {
+                        data: 'createDate', // Cột "Created Date"
+                        render: function(data, type, row) {
+                            // Sử dụng filter date để định dạng lại giá trị ngày tạo
+                            var formattedCreateDate = $filter('date')(row.createDate, 'dd/MM/yyyy');
+                            return formattedCreateDate;
+                        }
+                    },
+                    { data: 'type' }, // Cột "Type"
+                    { data: 'qty' }, // Cột "Qty"
+                    {
+                        data: null, // Cột "Action"
+                        // render: function(data, type, row) {
+                        //     // Render giao diện cho cột "Action"
+                        //     return '<div class="dropdown dropdown-action"><a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a><div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#" ng-click="editProductClicked(' + row.id + ')" data-toggle="modal" data-target="#edit_Product"><i class="fa fa-pencil m-r-5"></i>Edit</a><a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_Product"><i class="fa fa-trash-o m-r-5"></i>Delete</a><a class="dropdown-item" href="#" data-toggle="modal" data-target="#comment_Product"><i class="fa fa-pencil-square-o m-r-5"></i>Comment</a></div></div>';
+                        // }
+
+                        render: function(data, type, row) {
+                            // Render giao diện cho cột "Action"
+                            return '<div class="dropdown dropdown-action text-center">' +
+                                '<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">' +
+                                '<i class="material-icons font-weight-bold">⋮</i>' +
+                                '</a>' +
+                                '<div class="dropdown-menu dropdown-menu-right">' +
+                                '<a class="dropdown-item edit-product" href="#" data-product-id="' + row.id + '" data-toggle="modal" data-target="#edit_Product">' +
+                                '<i class="fa fa-pencil m-r-5"></i>Edit' +
+                                '</a>' +
+                                // Call the loadProductFeedback function with the product ID
+                                '<a class="dropdown-item view-feedback" href="#" data-product-id="' + row.id + '" data-toggle="modal" data-target="#comment_Product">' +
+                                '<i class="fa fa-pencil-square-o m-r-5"></i>Feedback' +
+                                '</a>' +
+                                '</div>' +
+                                '</div>';
+                        }
+
+                    }
+                ]
+            });
+            // Thêm sự kiện click vào phần tử chỉnh sửa
+            $(document).on('click', '.edit-product', function() {
+                var productId = $(this)[0].dataset.productId;
+                $scope.editProductClicked(productId);
+            });
+            $(document).on('click', '.view-feedback', function() {
+                var productId = $(this)[0].dataset.productId;
+                $scope.getFeedbackForProduct(productId);
+            });
+
+        }
+        /*----END LOAD DATA TABLE PRODUCT----*/
 
     /*----ERROR FORM EDIT----*/
-    $scope.typeEdit = function () {
+    $scope.typeEdit = function() {
         $scope.isValidTypeFormEdit = false;
     }
 
-    $scope.categoryEdit = function () {
-        $scope.isValidCategoryFormEdit = false;
-    }
-    /*----END ERROR FORM EDIT----*/
+    $scope.categoryEdit = function() {
+            $scope.isValidCategoryFormEdit = false;
+        }
+        /*----END ERROR FORM EDIT----*/
 
     /*----UPDATE PRODUCT----*/
     // Hàm xử lý khi nhấp vào nút "Edit" trong cột "Action"
-    $scope.editProductClicked = function (productId) {
+    $scope.editProductClicked = function(productId) {
         ProductAdminService.getProduct(productId)
-            .then(function (response) {
+            .then(function(response) {
                 $scope.editProduct = response.data;
                 $scope.thumbnails = extractThumbnails($scope.editProduct.thumbnail);
                 $scope.posterEdit = {
@@ -265,27 +265,27 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
                     $scope.editProduct.available = "false";
                 }
             })
-            .catch(function (error) {
+            .catch(function(error) {
                 console.error('Lỗi khi lấy thông tin sản phẩm:', error);
             });
     };
 
     // Gắn kết sự kiện click cho các phần tử chỉnh sửa
-    angular.element(document).on('click', '.edit-product', function () {
+    angular.element(document).on('click', '.edit-product', function() {
         var productId = angular.element(this).data('product-id');
         $scope.editProductClicked(productId);
     });
 
-    $scope.updateProduct = function (productId) {
+    $scope.updateProduct = function(productId) {
         if ($scope.formEditProduct.$valid) {
-            var result = $scope.product.filter(function (item) {
+            var result = $scope.product.filter(function(item) {
                 var productName = item.name.toLowerCase(); // Chuyển giá trị thuộc tính title thành chữ thường
                 var tempProductId = item.id;
                 return productName == $scope.editProduct.name.toLowerCase() && tempProductId != productId;
             });
             if (result.length == 0) {
                 ToastService.showInfoToast("Processing!", "Please wait a moment!");
-                $scope.categories.forEach(function (category) {
+                $scope.categories.forEach(function(category) {
                     if ($scope.editProduct.category.id == category.id) {
                         $scope.editProduct.category = category;
                     }
@@ -303,12 +303,12 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
 
                 // Gán lại key image cho product 
                 ProductAdminService.getProduct(productId)
-                    .then(function (product) {
+                    .then(function(product) {
                         $scope.editProduct.thumbnail = product.data.thumbnail;
                         $scope.editProduct.poster = product.data.poster;
                         // Update product với poster và thumbnail key mới
                         ProductAdminService.updateProduct($scope.editProduct)
-                            .then(function (response) {
+                            .then(function(response) {
                                 productResult = response.data;
                                 if ($scope.posterEdit.file) {
                                     var formData = new FormData();
@@ -316,7 +316,7 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
                                     formData.append('image', $scope.posterEdit.file, modifiedFileName);
                                     // Upload poster
                                     ProductAdminService.uploadImage(formData)
-                                        .then(function (poster) {
+                                        .then(function(poster) {
                                             for (let i = 0; i <= $scope.thumbnails.length; i++) {
                                                 if (i == $scope.thumbnails.length) {
                                                     $('#edit_Product').modal('hide');
@@ -331,14 +331,12 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
                                                     var modifiedFileNameThumb = productResult.id + "-thumb" + i;
                                                     formDataThumb.append('image', thumbnail.file, modifiedFileNameThumb);
                                                     ProductAdminService.uploadImage(formDataThumb)
-                                                        .then(function (thumb) {
-                                                        })
-                                                        .catch(function (error) {
-                                                        });
+                                                        .then(function(thumb) {})
+                                                        .catch(function(error) {});
                                                 }
                                             }
                                         })
-                                        .catch(function (error) {
+                                        .catch(function(error) {
                                             ToastService.showErrorToast("Upload poster failure!");
                                         });
                                 } else {
@@ -356,19 +354,17 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
                                             var modifiedFileNameThumb = productResult.id + "-thumb" + i;
                                             formDataThumb.append('image', thumbnail.file, modifiedFileNameThumb);
                                             ProductAdminService.uploadImage(formDataThumb)
-                                                .then(function (thumb) {
-                                                })
-                                                .catch(function (error) {
-                                                });
+                                                .then(function(thumb) {})
+                                                .catch(function(error) {});
                                         }
                                     }
                                 }
                             })
-                            .catch(function (error) {
+                            .catch(function(error) {
                                 ToastService.showErrorToast("Update product failure!");
                             });
                     })
-                    .catch(function (error) {
+                    .catch(function(error) {
                         ToastService.showErrorToast("Update product failure!");
                     });
             } else {
@@ -388,29 +384,29 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
     /*----END UPDATE PRODUCT----*/
 
     /*----ERROR FORM ADD----*/
-    $scope.typeAdd = function () {
+    $scope.typeAdd = function() {
         $scope.isValidTypeFormAdd = false;
     }
 
-    $scope.categoryAdd = function () {
-        $scope.isValidCategoryFormAdd = false;
-    }
-    /*----END ERROR FORM ADD----*/
+    $scope.categoryAdd = function() {
+            $scope.isValidCategoryFormAdd = false;
+        }
+        /*----END ERROR FORM ADD----*/
 
     /*----ADD PRODUCT----*/
-    $scope.addProduct = function () {
+    $scope.addProduct = function() {
         if ($scope.formAddProduct.$valid) {
             if ($scope.product.poster) {
                 if ($scope.thumbnailsList.length < 3) {
                     ToastService.showErrorToast("Please choose 3 thumbnails!");
                 } else {
-                    var result = $scope.product.filter(function (item) {
+                    var result = $scope.product.filter(function(item) {
                         var productName = item.name.toLowerCase(); // Chuyển giá trị thuộc tính title thành chữ thường
                         return productName == $scope.addProductForm.name.toLowerCase();
                     });
                     if (result.length == 0) {
                         ToastService.showInfoToast("Processing!", "Please wait a moment!");
-                        $scope.categories.forEach(function (category) {
+                        $scope.categories.forEach(function(category) {
                             if ($scope.addProductForm.category.id == category.id) {
                                 $scope.addProductForm.category = category;
                             }
@@ -443,7 +439,7 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
 
                         // Add product
                         ProductAdminService.createProduct($scope.addProductForm)
-                            .then(function (product) {
+                            .then(function(product) {
                                 var productResult = product.data;
                                 if (productResult) {
                                     var formData = new FormData();
@@ -451,7 +447,7 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
                                     formData.append('image', $scope.product.poster, modifiedFileName);
                                     // Upload poster
                                     ProductAdminService.uploadImage(formData)
-                                        .then(function (poster) {
+                                        .then(function(poster) {
                                             var posterResult = poster.data.fileId;
                                             productResult.poster = posterResult;
                                             var thumbnailKey = "";
@@ -471,7 +467,7 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
                                                     var modifiedFileNameThumb = productResult.id + "-thumb" + i;
                                                     formDataThumb.append('image', thumbnail, modifiedFileNameThumb);
                                                     ProductAdminService.uploadImage(formDataThumb)
-                                                        .then(function (thumb) {
+                                                        .then(function(thumb) {
                                                             var thumbResult = thumb.data.fileId;
                                                             if (index == length - 1) {
                                                                 thumbnailKey += thumbResult;
@@ -482,25 +478,23 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
                                                             productResult.thumbnail = thumbnailKey;
                                                             // Update product với poster và thumbnail key mới
                                                             ProductAdminService.updateProduct(productResult)
-                                                                .then(function (response) {
+                                                                .then(function(response) {
                                                                     $scope.getAllProducts();
                                                                 })
-                                                                .catch(function (error) {
-                                                                });
+                                                                .catch(function(error) {});
                                                         })
-                                                        .catch(function (error) {
-                                                        });
+                                                        .catch(function(error) {});
                                                 }
                                             }
                                         })
-                                        .catch(function (error) {
+                                        .catch(function(error) {
                                             ToastService.showErrorToast("Upload poster failure!");
                                         });
                                 } else {
                                     ToastService.showErrorToast("Add product failure!");
                                 }
                             })
-                            .catch(function (error) {
+                            .catch(function(error) {
                                 ToastService.showErrorToast("Add product failure!");
                             });
                     } else {
@@ -521,14 +515,14 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
         }
     };
 
-    $scope.callClearThumbnailsInDirective = function () {
+    $scope.callClearThumbnailsInDirective = function() {
         var dropzoneDirectiveScope = angular.element(document.querySelector('dropzone')).scope();
         if (dropzoneDirectiveScope && typeof dropzoneDirectiveScope.clearThumbnails === 'function') {
             dropzoneDirectiveScope.clearThumbnails();
         }
     };
 
-    $scope.resetForm = function () {
+    $scope.resetForm = function() {
         // Reset giá trị của biến addProductForm thành một object rỗng hoặc giá trị mặc định
         $scope.addProductForm = {};
 
@@ -575,7 +569,7 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
     }
 
     // Gán sự kiện khi thay đổi poster thì lấy file ra
-    document.getElementById("posterImage").addEventListener("change", function (event) {
+    document.getElementById("posterImage").addEventListener("change", function(event) {
         var selectedFile = event.target.files[0];
 
         if (selectedFile) {
@@ -585,7 +579,7 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
     /*----END ADD PRODUCT----*/
 
     /*----SEARCH----*/
-    $scope.searchProduct = function () {
+    $scope.searchProduct = function() {
         var selectElement = document.getElementById("searchTitle").value;
         var searchName = document.getElementById("productNameSearch").value.toLowerCase();
         var searchCreateDate = document.getElementById("searchCreateDate").value;
@@ -593,7 +587,7 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
 
 
         if (selectElement) {
-            var result = $scope.product.filter(function (item) {
+            var result = $scope.product.filter(function(item) {
                 var ProductType = item.type; // Chuyển giá trị thuộc tính title thành chữ thường
                 return ProductType.indexOf(selectElement) !== -1;
             });
@@ -603,7 +597,7 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
         if (searchCreateDate) {
             searchCreateDate = convertDateFormat(searchCreateDate);
             console.log(searchCreateDate)
-            var result = $scope.product.filter(function (item) {
+            var result = $scope.product.filter(function(item) {
                 var createDate = item.createDate;
                 console.log(createDate)
                 return createDate.indexOf(searchCreateDate) !== -1;
@@ -612,7 +606,7 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
         }
 
         if (searchName) {
-            var result = $scope.product.filter(function (item) {
+            var result = $scope.product.filter(function(item) {
                 var ProductName = item.name.toLowerCase(); // Chuyển giá trị thuộc tính user created thành chữ thường
                 return ProductName.indexOf(searchName) !== -1;
             });
@@ -620,19 +614,19 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
         }
 
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             $scope.loadDataTableProduct($scope.product);
         });
     }
 
-    $scope.searchWithEnter = function (event) {
+    $scope.searchWithEnter = function(event) {
         if (event.keyCode === 13) {
             $scope.searchProduct();
         }
     }
 
 
-    $scope.refreshSearch = function () {
+    $scope.refreshSearch = function() {
         document.getElementById("searchTitle").value = "";
         document.getElementById("productNameSearch").value = "";
         document.getElementById("searchCreateDate").value = "";
@@ -676,7 +670,7 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
     }
 
     // Hàm xử lý sự kiện khi click vào nút "upload-button".
-    $scope.handleUploadClick = function (index) {
+    $scope.handleUploadClick = function(index) {
         // Lấy ra input file-upload thông qua ID.
         var fileInput;
         if (index || index == 0) {
@@ -684,7 +678,7 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
         } else {
             fileInput = document.getElementById('fileInput');
         }
-        fileInput.addEventListener('change', function () {
+        fileInput.addEventListener('change', function() {
             // Lấy danh sách các file đã chọn từ input file-upload.
             var selectedFiles = this.files;
             if (selectedFiles.length > 0) {
@@ -693,7 +687,7 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
 
                 // Tạo một đường dẫn tạm thời cho ảnh từ file đã chọn.
                 var tempPhotoUrl = URL.createObjectURL(selectedFile);
-                $scope.$apply(function () {
+                $scope.$apply(function() {
                     // Cập nhật đường dẫn mới vào biến "currentPhotoUrl" để thay đổi ảnh hiển thị.
                     if (index || index == 0) {
                         $scope.thumbnails[index].href = "";
@@ -715,12 +709,12 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
     /*----END IMAGE----*/
 
     /*----EXPORT REPORT----*/
-    $scope.downloadExcel = function () {
+    $scope.downloadExcel = function() {
         $http({
             url: host + '/api/product/downloadExcel', // Địa chỉ API endpoint của Spring Boot backend
             method: 'GET',
             responseType: 'arraybuffer'
-        }).then(function (response) {
+        }).then(function(response) {
             var blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
             var url = window.URL.createObjectURL(blob);
             var a = document.createElement('a');
@@ -732,15 +726,15 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
             a.download = 'ReportSanpham_' + formattedDate + '.xlsx';
             a.click();
             window.URL.revokeObjectURL(url);
-        }, function (error) {
+        }, function(error) {
             console.error('Lỗi khi tải xuống tệp Excel:', error);
         });
     };
     /*----END EXPORT REPORT----*/
 
-}).filter('vndFormat', function () {
+}).filter('vndFormat', function() {
     // Filter định dạng tiền tệ
-    return function (input) {
+    return function(input) {
         if (!input) return '';
         var number = parseFloat(input);
         if (isNaN(number)) return input;
@@ -748,9 +742,9 @@ app.controller("ProductController", function (ProductAdminService, ToastService,
         formattedNumber += ' VND';
         return formattedNumber;
     };
-}).filter('dateFormat', function () {
+}).filter('dateFormat', function() {
     // Filter định dạng ngày tháng năm
-    return function (dateString) {
+    return function(dateString) {
         var date = new Date(dateString);
         var day = date.getDate();
         var month = date.getMonth() + 1;

@@ -86,10 +86,18 @@ function BlogController($scope, $filter, $document, $window, BlogService, ToastS
                 }, // Cột "Status"
                 { data: 'commentCount', class: 'text-center' },
                 {
-                    data: null, class: 'text-center', // Cột "Action"
+                    data: null,
+                    class: 'text-center',
                     render: function (data, type, row) {
-                        // Render giao diện cho cột "Action"
-                        return '<div class="dropdown dropdown-action"><a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a><div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" id="edit-blog" data-toggle="modal" data-target="#edit_Blog" data-blog-id="' + row.id + '"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a><a class="dropdown-item" id="delete-blog" data-toggle="modal" data-target="#delete_Blog" data-blog-id="' + row.id + '"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a><a class="dropdown-item" id="comment-blog" data-blog-id="' + row.id + '" data-blog-title="' + row.title + '"><i class="fa fa-comments" aria-hidden="true"></i> Comment</a></div></div>';
+                        var commentButton = (row.commentCount !== 0) ? '<a class="dropdown-item" id="comment-blog" data-blog-id="' + row.id + '" data-blog-title="' + row.title + '"><i class="fa fa-comments" aria-hidden="true"></i> Comment</a>' : '';
+                        return '<div class="dropdown dropdown-action">' +
+                            '<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">' +
+                            '<i class="material-icons font-weight-bold">⋮</i></a>' +
+                            '<div class="dropdown-menu dropdown-menu-right">' +
+                            '<a class="dropdown-item" id="edit-blog" data-toggle="modal" data-target="#edit_Blog" data-blog-id="' + row.id + '"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>' +
+                            '<a class="dropdown-item" id="delete-blog" data-toggle="modal" data-target="#delete_Blog" data-blog-id="' + row.id + '"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>' +
+                            commentButton +
+                            '</div></div>';
                     }
                 }
             ]
@@ -148,7 +156,7 @@ function BlogController($scope, $filter, $document, $window, BlogService, ToastS
         });
     }
 
-    $scope.searchWithEnter = function(event) {
+    $scope.searchWithEnter = function (event) {
         if (event.keyCode === 13) {
             $scope.searchBlog();
         }
@@ -369,14 +377,7 @@ function BlogController($scope, $filter, $document, $window, BlogService, ToastS
             })
             .catch(function (error) {
                 // Xử lý lỗi (nếu có)
-                if (error.status === 404) {
-                    // Nếu mã trạng thái là 404 (không có dữ liệu), hiển thị thông báo cảnh báo
-                    ToastService.showWarningToast("Bài viết này chưa có bình luận nào");
-                } else {
-                    // Nếu có lỗi khác, hiển thị thông báo lỗi
-                    console.error(error);
-                    ToastService.showErrorToast("Đã xảy ra lỗi khi lấy bình luận");
-                }
+                ToastService.showErrorToast("Đã xảy ra lỗi khi lấy bình luận");
             });
     };
 

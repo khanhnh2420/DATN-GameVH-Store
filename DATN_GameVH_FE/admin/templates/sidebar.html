@@ -98,11 +98,15 @@
                     </li>
                     <li><a href="/category"><i class="la la-align-center"></i> <span>Category</span></a></li>
                     </li>
-                    <li>
-                        <div class="loader">
-                            <span></span>
-                            <span></span>
-                            <span></span>
+                    <li class="mt-5">
+                        <div class="slogan">
+                            <span class="ml-2 mt-4 text-white position-absolute">Design by</span>
+                            <h2>
+                                Seven Bee
+                                <span><img style="width: 28%;" src="/assets/img/logo-7bee.png" alt="">Seven Bee</span>
+                                <span><img style="width: 28%;" src="/assets/img/logo-7bee.png" alt="">Seven Bee</span>
+                                <span>One person makes many people happy</span>
+                            </h2>
                         </div>
                     </li>
                 </ul>
@@ -112,95 +116,172 @@
     <!-- /Sidebar -->
 </body>
 <style>
-    #example {
-        top: 50%;
-        left: 50%;
-        width: 30em;
-        height: 18em;
-        margin-top: -9em;
-        margin-left: -15em;
-        position: fixed;
-    }
-
-    body {}
-
-    .loader {
-        margin-top: 310px;
-        width: 16em;
-        height: 8em;
+    .slogan {
         position: relative;
+        height: 150px;
+        width: 100%;
         overflow: hidden;
     }
 
-    .loader::before,
-    .loader::after {
-        content: '';
+    .slogan>h2 {
         position: absolute;
-        bottom: 0;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        transform: translate(-50%, -50%);
+        font-size: 1.8rem;
+        color: transparent;
+        text-transform: uppercase;
     }
 
-    .loader::before {
-        width: inherit;
-        height: 0.2em;
-        background-color: hsla(0, 0%, 85%);
+    @media only screen and (max-width: 1100px) {
+        h2 {
+            font-size: 4rem;
+        }
     }
 
-    .loader::after {
-        box-sizing: border-box;
-        width: 50%;
-        height: inherit;
-        border: 0.2em solid hsla(0, 0%, 85%);
-        border-radius: 50%;
-        left: 25%;
+    @media only screen and (max-width: 900px) {
+        h2 {
+            font-size: 3rem;
+        }
     }
 
-    .loader span {
+    @media only screen and (max-width: 700px) {
+        h2 {
+            font-size: 2.2rem;
+        }
+    }
+
+    @media only screen and (max-width: 480px) {
+        h2 {
+            font-size: 1.6rem;
+        }
+    }
+
+    h2:hover span:nth-child(1) {
+        transform: translateY(-1rem);
+    }
+
+    @media only screen and (max-width: 1100px) {
+        h2:hover span:nth-child(1) {
+            transform: translateY(-0.7rem);
+        }
+    }
+
+    @media only screen and (max-width: 900px) {
+        h2:hover span:nth-child(1) {
+            transform: translateY(-0.55rem);
+        }
+    }
+
+    @media only screen and (max-width: 700px) {
+        h2:hover span:nth-child(1) {
+            transform: translateY(-0.47rem);
+        }
+    }
+
+    @media only screen and (max-width: 480px) {
+        h2:hover span:nth-child(1) {
+            transform: translateY(-0.4rem);
+        }
+    }
+
+    h2:hover span:nth-child(2) {
+        transform: translateY(1rem);
+    }
+
+    @media only screen and (max-width: 1100px) {
+        h2:hover span:nth-child(2) {
+            transform: translateY(0.7rem);
+        }
+    }
+
+    @media only screen and (max-width: 900px) {
+        h2:hover span:nth-child(2) {
+            transform: translateY(0.55rem);
+        }
+    }
+
+    @media only screen and (max-width: 700px) {
+        h2:hover span:nth-child(2) {
+            transform: translateY(0.47rem);
+        }
+    }
+
+    @media only screen and (max-width: 480px) {
+        h2:hover span:nth-child(2) {
+            transform: translateY(0.4rem);
+        }
+    }
+
+    h2:hover span:nth-child(3) {
+        opacity: 1;
+        transition: opacity 700ms ease;
+    }
+
+    h2 span:nth-child(1),
+    h2 span:nth-child(2) {
         position: absolute;
-        width: 5%;
-        height: 10%;
-        background-color: rgb(252, 0, 0);
-        border-radius: 50%;
-        bottom: 0.2em;
-        left: -5%;
-        animation: 2s linear infinite;
-        transform-origin: 50% -3em;
-        animation-name: run, rotating;
+        top: 0;
+        left: 5px;
+        color: #ffffff;
+        transition: 0.5s;
+        overflow: hidden;
     }
 
-    .loader span:nth-child(2) {
-        animation-delay: 0.075s;
+    h2 span:nth-child(1) {
+        clip-path: polygon(0 0, 100% 0%, 100% 50%, 0 50%);
     }
 
-    .loader span:nth-child(3) {
-        animation-delay: 0.15s;
+    h2 span:nth-child(2) {
+        clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
     }
 
-    @keyframes run {
-        0% {
-            left: -5%;
-        }
+    h2 span:nth-child(3) {
+        position: absolute;
+        top: 90%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        transition: opacity 350ms ease;
+        font-size: 1rem;
+        color: #000000;
+        background: #eec512;
+        width: 100%;
+        padding-left: 5px;
+        text-align: center;
+        letter-spacing: 0.1rem;
+        line-height: 100%;
+    }
 
-        10%,
-        60% {
-            left: calc((100% - 5%) / 2);
-        }
-
-        70%,
-        100% {
-            left: 100%;
+    @media only screen and (max-width: 1100px) {
+        h2 span:nth-child(3) {
+            font-size: 1.2rem;
         }
     }
 
-    @keyframes rotating {
-
-        0%,
-        10% {
-            transform: rotate(0deg);
+    @media only screen and (max-width: 900px) {
+        h2 span:nth-child(3) {
+            font-size: 1rem;
+            width: 97%;
+            letter-spacing: 4px;
         }
+    }
 
-        60%,
-        100% {
-            transform: rotate(-1turn);
+    @media only screen and (max-width: 700px) {
+        h2 span:nth-child(3) {
+            font-size: 0.85rem;
+            width: 96%;
+            letter-spacing: 3px;
+            word-spacing: 0.5rem;
+        }
+    }
+
+    @media only screen and (max-width: 480px) {
+        h2 span:nth-child(3) {
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            word-spacing: 0.2rem;
         }
     }
 </style>

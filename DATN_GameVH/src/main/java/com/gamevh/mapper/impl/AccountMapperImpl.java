@@ -28,6 +28,7 @@ public class AccountMapperImpl implements AccountMapper {
 		accountDTO.setStatus(account.getStatus());
 		accountDTO.setUsername(account.getUsername());
 		accountDTO.setType(account.getType());
+		accountDTO.setAccessToken(account.getAccessToken());
 		accountDTO.setRole(null);
 
 		return accountDTO;
@@ -49,7 +50,8 @@ public class AccountMapperImpl implements AccountMapper {
 		account.setStatus(accountDTO.getStatus());
 		account.setUsername(accountDTO.getUsername());
 		account.setType(accountDTO.getType());
-
+		account.setAccessToken(accountDTO.getAccessToken());
+		
 		return account;
 	}
 }

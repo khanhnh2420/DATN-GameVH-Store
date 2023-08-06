@@ -69,6 +69,9 @@
 	<script src="/services/api/AuthorityService.js"></script>
 	<script src="/services/api/SendMailService.js"></script>
 	<script src="/services/api/ToastService.js"></script>
+
+	<!-- Crypto JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 </head>
 
 <body ng-app="app">
@@ -207,46 +210,6 @@
 										</div>
 										<!-- End Error Username-->
 
-
-										<div class="d-flex justify-content-between">
-											<div class="form-group">
-												<label for="register-password">Mật khẩu *</label>
-												<input ng-model="form.password" type="password" class="form-control"
-													ng-class="{'is-invalid': (RegisterForm.registerPassword.$invalid && RegisterForm.registerPassword.$touched) || (RegisterForm.$submitted && RegisterForm.registerPassword.$invalid) || (RegisterForm.$submitted && isValidPassword)}"
-													id="register-password" name="registerPassword" required
-													ng-trim="false" ng-pattern="/^\S+$/">
-												<div class="mt-1 text-danger font-weight-bold">
-													<div
-														ng-show="(RegisterForm.registerPassword.$error.required && RegisterForm.registerPassword.$touched) || (RegisterForm.$submitted && RegisterForm.registerPassword.$error.required)">
-														Mật khẩu không được để trống!
-													</div>
-													<div
-														ng-show="(RegisterForm.registerPassword.$error.pattern && RegisterForm.registerPassword.$touched) || (RegisterForm.$submitted && RegisterForm.registerPassword.$error.pattern)">
-														Mật khẩu không được chứa <br> khoảng trắng!
-													</div>
-												</div>
-												<!-- End Error Password-->
-											</div>
-
-											<div class="form-group">
-												<label for="register-confirmpassword">Xác thực mật khẩu *</label>
-												<input type="password" class="form-control"
-													id="register-confirmpassword" ng-model="confirmPassword"
-													ng-class="{'is-invalid': (passwordMatchError && RegisterForm.registerConfirmPassword.$touched) || (RegisterForm.$submitted && passwordMatchError)}"
-													name="registerConfirmPassword" required
-													ng-change="checkPasswordMatch()">
-												<div class="mb-1 text-danger font-weight-bold">
-													<div ng-show="LoginForm.$submitted && isValidPassword">
-														Sai mật khẩu!
-													</div>
-													<div ng-show="passwordMatchError">
-														Mật khẩu không khớp!
-													</div>
-												</div>
-												<!-- End Error Password-->
-											</div>
-										</div>
-
 										<div class="form-group">
 											<label for="register-fullname">Họ và tên *</label> <input
 												ng-model="form.fullname" type="text" class="form-control"
@@ -296,7 +259,7 @@
 												id="register-address" name="register-address" required>
 										</div> -->
 										<!-- End .form-group -->
-										<div class="form-footer">
+										<div class="form-footer mb-0 pb-0 mt-2" style="border: none;">
 											<button type="submit" class="btn btn-outline-primary-2">
 												<span>ĐĂNG KÝ</span> <i class="icon-long-arrow-right"></i>
 											</button>
@@ -312,38 +275,11 @@
 											</div>
 											<!-- End .custom-checkbox -->
 										</div>
-										<h4 class="text-center text-success">{{messageSuccess}}</h4>
+										<h4 class="text-center text-success mt-3">
+											{{messageSuccess}} </h4>
 										<h4 class="text-center text-danger">{{messageFailed}}</h4>
 										<!-- End .form-footer -->
 									</form>
-
-									<div class="form-choice">
-										<p class="text-center">Hoặc đăng nhập bằng</p>
-										<div class="row">
-											<div class="col-sm-6">
-												<a href="#" class="btn btn-login btn-g" ng-click="oauthSignIn()"> <i
-														class="icon-google"></i>
-													Đăng nhập với Google
-												</a>
-											</div>
-											<!-- End .col-6 -->
-											<div class="col-sm-6">
-												<!-- The JS SDK Login Button -->
-
-												<a href="#" class="btn btn-login btn-f fb-login-button"
-													scope="public_profile,email" onlogin="checkLoginState();">
-													Đăng nhập với facebook
-												</a>
-
-												<!-- Load the JS SDK asynchronously -->
-												<script async defer crossorigin="anonymous"
-													src="https://connect.facebook.net/en_US/sdk.js"></script>
-											</div>
-											<!-- End .col-6 -->
-										</div>
-										<!-- End .row -->
-									</div>
-									<!-- End .form-choice -->
 								</div>
 								<!-- .End .tab-pane -->
 							</div>

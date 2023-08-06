@@ -46,6 +46,9 @@ public class Account  implements Serializable{
     @Column(name="Status", nullable=false, length=1)
     private Boolean status;
     
+    @Column(name="access_token", nullable=true, length=255)
+    private String accessToken;
+    
     @Column(name="Type", length=20)
     private String type;
     

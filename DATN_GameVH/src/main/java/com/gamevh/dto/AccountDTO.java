@@ -27,4 +27,6 @@ public class AccountDTO {
 	private String role;
 	
 	private String type;
+	
+	private String accessToken;
 }

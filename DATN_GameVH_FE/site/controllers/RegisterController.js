@@ -6,20 +6,22 @@ app.controller("RegisterController", function (AccountService, SendMailService, 
 	$scope.messageFailed = "";
 
 	$scope.Register = function () {
-		$scope.checkPasswordMatch();
 		$scope.messageSuccess = "";
 		$scope.messageFailed = "";
 
-		if ($scope.RegisterForm.$valid && $scope.passwordMatchError === false) {
+		if ($scope.RegisterForm.$valid) {
 			// Xử lý logic khi form đã được điền đúng
+			var password = generateRandomPassword(24);
+
 			$scope.account = {
 				'username': $scope.form.username,
-				'password': $scope.form.password,
+				'password': password,
 				'fullname': $scope.form.fullname,
 				'email': $scope.form.email,
 				'photo': "19dn5AWG9uCVzTpVWBFCOVvzPRv-ZXJlc",
 				"type": null,
-				'status': true
+				'status': true,
+				'accessToken': null
 			}
 			AccountService.getByUsername($scope.account.username).then(function (userByUsername) {
 				if (!userByUsername.data) {
@@ -41,7 +43,7 @@ app.controller("RegisterController", function (AccountService, SendMailService, 
 											"subject": "Tài khoản GamesVH của bạn đã được tạo thành công!",
 											"body": ""
 										}
-										SendMailService.sendMailRegister(user.data.username, $scope.form.password, mailInfo).then(function (mail) {
+										SendMailService.sendMailRegister(user.data.username, password, mailInfo).then(function (mail) {
 										}).catch(function (error) {
 											console.error('Lỗi khi Gửi email!', error);
 										});
@@ -81,11 +83,14 @@ app.controller("RegisterController", function (AccountService, SendMailService, 
 		}
 	}
 
-	$scope.checkPasswordMatch = function () {
-		if ($scope.form.password !== $scope.confirmPassword) {
-			$scope.passwordMatchError = true;
-		} else {
-			$scope.passwordMatchError = false;
+	function generateRandomPassword(length) {
+		var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+		var password = '';
+
+		for (var i = 0; i < length; i++) {
+			password += characters.charAt(Math.floor(Math.random() * characters.length));
 		}
-	};
+
+		return password;
+	}
 });

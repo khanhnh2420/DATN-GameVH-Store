@@ -78,8 +78,8 @@
 										data-target="#edit_Coupon">{{cate.couponName}}</a></td>
 								<td>{{cate.code}}</td>
 								<td>{{cate.amount}}</td>
-								<td>{{cate.value}}</td>
-								<td>{{cate.minSpend}}</td>
+								<td>{{cate.value }} <span>VNĐ</span></td>
+								<td>{{cate.minSpend}} <span>VNĐ</span></td>
 								<td>{{cate.mfgDate | date: 'dd/MM/yyyy'}}</td>
 								<td>{{cate.expDate | date: 'dd/MM/yyyy'}}</td>
 								<td>
@@ -131,8 +131,8 @@
 									<div ng-repeat="step in stepsModel">
 										<img class="thumb" ng-src="{{step}}" />
 									</div>
-									<div class="fileupload btn" style="opacity: 0.1;">
-										<label for="files" class="btn">Select Image</label>
+									<div class="fileupload btn" style="opacity: 0.1; border: black 1px solid;">
+										<label for="files" class="btn"> Select Image</label>
 										<input type='file' ng-model-instant id="files" ng-model="formImg"
 										style="visibility:hidden;"
 											onchange="angular.element(this).scope().imageUpload(event)"

@@ -41,7 +41,7 @@ app.controller("LoginController", function (AccountService, BcryptService, Toast
         }
     };
 
-    $scope.inputPassChange = function() {
+    $scope.inputPassChange = function () {
         $scope.isValidPassword = false;
     }
 
@@ -76,21 +76,47 @@ app.controller("LoginController", function (AccountService, BcryptService, Toast
                                 // Kiểm tra quyền của người dùng có phải là CUST hay không ?
                                 $scope.message = "Bạn không có quyền truy cập trang này!";
                             } else {
-                                // Kiểm tra xem người dùng có tích rememberMe không để xử lý tương ứng
-                                $scope.userAccount = $scope.user.username;
-                                if ($scope.rememberMe) {
-                                    $scope.saveAccountToLocalStorage($scope.userAccount);
-                                }
-                                $scope.saveAccountToSessionStorage($scope.userAccount);
+                                if ($scope.user.accessToken) {
+                                    // Kiểm tra xem người dùng có tích rememberMe không để xử lý tương ứng
+                                    $scope.userAccount = $scope.user.username;
+                                    if ($scope.rememberMe) {
+                                        $scope.saveAccountToLocalStorage($scope.userAccount);
+                                    }
+                                    $scope.saveAccountToSessionStorage($scope.userAccount);
 
-                                // Đăng nhập thành công trở về trang chủ
-                                $scope.pageBackLoginSuccess = ($window.sessionStorage.getItem("pageBackLoginSuccess") != null) ? $window.sessionStorage.getItem("pageBackLoginSuccess") : null;
-                                if ($scope.pageBackLoginSuccess && !$scope.pageBackLoginSuccess.includes("login") && !$window.document.title.includes("KHÔNG TÌM THẤY TRANG")) {
-                                    $window.location.href = $scope.pageBackLoginSuccess;
+                                    // Đăng nhập thành công trở về trang chủ
+                                    $scope.pageBackLoginSuccess = ($window.sessionStorage.getItem("pageBackLoginSuccess") != null) ? $window.sessionStorage.getItem("pageBackLoginSuccess") : null;
+                                    if ($scope.pageBackLoginSuccess && !$scope.pageBackLoginSuccess.includes("login") && !$window.document.title.includes("KHÔNG TÌM THẤY TRANG")) {
+                                        $window.location.href = $scope.pageBackLoginSuccess;
+                                    } else {
+                                        $window.location.href = "/";
+                                    }
                                 } else {
-                                    $window.location.href = "/";
-                                }
+                                    var accountUpdate = $scope.user;
+                                    accountUpdate.accessToken = generateUniqueAccessToken(32);
+                                    AccountService.updateAccount(accountUpdate).then(function (userUpdate) {
+                                        if (userUpdate.data) {
+                                            // Kiểm tra xem người dùng có tích rememberMe không để xử lý tương ứng
+                                            $scope.userAccount = $scope.user.username;
+                                            if ($scope.rememberMe) {
+                                                $scope.saveAccountToLocalStorage($scope.userAccount);
+                                            }
+                                            $scope.saveAccountToSessionStorage($scope.userAccount);
 
+                                            // Đăng nhập thành công trở về trang chủ
+                                            $scope.pageBackLoginSuccess = ($window.sessionStorage.getItem("pageBackLoginSuccess") != null) ? $window.sessionStorage.getItem("pageBackLoginSuccess") : null;
+                                            if ($scope.pageBackLoginSuccess && !$scope.pageBackLoginSuccess.includes("login") && !$window.document.title.includes("KHÔNG TÌM THẤY TRANG")) {
+                                                $window.location.href = $scope.pageBackLoginSuccess;
+                                            } else {
+                                                $window.location.href = "/";
+                                            }
+                                        } else {
+                                            $scope.message = "Có lỗi xảy ra vui lòng đăng nhập lại!";
+                                        }
+                                    }).catch(function (error) {
+                                        $scope.message = "Có lỗi xảy ra vui lòng đăng nhập lại!";
+                                    });
+                                }
                             }
                         }).catch(function (error) {
                             console.error('Lỗi khi so sánh password:', error);
@@ -110,6 +136,20 @@ app.controller("LoginController", function (AccountService, BcryptService, Toast
             }
         }
     };
+
+    function generateUniqueAccessToken(length) {
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var key = '';
+
+        for (var i = 0; i < length; i++) {
+            key += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+
+        // Tạo mã hash duy nhất từ chuỗi key
+        var uniqueKey = CryptoJS.SHA256(key).toString(CryptoJS.enc.Hex);
+
+        return uniqueKey;
+    }
 
     // Lưu account lên local storage để lưu đăng nhập khi người dùng check rememberMe
     $scope.saveAccountToLocalStorage = function (user) {

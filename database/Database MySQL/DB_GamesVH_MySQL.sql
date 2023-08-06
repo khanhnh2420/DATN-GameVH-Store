@@ -31,6 +31,7 @@ CREATE TABLE `account` (
   `Photo` varchar(255) DEFAULT '19dn5AWG9uCVzTpVWBFCOVvzPRv-ZXJlc',
   `Status` tinyint(1) NOT NULL,
   `Type` varchar(20) NULL,
+  `access_token` varchar(255) NULL DEFAULT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Username` (`Username`),
   UNIQUE KEY `account_Username_IX` (`Username`),
@@ -46,19 +47,19 @@ CREATE TABLE `account` (
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
 INSERT INTO `account` VALUES 
-(1,'cust','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Người dùng','cust@gmail.com','19dn5AWG9uCVzTpVWBFCOVvzPRv-ZXJlc',1,null),
-(2,'dangkimchi','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Đặng Kim Chi','dangkimchi@gmail.com','1Aw286fMuNytVfHTSD1MLUUpBwMUYU4Az',1,null),
-(3,'dire','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Quản Lý','dire@gmail.com','1kxbc_r065iD6ZkVINW58EGpMSOaPTPGE',1,null),
-(4,'hoangtunglam','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Hoàng Tùng Lâm','hoangtunglam@gmail.com','1rwmWHBOzxXqXrnLYJ0G2P1_5KIb2katm',1,null),
-(5,'lethithuy','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Lê Thị Thúy','lethithuy@gmail.com','1eBiX6_It1A0MRYNVzPGu2WEuCdH-M50g',1,null),
-(6,'lethuhien','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Lê Thùy Hiền','lethuhien@gmail.com','15QrawV63fYibvz6UImRCbvzuFs0FahGt',1,null),
-(7,'nguyenvana','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Nguyễn Văn A','nguyenvana@gmail.com','14vRzLnE4v17lBHF-E8LZ9tdP5xugc6MR',1,null),
-(8,'nguyenvanbao','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Nguyễn Văn Bảo','nguyenvanbao@gmail.com','1cy3kQHDU-VZbble9r_2bTLcRMcO3LiAx',1,null),
-(9,'nguyenhongnhan','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Nguyễn Hồng Nhân','nguyenhongnhan@gmail.com','1kfG7FkXauCZNCVYa0ZUfhEIVrUxVNST0',0,null),
-(10,'phamthuc','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Phạm Thục','phamthuc@gmail.com','1t7ZRl2PsEuDbhWlmDjZwzjjZxoH9LzEH',1,null),
-(11,'staf','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Nhân Viên','sta@gmail.com','1y8wb4TrSUjmo_5acCdLWSFOMgjLkuob-',1,null),
-(12,'tranthanhthao','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Trần Thanh Thảo','tranthanhthao@gmail.com','1rXGPounLH06GtQcNX5dsK7gdzMQ2GIJi',1,null),
-(13,'tranvanb','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Trần Văn B','tranvanb@gmail.com','15EQjB-tMsomENUWJ2lKD4nzrFa1AsMcK',0,null);
+(1,'cust','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Người dùng','cust@gmail.com','19dn5AWG9uCVzTpVWBFCOVvzPRv-ZXJlc',1,null,'fcb18b8b2c8344f521cda16ed026d9001b9bd3af618551e50541ef5176ef9675'),
+(2,'dangkimchi','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Đặng Kim Chi','dangkimchi@gmail.com','1Aw286fMuNytVfHTSD1MLUUpBwMUYU4Az',1,null,'a5b0e1dbf292c08ebf756e2493356a2c3e8c832d2d63e0493d5c491a9f58dd0f'),
+(3,'dire','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Quản Lý','dire@gmail.com','1kxbc_r065iD6ZkVINW58EGpMSOaPTPGE',1,null,'e0b6ff5ec58cb6e6f0c0183b43e539c20eac3804c372736567f2b1817b89f10a'),
+(4,'hoangtunglam','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Hoàng Tùng Lâm','hoangtunglam@gmail.com','1rwmWHBOzxXqXrnLYJ0G2P1_5KIb2katm',1,null,'a8df78db19fba42e8d8912a76e214ebf6e38186e77ecb678bf0c69ca6639cf3c'),
+(5,'lethithuy','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Lê Thị Thúy','lethithuy@gmail.com','1eBiX6_It1A0MRYNVzPGu2WEuCdH-M50g',1,null,'c56b1a1b411363b1e899c18ab29d684bd0f8629f0a9a6f0d489f1b7d9ff97b5b'),
+(6,'lethuhien','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Lê Thùy Hiền','lethuhien@gmail.com','15QrawV63fYibvz6UImRCbvzuFs0FahGt',1,null,'d5a0a8a91c1cfa31b22e1cc2c5c9819b8a9b9053be71f61831f6a15a05a4a2f3'),
+(7,'nguyenvana','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Nguyễn Văn A','nguyenvana@gmail.com','14vRzLnE4v17lBHF-E8LZ9tdP5xugc6MR',1,null,'ef3a7ed6ef4e8deebfd67b6f775de6b58ecf4ef63ee788f31a06f7cbdc74e12a'),
+(8,'nguyenvanbao','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Nguyễn Văn Bảo','nguyenvanbao@gmail.com','1cy3kQHDU-VZbble9r_2bTLcRMcO3LiAx',1,null,'85cc1087e01e599da570c7e45daa6e1526c02f0763a34a0ac9fda5965952b7da'),
+(9,'nguyenhongnhan','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Nguyễn Hồng Nhân','nguyenhongnhan@gmail.com','1kfG7FkXauCZNCVYa0ZUfhEIVrUxVNST0',0,null,'02c3da3b3e9a6a41a3ef6ea625c95e1e6ef47f071727c93e07b27c4a31ab4422'),
+(10,'phamthuc','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Phạm Thục','phamthuc@gmail.com','1t7ZRl2PsEuDbhWlmDjZwzjjZxoH9LzEH',1,null,'b9b57ff41b0baf84e52c37f8f857a110af103e0e833d83e617e6364383f19ca7'),
+(11,'staf','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Nhân Viên','sta@gmail.com','1y8wb4TrSUjmo_5acCdLWSFOMgjLkuob-',1,null,'4d7f0b3f77584e587ac42f779d9fc66b126a59eae40120a1a5e8f6b1b48ce15b'),
+(12,'tranthanhthao','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Trần Thanh Thảo','tranthanhthao@gmail.com','1rXGPounLH06GtQcNX5dsK7gdzMQ2GIJi',1,null,'e56cfdaee6a1c8a9ee149d0f1bf364f3aaeac8bda9cc6d53473e65ac708e2a6b'),
+(13,'tranvanb','$2a$10$k0VsnUtDVioLZce4zX6hAud8lyLhvTmOcW6bk6aN09YPDX7z7B9ee','Trần Văn B','tranvanb@gmail.com','15EQjB-tMsomENUWJ2lKD4nzrFa1AsMcK',0,null,'c3bca0f411938c7b13cbddfd1bcf4ef84056674fb0ac4c3d5c4ee313a55f257e');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 

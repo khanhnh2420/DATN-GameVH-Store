@@ -7,7 +7,7 @@ function EmployeeController($scope, AccountService, SweetAlert) {
   $scope.nameFilter = "";
   $scope.usernameFilter = "";
 
-  $scope.totalItems = 10;
+  $scope.totalItems = 1000;
 
   $scope.employeeForm;
   $scope.image;
@@ -51,18 +51,18 @@ function EmployeeController($scope, AccountService, SweetAlert) {
 
   $scope.submitAdd = function () {
     if (!checkFormError()) {
-      SweetAlert.error("Invalid form", "Please check your info again");
+      SweetAlert.error("Form không hợp lệ", "Vui lòng kiểm tra lại!!!");
       return;
     }
     delete $scope.employeeForm.rePassword;
     delete $scope.employeeForm.id;
     AccountService.createEmployee($scope.employeeForm, $scope.image)
       .then((response) => {
-        SweetAlert.success("Add employee successfully!", "");
+        SweetAlert.success("Thêm nhân viên mới thành công!!!", "");
         $scope.init();
       })
       .catch((err) =>
-        SweetAlert.error("Error occured!", "Please try again later")
+        SweetAlert.error("Có lỗi xảy ra!", "Vui lòng thử lại!!")
       );
   };
 
@@ -106,15 +106,15 @@ function EmployeeController($scope, AccountService, SweetAlert) {
   $scope.toggleAccountStatus = function (account) {
     AccountService.toggleStatus(account.username).then(function (response) {
       SweetAlert.success(
-        "Toggle Account Status",
-        `Status: ${response.data.status ? "Đang hoạt động" : "Không hoạt động"}`
+        "Trạng thái hoạt động của tài khoản",
+        `Trạng thái: ${response.data.status ? "Đang hoạt động" : "Không hoạt động"}`
       );
       $scope.init();
     });
   };
   $scope.submitEdit = function () {
     if (!checkFormError()) {
-      SweetAlert.error("Invalid form", "Please check your info again");
+      SweetAlert.error("Form không hợp lệ", "Vui lòng kiểm tra lại!!!");
       return;
     }
     delete $scope.employeeForm.rePassword;
@@ -125,11 +125,11 @@ function EmployeeController($scope, AccountService, SweetAlert) {
       $scope.image
     )
       .then((response) => {
-        SweetAlert.success("Updated successfully!", "");
+        SweetAlert.success("Cập nhật thành công!!!", "");
         $scope.init();
       })
       .catch((err) =>
-        SweetAlert.error("Error occured!", "Please try again later")
+        SweetAlert.error("Có lỗi xảy ra!", "Vui lòng thử lại!!")
       );
   };
 

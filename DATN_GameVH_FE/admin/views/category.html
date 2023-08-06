@@ -16,18 +16,18 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Category</h3>
+                    <h3 class="page-title">THỂ LOẠI</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="index.html">Dashboard</a>
+                            <a href="index.html">Trang chủ</a>
                         </li>
-                        <li class="breadcrumb-item active">Category</li>
+                        <li class="breadcrumb-item active">THỂ LOẠI</li>
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
                     <a ng-click="openAddModal()" href="#" class="btn add-btn" data-toggle="modal" data-target="#add_Category">
                         <i class="fa fa-plus"></i>
-                        Add Category</a>
+                        THÊM THỂ LOẠI</a>
                 </div>
             </div>
         </div>
@@ -40,10 +40,10 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Category ID</th>
-                                <th>Category Name</th>
-                                <th>Type</th>
-                                <th class="text-right">Action</th>
+                                <th>ID</th>
+                                <th>Tên thể loại</th>
+                                <th>Thể loại</th>
+                                <th class="text-right">Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -60,10 +60,10 @@
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <a ng-click="selectCategory(cate)" class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_Category">
                                                 <i class="fa fa-pencil m-r-5"></i>
-                                                Edit</a>
+                                                Chỉnh sửa</a>
                                             <a ng-click="selectCategory(cate)" class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_Category">
                                                 <i class="fa fa-trash-o m-r-5"></i>
-                                                Delete</a>
+                                                Xóa</a>
                                         </div>
                                     </div>
                                 </td>
@@ -82,7 +82,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add Category</h5>
+                    <h5 class="modal-title">THÊM THỂ LOẠI</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -91,7 +91,7 @@
                     <form>
                         <div class="row">
                             <div class="form-group col-md-12">
-                                <label>Type
+                                <label>Loại
                                 </label>
                                 <select ng-model="formType" class="select">
                                     <option value="Game">Game</option>
@@ -99,20 +99,20 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-12">
-                                <label>Category ID
+                                <label>ID
                                     <span class="text-danger">*</span>
                                 </label>
                                 <input ng-model="formCategoryId" class="form-control" type="text"/>
                             </div>
                             <div class="form-group col-md-12">
-                                <label>Category Name
+                                <label>Tên thể loại
                                     <span class="text-danger">*</span>
                                 </label>
                                 <input ng-model="formName" class="form-control" type="text"/>
                             </div>
                             <div class="form-group submit-section col-md-12">
                                 <button ng-click="submitAdd()" class="btn btn-primary submit-btn">
-                                    Submit
+                                    LƯU
                                 </button>
                             </div>
                         </div>
@@ -129,7 +129,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Category</h5>
+                    <h5 class="modal-title">CHỈNH SỬA THỂ LOẠI</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -138,7 +138,7 @@
                     <form>
                         <div class="row">
                             <div class="form-group col-md-12">
-                                <label>Type
+                                <label>Loại
                                 </label>
                                 <select ng-model="formType" class="select">
                                     <option value="Game">Game</option>
@@ -146,20 +146,20 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-12">
-                                <label>Category ID
+                                <label>ID
                                     <span class="text-danger">*</span>
                                 </label>
                                 <input ng-model="formCategoryId" class="form-control" type="text"/>
                             </div>
                             <div class="form-group col-md-12">
-                                <label>Category Name
+                                <label>Tên thể loại
                                     <span class="text-danger">*</span>
                                 </label>
                                 <input ng-model="formName" class="form-control" type="text"/>
                             </div>
                             <div class="form-group submit-section col-md-12">
                                 <button ng-click="submitUpdate()" class="btn btn-primary submit-btn">
-                                    Submit
+                                    LƯU
                                 </button>
                             </div>
                         </div>
@@ -176,16 +176,16 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="form-header">
-                        <h3>Delete Category</h3>
-                        <p>Are you sure want to delete?</p>
+                        <h3 class="font-weight-bold">XÓA THỂ LOẠI</h3>
+                        <p>Bạn có muốn xóa không?</p>
                     </div>
                     <div class="modal-btn delete-action">
                         <div class="row">
                             <div class="col-6">
-                                <a ng-click="delete()" href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
+                                <a ng-click="delete()" href="javascript:void(0);" class="btn btn-primary continue-btn">XÓA</a>
                             </div>
                             <div class="col-6">
-                                <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">THOÁT</a>
                             </div>
                         </div>
                     </div>

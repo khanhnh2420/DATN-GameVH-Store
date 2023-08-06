@@ -34,7 +34,7 @@ function CategoryController($scope, CategoryService, SweetAlert) {
   };
   $scope.submitAdd = function () {
     if (!$scope.formType || !$scope.formCategoryId || !$scope.formName) {
-      SweetAlert.info("Invalid form", "Please check your info again");
+      SweetAlert.info("Form không hợp lệ", "Vui lòng kiểm tra lại!!!");
       return;
     }
     CategoryService.createCategory({
@@ -45,19 +45,19 @@ function CategoryController($scope, CategoryService, SweetAlert) {
       .then((response) => {
         console.log(response);
         SweetAlert.success(
-          "New category added",
+          "Thêm thể loại mới thành công!!!",
           `Category: ${response.data.name} added!`
         );
         $scope.init();
       })
       .catch((err) =>
-        SweetAlert.error("Error occured, please try again later!", "")
+        SweetAlert.error("Phát hiện có lỗi, Vui lòng thử lại!!!", "")
       );
   };
 
   $scope.submitUpdate = function () {
     if (!$scope.formType || !$scope.formCategoryId || !$scope.formName) {
-      SweetAlert.info("Invalid form", "Please check your info again");
+      SweetAlert.info("Form không hợp lệ", "Vui lòng kiểm tra lại!!!");
       return;
     }
     CategoryService.editCategory($scope.formCategoryId, {
@@ -67,21 +67,21 @@ function CategoryController($scope, CategoryService, SweetAlert) {
     })
       .then((response) => {
         console.log(response);
-        SweetAlert.success("New category updated", "");
+        SweetAlert.success("Đã cập nhật thể loại thành công", "");
         $scope.init();
       })
       .catch((err) =>
-        SweetAlert.error("Error occured, please try again later!", "")
+        SweetAlert.error("Phát hiện có lỗi, Vui lòng thử lại!!!", "")
       );
   };
   $scope.delete = function () {
     CategoryService.deleteCategory($scope.formCategoryId)
       .then((response) => {
-        SweetAlert.success("Deleted!", "");
+        SweetAlert.success("Đã xóa thành công!!!", "");
         $scope.init();
       })
       .catch((err) =>
-        SweetAlert.error("Error occured, please try again later!", "")
+        SweetAlert.error("Phát hiện có lỗi, Vui lòng thử lại!!!", "")
       );
   };
 }

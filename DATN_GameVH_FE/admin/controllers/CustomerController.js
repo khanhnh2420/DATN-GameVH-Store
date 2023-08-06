@@ -35,8 +35,8 @@ function CustomerController($scope, AccountService, SweetAlert) {
   $scope.toggleAccountStatus = function (account) {
     AccountService.toggleStatus(account.username).then(function (response) {
       SweetAlert.success(
-        "Toggle Account Status",
-        `Status: ${response.data.status ? "Đang hoạt động" : "Không hoạt động"}`
+        "Trạng thái hoạt động của tài khoản",
+        `Trạng thái: ${response.data.status ? "Đang hoạt động" : "Không hoạt động"}`
       );
       $scope.init();
     });

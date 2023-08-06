@@ -6,11 +6,11 @@ app
     $routeProvider
       .when("/", {
         templateUrl: "/views/login.html",
-        pageTitle: "Login",
+        pageTitle: "Đăng nhập",
       })
       .when("/dashboard", {
         templateUrl: "/views/index.html",
-        pageTitle: "Dashboard",
+        pageTitle: "Trang chủ",
       })
       .when("/index.html", {
         redirectTo: "/dashboard",
@@ -25,27 +25,27 @@ app
       })
       .when("/category", {
         templateUrl: "/views/category.html",
-        pageTitle: "Category",
+        pageTitle: "Thể loại",
       })
       .when("/coupon-list", {
         templateUrl: "/views/coupon-list.html",
-        pageTitle: "Coupon List",
+        pageTitle: "Danh sách mã giảm giá",
       })
       .when("/coupon-owner", {
         templateUrl: "/views/coupon-owner.html",
-        pageTitle: "Coupon Owner",
+        pageTitle: "Mã giảm giá khách hàng",
       })
       .when("/customer-list", {
         templateUrl: "/views/customer-list.html",
-        pageTitle: "Customer List",
+        pageTitle: "Danh sách khách hàng",
       })
       .when("/order-detail", {
         templateUrl: "/views/order-detail.html",
-        pageTitle: "Order Detail",
+        pageTitle: "Chi tiết đơn hàng",
       })
       .when("/order-list", {
         templateUrl: "/views/order-list.html",
-        pageTitle: "Order List",
+        pageTitle: "Danh sách đơn hàng",
       })
       .when("/product-list", {
         templateUrl: "/views/product-list.html",
@@ -53,11 +53,11 @@ app
       })
       .when("/staff-list", {
         templateUrl: "/views/staff-list.html",
-        pageTitle: "Staff List",
+        pageTitle: "Danh sách nhân viên",
       })
       .when("/login", {
         templateUrl: "/views/login.html",
-        pageTitle: "Login",
+        pageTitle: "Đăng nhập",
       })
       .when("/loading", {
         templateUrl: "/views/loading.html",

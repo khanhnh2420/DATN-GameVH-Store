@@ -16,9 +16,9 @@
 		<div class="page-header">
 			<div class="row">
 				<div class="col-sm-12">
-					<h3 class="page-title">Welcome {{userName}}!</h3>
+					<h3 class="page-title">Chào mừng {{userName}}!</h3>
 					<ul class="breadcrumb">
-						<li class="breadcrumb-item active">Dashboard</li>
+						<li class="breadcrumb-item active">TRANG QUẢN LÝ</li>
 					</ul>
 				</div>
 			</div>
@@ -32,7 +32,7 @@
 						<span class="dash-widget-icon"><i class="fa fa-gamepad"></i></span>
 						<div class="dash-widget-info">
 							<h3>{{recordTotal.totalProduct}}</h3>
-							<span>Products</span>
+							<span>Sản phẩm</span>
 						</div>
 					</div>
 				</div>
@@ -43,7 +43,7 @@
 						<span class="dash-widget-icon"><i class="fa fa-book"></i></span>
 						<div class="dash-widget-info">
 							<h3>{{recordTotal.totalBlog}}</h3>
-							<span>Blogs</span>
+							<span>Bài viết</span>
 						</div>
 					</div>
 				</div>
@@ -54,7 +54,7 @@
 						<span class="dash-widget-icon"><i class="fa fa-user"></i></span>
 						<div class="dash-widget-info">
 							<h3>{{recordTotal.totalCustomer}}</h3>
-							<span>Customers</span>
+							<span>Khách hàng</span>
 						</div>
 					</div>
 				</div>
@@ -65,7 +65,7 @@
 						<span class="dash-widget-icon"><i class="fa fa-credit-card-alt"></i></span>
 						<div class="dash-widget-info">
 							<h3>{{recordTotal.totalOrder}}</h3>
-							<span>Orders</span>
+							<span>Đơn hàng</span>
 						</div>
 					</div>
 				</div>
@@ -78,7 +78,7 @@
 					<div class="col-md-6 text-center">
 						<div class="card">
 							<div class="card-body">
-								<h3 class="card-title">Total Product In Year</h3>
+								<h3 class="card-title">Tổng sản phẩm trong năm</h3>
 								<div id="bar-charts1"></div>
 							</div>
 						</div>
@@ -86,7 +86,7 @@
 					<div class="col-md-6 text-center">
 						<div class="card">
 							<div class="card-body">
-								<h3 class="card-title">Total Order In Year</h3>
+								<h3 class="card-title">Tổng đơn hàng trong năm</h3>
 								<div id="line-charts1"></div>
 							</div>
 						</div>
@@ -99,7 +99,7 @@
 			<div class="col-md-6 d-flex">
 				<div class="card card-table flex-fill">
 					<div class="card-header">
-						<h3 class="card-title mb-0">Latest 5 Records Products </h3>
+						<h3 class="card-title mb-0">5 SẢN PHẨM VỪA ĐƯỢC THÊM </h3>
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -107,10 +107,10 @@
 								<thead>
 									<tr>
 										<th>#</th>
-										<th>Name</th>
-										<th>Created Date</th>
-										<th>Source</th>
-										<th>Quantity</th>
+										<th>Tên</th>
+										<th>Ngày tạo</th>
+										<th>Nguồn</th>
+										<th>Số lượng</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -132,18 +132,18 @@
 			<div class="col-md-6 d-flex">
 				<div class="card card-table flex-fill">
 					<div class="card-header">
-						<h3 class="card-title mb-0">Latest 5 Records Payments</h3>
+						<h3 class="card-title mb-0">5 ĐƠN HÀNG VỪA ĐƯỢC TẠO</h3>
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
 							<table class="table custom-table table-nowrap mb-0">
 								<thead>
 									<tr>
-										<th>Order ID</th>
-										<th>Client</th>
-										<th>Payment Type</th>
-										<th>Created Date</th>
-										<th>Paid Amount</th>
+										<th>ID</th>
+										<th>Tên khách hàng</th>
+										<th>Hình thức thanh toán</th>
+										<th>Ngày tạo</th>
+										<th>Tổng tiền</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -154,7 +154,7 @@
 										</td>
 										<td>{{order.paymentType}}</td>
 										<td>{{order.createDate |date:'dd/MM/yyyy'}}</td>
-										<td>{{order.totalPrice | currency}}</td>
+										<td>{{order.totalPrice | currency: 'đ ' : '0'}}</td>
 									</tr>
 								</tbody>
 							</table>

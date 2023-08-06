@@ -28,7 +28,7 @@ function OrderController($scope, OrderService, SweetAlert) {
         );
       })
       .catch((err) =>
-        SweetAlert.error("Error occured!", "Please try again later!")
+        SweetAlert.error("Phát hiện có lỗi", "Vui lòng thử lại!!!")
       );
   };
 
@@ -51,7 +51,7 @@ function OrderController($scope, OrderService, SweetAlert) {
         $scope.selectedOrderStatus = response.data.orderData;
       })
       .catch((err) =>
-        SweetAlert.error("Error occured!", "Please try again later!")
+        SweetAlert.error("Phát hiện có lỗi", "Vui lòng thử lại!!!")
       );
   };
   $scope.updateStatus = function () {
@@ -61,13 +61,13 @@ function OrderController($scope, OrderService, SweetAlert) {
     )
       .then((response) => {
         SweetAlert.success(
-          "Status updated!",
-          "Order Status changed to " + $scope.selectedOrderStatus.orderStatus
+          "Thay đổi trạng thái thành công!",
+          "Trạng thái đã thay đổi " + $scope.selectedOrderStatus.orderStatus
         );
         getPage(0);
       })
       .catch((err) => {
-        SweetAlert.error("Error occured!", "Please try again later!");
+        SweetAlert.error("Phát hiện có lỗi", "Vui lòng thử lại!!!");
       });
   };
 

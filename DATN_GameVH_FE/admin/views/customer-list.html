@@ -16,12 +16,12 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Customer</h3>
+                    <h3 class="page-title">KHÁCH HÀNG</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="index.html">Dashboard</a>
+                            <a href="index.html">Trang chủ</a>
                         </li>
-                        <li class="breadcrumb-item active">Customer Account</li>
+                        <li class="breadcrumb-item active">Tài khoản khách hàng</li>
                     </ul>
                 </div>
             </div>
@@ -39,12 +39,12 @@
             <div class="col-sm-6 col-md-4">
                 <div class="form-group form-focus">
                     <input ng-model="nameFilter" type="text" class="form-control floating"/>
-                    <label class="focus-label">Full Name</label>
+                    <label class="focus-label">Họ tên</label>
                 </div>
             </div>
             <div class="col-sm-6 col-md-4">
                 <a href="#" class="btn btn-success btn-block" ng-click="filterData()">
-                    Search
+                    TÌM KIẾM
                 </a>
             </div>
         </div>
@@ -57,12 +57,12 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Name</th>
-                                <th>Customer ID</th>
-                                <th>Username</th>
-                                <th>Password</th>
+                                <th>Họ tên</th>
+                                <th>ID</th>
+                                <th>Tên người dùng</th>
+                                <th>Mật khẩu</th>
                                 <th>Email</th>
-                                <th class="text-center">Status</th>
+                                <th class="text-center">Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -94,95 +94,5 @@
         </div>
     </div>
     <!-- /Page Content -->
-
-    <!-- Send Mail Modal -->
-    <div id="send_mail" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Send Mail</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <form>
-                                            <div class="form-group">
-                                                <input type="email" placeholder="To" class="form-control"/>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <input type="email" placeholder="Cc" class="form-control"/>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <input type="email" placeholder="Bcc" class="form-control"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="text" placeholder="Subject" class="form-control"/>
-                                            </div>
-                                            <div class="form-group">
-                                                <textarea rows="4" class="form-control summernote" placeholder="Enter your message here"></textarea>
-                                            </div>
-                                            <div class="form-group mb-0">
-                                                <div class="text-center">
-                                                    <button class="btn btn-primary">
-                                                        <span>Send</span>
-                                                        <i class="fa fa-send m-l-5"></i>
-                                                    </button>
-                                                    <button class="btn btn-success m-l-5" type="button">
-                                                        <span>Draft</span>
-                                                        <i class="fa fa-floppy-o m-l-5"></i>
-                                                    </button>
-                                                    <button class="btn btn-success m-l-5" type="button">
-                                                        <span>Delete</span>
-                                                        <i class="fa fa-trash-o m-l-5"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Send Mail Modal -->
-    <!-- Delete Customer Modal -->
-    <div class="modal custom-modal fade" id="delete_customer" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="form-header">
-                        <h3>Delete Customer</h3>
-                        <p>Are you sure want to delete?</p>
-                    </div>
-                    <div class="modal-btn delete-action">
-                        <div class="row">
-                            <div class="col-6">
-                                <a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
-                            </div>
-                            <div class="col-6">
-                                <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Delete Employee Modal -->
 </div>
 <!-- /Page Wrapper -->

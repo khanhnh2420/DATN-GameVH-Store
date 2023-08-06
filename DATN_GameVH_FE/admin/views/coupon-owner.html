@@ -72,7 +72,7 @@
 								<th>Username</th>
 								<th>Address</th>
 								<th>Total Money Spent</th>
-								<th>Voucher Name</th>
+								<th>Coupon Name</th>
 								<th>Code</th>
 								<th>Status</th>
 								<th class="text-right no-sort">Action</th>
@@ -150,7 +150,7 @@
 							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
-									<label>Voucher Name <span class="text-danger">*</span></label>
+									<label>Coupon Name <span class="text-danger">*</span></label>
 									<select class="select" ng-model="couponId" ng-change="changeSelectCoupon()">
 										<option ng-repeat="(key, value) in coupons" value="{{value.id}}" >{{value.couponName}}</option>
 									</select>

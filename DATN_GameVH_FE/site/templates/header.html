@@ -122,7 +122,7 @@
                                             <div class="product">
                                                 <div class="product-cart-details">
                                                     <h4 class="product-title">
-                                                        <a href="product.html">{{item.name}}</a>
+                                                        <a href="/product/detail/{{item.id}}">{{item.name}}</a>
                                                     </h4>
 
                                                     <span class="cart-product-info"> <span class="cart-product-qty">x {{
@@ -146,7 +146,7 @@
                                                     </a>
                                                 </figure>
                                                 <a class="btn-remove" data-cart-id="{{item.id}}"
-                                                    ng-click="removeCart($event)" title="Remove Product"><i
+                                                    ng-click="removeCart($event)" title="Xóa"><i
                                                         class="icon-close"></i></a>
                                             </div>
                                             <!-- End .product -->

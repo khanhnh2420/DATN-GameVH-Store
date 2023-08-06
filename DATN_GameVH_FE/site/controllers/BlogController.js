@@ -36,6 +36,10 @@ app.controller("BlogController", function (PageService, BlogService, TimeService
             return blogTitle.indexOf(searchTerm) !== -1;
         });
 
+        $scope.itemsPerPage = 3; // Số lượng phần tử hiển thị trên mỗi trang
+        $scope.currentPage = 1; // Trang hiện tại
+        $scope.totalPages = 0;
+        $scope.getListProductOnPage();
         $scope.blogs = result;
         $scope.getListProductOnPage();
     }

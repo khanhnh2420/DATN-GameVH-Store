@@ -207,7 +207,7 @@ public class ProductRC {
 		Collections.sort(listProductTopRated, newReleasesComparator.reversed());
 		// Get Limit 6 Product
 
-		listProductTopRated = listProductTopRated.subList(0, Math.min(6, listProductTopRated.size()));
+		listProductTopRated = listProductTopRated.subList(0, Math.min(8, listProductTopRated.size()));
 		return ResponseEntity.ok(listProductTopRated);
 	}
 

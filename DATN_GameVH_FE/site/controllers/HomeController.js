@@ -127,6 +127,11 @@ app.controller("HomeController", function (ProductService, BlogService, TimeServ
             jsonArray[randomIndex] = temporaryValue;
         }
     };
+
+    $scope.setActive = function (url) {
+        $scope.activeUrl = url;
+    };
+
 }).filter('vndFormat', function () {
     return function (input) {
         if (!input) return '';

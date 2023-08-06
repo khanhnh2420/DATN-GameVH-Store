@@ -63,6 +63,10 @@ app
         templateUrl: "/views/loading.html",
         pageTitle: "Loading",
       })
+      .when("/feedback-website", {
+        templateUrl: "/views/feedback-website.html",
+        pageTitle: "Đánh Giá Website",
+      })
       .otherwise({
         templateUrl: "/views/error-404.html",
       });

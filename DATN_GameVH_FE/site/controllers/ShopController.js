@@ -45,22 +45,6 @@ app.controller("ShopController", function (PageService, ProductService, Category
 
 	$scope.checkLink();
 
-	$scope.searchProductInArr = function (arr) {
-		$scope.search = $routeParams.search;
-		document.getElementById("search").value = $scope.search;
-		if ($routeParams.search && $routeParams.search != "undefined" && $routeParams.search != "null") {
-			var searchTerm = $routeParams.search.toLowerCase(); // Chuyển searchTerm thành chữ thường
-			var result = arr.filter(function (item) {
-				var itemName = item.name.toLowerCase(); // Chuyển giá trị thuộc tính name thành chữ thường
-				return itemName.indexOf(searchTerm) !== -1;
-			});
-			return result;
-		} else {
-			document.getElementById("search").value = "";
-		}
-		return null;
-	}
-
 	$scope.resetFilter = function () {
 		var gameElements = document.querySelectorAll(".game");
 		// Sử dụng forEach để duyệt qua từng phần tử
@@ -167,12 +151,6 @@ app.controller("ShopController", function (PageService, ProductService, Category
 			ProductService.getAllProductDTO().then(function (response) {
 				$scope.products = response.data;
 				$scope.tempProducts = $scope.products;
-
-				// Tìm kiếm sản phẩm
-				$scope.searchProducts = $scope.searchProductInArr($scope.products);
-				if ($scope.searchProducts) {
-					$scope.products = $scope.searchProducts;
-				}
 
 				$scope.getListProductOnPage();
 			}).catch(function (error) {

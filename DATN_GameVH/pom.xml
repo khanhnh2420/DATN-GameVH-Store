@@ -44,7 +44,10 @@
 			<optional>true</optional>
 		</dependency>
 		<!-- DEVTOOLS -->
-	
+	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+		</dependency>
 		<!-- THYMELEAF -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

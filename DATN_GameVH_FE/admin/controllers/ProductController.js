@@ -155,6 +155,17 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
 
             table.DataTable({
                 searching: false,
+                "language": {
+                    "lengthMenu": "Hiển thị _MENU_ hàng",
+                    "info": "Hiển thị từ _START_ đến _END_ trên tổng số _TOTAL_ hàng",
+                    "paginate": {
+                        "first": "Đầu",
+                        "previous": "Trước",
+                        "next": "Tiếp",
+                        "last": "Cuối"
+                    },
+                    "emptyTable": "Không có dữ liệu"
+                },
                 data: products, // Dữ liệu được truyền vào DataTables
                 columns: [{
                         data: null,
@@ -731,6 +742,7 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
         });
     };
     /*----END EXPORT REPORT----*/
+
 
 }).filter('vndFormat', function() {
     // Filter định dạng tiền tệ

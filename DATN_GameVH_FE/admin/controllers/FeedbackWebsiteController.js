@@ -37,6 +37,17 @@ function FeedbackWebsiteController($scope, FeedbackWebsiteService) {
 
         table.DataTable({
             searching: false,
+            "language": {
+                "lengthMenu": "Hiển thị _MENU_ hàng",
+                "info": "Hiển thị từ _START_ đến _END_ trên tổng số _TOTAL_ hàng",
+                "paginate": {
+                    "first": "Đầu",
+                    "previous": "Trước",
+                    "next": "Tiếp",
+                    "last": "Cuối"
+                },
+                "emptyTable": "Không có dữ liệu"
+            },
             data: feedbacks, // Dữ liệu được truyền vào DataTables
             columns: [
                 {

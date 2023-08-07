@@ -3,7 +3,7 @@ function BlogController($scope, $filter, $document, $window, BlogService, ToastS
 
     $scope.blogs = [];
     $scope.comments = [];
-    $scope.submitButtonText = "Add";
+    $scope.submitButtonText = "Thêm";
     $scope.blogData = {
         username: $scope.username = $window.localStorage.getItem("username") || $window.sessionStorage.getItem("username"),
         image: null
@@ -46,6 +46,17 @@ function BlogController($scope, $filter, $document, $window, BlogService, ToastS
 
         table.DataTable({
             searching: false,
+            "language": {
+                "lengthMenu": "Hiển thị _MENU_ hàng",
+                "info": "Hiển thị từ _START_ đến _END_ trên tổng số _TOTAL_ hàng",
+                "paginate": {
+                    "first": "Đầu",
+                    "previous": "Trước",
+                    "next": "Tiếp",
+                    "last": "Cuối"
+                },
+                "emptyTable": "Không có dữ liệu"
+            },
             data: blogs, // Dữ liệu được truyền vào DataTables
             columns: [
                 {
@@ -89,13 +100,13 @@ function BlogController($scope, $filter, $document, $window, BlogService, ToastS
                     data: null,
                     class: 'text-center',
                     render: function (data, type, row) {
-                        var commentButton = (row.commentCount !== 0) ? '<a class="dropdown-item" id="comment-blog" data-blog-id="' + row.id + '" data-blog-title="' + row.title + '"><i class="fa fa-comments" aria-hidden="true"></i> Comment</a>' : '';
+                        var commentButton = (row.commentCount !== 0) ? '<a class="dropdown-item" id="comment-blog" data-blog-id="' + row.id + '" data-blog-title="' + row.title + '"><i class="fa fa-comments" aria-hidden="true"></i> Bình Luận</a>' : '';
                         return '<div class="dropdown dropdown-action">' +
                             '<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">' +
                             '<i class="material-icons font-weight-bold">⋮</i></a>' +
                             '<div class="dropdown-menu dropdown-menu-right">' +
-                            '<a class="dropdown-item" id="edit-blog" data-toggle="modal" data-target="#edit_Blog" data-blog-id="' + row.id + '"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>' +
-                            '<a class="dropdown-item" id="delete-blog" data-toggle="modal" data-target="#delete_Blog" data-blog-id="' + row.id + '"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>' +
+                            '<a class="dropdown-item" id="edit-blog" data-toggle="modal" data-target="#edit_Blog" data-blog-id="' + row.id + '"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Chỉnh Sửa</a>' +
+                            '<a class="dropdown-item" id="delete-blog" data-toggle="modal" data-target="#delete_Blog" data-blog-id="' + row.id + '"><i class="fa fa-trash" aria-hidden="true"></i>Xóa</a>' +
                             commentButton +
                             '</div></div>';
                     }

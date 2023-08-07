@@ -67,6 +67,10 @@ app
         templateUrl: "/views/feedback-website.html",
         pageTitle: "Đánh Giá Website",
       })
+      .when("/revenue-statistics", {
+        templateUrl: "/views/revenue-statistics.html",
+        pageTitle: "Thống kê",
+      })
       .otherwise({
         templateUrl: "/views/error-404.html",
       });

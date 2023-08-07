@@ -170,7 +170,7 @@ app.controller("WishlistController", function($scope, ToastService, AccountServi
                             console.log('Xoá sản phẩm khỏi danh sách yêu thích thành công.');
 
                             // Hiển thị thông báo thành công
-                            showSuccessToast("Sản phẩm đã xóa thành công");
+                            showSuccessToast("Sản phẩm đã được xóa khỏi danh sách yêu thích");
 
                             // Lấy danh sách yêu thích mới sau khi đã xoá thành công
                             $scope.fetchWishlistItems();

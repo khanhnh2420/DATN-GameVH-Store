@@ -1,23 +1,23 @@
-app.service('ToastService', function () {
-    this.showSuccessToast = function (message) {
+app.service('ToastService', function() {
+    this.showSuccessToast = function(message) {
         toast({
-            title: 'Success!',
+            title: 'Thành Công!',
             message: message,
             type: 'success',
             duration: 3000 // Thời gian hiển thị 5000ms (5 giây)
         });
     };
 
-    this.showErrorToast = function (message) {
+    this.showErrorToast = function(message) {
         toast({
-            title: 'Failure!',
+            title: 'Thất Bại!',
             message: message,
             type: 'error',
             duration: 3000 // Thời gian hiển thị 5000ms (5 giây)
         });
     };
 
-    this.showInfoToast = function (title, message) {
+    this.showInfoToast = function(title, message) {
         toast({
             title: title,
             message: message,
@@ -26,7 +26,7 @@ app.service('ToastService', function () {
         });
     };
 
-    this.showWarningToast = function (message) {
+    this.showWarningToast = function(message) {
         toast({
             title: 'Chú ý!',
             message: message,

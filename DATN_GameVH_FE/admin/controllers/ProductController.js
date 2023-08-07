@@ -97,7 +97,7 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
         ProductAdminService.updateFeedbackStatus(feedbackId, status)
             .then(function(response) {
                 console.log("Feedback đã được cập nhật:", response.data);
-                ToastService.showSuccessToast("Update Feedback successfully!");
+                ToastService.showSuccessToast("Cập Nhập Trạng Thái Đánh Giá Thành Công!");
                 $scope.getFeedbackForProduct(productId);
             })
             .catch(function(error) {
@@ -111,7 +111,7 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
         ProductAdminService.deleteFeedbackById(feedbackId)
             .then(function(resp) {
                 // Xử lý thành công, data chứa dữ liệu thành công từ service
-                ToastService.showSuccessToast("Delete Feedback successfully!");
+                ToastService.showSuccessToast("Xóa Đánh Giá Thành Công!");
                 $scope.getFeedbackForProduct(productId);
             })
             .catch(function(error) {
@@ -284,7 +284,7 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
                 return productName == $scope.editProduct.name.toLowerCase() && tempProductId != productId;
             });
             if (result.length == 0) {
-                ToastService.showInfoToast("Processing!", "Please wait a moment!");
+                ToastService.showInfoToast("Đang xử lý!", "Xin vui lòng đợi trong giây lát!");
                 $scope.categories.forEach(function(category) {
                     if ($scope.editProduct.category.id == category.id) {
                         $scope.editProduct.category = category;
@@ -320,7 +320,7 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
                                             for (let i = 0; i <= $scope.thumbnails.length; i++) {
                                                 if (i == $scope.thumbnails.length) {
                                                     $('#edit_Product').modal('hide');
-                                                    ToastService.showSuccessToast("Update product successfully!");
+                                                    ToastService.showSuccessToast("Cập nhập thông tin sản phẩm thành công!");
 
                                                     $scope.getAllProducts();
                                                     break;
@@ -337,13 +337,13 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
                                             }
                                         })
                                         .catch(function(error) {
-                                            ToastService.showErrorToast("Upload poster failure!");
+                                            ToastService.showErrorToast("Tải ảnh thu nhỏ không thành công!");
                                         });
                                 } else {
                                     for (let i = 0; i <= $scope.thumbnails.length; i++) {
                                         if (i == $scope.thumbnails.length) {
                                             $('#edit_Product').modal('hide');
-                                            ToastService.showSuccessToast("Update product successfully!");
+                                            ToastService.showSuccessToast("Cập nhập thông tin sản phẩm thành công!");
 
                                             $scope.getAllProducts();
                                             break;
@@ -361,14 +361,14 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
                                 }
                             })
                             .catch(function(error) {
-                                ToastService.showErrorToast("Update product failure!");
+                                ToastService.showErrorToast("Cập nhập thông tin sản phẩm không thành công!");
                             });
                     })
                     .catch(function(error) {
-                        ToastService.showErrorToast("Update product failure!");
+                        ToastService.showErrorToast("Cập nhập thông tin sản phẩm không thành công!");
                     });
             } else {
-                ToastService.showErrorToast("Product name already exists!");
+                ToastService.showErrorToast("Tên sản phẩm đã tồn tại!");
             }
         } else {
             if (!$scope.editProduct.type || $scope.editProduct.type == "") {
@@ -398,14 +398,14 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
         if ($scope.formAddProduct.$valid) {
             if ($scope.product.poster) {
                 if ($scope.thumbnailsList.length < 3) {
-                    ToastService.showErrorToast("Please choose 3 thumbnails!");
+                    ToastService.showErrorToast("Vui lòng chọn 3 hình thu nhỏ!");
                 } else {
                     var result = $scope.product.filter(function(item) {
                         var productName = item.name.toLowerCase(); // Chuyển giá trị thuộc tính title thành chữ thường
                         return productName == $scope.addProductForm.name.toLowerCase();
                     });
                     if (result.length == 0) {
-                        ToastService.showInfoToast("Processing!", "Please wait a moment!");
+                        ToastService.showInfoToast("Đang xử lý!", "Xin vui lòng đợi trong giây lát!");
                         $scope.categories.forEach(function(category) {
                             if ($scope.addProductForm.category.id == category.id) {
                                 $scope.addProductForm.category = category;
@@ -459,7 +459,7 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
                                                     // Load lại data table
                                                     $scope.resetForm();
                                                     $('#add_Product').modal('hide');
-                                                    ToastService.showSuccessToast("Add product successfully!");
+                                                    ToastService.showSuccessToast("Thêm sản phẩm thành công!");
                                                 } else {
                                                     var length = $scope.thumbnailsList.length;
                                                     var thumbnail = $scope.thumbnailsList[i];
@@ -488,21 +488,21 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
                                             }
                                         })
                                         .catch(function(error) {
-                                            ToastService.showErrorToast("Upload poster failure!");
+                                            ToastService.showErrorToast("Tải ảnh áp phích thất bại!");
                                         });
                                 } else {
-                                    ToastService.showErrorToast("Add product failure!");
+                                    ToastService.showErrorToast("Thêm sản phẩm thất bại!");
                                 }
                             })
                             .catch(function(error) {
-                                ToastService.showErrorToast("Add product failure!");
+                                ToastService.showErrorToast("Thêm sản phẩm thất bại!");
                             });
                     } else {
-                        ToastService.showErrorToast("Product name already exists!");
+                        ToastService.showErrorToast("Tên sản phẩm đã tồn tại!");
                     }
                 }
             } else {
-                ToastService.showErrorToast("Please choose poster image!");
+                ToastService.showErrorToast("Vui lòng chọn hình ảnh áp phích!");
             }
         } else {
             if (!$scope.addProductForm.type || $scope.addProductForm.type == "") {

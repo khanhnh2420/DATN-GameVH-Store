@@ -1736,10 +1736,10 @@ table.dataTable thead>tr>td.sorting {
 
 .header {
 	background: #f43b48;
-	background: -moz-linear-gradient(left, #f43b48 0%, #453a94 100%);
-	background: -webkit-linear-gradient(left, #f43b48 0%, #453a94 100%);
-	background: -ms-linear-gradient(left, #f43b48 0%, #453a94 100%);
-	background: linear-gradient(to right, #f43b48 0%, #453a94 100%);
+	background: -moz-linear-gradient(left, #453a94 0%, #f43b48 100%);
+	background: -webkit-linear-gradient(left, #453a94 0%, #f43b48 100%);
+	background: -ms-linear-gradient(left, #453a94 0%, #f43b48 100%);
+	background: linear-gradient(to right, #453a94 0%, #f43b48 100%);
 	border-bottom: 1px solid transparent;
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
 	height: 60px;
@@ -2366,20 +2366,24 @@ table.dataTable thead>tr>td.sorting {
 }
 
 .account-box {
-	background-color: #fff;
-	border: 1px solid #ededed;
+	background: rgba(255, 255, 255, 0.1);
+	position: relative;
+	border: 1px solid #6b6969cc;
 	border-radius: 4px;
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
 	margin: 0 auto;
 	overflow: hidden;
 	width: 480px;
+	backdrop-filter: blur(5px);
 }
 
 .account-wrapper {
+
 	padding: 30px;
 }
 
 .account-logo {
+	margin-top: 50px;
 	margin-bottom: 30px;
 	text-align: center;
 }
@@ -2416,14 +2420,14 @@ table.dataTable thead>tr>td.sorting {
 }
 
 .account-box label {
-	color: #1f1f1f;
+	color: #ffff;
 	font-size: 16px;
 	font-weight: normal;
 	margin-bottom: 5px;
 }
 
 .account-logo img {
-	width: 100px;
+	width: 240px;
 }
 
 .account-footer {
@@ -10602,4 +10606,8 @@ ul.comment-list li ul.children {
 	font-size: 20px;
 	color: rgba(0, 0, 0, 0.3);
 	cursor: pointer;
+}
+
+.is-invalid-no-x {
+	border: 1px solid red !important;
 }

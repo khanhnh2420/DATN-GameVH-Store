@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.gamevh.entities.Feedback;
+import com.gamevh.entities.Product;
 
 public interface FeedbackRepository extends JpaRepository<Feedback, Integer> {
 	@Query("SELECT f FROM Feedback f WHERE f.product.id = :productId AND f.status = true")
@@ -16,4 +17,7 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Integer> {
 	List<Feedback> findByAllProductId(@Param("productId") Integer productId);
 
 	Feedback findByAccountUsernameAndProductId(String username, Integer ProductId);
+	
+	@Query(value = "SELECT * FROM feedback order by create_date desc LIMIT 5",nativeQuery = true)
+	List<Feedback> getTop5feedback();
 }

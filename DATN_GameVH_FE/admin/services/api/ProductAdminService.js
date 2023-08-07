@@ -21,15 +21,6 @@ app.factory('ProductAdminService', function($http) {
         getFeedbackProduct: function(productId) {
             return $http.get(baseUrl + '/getProduct/' + productId);
         },
-        // uploadImage: function(image) {
-        //     var formData = new FormData();
-        //     formData.append('image', image);
-
-        //     return $http.post(baseUrl + '/upload', formData, {
-        //         transformRequest: angular.identity,
-        //         headers: { 'Content-Type': undefined }
-        //     });
-        // },
         uploadImage: function(imageFile) {
             return $http.post(baseUrl + '/upload', imageFile, {
                 headers: {
@@ -38,10 +29,10 @@ app.factory('ProductAdminService', function($http) {
             });
         },
         createProduct: function(productData) {
-            return $http.post(baseUrl, productData);
+            return $http.post(baseUrl + '/createProduct', productData);
         },
-        updateProduct: function(productId, productData) {
-            return $http.post(baseUrl + '/updateProduct/' + productId, productData);
+        updateProduct: function(productData) {
+            return $http.put(baseUrl + '/updateProduct', productData);
         },
 
         deleteFeedback: function(feedbackIdtId) {
@@ -55,6 +46,9 @@ app.factory('ProductAdminService', function($http) {
         },
         deleteFeedbackById: function(feedbackId) {
             return $http.delete(baseUrl + '/deleteFeedback/' + feedbackId)
+        },
+        getTop5: function() {
+            return $http.get(baseUrl + "/getTop5feedback");
         },
     };
 });

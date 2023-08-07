@@ -1,9 +1,7 @@
 package com.gamevh.restcontroller;
 
 import java.io.IOException;
-
 import java.security.GeneralSecurityException;
-import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.jetty.http.HttpStatus;
@@ -19,11 +17,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.gamevh.dto.AccountDTO;
 import com.gamevh.entities.Account;
+import com.gamevh.handle.CustomException;
 import com.gamevh.mapper.AccountMapper;
 import com.gamevh.service.AccountService;
 import com.gamevh.service.AuthorityService;
@@ -150,9 +150,31 @@ public class AccountRC {
 			@RequestParam("size") Optional<Integer> size,
 			@RequestParam(value = "username", defaultValue = "", required = false) String username,
 			@RequestParam(value = "name", defaultValue = "", required = false) String name,
+			@RequestParam(value = "email", defaultValue = "", required = false) String email,
 			@RequestParam(value = "roleId", defaultValue = "", required = false) String roleId
 	) {
-		Page<Account> accounts = accountService.findAll(page, size, username, name, roleId);
+		Page<Account> accounts = accountService.findAll(page, size, username, name, email, roleId);
 		return ResponseEntity.ok(accounts);
+	}
+
+	@PostMapping
+	public Account registerNewAccount(@RequestPart("account")String  accountDTOString,
+									  @RequestPart("image") MultipartFile image) throws CustomException {
+		return accountService.registerAccount(accountDTOString, image);
+	}
+
+	@PutMapping("/status/{username}")
+	public Account toggleAccountStatus(@PathVariable("username") String username){
+		return accountService.toggleAccountStatus(username);
+	}
+	@PutMapping("/{username}")
+	public Account updateAccount(@PathVariable("username") String username,
+								 @RequestPart("account")String  accountDTOString,
+								 @RequestPart(value = "image", required = false) MultipartFile image) throws CustomException {
+		return accountService.updateAccount(username, accountDTOString, image);
+	}
+	@GetMapping(value = "/image/{username}", produces = MediaType.IMAGE_PNG_VALUE)
+	public byte[] getAccountImage(@PathVariable("username")String userName){
+		return accountService.getAccountImage(userName);
 	}
 }

@@ -3,11 +3,12 @@ function BlogController($scope, $filter, $document, $window, BlogService, ToastS
 
     $scope.blogs = [];
     $scope.comments = [];
-    $scope.submitButtonText = "Add";
+    $scope.submitButtonText = "Thêm";
     $scope.blogData = {
         username: $scope.username = $window.localStorage.getItem("username") || $window.sessionStorage.getItem("username"),
         image: null
     };
+    $scope.tempBlogs = [];
 
     // Khởi tạo biến để lưu trữ tạm
     $scope.blogIdToDelete = null;
@@ -17,6 +18,15 @@ function BlogController($scope, $filter, $document, $window, BlogService, ToastS
         BlogService.getAllBlog()
             .then(function (resp) {
                 $scope.blogs = resp.data;
+                $scope.tempBlogs = $scope.blogs;
+
+                // Kiểm tra nếu có search thì sẽ fill data dạng search
+                var searchTitle = document.getElementById("searchTitle").value.toLowerCase();
+                var searchUsername = document.getElementById("searchUsername").value.toLowerCase();
+                var searchCreateDate = document.getElementById("searchCreateDate").value;
+                if (searchTitle || searchUsername || searchCreateDate) {
+                    $scope.searchBlog();
+                }
                 $(document).ready(function () {
                     $scope.loadDataTableBlog($scope.blogs);
                 });
@@ -36,6 +46,17 @@ function BlogController($scope, $filter, $document, $window, BlogService, ToastS
 
         table.DataTable({
             searching: false,
+            "language": {
+                "lengthMenu": "Hiển thị _MENU_ hàng",
+                "info": "Hiển thị từ _START_ đến _END_ trên tổng số _TOTAL_ hàng",
+                "paginate": {
+                    "first": "Đầu",
+                    "previous": "Trước",
+                    "next": "Tiếp",
+                    "last": "Cuối"
+                },
+                "emptyTable": "Không có dữ liệu"
+            },
             data: blogs, // Dữ liệu được truyền vào DataTables
             columns: [
                 {
@@ -76,10 +97,18 @@ function BlogController($scope, $filter, $document, $window, BlogService, ToastS
                 }, // Cột "Status"
                 { data: 'commentCount', class: 'text-center' },
                 {
-                    data: null, class: 'text-center', // Cột "Action"
+                    data: null,
+                    class: 'text-center',
                     render: function (data, type, row) {
-                        // Render giao diện cho cột "Action"
-                        return '<div class="dropdown dropdown-action"><a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a><div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" id="edit-blog" data-toggle="modal" data-target="#edit_Blog" data-blog-id="' + row.id + '"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a><a class="dropdown-item" id="delete-blog" data-toggle="modal" data-target="#delete_Blog" data-blog-id="' + row.id + '"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a><a class="dropdown-item" id="comment-blog" data-blog-id="' + row.id + '" data-blog-title="' + row.title + '"><i class="fa fa-comments" aria-hidden="true"></i> Comment</a></div></div>';
+                        var commentButton = (row.commentCount !== 0) ? '<a class="dropdown-item" id="comment-blog" data-blog-id="' + row.id + '" data-blog-title="' + row.title + '"><i class="fa fa-comments" aria-hidden="true"></i> Bình Luận</a>' : '';
+                        return '<div class="dropdown dropdown-action">' +
+                            '<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">' +
+                            '<i class="material-icons font-weight-bold">⋮</i></a>' +
+                            '<div class="dropdown-menu dropdown-menu-right">' +
+                            '<a class="dropdown-item" id="edit-blog" data-toggle="modal" data-target="#edit_Blog" data-blog-id="' + row.id + '"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Chỉnh Sửa</a>' +
+                            '<a class="dropdown-item" id="delete-blog" data-toggle="modal" data-target="#delete_Blog" data-blog-id="' + row.id + '"><i class="fa fa-trash" aria-hidden="true"></i>Xóa</a>' +
+                            commentButton +
+                            '</div></div>';
                     }
                 }
             ]
@@ -100,6 +129,71 @@ function BlogController($scope, $filter, $document, $window, BlogService, ToastS
             $scope.getCommentByBlogId(blogId);
         });
     };
+
+    $scope.searchBlog = function () {
+        var searchTitle = document.getElementById("searchTitle").value.toLowerCase();
+        var searchUsername = document.getElementById("searchUsername").value.toLowerCase();
+        var searchCreateDate = document.getElementById("searchCreateDate").value;
+
+        $scope.blogs = $scope.tempBlogs;
+
+        if (searchTitle) {
+            var result = $scope.blogs.filter(function (item) {
+                var blogTitle = item.title.toLowerCase(); // Chuyển giá trị thuộc tính title thành chữ thường
+                return blogTitle.indexOf(searchTitle) !== -1;
+            });
+            $scope.blogs = result;
+        }
+
+        if (searchUsername) {
+            var result = $scope.blogs.filter(function (item) {
+                var userCreated = item.username.toLowerCase(); // Chuyển giá trị thuộc tính user created thành chữ thường
+                return userCreated.indexOf(searchUsername) !== -1;
+            });
+            $scope.blogs = result;
+        }
+
+        if (searchCreateDate) {
+            searchCreateDate = convertDateFormat(searchCreateDate);
+            var result = $scope.blogs.filter(function (item) {
+                var createDate = item.createDate;
+                return createDate.indexOf(searchCreateDate) !== -1;
+            });
+            $scope.blogs = result;
+        }
+
+        $(document).ready(function () {
+            $scope.loadDataTableBlog($scope.blogs);
+        });
+    }
+
+    $scope.searchWithEnter = function (event) {
+        if (event.keyCode === 13) {
+            $scope.searchBlog();
+        }
+    }
+
+    $scope.refreshSearch = function () {
+        document.getElementById("searchTitle").value = "";
+        document.getElementById("searchUsername").value = "";
+        document.getElementById("searchCreateDate").value = "";
+
+        $scope.getDataBlog();
+        $scope.loadDataTableBlog($scope.blogs);
+    }
+
+    function convertDateFormat(inputDate) {
+        // Tách ngày, tháng, năm từ chuỗi đầu vào
+        const dateParts = inputDate.split('/');
+        const day = dateParts[0];
+        const month = dateParts[1];
+        const year = dateParts[2];
+
+        // Ghép lại thành dạng ngày/tháng/năm mới
+        const newDateFormat = `${year}-${month}-${day}`;
+
+        return newDateFormat;
+    }
 
     $scope.newBlog = function () {
         // Đánh dấu form là untouched và pristine để xóa thông báo lỗi
@@ -294,14 +388,7 @@ function BlogController($scope, $filter, $document, $window, BlogService, ToastS
             })
             .catch(function (error) {
                 // Xử lý lỗi (nếu có)
-                if (error.status === 404) {
-                    // Nếu mã trạng thái là 404 (không có dữ liệu), hiển thị thông báo cảnh báo
-                    ToastService.showWarningToast("Bài viết này chưa có bình luận nào");
-                } else {
-                    // Nếu có lỗi khác, hiển thị thông báo lỗi
-                    console.error(error);
-                    ToastService.showErrorToast("Đã xảy ra lỗi khi lấy bình luận");
-                }
+                ToastService.showErrorToast("Đã xảy ra lỗi khi lấy bình luận");
             });
     };
 

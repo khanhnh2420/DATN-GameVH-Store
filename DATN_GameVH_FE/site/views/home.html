@@ -9,7 +9,7 @@
                     <nav class="side-nav box">
                         <div class="sidenav-title user-select-none">Danh mục</div>
                         <!-- End .sidenav-title -->
-                        <ul class="menu-vertical sf-arrows" style="max-height: 26em;"
+                        <ul class="menu-vertical sf-arrows" style="max-height: 41.1em;"
                             ng-controller="CategoryController">
                             <li class="my-3 ml-5" style="font-weight: 800;">GAMES</li>
                             <li ng-repeat="(key, value) in categories" style="cursor: pointer;"><a
@@ -28,84 +28,18 @@
                 </div>
                 <!-- End .col-lg-3 -->
 
-                <div class="col-lg-8 col-xl-6">
-                    <div class="banner banner-overlay banner-lg  content-left">
-                        <a href="#"> <img src="/assets/images/demos/demo-19/banners/banner-1.jpg" alt="Banner">
-                        </a>
-                        <div class="banner-content">
-                            <h4 class="banner-subtitle">ĐẶT MUA NGAY</h4>
-                            <img src="/assets/images/demos/demo-19/banners/banner-1-title.png" alt="Banner 1 Title"
-                                width="217" height="54" class="mb-1">
-                            <a href="#" class="banner-link size-lg">MUA NGAY<i class="icon-long-arrow-right"></i></a>
+                <div class="col-lg-8 col-xl-9">
+                    <div class="img-slide-container">
+                        <div ng-repeat="url in listGames | limitTo: 5" class="img-slide"
+                            ng-class="{ 'active': (url === activeUrl) || ($first && !activeUrl) }"
+                            style="background-image: url('https://drive.google.com/uc?id={{url.poster}}');"
+                            ng-click="setActive(url)">
+                            <a class="btn-product btn-product-slide text-warning text-center" href="/product/detail/{{url.id}}" ng-if="url === activeUrl || ($first && !activeUrl)">Xem
+                                thêm</a>
                         </div>
                     </div>
-                    <!-- End .banner -->
                 </div>
                 <!-- End .col-lg-6 -->
-
-                <div class="col-sm-6 col-lg-4 col-xl-3">
-                    <div class="banner banner-overlay banner-sm content-right">
-                        <a href="#"> <img src="/assets/images/demos/demo-19/banners/banner-2.jpg" alt="Banner">
-                        </a>
-                        <div class="banner-content text-right">
-                            <h4 class="banner-subtitle">ƯU ĐÃI CUỐI TUẦN</h4>
-                            <img class="banner-title-img" src="/assets/images/demos/demo-19/banners/banner-2-title.png"
-                                alt="Banner-2">
-                            <h4 class="banner-price">
-                                TIẾT KIỆM<span class="price">199.000 VND</span>
-                            </h4>
-                            <a href="#" class="banner-link">MUA NGAY<i class="icon-long-arrow-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- End .banner -->
-
-                    <div class="banner banner-overlay d-none d-lg-block banner-sm content-right align-center">
-                        <a href="#"> <img src="/assets/images/demos/demo-19/banners/banner-3.jpg" alt="Banner">
-                        </a>
-                        <div class="banner-content text-right">
-                            <img class="banner-title-img" src="/assets/images/demos/demo-19/banners/banner-3-title.png"
-                                alt="Banner-3">
-                            <h5 class="text-white">SALE 35%</h5>
-                            <a href="#" class="banner-link">MUA NGAY<i class="icon-long-arrow-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- End .banner -->
-                </div>
-                <!-- End .col-lg-3 -->
-
-                <div class="col-sm-6 col-lg-3">
-                    <div class="banner banner-overlay banner-sm content-right align-center">
-                        <a href="#"> <img src="/assets/images/demos/demo-19/banners/banner-4.jpg" alt="Banner">
-                        </a>
-                        <div class="banner-content" style="left: auto; right: 3rem; align-items: flex-start;">
-                            <h4 class="banner-subtitle">ƯU ĐÃI CUỐI TUẦN </h4>
-                            <img class="banner-title-img" src="/assets/images/demos/demo-19/banners/banner-4-title.png"
-                                alt="Banner-4">
-                            <h4 class="banner-price">
-                                <span class="off">SALE 25%</span>
-                            </h4>
-                            <a href="#" class="banner-link">MUA NGAY<i class="icon-long-arrow-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- End .banner -->
-                </div>
-                <!-- End .col-lg-3 -->
-
-                <div class="col-lg-9">
-                    <div class="banner banner-overlay banner-lg">
-                        <a href="#"> <img src="/assets/images/demos/demo-19/banners/banner-5.jpg" alt="Banner">
-                        </a>
-                        <div class="banner-content">
-                            <h4 class="banner-subtitle">SIÊU GIẢM GIÁ</h4>
-                            <img class="banner-title-img mb-1"
-                                src="/assets/images/demos/demo-19/banners/banner-5-title.png" alt="Banner-5"> <a
-                                href="#" class="banner-link">MUA NGAY<i class="icon-long-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- End .banner -->
-                </div>
-                <!-- End .col-lg-9 -->
             </div>
             <!-- End .row -->
         </div>
@@ -515,68 +449,6 @@
 </div>
 <!-- End .bg-light pt-4 pb-4 -->
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-sm-6 col-md-4">
-            <div class="banner banner-overlay banner-sm banner-ad content-left align-center">
-                <a href="#"> <img src="/assets/images/demos/demo-19/banners/banner-6.jpg" alt="Banner">
-                </a>
-                <div class="banner-content">
-                    <h4 class="banner-subtitle">ƯU ĐÃI CUỐI TUẦN</h4>
-                    <img class="banner-title-img" src="/assets/images/demos/demo-19/banners/banner-6-title.png"
-                        alt="Banner-6">
-                    <h4 class="banner-price mt-1">
-                        <span class="off" style="font-weight: 600;">CHỈ CÒN <span class="price">299.000 VND</span></span>
-                    </h4>
-                    <a href="#" class="banner-link">MUA NGAY<i class="icon-long-arrow-right"></i></a>
-                </div>
-            </div>
-            <!-- End .banner -->
-        </div>
-        <!-- End .col-md-4 -->
-
-        <div class="col-sm-6 col-md-4">
-            <div class="banner banner-overlay banner-sm banner-ad content-left align-center">
-                <a href="#"> <img src="/assets/images/demos/demo-19/banners/banner-7.jpg" alt="Banner">
-                </a>
-                <div class="banner-content">
-                    <h4 class="banner-subtitle" style="letter-spacing: 0.1em;">ƯU ĐÃI CUỐI TUẦN</h4>
-                    <h2 class="banner-title mb-0" style="font-size: 3rem;">XBOX ONE
-                    </h2>
-                    <h4 class="banner-price mt-1">
-                        <span class="off" style="font-weight: 600;">CHỈ CÒN 499.000 VND</span>
-                    </h4>
-                    <a href="#" class="banner-link">MUA NGAY<i class="icon-long-arrow-right"></i></a>
-                </div>
-            </div>
-            <!-- End .banner -->
-        </div>
-        <!-- End .col-md-4 -->
-
-        <div class="col-sm-6 col-md-4">
-            <div class="banner banner-overlay banner-sm banner-ad content-left align-center">
-                <a href="#"> <img src="/assets/images/demos/demo-19/banners/banner-8.jpg" alt="Banner">
-                </a>
-                <div class="banner-content">
-                    <h4 class="banner-price text-white mb-1">CHỈ CÒN 999.000 VND</h4>
-                    <img class="banner-title-img mb-2" src="/assets/images/demos/demo-19/banners/banner-8-title.png"
-                        alt="Banner-8"> <a href="#" class="banner-link">MUA NGAY<i class="icon-long-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-            <!-- End .banner -->
-        </div>
-        <!-- End .col-md-4 -->
-    </div>
-    <!-- End .row -->
-</div>
-<!-- End .container -->
-
-<div class="container">
-    <hr class="mt-0 mb-4">
-</div>
-<!-- End .container -->
-
 <div class="container" ng-controller="WishlistController">
     <div class="heading heading-flex mb-2 mb-lg-3">
         <div class="heading-left">
@@ -596,10 +468,10 @@
 
     <div class="games-soon">
         <div class="row">
-            <div class="col-lg-7">
+            <div class="col-lg-12">
                 <div class="products">
                     <div class="row">
-                        <div ng-repeat="p in listGames | limitTo: 6" class="col-6 col-md-4">
+                        <div ng-repeat="p in listGames | limitTo: 3" class="col-6 col-md-4">
                             <div class="product">
                                 <figure class="product-media">
                                     <span class="product-label label-top" ng-if="p.offer > 0">SALE {{p.offer *
@@ -668,51 +540,10 @@
                 <!-- End .products -->
             </div>
             <!-- End .col-lg-7 -->
-
-            <div class="col-lg-5 order-lg-first mt-1">
-                <div class="carousel-container">
-                    <div class="games-banners-slider custom-carousel owl-carousel-2-items owl-simple" data-toggle="owl"
-                        data-owl-options='{
-                                        "nav": false, 
-                                        "dots": true,
-                                        "margin": 0,
-                                        "loop": false,
-                                        "items":1
-                                    }'>
-                        <div class="banner banner-overlay product-banner">
-                            <a href="#"> <img src="/assets/images/demos/demo-19/banners/banner-9.jpg" alt="Banner">
-                            </a>
-                            <div class="banner-content align-items-center center">
-                                <img class="banner-title-img mb-1"
-                                    src="/assets/images/demos/demo-19/banners/banner-9-title.png" alt="Banner-9">
-                                <h4 class="banner-price mb-2" style="font-weight: 600;">299.000 VND</h4>
-                                <a href="#" class="banner-link size-lg">MUA NGAY<i
-                                        class="icon-long-arrow-right"></i></a>
-                            </div>
-                        </div>
-                        <!-- End .banner -->
-
-                        <div class="banner banner-overlay product-banner">
-                            <a href="#"> <img src="/assets/images/demos/demo-19/banners/banner-10.jpg" alt="Banner">
-                            </a>
-                            <div class="banner-content align-items-center">
-                                <h4 class="banner-subtitle" style="letter-spacing: 0.1em;">NGÀY 19 THÁNG 12 NĂM 2023</h4>
-                                <img class="banner-title-img mb-1"
-                                    src="/assets/images/demos/demo-19/banners/banner-10-title.png" alt="Banner-10"> <a
-                                    href="#" class="banner-link size-lg">MUA NGAY<i
-                                        class="icon-long-arrow-right"></i></a>
-                            </div>
-                        </div>
-                        <!-- End .banner -->
-
-                    </div>
-                    <!-- End .owl-carousel -->
-                </div>
-            </div>
-            <!-- End .col-lg-5 -->
         </div>
         <!-- End .row -->
     </div>
+    <hr class="mt-0 mb-4">
     <!-- End .games-soon -->
 </div>
 <!-- End .container -->
@@ -720,40 +551,6 @@
 <div class="mb-3"></div>
 <!-- End .mb-3 -->
 
-<div class="container">
-    <div class="cta cta-horizontal cta-horizontal-box bg-image mb-4"
-        style="background-image: url(/assets/images/demos/demo-19/bg-2.jpg);">
-        <div class="row align-items-center">
-            <div class="col-lg-5">
-                <h3 class="cta-title text-primary">Hãy tham gia ngay với chúng tôi</h3>
-                <!-- End .cta-title -->
-                <p class="cta-desc text-light">Đăng ký để nhận những thông báo mới nhất và phiếu giảm giá!</p>
-                <!-- End .cta-desc -->
-            </div>
-            <!-- End .col-lg-5 -->
-
-            <div class="col-lg-7 d-flex justify-content-lg-end">
-                <form action="#">
-                    <div class="input-group">
-                        <input type="email" class="form-control form-control-white"
-                            placeholder="Hãy nhập email của bạn..." aria-label="Email Adress" required>
-                        <div class="input-group-append">
-                            <button class="btn btn-primary-white btn-rounded" type="submit">
-                                <span>Đăng ký</span><i class="icon-long-arrow-right"></i>
-                            </button>
-                        </div>
-                        <!-- .End .input-group-append -->
-                    </div>
-                    <!-- .End .input-group -->
-                </form>
-            </div>
-            <!-- End .col-lg-8 -->
-        </div>
-        <!-- End .row -->
-    </div>
-    <!-- End .cta -->
-</div>
-<!-- End .container -->
 <div class="container" ng-controller="WishlistController">
     <div class="heading heading-flex" style="height: 3em; align-items: unset;">
         <div class="heading-left">
@@ -763,7 +560,7 @@
         <!-- End .heading-left -->
 
         <div class="heading-right">
-            <a href="/shop/PK" class="title-link">Xem thêm sản phẩm <i class="icon-long-arrow-right"></i>
+            <a href="/shop/PK" class="title-link">Xem thêm phụ kiện <i class="icon-long-arrow-right"></i>
             </a>
         </div>
         <!-- End .heading-right -->

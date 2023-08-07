@@ -22,8 +22,8 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "product", indexes = { @Index(name = "product_Name_IX", columnList = "Name", unique = true),
-		@Index(name = "product_Poster_IX", columnList = "Poster", unique = true),
-		@Index(name = "product_Thumbnail_IX", columnList = "Thumbnail", unique = true) })
+		@Index(name = "product_Poster_IX", columnList = "Poster", unique = false),
+		@Index(name = "product_Thumbnail_IX", columnList = "Thumbnail", unique = false) })
 public class Product implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,10 +33,10 @@ public class Product implements Serializable {
 	@Column(name = "Name", unique = true, length = 255)
 	private String name;
 
-	@Column(name = "Poster", unique = true, length = 255)
+	@Column(name = "Poster", unique = false, length = 255)
 	private String poster;
 
-	@Column(name = "Thumbnail", unique = true, length = 255)
+	@Column(name = "Thumbnail", unique = false, length = 255)
 	private String thumbnail;
 
 	@Column(name = "origin_price", precision = 22, columnDefinition = "DOUBLE")

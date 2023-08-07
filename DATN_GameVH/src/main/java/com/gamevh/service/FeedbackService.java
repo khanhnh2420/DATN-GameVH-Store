@@ -16,4 +16,7 @@ public interface FeedbackService {
 	Feedback findByAccountAndProduct(String username, Integer productId);
 	
 	Feedback addOrUpdate(Feedback feedback);
+	
+	List<Feedback> getTop5feedback();
+
 }

@@ -15,15 +15,15 @@
 		<div class="page-header">
 			<div class="row align-items-center">
 				<div class="col">
-					<h3 class="page-title">Coupon Owner</h3>
+					<h3 class="page-title">MÃ GIẢM GIÁ CHO KHÁCH HÀNG</h3>
 					<ul class="breadcrumb">
-						<li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-						<li class="breadcrumb-item active">Coupon Owner</li>
+						<li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+						<li class="breadcrumb-item active">Mã giảm giá cho khách hàng</li>
 					</ul>
 				</div>
 				<div class="col-auto float-right ml-auto">
 					<a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_Coupon" ng-click="openAddModal()"><i
-							class="fa fa-plus"></i> Add Coupon Owner</a>
+							class="fa fa-plus"></i>Thêm mã giảm giá cho khách hàng</a>
 
 				</div>
 			</div>
@@ -32,32 +32,32 @@
 
 		<!-- Search Filter -->
 		<div class="row filter-row">
-			<div class="col-sm-3 col-md-2">
+			<div class="col-sm-3 col-md-3">
 				<div class="form-group form-focus">
 					<input type="text" class="form-control floating" ng-model="couponNameFilter">
-					<label class="focus-label">Coupon Name</label>
+					<label class="focus-label">Tên mã giảm giá</label>
 				</div>
 			</div>
-			<div class="col-sm-3 col-md-2">
+			<div class="col-sm-3 col-md-3">
 				<div class="form-group form-focus">
 					<input type="text" class="form-control floating" ng-model="customerNameFilter">
-					<label class="focus-label">Customer Name</label>
+					<label class="focus-label">Tên khách hàng</label>
 				</div>
 			</div>
-			<div class="col-sm-3 col-md-2">
+			<!-- <div class="col-sm-3 col-md-2">
 				<div class="form-group form-focus">
 					<input type="text" class="form-control floating" ng-model="totalMoneyFilter">
-					<label class="focus-label">Total Money Spent</label>
+					<label class="focus-label">Tổng tiền đã thanh toán</label>
 				</div>
-			</div>
+			</div> -->
 			<div class="col-sm-3 col-md-4">
 				<div class="form-group form-focus">
 					<input type="text" class="form-control floating" ng-model="locationFilter">
-					<label class="focus-label">Location</label>
+					<label class="focus-label">Địa chỉ</label>
 				</div>
 			</div>
 			<div class="col-sm-3 col-md-2">
-				<a href="#" class="btn btn-success btn-block" ng-click="getAllBySearch()"> Search </a>
+				<a href="#" class="btn btn-success btn-block" ng-click="getAllBySearch()"> TÌM KIẾM </a>
 			</div>
 		</div>
 		<!-- /Search Filter -->
@@ -68,38 +68,32 @@
 					<table class="table table-striped custom-table datatable">
 						<thead>
 							<tr>
-								<th>				<div class="form-check form-check-inline">
-									<input class="form-check-input" type="checkbox" >
-								</div></th>
-								<th>Username</th>
-								<th>Address</th>
-								<th>Total Money Spent</th>
-								<th>Voucher Name</th>
-								<th>Code</th>
-								<th>Status</th>
-								<th class="text-right no-sort">Action</th>
+								<th>#</th>
+								<th>Tên người dùng</th>
+								<th>Địa chỉ</th>
+								<!-- <th>Total Money Spent</th> -->
+								<th>Tên mã giảm giá</th>
+								<th>Mã giảm giá</th>
+								<th>Trạng thái</th>
+								<th class="text-right no-sort">Hành động</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr ng-repeat="cate in couponOwners">
-								<td>
-									<div class="form-check form-check-inline">
-										<input class="form-check-input" type="checkbox" >
-									</div>
-								</td>
+								<td>{{$index + 1}}</td>
 								<td>{{cate.userName}}</td>
 								<td>{{cate.location}}</td>
-								<td>{{cate.totalMoneySpent}}<span>VNĐ</span></td>
+								<!-- <td>{{cate.totalMoneySpent}}<span>VNĐ</span></td> -->
 								<td class="text-left"><a class="text-dark" href="#" data-toggle="modal"
 										data-target="#edit_Coupon">{{cate.voucherName}}</a></td>
 								<td>{{cate.code}}</td>
 								<td>
 									<div class="dropdown action-label">
 										<a class="dropdown-item" href="#" ng-if="cate.status">
-											<i class="fa fa-dot-circle-o text-success"></i> Đã Bật
+											<i class="fa fa-dot-circle-o text-success"></i> ĐÃ BẬT
 										</a>
 										<a class="dropdown-item" href="#" ng-if="!cate.status"><i
-												class="fa fa-dot-circle-o text-danger"></i>Đã Tắt</a>
+												class="fa fa-dot-circle-o text-danger"></i>ĐÃ TẮT</a>
 									</div>
 								</td>
 								<td class="text-right">
@@ -109,10 +103,10 @@
 										<div class="dropdown-menu dropdown-menu-right">
 											<a class="dropdown-item" href="#" data-toggle="modal" ng-click="selectCouponOwner(cate)"
 												data-target="#edit_Coupon"><i class="fa fa-pencil m-r-5"></i>
-												Edit</a>
+												Chỉnh sửa</a>
 											<a class="dropdown-item" href="#" data-toggle="modal" ng-click="selectCouponOwner(cate)"
 												data-target="#delete_Coupon"><i class="fa fa-trash-o m-r-5"></i>
-												Delete</a>
+												Xóa</a>
 										</div>
 									</div>
 								</td>
@@ -131,7 +125,7 @@
 		<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Add Coupon Owner</h5>
+					<h5 class="modal-title">THÊM MÃ GIẢM GIÁ CHO KHÁCH HÀNG</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -148,7 +142,7 @@
 						<div class="row">
 							<div class="col-sm-6">
 								<div class="form-group">
-									<label class="col-form-label">Username <span class="text-danger">*</span></label>
+									<label class="col-form-label">Họ tên <span class="text-danger">*</span></label>
 									<select class="select" ng-model="accountId">
 										<option ng-repeat="(key, value) in accounts" value="{{value.id}}" >{{value.fullname}}</option>
 									</select>
@@ -156,7 +150,7 @@
 							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
-									<label>Voucher Name <span class="text-danger">*</span></label>
+									<label class="col-form-label">Tên mã giảm giá <span class="text-danger">*</span></label>
 									<select class="select" ng-model="couponId" ng-change="changeSelectCoupon()">
 										<option ng-repeat="(key, value) in coupons" value="{{value.id}}" >{{value.couponName}}</option>
 									</select>
@@ -166,7 +160,7 @@
 
 						</div>
 						<div class="submit-section">
-							<button class="btn btn-primary submit-btn" ng-click="submitAdd()">Submit</button>
+							<button class="btn btn-primary submit-btn" ng-click="submitAdd()">THÊM</button>
 						</div>
 					</form>
 				</div>
@@ -180,7 +174,7 @@
 		<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Edit Coupon</h5>
+					<h5 class="modal-title">CHỈNH SỬA MÃ GIẢM GIÁ</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -197,7 +191,7 @@
 						<div class="row">
 							<div class="col-sm-6">
 								<div class="form-group">
-									<label class="col-form-label">Username <span class="text-danger">*</span></label>
+									<label class="col-form-label">Họ tên <span class="text-danger">*</span></label>
 									<select class="select" ng-model="accountId">
 										<option ng-repeat="(key, value) in accounts" value="{{value.id}}" >{{value.fullname}}</option>
 									</select>
@@ -205,7 +199,7 @@
 							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
-									<label>Voucher Name <span class="text-danger">*</span></label>
+									<label>Tên mã giảm giá <span class="text-danger">*</span></label>
 									<select class="select" ng-model="couponId" ng-change="changeSelectCoupon()">
 										<option ng-repeat="(key, value) in coupons" value="{{value.id}}" >{{value.couponName}}</option>
 									</select>
@@ -213,7 +207,7 @@
 							</div>
 						</div>
 						<div class="submit-section">
-							<button class="btn btn-primary submit-btn" ng-click="submitAdd()">Submit</button>
+							<button class="btn btn-primary submit-btn" ng-click="submitAdd()">CHỈNH SỬA</button>
 						</div>
 					</form>
 				</div>
@@ -224,21 +218,21 @@
 
 	<!-- Delete Coupon Modal -->
 	<div class="modal custom-modal fade" id="delete_Coupon" role="dialog">
-		<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-dialog modal-dialog-centered modal-lg">
 			<div class="modal-content">
 				<div class="modal-body">
 					<div class="form-header">
-						<h3>Delete Coupon</h3>
-						<p>Are you sure want to delete?</p>
+						<h3 class="font-weight-bold">XÓA KHÁCH HÀNG ĐANG SỬ DỤNG MÃ GIẢM GIÁ?</h3>
+						<p>Bạn có muốn xóa không?</p>
 					</div>
 					<div class="modal-btn delete-action">
 						<div class="row">
 							<div class="col-6">
-								<a href="javascript:void(0);" ng-click="delete()" class="btn btn-primary continue-btn">Delete</a>
+								<a href="javascript:void(0);" ng-click="delete()" class="btn btn-primary continue-btn">XÓA</a>
 							</div>
 							<div class="col-6">
 								<a href="javascript:void(0);" data-dismiss="modal"
-									class="btn btn-primary cancel-btn">Cancel</a>
+									class="btn btn-primary cancel-btn">THOÁT</a>
 							</div>
 						</div>
 					</div>

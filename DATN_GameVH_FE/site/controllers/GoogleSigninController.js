@@ -27,7 +27,8 @@ app.controller('GoogleSigninController', function ($location, $window, GoogleSer
                     "email": user.email,
                     "photo": "19dn5AWG9uCVzTpVWBFCOVvzPRv-ZXJlc",
                     "type": "google",
-                    "status": true
+                    "status": true,
+                    "accessToken": generateUniqueAccessToken(32)
                 }
 
                 // Tạo account trên database với thông tin của email người dùng
@@ -99,16 +100,30 @@ app.controller('GoogleSigninController', function ($location, $window, GoogleSer
         }
     }
 
+    function generateUniqueAccessToken(length) {
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var key = '';
+
+        for (var i = 0; i < length; i++) {
+            key += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+
+        // Tạo mã hash duy nhất từ chuỗi key
+        var uniqueKey = CryptoJS.SHA256(key).toString(CryptoJS.enc.Hex);
+
+        return uniqueKey;
+    }
+
     function generateRandomPassword(length) {
         const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         let password = "";
-      
+
         for (let i = 0; i < length; i++) {
-          const randomIndex = Math.floor(Math.random() * charset.length);
-          password += charset[randomIndex];
+            const randomIndex = Math.floor(Math.random() * charset.length);
+            password += charset[randomIndex];
         }
-      
+
         return password;
-      }
-      
+    }
+
 });

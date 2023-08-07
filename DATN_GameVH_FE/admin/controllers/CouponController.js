@@ -84,7 +84,7 @@ function CouponController($scope, CouponService, SweetAlert) {
   $scope.submitAdd = function () {
     if (!$scope.formName || !$scope.formCode || !$scope.formMinSpend || !$scope.formStatus
       || !$scope.formManufacturingDate || !$scope.formExpiryDate || !$scope.formImg) {
-      SweetAlert.info("Invalid form", "Please check your info again");
+      SweetAlert.info("Form không hợp lệ", "Vui lòng kiểm tra lại!!!");
       return;
     }
     CouponService.createCoupon({
@@ -102,13 +102,13 @@ function CouponController($scope, CouponService, SweetAlert) {
     })
       .then((response) => {
         SweetAlert.success(
-          "New coupon added",
-          `Coupon: Added success!`
+          "Thêm mã giảm giá thành công",
+          `Mã giảm giá: Thêm thành công!`
         );
         $scope.init();
       })
       .catch((err) =>
-        SweetAlert.error("Error occured, please try again later!", "")
+        SweetAlert.error("Phát hiện có lỗi, Vui lòng thử lại!!!", "")
       );
   };
 
@@ -127,11 +127,11 @@ function CouponController($scope, CouponService, SweetAlert) {
   $scope.delete = function () {
     CouponService.deleteCoupon($scope.formId)
       .then((response) => {
-        SweetAlert.success("Deleted!", "");
+        SweetAlert.success("Đã xóa!", "");
         $scope.init();
       })
       .catch((err) =>
-        SweetAlert.error("Error occured, please try again later!", "")
+        SweetAlert.error("Phát hiện có lỗi, Vui lòng thử lại!!!!", "")
       );
   };
 }

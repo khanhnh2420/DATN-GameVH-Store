@@ -8,6 +8,7 @@ import com.gamevh.entities.Category;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
@@ -28,4 +29,5 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
             "where DATE_FORMAT(create_date , '%Y') = DATE_FORMAT(CURDATE() , '%Y')\n" +
             "group by  DATE_FORMAT(create_date , '%m%Y') ",nativeQuery = true)
     List<IRecordDataChart> findRecordDataChart();
+    Optional<Category> findByCategoryId(String categoryId);
 }

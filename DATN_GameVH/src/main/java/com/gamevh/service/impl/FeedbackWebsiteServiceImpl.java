@@ -1,5 +1,7 @@
 package com.gamevh.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,11 @@ public class FeedbackWebsiteServiceImpl implements FeedbackWebsiteService{
 	@Override
 	public FeedbackWebsite add(FeedbackWebsite feedbackWebsite) {
 		return feedbackWebsiteRepository.save(feedbackWebsite);
+	}
+
+	@Override
+	public List<FeedbackWebsite> getAll() {
+		return feedbackWebsiteRepository.findAll();
 	}
 
 }

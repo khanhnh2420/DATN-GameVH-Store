@@ -100,7 +100,7 @@ function CouponOwnerController($scope, CouponOwnerService,CouponService,AccountS
 
   $scope.submitAdd = function(){
     if (!$scope.couponId || !$scope.accountId ) {
-      SweetAlert.info("Invalid form", "Please check your info again");
+      SweetAlert.info("Form không hợp lệ", "Vui lòng kiểm tra lại!!!");
       return;
     }
     CouponOwnerService.createCouponOwner({
@@ -110,24 +110,27 @@ function CouponOwnerController($scope, CouponOwnerService,CouponService,AccountS
     })
       .then((response) => {
         SweetAlert.success(
-          "New coupon owner added",
-          `Coupon Owner: Added success!`
+          "Đã thêm mã giảm giá cho khách hàng",
+          `Mã giảm giá cho khách hàng: Thêm thành công!`
         );
         $scope.init();
       })
       .catch((err) =>
-        SweetAlert.error("Error occured, please try again later!", "")
+        SweetAlert.error("Phát hiện có lỗi, Vui lòng thử lại!!!", "")
       );
   }
 
   $scope.delete = function () {
     CouponOwnerService.deleteCouponOwner($scope.couponOwnerId)
       .then((response) => {
-        SweetAlert.success("Deleted!", "");
+        SweetAlert.success("Đã xóa!", "");
         $scope.init();
       })
       .catch((err) =>
-        SweetAlert.error("Error occured, please try again later!", "")
+        SweetAlert.error("Phát hiện có lỗi, Vui lòng thử lại!!!", "")
       );
   };
 }
+
+
+

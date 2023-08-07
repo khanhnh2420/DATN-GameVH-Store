@@ -4,18 +4,22 @@ app.factory("OrderService", function ($http) {
     getAll: function (filters) {
       const queries = {
         page: filters.page || 0,
-        size: filters.size || 5,
+        size: filters.size || 500,
         username: filters.username || null,
-        orderId: filters.orderId || null,
-        createDate: filters.createDate || null,
+        phone: filters.phone || null,
+        createdAt: filters.createdAt || null,
       };
-      return $http.get(baseUrl, queries);
+      console.log(queries);
+      return $http.get(baseUrl, { params: queries });
     },
     getOne(id) {
       return $http.get(`${baseUrl}/full/${id}`);
     },
     getTop5() {
-      return $http.get(baseUrl +"/getTop5");
+      return $http.get(baseUrl + "/getTop5");
+    },
+    updateStatus(orderId, newStatus) {
+      return $http.put(`${baseUrl}/status/${orderId}`, newStatus);
     },
   };
 });

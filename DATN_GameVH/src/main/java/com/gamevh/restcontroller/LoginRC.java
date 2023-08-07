@@ -31,6 +31,9 @@ public class LoginRC {
         if(account == null){
             return ResponseEntity.badRequest().build();
         }
+        if(account.getAuthority().stream().anyMatch(s->(s.getRole().getName().equals("STAF") || s.getRole().getName().equals("DIRE")))){
+            return ResponseEntity.badRequest().build();
+        }
         if(!encryptionService.compare(user.getPassword(),account.getPassword())){
             return ResponseEntity.badRequest().build();
         }

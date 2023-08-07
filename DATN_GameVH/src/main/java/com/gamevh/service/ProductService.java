@@ -14,9 +14,7 @@ public interface ProductService {
 
 	Product findById(Integer id);
 	
-	Product createProduct(Product product);
-	
-	Product updateProduct(Product product);
+	Product createOrUpdateProduct(Product product);
 	
 	void deleteProduct(Product product);
 	
@@ -24,5 +22,6 @@ public interface ProductService {
 	List<Object[]> getReportProduct();
 
 	List<Product> findTop5();
+	
 	
 }

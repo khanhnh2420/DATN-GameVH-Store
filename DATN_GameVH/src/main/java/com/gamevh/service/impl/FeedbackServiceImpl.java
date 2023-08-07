@@ -4,6 +4,8 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.gamevh.entities.Feedback;
@@ -47,4 +49,12 @@ public class FeedbackServiceImpl implements FeedbackService{
 	public Feedback addOrUpdate(Feedback feedback) {
 		return feedbackRepository.save(feedback);
 	}
+
+	@Override
+	public List<Feedback> getTop5feedback() {
+		// TODO Auto-generated method stub
+		return feedbackRepository.getTop5feedback();
+	}
+
+	
 }

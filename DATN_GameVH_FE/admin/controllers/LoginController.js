@@ -9,14 +9,14 @@ function LoginController($scope,$location,$window, LoginService, SweetAlert) {
             "password":$scope.password
         })
         .then((response) => {
-            SweetAlert.success("Login successfully!", "");
+            SweetAlert.success("ĐĂNG NHẬP THÀNH CÔNG!", "");
             $window.localStorage.setItem("userName",response.data.username)
             $window.localStorage.setItem("photo",response.data.photo)
             $scope.fullName = response.data.username
             $location.path("/dashboard")
         })
         .catch((err) =>{
-            SweetAlert.error("Error occured!", "Please try again later")
+            SweetAlert.error("Sai thông tin đăng nhập"," Vui lòng thử lại!!!");
         });
     };
 

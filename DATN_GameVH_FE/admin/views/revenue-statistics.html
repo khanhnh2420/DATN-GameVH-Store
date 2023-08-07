@@ -7,7 +7,7 @@
 <!-- /Sidebar -->
 
 <!-- /Page Wrapper -->
-<div class="page-wrapper" ng-controller="FeedbackWebsiteController">
+<div class="page-wrapper" ng-controller="RevenueStatisticsController">
     <!-- Page Content -->
     <div class="content container-fluid">
         <!-- Page Header -->
@@ -28,74 +28,73 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="table-responsive">
-                    <table class="table table-striped custom-table mb-0 datatable" id="tableFeedbackWebsite">
-                        <thead>
-                            <tr>
-                                <th style="width: 5%;">#</th>
-                                <th style="width: 10%;">Mã Đánh Giá</th>
-                                <th style="width: 14%;">Tên Đăng Nhập</th>
-                                <th style="width: 15%;">Họ Và Tên</th>
-                                <th style="width: 15%;">Ngày Đánh Giá</th>
-                                <th>Nội Dung</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Content -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+                <!-- Tabs navs -->
+                <ul class="nav nav-tabs mb-3" id="ex1" role="tablist">
+                    <li class="nav-item" role="presentation" style="cursor: pointer;">
+                        <a class="nav-link" id="ex1-tab-1" ng-click="changeTab(1)"
+                            ng-class="{ 'active': activeTab === 1 }" role="tab" aria-controls="ex1-tabs-1"
+                            aria-selected="true">
+                            Thống kê doanh số bán hàng theo năm</a>
+                    </li>
+                    <li class="nav-item" role="presentation" style="cursor: pointer;">
+                        <a class="nav-link" id="ex1-tab-2" ng-click="changeTab(2)"
+                            ng-class="{ 'active': activeTab === 2 }" role="tab" aria-controls="ex1-tabs-2"
+                            aria-selected="false">Thống kê doanh số bán hàng theo tháng</a>
+                    </li>
+                </ul>
+                <!-- Tabs navs -->
 
-    <!-- /Page Content -->
-
-    <!-- Edit Category Modal -->
-    <div class="modal custom-modal fade" id="edit_Category" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Edit Category</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label>Type
-                                </label>
-                                <select ng-model="formType" class="select">
-                                    <option value="Game">Game</option>
-                                    <option value="PK">Phụ Kiện</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label>Category ID
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input ng-model="formCategoryId" class="form-control" type="text" />
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label>Category Name
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input ng-model="formName" class="form-control" type="text" />
-                            </div>
-                            <div class="form-group submit-section col-md-12">
-                                <button ng-click="submitUpdate()" class="btn btn-primary submit-btn">
-                                    Submit
-                                </button>
-                            </div>
+                <!-- Tabs content -->
+                <div class="tab-pane" id="ex1-tabs-1" ng-show="activeTab === 1">
+                    <div class="row mt-4">
+                        <div class="col-2">
+                            <select class="form-control" id="revenueByYear">
+                                <option value="" selected>--Chọn Năm--</option>
+                                <option ng-repeat="year in fiveYears" value="{{year}}">{{year}}</option>
+                            </select>
                         </div>
-                    </form>
+                        <div class="col-sm-6 col-md-2">
+                            <a href="#" class="btn btn-success btn-block" ng-click="revenueByYear()">XEM THỐNG KÊ</a>
+                        </div>
+                    </div>
+
+                    <h2 class="text-center mt-5 mb-5" hidden id="revenueYearTitle">THỐNG KÊ DOANH SỐ BÁN HÀNG NĂM
+                        {{year}}</h2>
+                    <div id="barRevenueByYear" class="mt-4" hidden></div>
                 </div>
+                <div class="tab-pane" id="ex1-tabs-2" ng-show="activeTab === 2">
+                    <div class="row mt-4">
+                        <div class="col-2">
+                            <select class="form-control" id="revenueByMonth">
+                                <option value="" selected>--Chọn Tháng--</option>
+                                <option ng-repeat="month in currentYearMonths" value="{{month.index}}">{{month.name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <select class="form-control" id="revenueByType">
+                                <option value="" selected>--Chọn Loại Thống Kê--</option>
+                                <option value="category">Loại Sản Phẩm</option>
+                                <option value="paymentType">Phương Thức Thanh Toán</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-md-2">
+                            <a href="#" class="btn btn-success btn-block" ng-click="revenueByMonth()">XEM THỐNG KÊ</a>
+                        </div>
+                    </div>
+
+                    <h2 class="text-center mt-5 mb-5" hidden id="revenueMonthTitle">THỐNG KÊ DOANH SỐ BÁN HÀNG
+                        {{type}}
+                    </h2>
+                    <div id="donutRevenueByMonthAndCate" class="mt-4" hidden></div>
+                    <div id="donutRevenueByMonthAndPaymentMethod" class="mt-4" hidden></div>
+                </div>
+                <!-- Tabs content -->
             </div>
         </div>
     </div>
-    <!-- /Edit Category Modal -->
+    <div id="toast"></div>
+    <!-- /Page Content -->
 
     <!-- /Page Wrapper -->
 </div>

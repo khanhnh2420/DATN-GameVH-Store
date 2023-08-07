@@ -66,17 +66,17 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
                 '<div class="dropdown action-label">' +
                 '<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">' +
                 '<i class="fa fa-dot-circle-o text-' + (feedback.status ? 'success' : 'danger') + '"></i> ' +
-                (feedback.status ? 'Approved' : 'Disapprove') +
+                (feedback.status ? 'Đã Duyệt' : 'Chưa Duyệt') +
                 '</a>' +
                 '<div class="dropdown-menu">' +
-                '<a class="dropdown-item" href="#" ng-click="updateFeedbackStatus(' + feedback.id + ',' + feedback.product.id + ',1)"><i class="fa fa-dot-circle-o text-success"></i>Approved</a>' +
-                '<a class="dropdown-item" href="#" ng-click="updateFeedbackStatus(' + feedback.id + ',' + feedback.product.id + ',0)"><i class="fa fa-dot-circle-o text-danger"></i>Disapprove</a>' +
+                '<a class="dropdown-item" href="#" ng-click="updateFeedbackStatus(' + feedback.id + ',' + feedback.product.id + ',1)"><i class="fa fa-dot-circle-o text-success"></i>Đã Duyệt</a>' +
+                '<a class="dropdown-item" href="#" ng-click="updateFeedbackStatus(' + feedback.id + ',' + feedback.product.id + ',0)"><i class="fa fa-dot-circle-o text-danger"></i>Chưa Duyệt</a>' +
                 '</div>' +
                 '</div>' +
                 '</td>' +
                 '<td class="text-right">' +
                 '<div class=" text-right">' +
-                '<button href="#" ng-click="deleteFeedback(' + feedback.id + ',' + feedback.product.id + ')" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Delete</button>' +
+                '<button href="#" ng-click="deleteFeedback(' + feedback.id + ',' + feedback.product.id + ')" data-toggle="modal" data-target="#delete_comment" class="border btn-danger">Xóa</button>' +
                 '</div>' +
                 '</td>' +
                 '</tr>';
@@ -210,11 +210,11 @@ app.controller("ProductController", function(ProductAdminService, ToastService, 
                                 '</a>' +
                                 '<div class="dropdown-menu dropdown-menu-right">' +
                                 '<a class="dropdown-item edit-product" href="#" data-product-id="' + row.id + '" data-toggle="modal" data-target="#edit_Product">' +
-                                '<i class="fa fa-pencil m-r-5"></i>Edit' +
+                                '<i class="fa fa-pencil m-r-5"></i>Chỉnh Sửa' +
                                 '</a>' +
                                 // Call the loadProductFeedback function with the product ID
                                 '<a class="dropdown-item view-feedback" href="#" data-product-id="' + row.id + '" data-toggle="modal" data-target="#comment_Product">' +
-                                '<i class="fa fa-pencil-square-o m-r-5"></i>Feedback' +
+                                '<i class="fa fa-pencil-square-o m-r-5"></i>Đánh Giá' +
                                 '</a>' +
                                 '</div>' +
                                 '</div>';

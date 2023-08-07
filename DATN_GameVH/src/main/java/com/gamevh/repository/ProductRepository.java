@@ -20,5 +20,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 	@Query(value = "SELECT * FROM product order by create_date desc LIMIT 5",nativeQuery = true)
 	List<Product> getTop5();
 	
+
 	
 }

@@ -577,4 +577,12 @@ public class ProductRC {
 		List<Product> products = productService.findTop5();
 		return ResponseEntity.ok(products);
 	}
+	
+	@GetMapping("/getTop5feedback")
+	public ResponseEntity<List<Feedback>> getTop5feedback() {
+		List<Feedback> feedback = feedBackService.getTop5feedback();
+		return ResponseEntity.ok(feedback);
+	}
+	
+
 }

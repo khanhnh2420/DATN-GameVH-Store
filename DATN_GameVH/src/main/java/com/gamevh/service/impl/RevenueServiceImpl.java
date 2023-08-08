@@ -28,4 +28,9 @@ public class RevenueServiceImpl implements RevenueService{
 		return orderDataRepository.getOrderStatsForMonthAndByCategory(month);
 	}
 
+	@Override
+	public List<Object[]> getTotalPriceByYear(Integer year) {
+		return orderDataRepository.getTotalPriceByYear(year);
+	}
+
 }

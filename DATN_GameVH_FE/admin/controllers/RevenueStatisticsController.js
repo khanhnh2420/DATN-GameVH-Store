@@ -153,57 +153,116 @@ function RevenueStatisticsController($scope, ToastService, RevenueStatisticsServ
     $scope.revenueByYear = function () {
         var selectedYearRevenueElement = document.getElementById("revenueByYear");
         var selectedYearRevenueValue = selectedYearRevenueElement.value;
+        var selectedTypeRevenueElement = document.getElementById("revenueByYearType");
+        var selectedTypeRevenueValue = selectedTypeRevenueElement.value;
         var revenueTitle = document.getElementById("revenueYearTitle");
 
         var revenueBarYear = document.getElementById("barRevenueByYear");
+        var revenueLineYear = document.getElementById("lineRevenueByYearForTotalPrice");
 
-        if (selectedYearRevenueValue) {
-            RevenueStatisticsService.getRevenueByYear(parseInt(selectedYearRevenueValue))
-                .then((response) => {
-                    var dataResult = response.data;
-                    var chartData = [];
-                    if (dataResult) {
-                        if (dataResult.length == 0) {
-                            ToastService.showErrorToast("Năm " + selectedYearRevenueValue + " không có dữ liệu để thống kê!");
+        if (selectedYearRevenueValue && selectedTypeRevenueValue) {
+            if (selectedTypeRevenueValue == "order") {
+                RevenueStatisticsService.getRevenueByYear(parseInt(selectedYearRevenueValue))
+                    .then((response) => {
+                        var dataResult = response.data;
+                        var chartData = [];
+                        if (dataResult) {
+                            if (dataResult.length == 0) {
+                                ToastService.showErrorToast("Năm " + selectedYearRevenueValue + " không có dữ liệu để thống kê!");
+                            } else {
+                                // Hiển thị biểu đồ
+                                revenueBarYear.removeAttribute("hidden");
+                                revenueTitle.removeAttribute("hidden");
+                                revenueLineYear.setAttribute("hidden", true);
+                                $scope.year = selectedYearRevenueValue;
+                                revenueBarYear.innerHTML = "";
+
+                                dataResult.sort(function (a, b) {
+                                    return a[0] - b[0]; // So sánh và trả về kết quả để sắp xếp tăng dần
+                                });
+
+                                // Tạo data cho biểu đồ
+                                dataResult.forEach(function (item) {
+                                    var chartJson = {
+                                        x: 'Tháng ' + item[0],
+                                        y: item[1],
+                                        z: item[2]
+                                    }
+                                    chartData.push(chartJson);
+                                });
+
+                                // Vẽ biểu đồ
+                                Morris.Bar({
+                                    element: 'barRevenueByYear',
+                                    data: chartData,
+                                    xkey: 'x',
+                                    ykeys: ['y', 'z'],
+                                    labels: ['Số đơn hàng đã hoàn thành', 'Số đơn hàng đã hủy']
+                                })
+                            }
                         } else {
-                            // Hiển thị biểu đồ
-                            revenueBarYear.removeAttribute("hidden");
-                            revenueTitle.removeAttribute("hidden");
-                            $scope.year = selectedYearRevenueValue;
-                            revenueBarYear.innerHTML = "";
-
-                            dataResult.sort(function (a, b) {
-                                return a[0] - b[0]; // So sánh và trả về kết quả để sắp xếp tăng dần
-                            });
-
-                            // Tạo data cho biểu đồ
-                            dataResult.forEach(function (item) {
-                                var chartJson = {
-                                    x: 'Tháng ' + item[0],
-                                    y: item[1],
-                                    z: item[2]
-                                }
-                                chartData.push(chartJson);
-                            });
-
-                            // Vẽ biểu đồ
-                            Morris.Bar({
-                                element: 'barRevenueByYear',
-                                data: chartData,
-                                xkey: 'x',
-                                ykeys: ['y', 'z'],
-                                labels: ['Số đơn hàng đã hoàn thành', 'Số đơn hàng đã hủy']
-                            })
+                            ToastService.showErrorToast("Năm " + selectedYearRevenueValue + " không có dữ liệu để thống kê!");
                         }
-                    } else {
-                        ToastService.showErrorToast("Năm " + selectedYearRevenueValue + " không có dữ liệu để thống kê!");
-                    }
-                })
-                .catch((err) =>
-                    console.log("Lỗi khi lấy thống kê theo năm!")
-                );
+                    })
+                    .catch((err) =>
+                        console.log("Lỗi khi lấy thống kê theo năm!")
+                    );
+            } else {
+                RevenueStatisticsService.getRevenueByTotalPriceForYear(parseInt(selectedYearRevenueValue))
+                    .then((response) => {
+                        var dataResult = response.data;
+                        var chartData = [];
+                        if (dataResult) {
+                            if (dataResult.length == 0) {
+                                ToastService.showErrorToast("Năm " + selectedYearRevenueValue + " không có dữ liệu để thống kê!");
+                            } else {
+                                // Hiển thị biểu đồ
+                                revenueLineYear.removeAttribute("hidden");
+                                revenueTitle.removeAttribute("hidden");
+                                revenueBarYear.setAttribute("hidden", true);
+                                $scope.year = selectedYearRevenueValue;
+                                revenueLineYear.innerHTML = "";
+
+                                dataResult.sort(function (a, b) {
+                                    return a[0] - b[0]; // So sánh và trả về kết quả để sắp xếp tăng dần
+                                });
+
+                                // Tạo data cho biểu đồ
+                                dataResult.forEach(function (item) {
+                                    var chartJson = {
+                                        "period": selectedYearRevenueValue + '-' + item[0],
+                                        "totalPrice": item[1]
+                                    }
+                                    chartData.push(chartJson);
+                                });
+
+                                // Vẽ biểu đồ
+                                Morris.Line({
+                                    element: 'lineRevenueByYearForTotalPrice',
+                                    data: chartData,
+                                    xkey: 'period',
+                                    ykeys: ['totalPrice'],
+                                    labels: ['Tổng doanh thu'],
+                                    smooth: false
+                                });
+                            }
+                        } else {
+                            ToastService.showErrorToast("Năm " + selectedYearRevenueValue + " không có dữ liệu để thống kê!");
+                        }
+                    })
+                    .catch((err) =>
+                        console.log("Lỗi khi lấy thống kê theo năm!")
+                    );
+            }
+
         } else {
-            ToastService.showErrorToast("Vui lòng chọn năm!");
+            if (!selectedYearRevenueValue) {
+                ToastService.showErrorToast("Vui lòng chọn năm!");
+            } else {
+                if (!selectedTypeRevenueValue) {
+                    ToastService.showErrorToast("Vui lòng chọn loại thống kê!");
+                }
+            }
         }
     }
 }

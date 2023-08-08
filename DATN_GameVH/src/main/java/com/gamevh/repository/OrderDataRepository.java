@@ -36,6 +36,13 @@ public interface OrderDataRepository extends JpaRepository<OrderData, Long> {
 	           "GROUP BY MONTH(create_date)")
 	List<Object[]> getTotalOrderStatusByYear(Integer year);
 	
+	@Query(nativeQuery = true, value = "SELECT MONTH(create_date) AS month, " +
+	           "SUM(CASE WHEN order_status = 'Đã hoàn thành' THEN total_price ELSE 0 END) AS totalPrice " +
+	           "FROM db_gamesvh.order_data " +
+	           "WHERE YEAR(create_date) = :year " +
+	           "GROUP BY MONTH(create_date)")
+	List<Object[]> getTotalPriceByYear(Integer year);
+	
 	@Query(nativeQuery = true, value = "SELECT " +
 	           "    MONTH(create_date) AS month, " +
 	           "    SUM(CASE WHEN payment_type = 'momo' THEN 1 ELSE 0 END) AS momo, " +

@@ -56,8 +56,8 @@
                         <div class="col-2">
                             <select class="form-control" id="revenueByYearType">
                                 <option value="" selected>--Chọn Loại Thống Kê--</option>
-                                <option value="category">Tổng đơn hàng</option>
-                                <option value="paymentType">Tổng tiền</option>
+                                <option value="order">Tổng đơn hàng</option>
+                                <option value="price">Doan thu</option>
                             </select>
                         </div>
                         <div class="col-sm-6 col-md-2">
@@ -68,6 +68,7 @@
                     <h2 class="text-center mt-5 mb-5" hidden id="revenueYearTitle">THỐNG KÊ DOANH SỐ BÁN HÀNG NĂM
                         {{year}}</h2>
                     <div id="barRevenueByYear" class="mt-4" hidden></div>
+                    <div id="lineRevenueByYearForTotalPrice"></div>
                 </div>
                 <div class="tab-pane" id="ex1-tabs-2" ng-show="activeTab === 2">
                     <div class="row mt-4">

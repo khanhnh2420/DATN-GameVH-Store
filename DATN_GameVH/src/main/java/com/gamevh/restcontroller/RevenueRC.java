@@ -28,6 +28,15 @@ public class RevenueRC {
 		return null;
 	}
 	
+	@GetMapping("year/totalPrice/{year}")
+	public ResponseEntity<List<Object[]>> getRevenueForTotalPriceByYear(@PathVariable("year") Integer year) {
+		if(year > 0) {
+			return ResponseEntity.ok(revenueService.getTotalPriceByYear(year));
+		}
+
+		return null;
+	}
+	
 	@GetMapping("month/paymentType/{month}")
 	public ResponseEntity<List<Object[]>> getRevenueByMonthAndPaymentType(@PathVariable("month") Integer month) {
 		if(month > 0) {

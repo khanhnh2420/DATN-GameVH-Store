@@ -67,8 +67,9 @@ public class OrderDataRC {
 			@RequestParam("size") Optional<Integer> size,
 			@RequestParam(value = "username", defaultValue = "", required = false) String username,
 			@RequestParam(value = "phone", defaultValue = "", required = false) String phone,
-			@RequestParam(value = "createdAt", defaultValue = "", required = false) LocalDate createdAt
+			@RequestParam(value = "createdAt", defaultValue = "", required = false) Optional<LocalDate> createdAt
 	) {
+		System.out.println(createdAt);
 		return ResponseEntity.ok(orderService.findAll(page, size, username, phone, createdAt));
 	}
 

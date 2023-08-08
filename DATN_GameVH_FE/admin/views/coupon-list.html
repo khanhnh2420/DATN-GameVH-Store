@@ -7,12 +7,10 @@
 <!-- /Sidebar -->
 
 <!-- Page Wrapper -->
-<div
-    class="page-wrapper" ng-controller="CouponController">
+<div class="page-wrapper" ng-controller="CouponController">
 
     <!-- Page Content -->
-    <div
-        class="content container-fluid">
+    <div class="content container-fluid">
 
         <!-- Page Header -->
         <div class="page-header">
@@ -21,13 +19,14 @@
                     <h3 class="page-title">DANH SÁCH MÃ GIẢM GIÁ</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="index.html">Trang chủ</a>
+                            <a href="index.html">Trang Chủ</a>
                         </li>
-                        <li class="breadcrumb-item active">Danh sách mã giảm giá</li>
+                        <li class="breadcrumb-item active">Danh Sách Mã Giảm Giá</li>
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
-                    <a href="#" class="btn add-btn" ng-click="openAddModal()" data-toggle="modal" data-target="#add_Coupon">
+                    <a href="#" class="btn add-btn" ng-click="openAddModal()" data-toggle="modal"
+                        data-target="#add_Coupon">
                         <i class="fa fa-plus"></i>
                         Thêm mã giảm giá</a>
 
@@ -80,11 +79,12 @@
                             <tr ng-repeat="cate in coupons">
                                 <td>{{$index + 1}}</td>
                                 <td class="text-left">
-                                    <a class="text-dark" href="#" data-toggle="modal" data-target="#edit_Coupon">{{cate.couponName}}</a>
+                                    <a class="text-dark" href="#" data-toggle="modal"
+                                        data-target="#edit_Coupon">{{cate.couponName}}</a>
                                 </td>
                                 <td>{{cate.code}}</td>
                                 <td>{{cate.amount}}</td>
-                                <td>{{cate.value | currency: 'đ ' : '0'}} 
+                                <td>{{cate.value | currency: 'đ ' : '0'}}
                                 </td>
                                 <td>{{cate.minSpend | currency: 'đ ' : '0'}}
                                 </td>
@@ -94,25 +94,28 @@
                                     <span class="badge bg-inverse-success" ng-if="cate.status ==1">ĐANG KHẢ DỤNG</span>
                                     <span class="badge bg-inverse-danger" ng-if="cate.status !=1">ĐÃ TẮT</span>
                                 </td> -->
-								<td>
-									<div class="dropdown action-label">
-										<a class="dropdown-item" href="#" ng-if="cate.status">
-											<i class="fa fa-dot-circle-o text-success"></i> ĐÃ BẬT
-										</a>
-										<a class="dropdown-item" href="#" ng-if="!cate.status"><i
-												class="fa fa-dot-circle-o text-danger"></i>ĐÃ TẮT</a>
-									</div>
-								</td>
+                                <td>
+                                    <div class="dropdown action-label">
+                                        <a class="dropdown-item" href="#" ng-if="cate.status">
+                                            <i class="fa fa-dot-circle-o text-success"></i> ĐÃ BẬT
+                                        </a>
+                                        <a class="dropdown-item" href="#" ng-if="!cate.status"><i
+                                                class="fa fa-dot-circle-o text-danger"></i>ĐÃ TẮT</a>
+                                    </div>
+                                </td>
                                 <td class="text-right">
                                     <div class="dropdown dropdown-action">
-                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
+                                            aria-expanded="false">
                                             <i class="material-icons font-weight-bold">⋮</i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right">
-                                            <a ng-click="selectCoupon(cate)" class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_Coupon">
+                                            <a ng-click="selectCoupon(cate)" class="dropdown-item" href="#"
+                                                data-toggle="modal" data-target="#edit_Coupon">
                                                 <i class="fa fa-pencil m-r-5"></i>
                                                 Chỉnh sửa</a>
-                                            <a class="dropdown-item" href="#" data-toggle="modal" ng-click="selectCoupon(cate)" data-target="#delete_Coupon">
+                                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                                ng-click="selectCoupon(cate)" data-target="#delete_Coupon">
                                                 <i class="fa fa-trash-o m-r-5"></i>
                                                 Xóa</a>
                                         </div>
@@ -144,12 +147,14 @@
                             <div class="col-md-12">
                                 <div class="voucher-img-wrap edit-img">
                                     <div ng-repeat="step in stepsModel">
-                                        <img class="thumb" ng-src="{{step}}"/>
+                                        <img class="thumb" ng-src="{{step}}" />
                                     </div>
                                     <div class="fileupload btn" style="opacity: 0.1; border: black 1px solid;">
                                         <label for="files" class="btn">
                                             Chọn ảnh</label>
-                                        <input type='file' ng-model-instant id="files" ng-model="formImg" style="visibility:hidden;" onchange="angular.element(this).scope().imageUpload(event)"/>
+                                        <input type='file' ng-model-instant id="files" ng-model="formImg"
+                                            style="visibility:hidden;"
+                                            onchange="angular.element(this).scope().imageUpload(event)" />
                                     </div>
                                 </div>
                             </div>
@@ -208,7 +213,8 @@
                                         <span class="text-danger">*</span>
                                     </label>
                                     <div class="cal-icon">
-                                        <input class="form-control datetimepicker " type="text" ng-model="formManufacturingDate" customzdatetime>
+                                        <input class="form-control datetimepicker " type="text"
+                                            ng-model="formManufacturingDate" customzdatetime>
                                     </div>
                                 </div>
                             </div>
@@ -218,7 +224,8 @@
                                         <span class="text-danger">*</span>
                                     </label>
                                     <div class="cal-icon">
-                                        <input class="form-control datetimepicker " type="text" ng-model="formExpiryDate" customzdatetime>
+                                        <input class="form-control datetimepicker " type="text"
+                                            ng-model="formExpiryDate" customzdatetime>
                                     </div>
                                 </div>
                             </div>
@@ -259,11 +266,13 @@
                             <div class="col-md-12">
                                 <div class="voucher-img-wrap edit-img">
                                     <div ng-repeat="step in stepsModel">
-                                        <img class="thumb" ng-src="{{step}}"/>
+                                        <img class="thumb" ng-src="{{step}}" />
                                     </div>
                                     <div class="fileupload btn" style="opacity: 0.1;">
                                         <label for="files" class="btn">Chọn ảnh</label>
-                                        <input type='file' ng-model-instant id="files" ng-model="formImg" style="visibility:hidden;" onchange="angular.element(this).scope().imageUpload(event)"/>
+                                        <input type='file' ng-model-instant id="files" ng-model="formImg"
+                                            style="visibility:hidden;"
+                                            onchange="angular.element(this).scope().imageUpload(event)" />
                                     </div>
                                 </div>
                             </div>
@@ -323,7 +332,8 @@
                                         <span class="text-danger">*</span>
                                     </label>
                                     <div class="cal-icon">
-                                        <input class="form-control datetimepicker " type="text" ng-model="formManufacturingDate">
+                                        <input class="form-control datetimepicker " type="text"
+                                            ng-model="formManufacturingDate">
                                     </div>
                                 </div>
                             </div>
@@ -333,7 +343,8 @@
                                         <span class="text-danger">*</span>
                                     </label>
                                     <div class="cal-icon">
-                                        <input class="form-control datetimepicker " type="text" ng-model="formExpiryDate">
+                                        <input class="form-control datetimepicker " type="text"
+                                            ng-model="formExpiryDate">
                                     </div>
                                 </div>
                             </div>
@@ -370,10 +381,12 @@
                     <div class="modal-btn delete-action">
                         <div class="row">
                             <div class="col-6">
-                                <a href="javascript:void(0);" ng-click="delete()" class="btn btn-primary continue-btn">XÓA</a>
+                                <a href="javascript:void(0);" ng-click="delete()"
+                                    class="btn btn-primary continue-btn">XÓA</a>
                             </div>
                             <div class="col-6">
-                                <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">THOÁT</a>
+                                <a href="javascript:void(0);" data-dismiss="modal"
+                                    class="btn btn-primary cancel-btn">THOÁT</a>
                             </div>
                         </div>
                     </div>

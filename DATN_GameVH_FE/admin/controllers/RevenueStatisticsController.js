@@ -172,6 +172,10 @@ function RevenueStatisticsController($scope, ToastService, RevenueStatisticsServ
                             $scope.year = selectedYearRevenueValue;
                             revenueBarYear.innerHTML = "";
 
+                            dataResult.sort(function (a, b) {
+                                return a[0] - b[0]; // So sánh và trả về kết quả để sắp xếp tăng dần
+                            });
+
                             // Tạo data cho biểu đồ
                             dataResult.forEach(function (item) {
                                 var chartJson = {

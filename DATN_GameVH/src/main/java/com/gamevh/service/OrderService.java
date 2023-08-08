@@ -13,7 +13,7 @@ import org.springframework.data.domain.Page;
 public interface OrderService {
 	
 	List<OrderData> findAll();
-	Page<OrderData> findAll(Optional<Integer> page, Optional<Integer> size, String username, String phone, LocalDate createdAt);
+	Page<OrderData> findAll(Optional<Integer> page, Optional<Integer> size, String username, String phone, Optional<LocalDate> createdAt);
 
 	OrderData findById(Long id);
 

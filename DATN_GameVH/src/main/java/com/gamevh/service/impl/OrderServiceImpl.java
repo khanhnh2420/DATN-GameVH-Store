@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.gamevh.dto.FullOrderDTO;
+import com.gamevh.entities.Location;
 import com.gamevh.handle.CustomException;
 import com.gamevh.mapper.impl.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Page<OrderData> findAll(Optional<Integer> pageNo, Optional<Integer> pageSize, String username, String phone, LocalDate createdAt) {
+	public Page<OrderData> findAll(Optional<Integer> pageNo, Optional<Integer> pageSize, String username, String phone, Optional<LocalDate> createdAt) {
 		Pageable pageable = PageRequest.of(pageNo.orElse(0), pageSize.orElse(6));
 		Page<OrderData> orderDataPage = orderDataRepository.findAllByFilterPagination(pageable, username, phone, createdAt);
 		return orderDataPage;

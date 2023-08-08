@@ -21,7 +21,7 @@ app
       })
       .when("/blog-list", {
         templateUrl: "/views/blog-list.html",
-        pageTitle: "Blog List",
+        pageTitle: "Danh sách bài viết",
       })
       .when("/category", {
         templateUrl: "/views/category.html",
@@ -49,7 +49,7 @@ app
       })
       .when("/product-list", {
         templateUrl: "/views/product-list.html",
-        pageTitle: "Product List",
+        pageTitle: "Danh sách sản phẩm",
       })
       .when("/staff-list", {
         templateUrl: "/views/staff-list.html",
@@ -65,7 +65,7 @@ app
       })
       .when("/feedback-website", {
         templateUrl: "/views/feedback-website.html",
-        pageTitle: "Đánh Giá Website",
+        pageTitle: "Đánh giá website",
       })
       .when("/revenue-statistics", {
         templateUrl: "/views/revenue-statistics.html",

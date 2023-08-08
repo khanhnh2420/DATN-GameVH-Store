@@ -24,9 +24,9 @@ public interface OrderDataRepository extends JpaRepository<OrderData, Long> {
 	@Query("SELECT o FROM OrderData o WHERE " +
 			"(:username IS NULL or COALESCE(o.account.username, '') LIKE CONCAT('%', LOWER(:username), '%')) AND " +
 			"(:phone IS NULL or COALESCE(o.phone, '') LIKE CONCAT('%', LOWER(:phone), '%')) AND " +
-			"(:createdAt IS NULL or o.createDate = :createdAt)")
+			"( COALESCE(:createdAt) IS NULL or o.createDate = :createdAt) ORDER BY o.createDate DESC")
 	Page<OrderData> findAllByFilterPagination(Pageable pageable ,@Param("username") String username, @Param("phone") String phone,
-									@Param("createdAt") LocalDate createdAt);
+									@Param("createdAt") Optional<LocalDate> createdAt);
 	
 	@Query(nativeQuery = true, value = "SELECT MONTH(create_date) AS month, " +
 	           "SUM(CASE WHEN order_status = 'Đã hoàn thành' THEN 1 ELSE 0 END) AS totalOrderSuccess, " +
@@ -35,6 +35,13 @@ public interface OrderDataRepository extends JpaRepository<OrderData, Long> {
 	           "WHERE YEAR(create_date) = :year " +
 	           "GROUP BY MONTH(create_date)")
 	List<Object[]> getTotalOrderStatusByYear(Integer year);
+	
+	@Query(nativeQuery = true, value = "SELECT MONTH(create_date) AS month, " +
+	           "SUM(CASE WHEN order_status = 'Đã hoàn thành' THEN total_price ELSE 0 END) AS totalPrice " +
+	           "FROM db_gamesvh.order_data " +
+	           "WHERE YEAR(create_date) = :year " +
+	           "GROUP BY MONTH(create_date)")
+	List<Object[]> getTotalPriceByYear(Integer year);
 	
 	@Query(nativeQuery = true, value = "SELECT " +
 	           "    MONTH(create_date) AS month, " +

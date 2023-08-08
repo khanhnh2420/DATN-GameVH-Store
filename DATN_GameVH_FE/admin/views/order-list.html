@@ -7,11 +7,9 @@
 <!-- /Sidebar -->
 
 <!-- Page Wrapper -->
-<div
-    class="page-wrapper" ng-controller="OrderController">
+<div class="page-wrapper" ng-controller="OrderController">
     <!-- Page Content -->
-    <div
-        class="content container-fluid">
+    <div class="content container-fluid">
         <!-- Page Header -->
         <div class="page-header">
             <div class="row align-items-center">
@@ -19,9 +17,9 @@
                     <h3 class="page-title">DANH SÁCH ĐƠN HÀNG</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="index.html">Trang chủ</a>
+                            <a href="index.html">Trang Chủ</a>
                         </li>
-                        <li class="breadcrumb-item active">Danh sách mã đơn hàng</li>
+                        <li class="breadcrumb-item active">Danh Sách Đơn Hàng</li>
                     </ul>
                 </div>
             </div>
@@ -32,19 +30,20 @@
         <div class="row filter-row">
             <div class="col-sm-6 col-md-3">
                 <div class="form-group form-focus">
-                    <input type="text" class="form-control floating" ng-model="phoneFilter"/>
+                    <input type="text" class="form-control floating" ng-model="phoneFilter" />
                     <label class="focus-label">Số diện thoại</label>
                 </div>
             </div>
             <div class="col-sm-6 col-md-3">
                 <div class="form-group form-focus">
-                    <input type="text" class="form-control floating" ng-model="userNameFilter"/>
+                    <input type="text" class="form-control floating" ng-model="userNameFilter" />
                     <label class="focus-label">Tên khách hàng</label>
                 </div>
             </div>
             <div class="col-sm-6 col-md-3">
                 <div class="form-group form-focus cal-icon">
-                    <input type="text" class="form-control floating datetimepicker" ng-model="createdAtFilter" customzdatetime="customzdatetime"/>
+                    <input type="text" class="form-control floating datetimepicker" ng-model="createdAtFilter"
+                        customzdatetime="customzdatetime" />
                     <label class="focus-label">Ngày tạo</label>
                 </div>
             </div>
@@ -87,7 +86,9 @@
                                 <td>{{order.phone}}</td>
                                 <td>
                                     <div class="dropdown action-label">
-                                        <a data-toggle="modal" data-target="#status_order" class="btn btn-white btn-sm btn-rounded" href="#" data-toggle="dropdown" aria-expanded="false" ng-click="viewOrderStatus(order)">
+                                        <a data-toggle="modal" data-target="#status_order"
+                                            class="btn btn-white btn-sm btn-rounded" href="#" data-toggle="dropdown"
+                                            aria-expanded="false" ng-click="viewOrderStatus(order)">
                                             <span ng-if="order.orderStatus=== 'Đã hoàn thành'">
                                                 <i class="fa fa-dot-circle-o text-success"></i>
                                                 Đã Hoàn Thành
@@ -112,7 +113,8 @@
                                 </td>
                                 <td class="text-right">
                                     <div class="text-right">
-                                        <button ng-click="viewData(order)" href="#" type="button" data-toggle="modal" data-target="#data_order" class="btn btn-primary">
+                                        <button ng-click="viewData(order)" href="#" type="button" data-toggle="modal"
+                                            data-target="#data_order" class="btn btn-primary">
                                             Chi tiết
                                         </button>
                                     </div>
@@ -213,7 +215,7 @@
                                             {{selectedOrderData.address}}
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
 
                                 <div class="col-sm-12 mt-3">
                                     <h2 class="modal-title">Thông tin thanh toán</h2>
@@ -296,7 +298,8 @@
                                                     <td>{{detail.product.source}}</td>
                                                     <td>{{detail.product.category.game}}</td>
                                                     <td>{{detail.product.qty}}</td>
-                                                    <td class="font-weight-bold">{{detail.price | currency: 'đ ': '0'}} </td>
+                                                    <td class="font-weight-bold">{{detail.price | currency: 'đ ': '0'}}
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -332,7 +335,8 @@
                                         <label>Tình trạng thanh toán</label>
                                     </div>
                                     <div class="form-check  mt-2">
-                                        <input ng-model="selectedOrderStatus.paymentStatus" class="form-check-input" type="checkbox" disabled="disabled"/>
+                                        <input ng-model="selectedOrderStatus.paymentStatus" class="form-check-input"
+                                            type="checkbox" disabled="disabled" />
                                         <label class="form-check-label">
                                             {{selectedOrderStatus.paymentStatus? "Đã" : "Chưa"}}
                                             Thanh Toán
@@ -344,7 +348,8 @@
                                 <div class="form-group">
                                     <label class="col-form-label">Hình thức thanh toán
                                     </label>
-                                    <input class="form-control" type="text" disabled="disabled" ng-model="selectedOrderStatus.paymentType"/>
+                                    <input class="form-control" type="text" disabled="disabled"
+                                        ng-model="selectedOrderStatus.paymentType" />
                                 </div>
                             </div>
                             <div class="col-sm-12">
@@ -353,9 +358,11 @@
                                         <span class="text-danger">*</span>
                                     </label>
                                 </div>
-                                <div class="d-flex align-items-center" >
+                                <div class="d-flex align-items-center">
                                     <div style="width: 400px;">
-                                        <select ng-model="selectedOrderStatus.orderStatus" ng-options="status.value as status.label for status in statusOptions" id="order-status-select" class="form-control">
+                                        <select ng-model="selectedOrderStatus.orderStatus"
+                                            ng-options="status.value as status.label for status in statusOptions"
+                                            id="order-status-select" class="form-control">
                                             <option ng-if="selectedOrderStatus.paymentStatus"> Đã Hoàn Thành
                                             </option>
                                             <option ng-if="selectedOrderStatus.paymentStatus">Đang Vận Chuyển

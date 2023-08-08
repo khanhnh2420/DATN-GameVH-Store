@@ -17,13 +17,13 @@
 				<div class="col">
 					<h3 class="page-title">MÃ GIẢM GIÁ CHO KHÁCH HÀNG</h3>
 					<ul class="breadcrumb">
-						<li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
-						<li class="breadcrumb-item active">Mã giảm giá cho khách hàng</li>
+						<li class="breadcrumb-item"><a href="index.html">Trang Chủ</a></li>
+						<li class="breadcrumb-item active">Mã Giảm Giá Cho Khách Hàng</li>
 					</ul>
 				</div>
 				<div class="col-auto float-right ml-auto">
-					<a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_Coupon" ng-click="openAddModal()"><i
-							class="fa fa-plus"></i>Thêm mã giảm giá cho khách hàng</a>
+					<a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_Coupon"
+						ng-click="openAddModal()"><i class="fa fa-plus"></i>Thêm mã giảm giá cho khách hàng</a>
 
 				</div>
 			</div>
@@ -101,11 +101,13 @@
 										<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
 											aria-expanded="false"><i class="material-icons font-weight-bold">⋮</i></a>
 										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#" data-toggle="modal" ng-click="selectCouponOwner(cate)"
-												data-target="#edit_Coupon"><i class="fa fa-pencil m-r-5"></i>
+											<a class="dropdown-item" href="#" data-toggle="modal"
+												ng-click="selectCouponOwner(cate)" data-target="#edit_Coupon"><i
+													class="fa fa-pencil m-r-5"></i>
 												Chỉnh sửa</a>
-											<a class="dropdown-item" href="#" data-toggle="modal" ng-click="selectCouponOwner(cate)"
-												data-target="#delete_Coupon"><i class="fa fa-trash-o m-r-5"></i>
+											<a class="dropdown-item" href="#" data-toggle="modal"
+												ng-click="selectCouponOwner(cate)" data-target="#delete_Coupon"><i
+													class="fa fa-trash-o m-r-5"></i>
 												Xóa</a>
 										</div>
 									</div>
@@ -144,15 +146,18 @@
 								<div class="form-group">
 									<label class="col-form-label">Họ tên <span class="text-danger">*</span></label>
 									<select class="select" ng-model="accountId">
-										<option ng-repeat="(key, value) in accounts" value="{{value.id}}" >{{value.fullname}}</option>
+										<option ng-repeat="(key, value) in accounts" value="{{value.id}}">
+											{{value.fullname}}</option>
 									</select>
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
-									<label class="col-form-label">Tên mã giảm giá <span class="text-danger">*</span></label>
+									<label class="col-form-label">Tên mã giảm giá <span
+											class="text-danger">*</span></label>
 									<select class="select" ng-model="couponId" ng-change="changeSelectCoupon()">
-										<option ng-repeat="(key, value) in coupons" value="{{value.id}}" >{{value.couponName}}</option>
+										<option ng-repeat="(key, value) in coupons" value="{{value.id}}">
+											{{value.couponName}}</option>
 									</select>
 								</div>
 							</div>
@@ -193,7 +198,8 @@
 								<div class="form-group">
 									<label class="col-form-label">Họ tên <span class="text-danger">*</span></label>
 									<select class="select" ng-model="accountId">
-										<option ng-repeat="(key, value) in accounts" value="{{value.id}}" >{{value.fullname}}</option>
+										<option ng-repeat="(key, value) in accounts" value="{{value.id}}">
+											{{value.fullname}}</option>
 									</select>
 								</div>
 							</div>
@@ -201,7 +207,8 @@
 								<div class="form-group">
 									<label>Tên mã giảm giá <span class="text-danger">*</span></label>
 									<select class="select" ng-model="couponId" ng-change="changeSelectCoupon()">
-										<option ng-repeat="(key, value) in coupons" value="{{value.id}}" >{{value.couponName}}</option>
+										<option ng-repeat="(key, value) in coupons" value="{{value.id}}">
+											{{value.couponName}}</option>
 									</select>
 								</div>
 							</div>
@@ -228,7 +235,8 @@
 					<div class="modal-btn delete-action">
 						<div class="row">
 							<div class="col-6">
-								<a href="javascript:void(0);" ng-click="delete()" class="btn btn-primary continue-btn">XÓA</a>
+								<a href="javascript:void(0);" ng-click="delete()"
+									class="btn btn-primary continue-btn">XÓA</a>
 							</div>
 							<div class="col-6">
 								<a href="javascript:void(0);" data-dismiss="modal"

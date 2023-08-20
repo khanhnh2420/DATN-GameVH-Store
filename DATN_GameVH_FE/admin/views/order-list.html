@@ -283,7 +283,6 @@
                                                     <th>Giá sau khi giảm</th>
                                                     <th>Thể loại</th>
                                                     <th>Nguồn</th>
-                                                    <th>Thể loại</th>
                                                     <th>Số lượng</th>
                                                     <th>Tổng tiền</th>
                                                 </tr>
@@ -296,8 +295,7 @@
                                                     <td>{{detail.product.salePrice | currency: 'đ ': '0'}}</td>
                                                     <td>{{detail.product.category.name}}</td>
                                                     <td>{{detail.product.source}}</td>
-                                                    <td>{{detail.product.category.game}}</td>
-                                                    <td>{{detail.product.qty}}</td>
+                                                    <td>{{detail.qty}}</td>
                                                     <td class="font-weight-bold">{{detail.price | currency: 'đ ': '0'}}
                                                     </td>
                                                 </tr>

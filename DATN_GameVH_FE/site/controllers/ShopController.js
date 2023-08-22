@@ -163,12 +163,6 @@ app.controller("ShopController", function (PageService, ProductService, Category
 						$scope.products = response.data;
 						$scope.tempProducts = $scope.products;
 
-						// Tìm kiếm sản phẩm
-						$scope.searchProducts = $scope.searchProductInArr($scope.products);
-						if ($scope.searchProducts) {
-							$scope.products = $scope.searchProducts;
-						}
-
 						$scope.getListProductOnPage();
 					}).catch(function (error) {
 						console.error('Lỗi khi lấy danh sách game:', error);
@@ -177,12 +171,6 @@ app.controller("ShopController", function (PageService, ProductService, Category
 					ProductService.getAllProductDTOByType($scope.type).then(function (response) {
 						$scope.products = response.data;
 						$scope.tempProducts = $scope.products;
-
-						// Tìm kiếm sản phẩm
-						$scope.searchProducts = $scope.searchProductInArr($scope.products);
-						if ($scope.searchProducts) {
-							$scope.products = $scope.searchProducts;
-						}
 
 						$scope.getListProductOnPage();
 					}).catch(function (error) {
@@ -193,11 +181,6 @@ app.controller("ShopController", function (PageService, ProductService, Category
 				ProductService.getAllProductDTOByTypeAndCategory($scope.type, $scope.category).then(function (response) {
 					$scope.products = response.data;
 					$scope.tempProducts = $scope.products;
-
-					$scope.searchProducts = $scope.searchProductInArr($scope.products);
-					if ($scope.searchProducts) {
-						$scope.products = $scope.searchProducts;
-					}
 
 					$scope.getListProductOnPage();
 				}).catch(function (error) {

@@ -4,10 +4,6 @@ function BlogController($scope, $filter, $document, $window, BlogService, ToastS
     $scope.blogs = [];
     $scope.comments = [];
     $scope.submitButtonText = "Thêm";
-    $scope.blogData = {
-        username: $scope.username = $window.localStorage.getItem("username") || $window.sessionStorage.getItem("username"),
-        image: null
-    };
     $scope.tempBlogs = [];
 
     // Khởi tạo biến để lưu trữ tạm
@@ -100,7 +96,7 @@ function BlogController($scope, $filter, $document, $window, BlogService, ToastS
                     data: null,
                     class: 'text-center',
                     render: function (data, type, row) {
-                        var commentButton = (row.commentCount !== 0) ? '<a class="dropdown-item" id="comment-blog" data-blog-id="' + row.id + '" data-blog-title="' + row.title + '"><i class="fa fa-comments" aria-hidden="true"></i> Bình Luận</a>' : '';
+                        var commentButton =  '<a class="dropdown-item" id="comment-blog" data-blog-id="' + row.id + '" data-blog-title="' + row.title + '"><i class="fa fa-comments" aria-hidden="true"></i> Bình Luận</a>';
                         return '<div class="dropdown dropdown-action">' +
                             '<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">' +
                             '<i class="material-icons font-weight-bold">⋮</i></a>' +
@@ -197,15 +193,15 @@ function BlogController($scope, $filter, $document, $window, BlogService, ToastS
 
     $scope.newBlog = function () {
         // Đánh dấu form là untouched và pristine để xóa thông báo lỗi
-
+        $scope.submitButtonText = "Thêm";
         $scope.blogData = {
             createDate: new Date(),
-            username: "lethithuy",
+            username: $scope.username = $window.localStorage.getItem("userName") || $window.sessionStorage.getItem("userName"),
             image: null,
             content: ''
         };
         // Làm trống trình soạn thảo Summernote
-        $('#blogContent').summernote('code', $scope.blogData.content);
+        $('.blogContent').summernote('code', $scope.blogData.content);
 
         // Làm trống Dropify bằng cách gán giá trị cho input
         $('.dropify-clear').trigger('click');
@@ -227,7 +223,7 @@ function BlogController($scope, $filter, $document, $window, BlogService, ToastS
     // Hàm kiểm tra tính hợp lệ của trường "Summernote" và lấy giá trị
     $scope.checkAndSetBlogContent = function () {
         // Lấy đối tượng trình soạn thảo Summernote
-        var summernoteElement = $('#blogContent');
+        var summernoteElement = $('.blogContent');
 
         // Lấy nội dung (giá trị) của trình soạn thảo Summernote dưới dạng mã HTML
         var content = summernoteElement.summernote('code');
@@ -332,13 +328,13 @@ function BlogController($scope, $filter, $document, $window, BlogService, ToastS
         BlogService.getBlogById(blogId)
             .then(function (response) {
                 // Xử lý thành công, lấy dữ liệu blog từ response.data
-                $scope.submitButtonText = "Edit";
+                $scope.submitButtonText = "Sửa";
                 $scope.blogData = response.data;
                 $scope.formattedDate = $filter('date')($scope.blogData.createDate, 'dd/MM/yyyy');
                 $scope.editImg = false;
                 $scope.showBlogContentError = false;
                 // Đặt nội dung vào Summernote
-                $('#blogContent').summernote('code', $scope.blogData.content);
+                $('.blogContent').summernote('code', $scope.blogData.content);
                 // Hiển thị modal để chỉnh sửa blog
                 $('#add_Blog').modal('show');
             })
